@@ -149,3 +149,8 @@ Exact source **f58cda97f1037de7ab975fde0315fd050a14afed**, tree503f4822fc7fa929a
 Supported helperdrop forF586 exited0; branch/worktree/claim cleanup complete. Native InReview update remains to be applied separately (no acceptance). F586 requested-only notice has been resolved with trusted differingempty. Fresh Jira0318 pull0failures after explicitwitnessoverlay, audit265/fetch0/setparent0 (not globallyclean), sevenknownunparented unguessed. All14actualcachedimages across8records and F586noimages freshly ready/0missing.
 
 WebKit newinstaller remains inactive. Independent review found concrete setup finalizer error-coupling/cache-EEXIST, unowned scratch inode adoption after failedenter, and Popen→ownership signal-window defects. Review receipt and scoped corrections pending; no runtime proof or download. Root will reuse existing eight runner functions and repair only new lifecycle/preflight before separate source/engine releases. Browserreference/Humanverdicts unchanged.
+
+
+## Native status checkpoint — 24 November, 03:42 UTC
+
+F586 native transition3 returned In Review; only its exact scoped transition operation was acknowledged. Product-map native observation updated with expired worker claim preserved and integration slice still in progress. Source merged00f49ee8a/archivecleanup complete; current canonical45320472506 remains in progress at f58cda97f. Human F555AC8/F548AC6 verdicts and F585 complete-run outcomes remain pending. Sniffles frozen WebKit review failed on three explicit lifecycle findings; Hiccup is correcting those only with both releases false and no download/browser launch.

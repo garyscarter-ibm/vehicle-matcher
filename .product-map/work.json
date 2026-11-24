@@ -12187,12 +12187,12 @@
       "id": "FUCQ-586",
       "title": "Decline follow-up HTTP regression assumes historical run without arranging...",
       "type": "Bug",
-      "status": "In Progress",
-      "original_status": "In Progress",
+      "status": "In Review",
+      "original_status": "In Review",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-586",
       "branch": "dev/DEV-2026-11-23-vesper-015",
       "unsliced": false,
-      "note": "Source fbd33292aab91e3c5c11dda51f4b40fdb58da88a; original three ACs and one complete signed-OIDC/native-PG17 case passed, zero failures/errors/skips; independent source/spec/security/runtime/cleanup PASS. Root integration/canonical covering and human verdicts remain separate.",
+      "note": "Native In Review transition observed 2026-11-24; scoped source fbd33292a and independent original-AC/runtime/cleanup PASS, merged 00f49ee8a and archived cleanup complete. Integrated canonical 45320472506 at f58cda97f remains running; no acceptance or complete covering claim.",
       "workers": [
         {
           "name": "Lord Business",
@@ -12224,10 +12224,10 @@
           "title": "Scoped reviewed handoff and integrated canonical covering",
           "status": "in-progress",
           "observed_at": "2026-11-24T03:27:10.142330+00:00",
-          "evidence": "Scoped source, original-AC proof, independent review and cleanup complete. Root merge/publication and integrated canonical green still pending; no acceptance inferred."
+          "evidence": "Scoped delivery/review/cleanup complete; source merged 00f49ee8a and archived cleanup complete. Native In Review observed; canonical run 45320472506 at f58cda97f remains in progress."
         }
       ],
-      "observed_at": "2026-11-24T03:27:10Z"
+      "observed_at": "2026-11-24T03:43:47Z"
     }
   ]
 }
