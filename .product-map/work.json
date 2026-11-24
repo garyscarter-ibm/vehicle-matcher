@@ -11988,7 +11988,7 @@
       "branch": "dev/DEV-2026-11-24-vesper-001",
       "native_observed_at": "2026-11-24T01:52:50.499888+00:00",
       "evidence": "Native transition3 returned statusName In Review after merged scoped repair; canonical integration remains pending in its slice. Not accepted.",
-      "observed_at": "2026-11-24T01:52:50Z",
+      "observed_at": "2026-11-24T02:24:13Z",
       "slices": [
         {
           "id": "references",
@@ -12013,10 +12013,10 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Post-merge exact canonical npm covering batch",
-          "observed_at": "2026-11-24T01:48:03Z",
-          "evidence": "Reviewed source merged/pushed8727af173; root actual source/log reconciliation f582-validation/root-merge-reconciliation.json passed. Exact post-merge npm batch pending; original full RED and all37 report-only identities preserved."
+          "observed_at": "2026-11-24T02:24:13Z",
+          "evidence": "Exact post-merge unfiltered npm test at8727af173 completed4284/4181pass/37fail/66skip; fullRED. Root exact37approved report-only identity multiset,0additional required failures; all4F582 cases pass once. node-canonical-20261124b-prep/root-final-reconciliation.json; no acceptance or fullgreen."
         }
       ],
       "unsliced": false
