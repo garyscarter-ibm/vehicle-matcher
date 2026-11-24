@@ -193,6 +193,7 @@ async function details(page) {
   const dialog = page.getByRole('dialog', { name: 'Car details', exact: true });
   await dialog.waitFor();
   assert.equal(await focused(dialog.getByRole('heading', { name: 'Car details', exact: true })), true);
+  await dialog.locator('.gcsp-vehicle-specification').waitFor({ state: 'visible' });
   const specification = await dialog.locator('.gcsp-vehicle-specification').innerText();
   const equipment = dialog.getByRole('tab', { name: /^Selected equipment/ });
   await equipment.focus(); await page.keyboard.press('Enter');
