@@ -11976,6 +11976,98 @@
           "status": "source/spec/security/evidence review passed"
         }
       ]
+    },
+    {
+      "id": "FUCQ-583",
+      "title": "Lifecycle HTTP tests age out their fixed collection dates at midnight",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-583",
+      "branch": "dev/DEV-2026-11-24-vesper-002",
+      "unsliced": false,
+      "note": "Source 5d3693b83e680459b5c9a839845ad4446c0dbdde; original AC scoped evidence passed: 11 actual cases, zero failures/errors/skips; independent source/spec/security and runtime/cleanup review PASS. Integrated canonical covering and acceptance remain root-owned and pending; no accepted status inferred.",
+      "workers": [
+        {
+          "name": "Lord Business",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-24T02:29:38.948403+00:00",
+          "expires_at": "2026-11-24T02:29:38.948403+00:00",
+          "source": "Retained task /root/lord_business; actual final proof and independent review receipts",
+          "status": "Scoped delivery completed; root integration/canonical covering pending"
+        }
+      ],
+      "observed_at": "2026-11-24T02:29:39Z",
+      "slices": [
+        {
+          "id": "fixture-inputs",
+          "status": "complete",
+          "title": "Admissible canonical date inputs and preserved clock lineage",
+          "observed_at": "2026-11-24T02:29:38.948403+00:00",
+          "evidence": "Lead actual final whole-class proof: 11 cases pass, zero failures/errors/skips; unchanged reviewed source 5d3693b83e680459b5c9a839845ad4446c0dbdde. Marvin independent original-AC/runtime review PASS; f583-f584-final-validation/marvin-runtime-review.json."
+        },
+        {
+          "id": "regression-callers",
+          "status": "complete",
+          "title": "Real OIDC and PostgreSQL regression plus six HTTP callers",
+          "observed_at": "2026-11-24T02:29:38.948403+00:00",
+          "evidence": "Lead actual final whole-class proof: 11 cases pass, zero failures/errors/skips; unchanged reviewed source 5d3693b83e680459b5c9a839845ad4446c0dbdde. Marvin independent original-AC/runtime review PASS; f583-f584-final-validation/marvin-runtime-review.json."
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Combine scoped evidence and independent review for handoff",
+          "observed_at": "2026-11-24T02:29:38.948403+00:00",
+          "evidence": "Scoped source, original-AC evidence, independent review and cleanup complete; source committed. Root integration, publication and green canonical covering still pending; no acceptance inferred."
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-584",
+      "title": "Auth route inventory omits the approved public demo issuer endpoints",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-584",
+      "branch": "dev/DEV-2026-11-24-vesper-002",
+      "unsliced": false,
+      "note": "Source 5d3693b83e680459b5c9a839845ad4446c0dbdde; original AC scoped evidence passed: 33 actual cases, zero failures/errors/skips; independent source/spec/security and runtime/cleanup review PASS. Integrated canonical covering and acceptance remain root-owned and pending; no accepted status inferred.",
+      "workers": [
+        {
+          "name": "Lord Business",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-24T02:29:38.948403+00:00",
+          "expires_at": "2026-11-24T02:29:38.948403+00:00",
+          "source": "Retained task /root/lord_business; actual final proof and independent review receipts",
+          "status": "Scoped delivery completed; root integration/canonical covering pending"
+        }
+      ],
+      "observed_at": "2026-11-24T02:29:39Z",
+      "slices": [
+        {
+          "id": "inventory",
+          "status": "complete",
+          "title": "Exact protected and public issuer route union",
+          "observed_at": "2026-11-24T02:29:38.948403+00:00",
+          "evidence": "Lead actual final whole-class proof: 33 cases pass, zero failures/errors/skips; unchanged reviewed source 5d3693b83e680459b5c9a839845ad4446c0dbdde. Marvin independent original-AC/runtime review PASS; f583-f584-final-validation/marvin-runtime-review.json."
+        },
+        {
+          "id": "issuer-controls",
+          "status": "complete",
+          "title": "Protected bearer roles and issuer disabled/enabled controls",
+          "observed_at": "2026-11-24T02:29:38.948403+00:00",
+          "evidence": "Lead actual final whole-class proof: 33 cases pass, zero failures/errors/skips; unchanged reviewed source 5d3693b83e680459b5c9a839845ad4446c0dbdde. Marvin independent original-AC/runtime review PASS; f583-f584-final-validation/marvin-runtime-review.json."
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Combine scoped evidence and independent review for handoff",
+          "observed_at": "2026-11-24T02:29:38.948403+00:00",
+          "evidence": "Scoped source, original-AC evidence, independent review and cleanup complete; source committed. Root integration, publication and green canonical covering still pending; no acceptance inferred."
+        }
+      ]
     }
   ],
   "version": 1
