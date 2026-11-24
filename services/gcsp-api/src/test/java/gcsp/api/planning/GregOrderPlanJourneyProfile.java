@@ -28,7 +28,7 @@ public final class GregOrderPlanJourneyProfile implements QuarkusTestProfile {
     @Override
     public Map<String, String> getConfigOverrides() {
         Map<String, String> c = ClaimCompositionSeed.config(SCHEMA);
-        // No fixed account clock: the account, claim and ordering clocks are the real wall clock, the run clock is the presenter's.
+        // No fixed account clock: real account, claim, ordering and planning bindings observe the scoped presenter run.
         c.remove("gcsp.account.fixed-now");
         c.put("gcsp.oidc.accounts", ACCOUNTS);
         c.put("gcsp.production.provider", "synthetic");
