@@ -12228,6 +12228,52 @@
         }
       ],
       "observed_at": "2026-11-24T03:43:47Z"
+    },
+    {
+      "id": "FUCQ-587",
+      "title": "Ordering HTTP journey setup ages out its fixed collection date",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-587",
+      "branch": "dev/DEV-2026-11-23-vesper-016",
+      "unsliced": false,
+      "note": "Both original ACs built/scoped-reviewed at source24d03ab6d: exact73ordering plus55additionalstartup cases passed; root integration/canonical and human acceptance remain pending.",
+      "workers": [
+        {
+          "name": "Lord Business",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-24T04:27:56.271698+00:00",
+          "expires_at": "2026-11-24T04:27:56.271698+00:00",
+          "source": "Retained task /root/lord_business; actual F587 result and independent original-AC/runtime/cleanup review",
+          "status": "Scoped delivery completed; root integration/canonical covering pending"
+        }
+      ],
+      "slices": [
+        {
+          "id": "selector-callers",
+          "title": "Actual-account date selection in both ordering setup builders",
+          "status": "complete",
+          "observed_at": "2026-11-24T04:27:56.271698+00:00",
+          "evidence": "Lead+independent original-AC/runtime/cleanup PASS; source24d03ab6d; actual128cases/24classes,exact73originalordering,allthreecompletejourneys inclJordan,alltenstartup classes;0fail/error/skip. f587-validation/f587-result.json and marvin-runtime-review.json."
+        },
+        {
+          "id": "regression",
+          "title": "Whole ordering package and original composed journeys plus startup wiring",
+          "status": "complete",
+          "observed_at": "2026-11-24T04:27:56.271698+00:00",
+          "evidence": "Lead+independent original-AC/runtime/cleanup PASS; source24d03ab6d; actual128cases/24classes,exact73originalordering,allthreecompletejourneys inclJordan,alltenstartup classes;0fail/error/skip. f587-validation/f587-result.json and marvin-runtime-review.json."
+        },
+        {
+          "id": "integration",
+          "title": "Reviewed scoped handoff and integrated canonical covering",
+          "status": "in-progress",
+          "observed_at": "2026-11-24T04:27:56.271698+00:00",
+          "evidence": "Scoped reviewed handoff complete; originalXML independently parsed by lead/root/Marvin and exact cleanup verified. Root integration and covering canonical batch pending; no accepted state inferred."
+        }
+      ],
+      "observed_at": "2026-11-24T04:27:56Z"
     }
   ]
 }
