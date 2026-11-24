@@ -18,33 +18,120 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import gcsp.api.JwksServerResource;
+import gcsp.api.allocation.BuddyJourneyResource;
+import gcsp.api.allocation.BuddyJourneySeed;
 import gcsp.api.allocation.BuddyJourneySupport;
+import gcsp.api.clock.ClockConfiguration;
 import gcsp.api.clock.RunClockDocumentClock;
 import gcsp.api.documents.DocumentClock;
 import gcsp.api.documents.RunClockBackedTestClock;
+import gcsp.api.policy.PolicyService;
 import io.agroal.api.AgroalDataSource;
 import io.quarkus.test.junit.QuarkusMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import jakarta.inject.Inject;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Map;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.postgresql.ds.PGSimpleDataSource;
 
 /** FUCQ-466 AC2: decline, refused downstream work, replay and expiry stay truthful through the started app. */
 @QuarkusTest
-@TestProfile(OfferJourneyProfiles.Decline.class)
+@TestProfile(OfferDeclineJourneyHttpTest.Profile.class)
 class OfferDeclineJourneyHttpTest {
 
     @ConfigProperty(name = "gcsp.test.signing-jwk")
     String signingJwk;
+
+    @ConfigProperty(name = "gcsp.test.decline.captured-wall")
+    String fixtureWall;
+
+    /** Only this regression needs a historical input; other Buddy consumers keep their normal profile. */
+    public static class Profile extends OfferJourneyProfiles.Decline {
+        @Override
+        public List<TestResourceEntry> testResources() {
+            return List.of(new TestResourceEntry(JwksServerResource.class),
+                    new TestResourceEntry(HistoricalRunResource.class, Map.of("mode", "local")));
+        }
+    }
+
+    /** Seeds the absent clock before RunClockHolder and offer-policy adoption, never rewinding a started run. */
+    public static class HistoricalRunResource extends BuddyJourneyResource {
+        @Override
+        public Map<String, String> start() {
+            Instant wall = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+            Map<String, String> config = super.start();
+            try {
+                seedClock(config, wall.minus(1, ChronoUnit.HOURS));
+                config.put("gcsp.test.decline.captured-wall", wall.toString());
+                return config;
+            } catch (Exception e) {
+                try {
+                    super.stop();
+                } catch (RuntimeException closing) {
+                    e.addSuppressed(closing);
+                }
+                throw new IllegalStateException("Could not arrange the historical decline run", e);
+            }
+        }
+
+        private static void seedClock(Map<String, String> config, Instant initial) throws Exception {
+            JsonNode policy;
+            try (InputStream input = HistoricalRunResource.class.getResourceAsStream("/gcsp/policy/seed-v1.json")) {
+                if (input == null) throw new IOException("Missing canonical policy fixture");
+                policy = BuddyJourneySupport.JSON.readTree(input);
+            }
+            JsonNode scenario = null;
+            JsonNode commands = null;
+            for (JsonNode row : policy.path("assumptions")) {
+                if ("clock.scenario.v1".equals(row.path("key").asText())) scenario = row.path("value");
+                if ("clock.commands.v1".equals(row.path("key").asText())) commands = row.path("value");
+            }
+            if (scenario == null || commands == null) throw new IOException("Missing canonical clock contract");
+            Duration shift = Duration.between(Instant.parse(scenario.path("startsAt").asText()), initial);
+            ObjectNode named = BuddyJourneySupport.JSON.createObjectNode();
+            scenario.path("namedTimes").fields().forEachRemaining(entry -> named.put(entry.getKey(),
+                    Instant.parse(entry.getValue().asText()).plus(shift).toString()));
+            PGSimpleDataSource source = new PGSimpleDataSource();
+            source.setUrl(config.get("quarkus.datasource.jdbc.url"));
+            source.setCurrentSchema(config.get("quarkus.flyway.default-schema"));
+            try (Connection c = source.getConnection(); PreparedStatement p = c.prepareStatement(
+                    "INSERT INTO run_clocks (environment_id, run_id, clock_instant, clock_version, scenario_version, "
+                            + "fixture_version, starts_at, named_times) VALUES (?, ?, ?, ?, ?, ?, ?, ?::jsonb)")) {
+                p.setString(1, BuddyJourneySeed.ENV);
+                p.setString(2, BuddyJourneySeed.RUN);
+                p.setObject(3, OffsetDateTime.ofInstant(initial, ZoneOffset.UTC));
+                p.setLong(4, commands.path("initialClockVersion").asLong());
+                p.setString(5, scenario.path("scenarioVersion").asText());
+                p.setString(6, scenario.path("fixtureVersion").asText());
+                p.setObject(7, OffsetDateTime.ofInstant(initial, ZoneOffset.UTC));
+                p.setString(8, named.toString());
+                assertEquals(1, p.executeUpdate());
+            }
+        }
+    }
 
     @Inject
     AgroalDataSource dataSource;
 
     @Inject
     RunClockDocumentClock runClockDocuments;
+
+    @Inject
+    PolicyService policy;
 
     @BeforeEach
     void useTheRunClockForDocuments() {
@@ -57,6 +144,22 @@ class OfferDeclineJourneyHttpTest {
         String presenter = s.token("sub-presenter", "presenter");
         String paula = s.token("sub-paula", "employee");
         String bruno = s.token("sub-bruno", "employee");
+        Instant capturedWall = Instant.parse(fixtureWall);
+        Instant beforeAllocation = Instant.parse(s.clockNow(presenter));
+        assertTrue(beforeAllocation.isBefore(capturedWall), "the fixture must be historical before allocation");
+        JsonNode storedClock = BuddyJourneySupport.JSON.readTree(s.text("SELECT to_jsonb(c)::text FROM run_clocks c "
+                + "WHERE environment_id = ? AND run_id = ?", BuddyJourneySeed.ENV, BuddyJourneySeed.RUN));
+        Instant seededStart = Instant.parse(storedClock.get("starts_at").asText());
+        assertEquals(capturedWall.minus(1, ChronoUnit.HOURS), seededStart);
+        ClockConfiguration.Loaded loaded = ClockConfiguration.read(policy, BuddyJourneySeed.RUN, beforeAllocation);
+        assertTrue(loaded.ok(), loaded.problem());
+        ClockConfiguration canonical = loaded.configuration();
+        assertEquals(canonical.scenarioVersion(), storedClock.get("scenario_version").asText());
+        assertEquals(canonical.fixtureVersion(), storedClock.get("fixture_version").asText());
+        assertTrue(storedClock.get("clock_version").asLong() >= canonical.initialClockVersion());
+        assertEquals(canonical.namedTimes().size(), storedClock.get("named_times").size());
+        canonical.namedTimes().forEach((name, at) -> assertEquals(Duration.between(canonical.startsAt(), at),
+                Duration.between(seededStart, Instant.parse(storedClock.get("named_times").get(name).asText()))));
         String paulaOffer = OfferDecisionJourneySupport.allocate(s, presenter, PAULA);
         String brunoOffer = s.text("SELECT offer_id FROM buddy_offers WHERE employee_id = ?", BRUNO);
 
@@ -151,7 +254,7 @@ class OfferDeclineJourneyHttpTest {
                 BRUNO, decisionId));
         // FUCQ-570: the scoped run is deliberately behind wall time. Saving must not create future history.
         Instant runNow = Instant.parse(s.clockNow(presenter));
-        assertTrue(runNow.isBefore(Instant.now()), "this regression requires a run earlier than wall time");
+        assertTrue(runNow.isBefore(capturedWall), "this regression requires a run earlier than wall time");
         JsonNode currentBrief = body(get(bruno, "/api/gcsp/v1/brief").then().statusCode(200).extract().response())
                 .get("value").get("brief");
         assertEquals(saved.get("briefVersion").asLong(), currentBrief.get("briefVersion").asLong());
@@ -175,6 +278,12 @@ class OfferDeclineJourneyHttpTest {
                 .get("value").get("brief"));
         assertEquals(activity, body(get(bruno, "/api/gcsp/v1/activity").then().statusCode(200).extract().response()).get("value"));
         assertEquals("declined", s.text("SELECT state FROM buddy_offers WHERE offer_id = ?", brunoOffer));
+        System.out.println("F586-CLOCK capturedWall=" + capturedWall + " seedStart=" + seededStart
+                + " beforeAllocation=" + beforeAllocation
+                + " savedAt=" + runNow + " confirmedAt=" + currentBrief.get("confirmedAt").asText()
+                + " fieldAt=" + currentBrief.at("/preferences/body/confirmedAt").asText()
+                + " postDeclineAt=" + currentBrief.at("/postDeclineChange/confirmedAt").asText()
+                + " eventAt=" + saved.at("/event/occurredAt").asText());
 
         JsonNode replayed = body(BuddyJourneySupport.post(bruno, fu + "/confirm", confirm.toString()).then().statusCode(200)
                 .extract().response()).get("value");
