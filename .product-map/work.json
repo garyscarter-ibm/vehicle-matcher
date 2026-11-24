@@ -12233,12 +12233,12 @@
       "id": "FUCQ-587",
       "title": "Ordering HTTP journey setup ages out its fixed collection date",
       "type": "Bug",
-      "status": "In Progress",
-      "original_status": "In Progress",
+      "status": "In Review",
+      "original_status": "In Review",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-587",
       "branch": "dev/DEV-2026-11-23-vesper-016",
       "unsliced": false,
-      "note": "Both original ACs built/scoped-reviewed at source24d03ab6d: exact73ordering plus55additionalstartup cases passed; root integration/canonical and human acceptance remain pending.",
+      "note": "Native In Review observed after mergef56fc682b/archivecleanupcomplete. Both Bug ACs scoped128passes; covering canonical45327329149 active atfc14378e. Human acceptance not inferred.",
       "workers": [
         {
           "name": "Lord Business",
@@ -12273,7 +12273,7 @@
           "evidence": "Scoped reviewed handoff complete; originalXML independently parsed by lead/root/Marvin and exact cleanup verified. Root integration and covering canonical batch pending; no accepted state inferred."
         }
       ],
-      "observed_at": "2026-11-24T04:27:56Z"
+      "observed_at": "2026-11-24T04:38:51Z"
     }
   ]
 }
