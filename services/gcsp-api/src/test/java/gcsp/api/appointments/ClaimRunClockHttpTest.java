@@ -9,9 +9,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import gcsp.api.account.StockDbFixture;
 import gcsp.api.claims.ClaimClock;
 import gcsp.api.clock.ClockConfiguration;
-import gcsp.api.policy.PolicyService;
 import gcsp.api.persistence.Persistence;
 import gcsp.api.persistence.RunContext;
+import gcsp.api.policy.PolicyRead;
+import gcsp.api.policy.PolicyService;
 import io.agroal.api.AgroalDataSource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
@@ -21,7 +22,9 @@ import jakarta.inject.Inject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +39,8 @@ import org.postgresql.ds.PGSimpleDataSource;
 class ClaimRunClockHttpTest {
     private static String ownedSchema;
     private static Instant initial;
+    private static Instant capturedWall;
+    private static Instant ahead;
     private static String paulaHold;
     @ConfigProperty(name = "gcsp.test.signing-jwk") String signingJwk;
     @ConfigProperty(name = "quarkus.flyway.default-schema") String schema;
@@ -104,9 +109,24 @@ class ClaimRunClockHttpTest {
         assertEquals("ready", account.get("state").asText());
         ObjectNode input = ApptHttp.JSON.createObjectNode().put("commandId", "draft-" + ApptHttp.id())
                 .put("expectedDraftVersion", 0).put("expectedContextVersion", account.get("contextVersion").asText());
-        input.set("choices", ApptHttp.JSON.readTree(StockDbFixture.complete().toString().replace("paula", who)
-                .replace("Paula Mason", who).replace("2026-11-12", "2026-11-30")));
+        assertEquals(initial, Instant.parse(account.get("asOf").asText()));
+        ObjectNode choices = (ObjectNode) ApptHttp.JSON.readTree(StockDbFixture.complete().toString()
+                .replace("paula", who).replace("Paula Mason", who));
+        ObjectNode dated = ReturnJourneySteps.withCollectionDate(account, choices, ahead);
+        input.set("choices", dated);
         ok(post(who, "/manual/draft", input));
+        System.out.println("F583-DRAFT who=" + who + " asOf=" + account.get("asOf").asText()
+                + " collectionDate=" + dated.get("requestedCollectionDate").asText());
+    }
+    private JsonNode assumption(String key, String runId, Instant at, String version) {
+        var result = policy.getAssumption(key, new PolicyRead(runId, at.toString(), version));
+        assertTrue(result.ok(), key + ": " + result.code());
+        assertEquals(version, result.policyVersion());
+        return result.value().get("value");
+    }
+    private static long seconds(JsonNode value) {
+        assertTrue(value != null && value.isNumber() && value.decimalValue().signum() > 0);
+        return value.decimalValue().setScale(0, java.math.RoundingMode.CEILING).longValueExact();
     }
     private ObjectNode claimInput(String who) throws Exception {
         JsonNode stock = ok(http.as(who).get(BASE + "/manual/stock"));
@@ -139,23 +159,32 @@ class ClaimRunClockHttpTest {
         // No business timestamp exists yet; neither quotes nor holds are rebased or rewritten.
         assertEquals(0, claims());
         assertEquals(0, ApptHttp.count(dataSource.get(), "SELECT count(*) FROM custody_holds"));
-        initial = Instant.parse("2026-11-05T09:00:00Z");
+        capturedWall = Instant.now().truncatedTo(ChronoUnit.SECONDS);
+        ahead = capturedWall.plusSeconds(3600);
         var run = persistence.guard().currentRun();
-        ClockConfiguration.Loaded loaded = ClockConfiguration.read(policy, run.runId(), initial);
+        ClockConfiguration.Loaded loaded = ClockConfiguration.read(policy, run.runId(), capturedWall);
         assertTrue(loaded.ok(), loaded.problem());
         ClockConfiguration config = loaded.configuration();
-        assertEquals(initial, config.startsAt(), "the historical input uses the canonical clock template");
+        long quoteSeconds = seconds(assumption("employee.recommendation.v1", run.runId(), capturedWall,
+                config.policyVersion()).get("termValiditySeconds"));
+        long previewSeconds = seconds(assumption("hold.cart.durationSeconds", run.runId(), capturedWall, config.policyVersion()));
+        long reviewSeconds = seconds(assumption("hold.cart.orderReview.durationSeconds", run.runId(), capturedWall, config.policyVersion()));
+        initial = capturedWall.minusSeconds(Math.max(quoteSeconds, Math.max(previewSeconds, reviewSeconds)) + 1);
+        Instant beforeMidnight = capturedWall.truncatedTo(ChronoUnit.DAYS).minusSeconds(1);
+        if (initial.isAfter(beforeMidnight)) initial = beforeMidnight;
+        assertTrue(initial.truncatedTo(ChronoUnit.DAYS).isBefore(ahead.truncatedTo(ChronoUnit.DAYS)));
+        Duration templateOffset = Duration.between(config.startsAt(), initial);
         ObjectNode paused = (ObjectNode) ApptHttp.JSON.readTree(text("SELECT to_jsonb(c)::text FROM run_clocks c"));
         paused.put("clock_instant", initial.toString()).put("starts_at", initial.toString())
                 .put("clock_version", config.initialClockVersion()).put("scenario_version", config.scenarioVersion())
                 .put("fixture_version", config.fixtureVersion()).putNull("last_tick_id");
         ObjectNode named = paused.putObject("named_times");
-        config.namedTimes().forEach((name, at) -> named.put(name, at.toString()));
+        config.namedTimes().forEach((name, at) -> named.put(name, at.plus(templateOffset).toString()));
         sql("TRUNCATE run_clocks");
         sql("INSERT INTO run_clocks SELECT (jsonb_populate_record(NULL::run_clocks, ?::jsonb)).*", paused.toString());
         assertEquals(initial, Instant.parse(clock().get("now").asText()));
         assertEquals(initial, claimClock.now(new RunContext(run.environmentId(), run.runId(), "probe")));
-        assertTrue(initial.plusSeconds(7200).isBefore(Instant.now()));
+        assertTrue(initial.plusSeconds(quoteSeconds).isBefore(capturedWall));
         try (Connection c = dataSource.get().getConnection()) {
             List<JsonNode> rows = new ArrayList<>(StockDbFixture.rows());
             ObjectNode extra = rows.get(0).deepCopy();
@@ -170,6 +199,8 @@ class ClaimRunClockHttpTest {
         ObjectNode input = claimInput("paula");
         JsonNode held = ok(post("paula", "/manual/claim", input));
         lineage(held, input, initial);
+        assertTrue(Instant.parse(held.at("/quote/validUntil").asText()).isBefore(capturedWall));
+        assertTrue(Instant.parse(held.at("/hold/expiresAt").asText()).isBefore(capturedWall));
         paulaHold = held.at("/hold/holdId").asText();
         String pinned = text("SELECT quote::text FROM manual_claims WHERE hold_id = ?", paulaHold);
         Response replay = post("paula", "/manual/claim", input);
@@ -179,6 +210,11 @@ class ClaimRunClockHttpTest {
         JsonNode review = ok(post("paula", "/manual/claim/review", command(held.get("hold"))));
         assertEquals(initial.plusSeconds(held.at("/quote/timing/reviewSeconds").asLong()),
                 Instant.parse(review.at("/hold/expiresAt").asText()));
+        assertTrue(Instant.parse(review.at("/hold/expiresAt").asText()).isBefore(capturedWall));
+        System.out.println("F583-CLOCK initial=" + initial + " capturedWall=" + capturedWall + " ahead=" + ahead
+                + " quoteUntil=" + held.at("/quote/validUntil").asText()
+                + " previewUntil=" + held.at("/hold/expiresAt").asText()
+                + " reviewUntil=" + review.at("/hold/expiresAt").asText());
         JsonNode terms = ok(http.as("paula").get(BASE + "/manual/order/terms"));
         ObjectNode order = ApptHttp.JSON.createObjectNode().put("commandId", "order-" + ApptHttp.id())
                 .put("expectedQuoteId", review.at("/quote/quoteId").asText())
@@ -213,8 +249,8 @@ class ClaimRunClockHttpTest {
         assertEquals(expiry, expired.at("/hold/expiresAt").asText());
         assertEquals(pinned, text("SELECT quote::text FROM manual_claims WHERE hold_id = ?", hold));
         assertEquals(409, post("alex", "/manual/claim/review", command(held.get("hold"))).statusCode());
-        Instant ahead = Instant.now().plusSeconds(3600).truncatedTo(java.time.temporal.ChronoUnit.SECONDS);
         advance(ahead);
+        assertEquals(ahead, Instant.parse(clock().get("now").asText()));
         ObjectNode fresh = claimInput("alex");
         JsonNode next = ok(post("alex", "/manual/claim", fresh));
         lineage(next, fresh, ahead);

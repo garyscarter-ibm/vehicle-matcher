@@ -316,7 +316,7 @@ class LifecycleMixedRoleHttpTest {
     private String placePaulaOrder(String excludedCar) throws Exception {
         JsonNode account = value(http.as("paula").get(BASE + "/manual/account"));
         assertEquals("ready", account.get("state").asText());
-        String choices = StockDbFixture.complete().toString().replace("2026-11-12", "2026-11-30");
+        ObjectNode choices = ReturnJourneySteps.withCollectionDate(account, StockDbFixture.complete());
         value(http.as("paula").body("{\"commandId\":\"mixed-draft-" + ApptHttp.id()
                 + "\",\"expectedDraftVersion\":0,\"expectedContextVersion\":\""
                 + account.get("contextVersion").asText() + "\",\"choices\":" + choices + "}")
