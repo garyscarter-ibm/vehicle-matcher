@@ -10933,108 +10933,6 @@
     },
     {
       "assignee": "Russell Gowers",
-      "branch": "dev/DEV-2026-11-22-vesper-028",
-      "covering_node_observation": "Running with observed failing chunks1/2/4; root failure-to-existing-disposition audit pending. No repair/reopen/waiver inferred; human retirement boundaries preserved.",
-      "evidence": "Final3dd registered12/12 exit0; source/scoped proof and actual critique retained. docs/gcsp/evidence/offer-and-bell-parity-2026-11-23.md Native In Progress observed 2026-11-23T19:37:24.986Z; WEB1948/117/12 GREEN; Node/Java covering and human/native disposition remain separate.",
-      "id": "FUCQ-555",
-      "native_status_observed_at": "2026-11-23T19:37:24.986Z",
-      "native_updated_at": "2026-11-23T10:21:31.120-0600",
-      "note": "Original8AC unchanged/unticked. Final registered actual12/12 and independent critique pass with limitations. Source/composed technical evidence present; Node observed RED/investigating, Java pending and originalAC8 human verdict pending in one shared Offer/Bell batch. Native In Progress observed19:37:24.986Z; no acceptance inferred.",
-      "observed_at": "2026-11-23T19:58:26Z",
-      "original_status": "In Progress",
-      "slices": [
-        {
-          "evidence": "a9fdc1cee canonical stage list/order identity + matching catalogue/gallery; lead15/15 scoped regressions and124/124 ratchet. Independent stage-only Chester Sol/xhigh review d6c76ac..a9fdc1c passed, no actionable finding. Source boundary only; rendered/connected/acceptance remain open.",
-          "id": "stage-list-source",
-          "observed_at": "2026-11-22T23:42:34Z",
-          "status": "complete",
-          "title": "Canonical source stage list and exact order-identity rows (AC6)"
-        },
-        {
-          "evidence": "a9fdc1cee ONE canonical tracker imports existing formatter;15/15 source tests and independent Chester Sol/xhigh stage-only review passed. F556 future adapter must normalize nullable at and preserve owner/Next/blocked note; actual consumer integration remains separate.",
-          "id": "stage-tracker-source",
-          "observed_at": "2026-11-22T23:42:34Z",
-          "status": "complete",
-          "title": "ONE canonical stage tracker reused by F556"
-        },
-        {
-          "evidence": "90999d25e ONE exact finish projection/palette, labels, uncapped highlights and pure decision shell with matching catalogue/gallery.23/23 scoped specs+gallery compilation, source boundaries,124/124 ratchet; data independently equal. Lead/self-review only; actual media/details/exact-card integration and independent review remain open. Later canonical Tabs/FactList, SideDrawerfb91, VehicleDetails947 and Media source ports are present. SideDrawer independent review passed; VehicleDetails independent review is unfinished. Latest Media151scoped passes incl source DOM parentage/actual callers; no rendered parity.",
-          "id": "decision-presenters",
-          "observed_at": "2026-11-23T00:52:03.823973+00:00",
-          "status": "complete",
-          "title": "Canonical finishes, vehicle-decision shell and Benefits/Tradeoffs (AC3/4/5)"
-        },
-        {
-          "evidence": "Lead verified final3dd actual source/1280+390 surface, exit links, authoritative under-five/expiry journals,1100/800/300, swatches, comparison winners and stages. Existing focused/source/style/empty-state evidence reused; final table pair84c22c10. Whole destination screens and humanAC8 remain separate. docs/gcsp/evidence/offer-and-bell-parity-2026-11-23.md",
-          "id": "offer-composition",
-          "observed_at": "2026-11-23T19:51:32.452250+00:00",
-          "status": "complete",
-          "title": "Source exits, authoritative countdown, savings, winners and stages (AC1-6)"
-        },
-        {
-          "evidence": "Final actual Documents jumps/error focus/native checkboxes and decline radio pass. Saved estate→hatchback brief2 at11:30/v4; navigated ActivityGET200, exact declinedcar, Buddy engaged and Search updated after a decline. Lead+Pluto actual drawer1280/390 and settledActivity390 critique no scoped finding. F570 scoped272 reused. OriginalhumanAC8/covering remain separate.",
-          "id": "decision-followup",
-          "observed_at": "2026-11-23T19:51:32.452250+00:00",
-          "status": "complete",
-          "title": "Source Documents jumps, errors/control rows and saved Activity exit (AC7)"
-        },
-        {
-          "evidence": "Supported F551/F549/F548/F550 plus approvedF564 integrated from published4408a0a14 into555; six semantic conflicts reviewed,317base rows/full555evidence and component unions retained.291focusedAngular,7boundaries,5styles,205persistentfixtures,135ratchet pass; six real direct/nested inspection regressions fixed and independentSpike source/securityreview passed. No live/human acceptance inferred.",
-          "id": "sibling-integration",
-          "observed_at": "2026-11-23T13:35:31Z",
-          "status": "complete",
-          "title": "F548/F549/F550/F551 integration and shared source reuse"
-        },
-        {
-          "evidence": "Final matching source/scoped checks and independent review retained. Actual browser12/12 exit0+cleanup; matching WEB1948cases/117specs/12freshchunks GREEN with source/report/trueexit/rootcleanup audit. Node inventory observedRED1/2/4 under root classification; Java pending. Human retirement/supersession boundaries retained; no technical all-green/acceptance.",
-          "id": "source-validation",
-          "observed_at": "2026-11-23T19:51:32.452250+00:00",
-          "status": "in-progress",
-          "title": "Lead review, focused regressions/callers, ratchet, boundaries/build"
-        },
-        {
-          "evidence": "Final3dd/defaultboth193939 passed all five F555 leaves and F548 family12/12 exit0. Real Java/signedOIDC/nativePG, actual JVMrestart/full native rows, strict samecar/clock, underfive+expiry and useful savedActivity200 verified by lead; Pluto visual critique with explicit capture/platform limits. Root cleanup all19 identities/groups/DB/scratch/reservations absent. Covering/human remain separate.",
-          "id": "connected-behavior",
-          "observed_at": "2026-11-23T19:51:32.452250+00:00",
-          "status": "complete",
-          "title": "Actual Java/OIDC/DemoClock persistent browser behavior (AC1-7)"
-        },
-        {
-          "evidence": "Final actual sameoffer1280top+lowerTable and390support, plus independent F548bell1280pair prepared;11exactPNGs1464047B. Lead+Pluto actual precheck PASS WITH LIMITATIONS, no scoped finding. Image framing/breadcrumb/capture limits explicit. OriginalAC8 human verdict blank in one shared batch pending root request after technical work. docs/gcsp/evidence/offer-and-bell-parity-2026-11-23.md",
-          "id": "reviewed-parity",
-          "observed_at": "2026-11-23T19:51:32.452250+00:00",
-          "status": "in-progress",
-          "title": "Live same-offer 1280 Node/Angular attachments and human review (AC8)"
-        }
-      ],
-      "status": "In Progress",
-      "title": "Angular offer decision support, exits, countdown and drawer parity",
-      "type": "Bug",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-555",
-      "workers": [
-        {
-          "expires_at": "2026-11-23T00:52:03.823973+00:00",
-          "harness": "codex",
-          "name": "Mr Potato Head",
-          "observed_at": "2026-11-22T23:42:34Z",
-          "role": "story-lead",
-          "source": "Observed in this active lead session; actual Sol/xhigh previously verified; parent allocated exact next paths. No implementer activated.",
-          "status": "stopped; repeated child422; launcher carries allocation"
-        },
-        {
-          "expires_at": "2026-11-23T05:57:08.114247+00:00",
-          "harness": "codex",
-          "name": "usget-vesper launcher",
-          "observed_at": "2026-11-23T05:57:08.114247+00:00",
-          "role": "launcher carrying F555 original view implementation",
-          "source": "Observed direct canonical loading port/composition after retained child422; no model/provider/key change/retry. Runtime pair unexposed.",
-          "status": "checkpointed; scheduled continuation"
-        }
-      ]
-    },
-    {
-      "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-029",
       "evidence": "Published merge de454757f of918263482 verified; first production build passes. Covering web batch green1499/86files, initial resource-incomplete attempt excluded; all10attempt/chunk roots/groups and batch worktree/ref/link/lease removed. Source composition and actual live pair pending.",
       "id": "FUCQ-556",
@@ -12441,6 +12339,108 @@
           "title": "Root integration and green canonical batch covering",
           "observed_at": "2026-11-24T08:18:05.031322+00:00",
           "evidence": "Reviewed F589 source merged/pushed95de5d418 and archive/cleanup complete. Original231 selected passes plus3 clock cases and complete tested inputs reconciled. Native In Review verified; current canonical Java45353840595 includes F547/F589 and is running. Prior45341810266 incomplete result preserved; no acceptance inferred."
+        }
+      ]
+    },
+    {
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-22-vesper-028",
+      "covering_node_observation": "Exact full Node RED4284cases/4181pass/37fail/66skip. All37 match the human F555-only report-only ruling; no other failure or broad waiver.",
+      "evidence": "Final consolidated c13e Chromium12/12 and WEB1955/117/12 passed. Independent root audits2447118a/7db8afe7 verify complete inputs/raw results/current cleanup. Reviewed capture correction integrated/pushedf4ef137e; batch lines7e61e0501. Java45353840595 running; original F555AC8/F548AC6humanverdicts pending.",
+      "id": "FUCQ-555",
+      "native_status_observed_at": "2026-11-24T08:34:35.298175+00:00",
+      "native_updated_at": "2026-11-23T10:21:31.120-0600",
+      "note": "Original8AC and scope unchanged; partial/native In Progress freshly verified. Composed technical evidence, final Chromium12/12 and full WEB1955PASS recorded. Java canonical45353840595 terminal result remains pending, Node fullRED/exact37F555-only report-only preserved. Actual WebKit26.4c22 fullRED retained; actualSafari and humanAC8 pending. No acceptance inferred.",
+      "observed_at": "2026-11-24T08:34:35Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "a9fdc1cee canonical stage list/order identity + matching catalogue/gallery; lead15/15 scoped regressions and124/124 ratchet. Independent stage-only Chester Sol/xhigh review d6c76ac..a9fdc1c passed, no actionable finding. Source boundary only; rendered/connected/acceptance remain open.",
+          "id": "stage-list-source",
+          "observed_at": "2026-11-22T23:42:34Z",
+          "status": "complete",
+          "title": "Canonical source stage list and exact order-identity rows (AC6)"
+        },
+        {
+          "evidence": "a9fdc1cee ONE canonical tracker imports existing formatter;15/15 source tests and independent Chester Sol/xhigh stage-only review passed. F556 future adapter must normalize nullable at and preserve owner/Next/blocked note; actual consumer integration remains separate.",
+          "id": "stage-tracker-source",
+          "observed_at": "2026-11-22T23:42:34Z",
+          "status": "complete",
+          "title": "ONE canonical stage tracker reused by F556"
+        },
+        {
+          "evidence": "90999d25e ONE exact finish projection/palette, labels, uncapped highlights and pure decision shell with matching catalogue/gallery.23/23 scoped specs+gallery compilation, source boundaries,124/124 ratchet; data independently equal. Lead/self-review only; actual media/details/exact-card integration and independent review remain open. Later canonical Tabs/FactList, SideDrawerfb91, VehicleDetails947 and Media source ports are present. SideDrawer independent review passed; VehicleDetails independent review is unfinished. Latest Media151scoped passes incl source DOM parentage/actual callers; no rendered parity.",
+          "id": "decision-presenters",
+          "observed_at": "2026-11-23T00:52:03.823973+00:00",
+          "status": "complete",
+          "title": "Canonical finishes, vehicle-decision shell and Benefits/Tradeoffs (AC3/4/5)"
+        },
+        {
+          "evidence": "Lead verified final3dd actual source/1280+390 surface, exit links, authoritative under-five/expiry journals,1100/800/300, swatches, comparison winners and stages. Existing focused/source/style/empty-state evidence reused; final table pair84c22c10. Whole destination screens and humanAC8 remain separate. docs/gcsp/evidence/offer-and-bell-parity-2026-11-23.md",
+          "id": "offer-composition",
+          "observed_at": "2026-11-23T19:51:32.452250+00:00",
+          "status": "complete",
+          "title": "Source exits, authoritative countdown, savings, winners and stages (AC1-6)"
+        },
+        {
+          "evidence": "Final actual Documents jumps/error focus/native checkboxes and decline radio pass. Saved estate→hatchback brief2 at11:30/v4; navigated ActivityGET200, exact declinedcar, Buddy engaged and Search updated after a decline. Lead+Pluto actual drawer1280/390 and settledActivity390 critique no scoped finding. F570 scoped272 reused. OriginalhumanAC8/covering remain separate.",
+          "id": "decision-followup",
+          "observed_at": "2026-11-23T19:51:32.452250+00:00",
+          "status": "complete",
+          "title": "Source Documents jumps, errors/control rows and saved Activity exit (AC7)"
+        },
+        {
+          "evidence": "Supported F551/F549/F548/F550 plus approvedF564 integrated from published4408a0a14 into555; six semantic conflicts reviewed,317base rows/full555evidence and component unions retained.291focusedAngular,7boundaries,5styles,205persistentfixtures,135ratchet pass; six real direct/nested inspection regressions fixed and independentSpike source/securityreview passed. No live/human acceptance inferred.",
+          "id": "sibling-integration",
+          "observed_at": "2026-11-23T13:35:31Z",
+          "status": "complete",
+          "title": "F548/F549/F550/F551 integration and shared source reuse"
+        },
+        {
+          "evidence": "Final c13e Chromium12/12 and WEB1955/117spec/12chunks PASS, independent source/spec/security review and root raw/input/cleanup audits2447118a/7db8afe7. All1834browser+1334WEB inputs equal integratedf4ef137e. Java45353840595 in progress; exact37Node report-only/fullRED preserved; no complete covering claim.",
+          "id": "source-validation",
+          "observed_at": "2026-11-24T08:34:35.298175+00:00",
+          "status": "in-progress",
+          "title": "Lead review, focused regressions/callers, ratchet, boundaries/build"
+        },
+        {
+          "evidence": "Final c13e registered six real Java/OIDC/PG compositions12/12PASS; pending specification/equipment equality, literal restart/native rows, under-five+expiry continuation, accept/decline/rejected/uncertain and useful savedActivity verified. Root2447118a checks1834inputs,6receipts,22PIDstarts/14groups/nativeDB/scratch/tokens/linkabsence. Human and cross-engine limits remain separate.",
+          "id": "connected-behavior",
+          "observed_at": "2026-11-24T08:34:35.298175+00:00",
+          "status": "complete",
+          "title": "Actual Java/OIDC/DemoClock persistent browser behavior (AC1-7)"
+        },
+        {
+          "evidence": "Existing same-offer1280top+lowerTable/390support and independent F548bell1280pair preserve23Novsource/time/provenance; lead+Pluto critique passed with explicit framing/capture limits. Latest technical receipts updated separately in docs/gcsp/evidence/offer-and-bell-parity-2026-11-23.md. Original human F555AC8/F548AC6 ledger rows remain blank pending one root-owned review after technical disposition.",
+          "id": "reviewed-parity",
+          "observed_at": "2026-11-24T08:34:35.298175+00:00",
+          "status": "in-progress",
+          "title": "Live same-offer 1280 Node/Angular attachments and human review (AC8)"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Angular offer decision support, exits, countdown and drawer parity",
+      "type": "Bug",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-555",
+      "workers": [
+        {
+          "expires_at": "2026-11-23T00:52:03.823973+00:00",
+          "harness": "codex",
+          "name": "Mr Potato Head",
+          "observed_at": "2026-11-22T23:42:34Z",
+          "role": "story-lead",
+          "source": "Observed in this active lead session; actual Sol/xhigh previously verified; parent allocated exact next paths. No implementer activated.",
+          "status": "stopped; repeated child422; launcher carries allocation"
+        },
+        {
+          "name": "usget-vesper launcher",
+          "role": "dispatcher carrying final covering and integration",
+          "harness": "codex",
+          "observed_at": "2026-11-24T08:34:35.298175+00:00",
+          "expires_at": "2026-11-24T08:54:35.298175+00:00",
+          "source": "Active native root turn; actual merged frontend Results and remote Java45353840595 in_progress observation. No source implementer inferred.",
+          "status": "Awaiting actual Java terminal outcome and original human parity verdicts"
         }
       ]
     }
