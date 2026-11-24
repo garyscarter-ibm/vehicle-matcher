@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.17.0"
+VERSION = "1.18.0"
 """dev_mail.py: the dev mailbox between Cowork and Claude Code, and between the pollers of a team, for this project, and the
 guard that stops it looping (the rules for Cowork are in the managed `dev-inbox` skill).
 
@@ -167,7 +167,7 @@ project is imported.
 
 Run it from any checkout or worktree: the root is the project, found from this file's location (<root>/_tools/dev_mail.py).
 """
-import argparse, datetime, glob, hashlib, importlib.util, json, os, re, subprocess, sys
+import argparse, datetime, fnmatch, glob, hashlib, importlib.util, json, os, re, subprocess, sys
 
 
 CONFIG_REL = os.path.join("_config", "dev-mail.json")
@@ -363,6 +363,32 @@ def components_on(root):
             return json.load(f)["pieces"]["components"] == "on"
     except (OSError, ValueError, KeyError, TypeError):
         return False
+
+
+def security_problem(fields, root):
+    """SPbD explicitly opts design-impact stories into substantive threat/control metadata.
+
+    This checks presence, including common draft placeholders, not threat policy or mitigation proof.
+    """
+    if fields.get("design_impact", "").strip().lower() != "yes":
+        return None
+    try:
+        with open(os.path.join(root, ".claude", "scaffolding.json"), encoding="utf-8") as f:
+            enabled = json.load(f)["pieces"]["spbd"] == "on"
+    except (OSError, ValueError, KeyError, TypeError):
+        enabled = False
+    if not enabled:
+        return None
+    placeholders = ("", "none", "n/a", "na", "tbd", "todo", "...", "-", "[ ]", "|", ">")
+    for line in fields.get("security", "").splitlines():
+        value = line.strip()
+        if value.startswith("#"):
+            continue
+        value = re.sub(r"^[-*+]\s+(?:\[[ xX]\]\s*)?", "", value).strip()
+        if value.casefold() not in placeholders and not re.fullmatch(r"<[^>]*>", value):
+            return None
+    return ("security: name the threat ids and controls to prove; a design-impact story needs this "
+            "when pieces.spbd is on (replace empty or placeholder text)")
 
 
 def ui_required(root):
@@ -720,9 +746,20 @@ def check_reason(level, why, sid, owner=None, spawned=False, backlog_priority=No
     return level, None
 
 
+SIZE_ALIASES = {"amoeba": "XS", "mouse": "S", "dog": "M", "horse": "L", "elephant": "XL"}   # the triage scale, read as the size on its right
+
+
+def _size_word(value):
+    """The size word a `size:` value starts with, as written, or None."""
+    m = re.match(r"^(XS|S|M|L|XL|" + "|".join(SIZE_ALIASES) + r")\b", (value or "").split("\n")[0].strip(), re.I)
+    return m.group(1) if m else None
+
+
 def parse_size(value):
-    m = re.match(r"^(XS|S|M|L|XL)\b", (value or "").split("\n")[0].strip(), re.I)
-    return (m.group(1).upper(), None) if m else (None, "size: write one of XS, S, M, L, XL (optionally ', <note>')")
+    word = _size_word(value)
+    if word:
+        return SIZE_ALIASES.get(word.lower(), word.upper()), None
+    return None, "size: write one of XS, S, M, L, XL, or amoeba, mouse, dog, horse, elephant (optionally ', <note>')"
 
 
 def depends_on(value):
@@ -991,6 +1028,11 @@ def evidence_problems(fields, sid=None, root=None):
     return out
 
 
+def defect_of(fields):
+    """`product` or `test`. A Bug is `product` unless its defect line says `test`: absent or any other value is the safe default."""
+    return "test" if (fields.get("defect") or "").strip().lower() == "test" else "product"
+
+
 def _bug_problems(fields, sid, jira=None):
     typ = work_item_type(fields)
     if typ not in ("story", "bug"):
@@ -998,6 +1040,8 @@ def _bug_problems(fields, sid, jira=None):
     if typ != "bug":
         return []
     out = []
+    if "defect" in fields and (fields["defect"] or "").strip().lower() not in ("product", "test"):
+        out.append("defect: write product or test")
     for key in ("related_story", "story_link_basis", "reproduction_steps", "expected_behaviour", "actual_behaviour"):
         value = fields.get(key, "").strip()
         if not value or value.lower().startswith("unresolved:"):
@@ -1259,6 +1303,8 @@ def rank(stories, today, owner=None, backlog_priority=None, has_backlog=None, ji
             info[sid]["problems"] += _related_story_problems(f, sid, stories)
         if work_item_type(f) == "bug":
             info[sid]["work_item_type"] = "bug"
+            info[sid]["defect"] = defect_of(f)
+        info[sid]["size_word"] = _size_word(f.get("size"))
     closure = {}
     for sid in state:
         seen, stack = set(), list(deps[sid])
@@ -1294,6 +1340,8 @@ def rank(stories, today, owner=None, backlog_priority=None, has_backlog=None, ji
             held[sid] = retire[sid]
         elif early[sid]:
             held[sid] = early[sid]
+        elif info[sid]["size"] == "XL":
+            held[sid] = f"size {info[sid]['size_word']}: split before claim"
         elif info[sid]["waits_for"]:
             held[sid] = ""
     words = {"claimed": "in progress", "staged": "staged", "rejected": "rejected", "paused": "paused"}
@@ -1314,9 +1362,17 @@ def rank(stories, today, owner=None, backlog_priority=None, has_backlog=None, ji
         info[sid]["state"] = "held" if sid in held else "ready"
         info[sid]["why"] = held.get(sid)
 
+    # A `defect: test` Bug (the product is right, a test went stale) ranks as an ordinary Story, unless it holds a built story:
+    # a story with a built Result names it in depends_on, or its `holds:` line names a built story. Its ready prerequisites
+    # get no group 1 from it either. (SCAF test-proportion, Russell 2026-11-24; unknown defect = product.)
+    built = {s["id"] for s in stories if state[s["id"]] == "claimed" and s.get("status") == "built"}
     bug_work = set()
     for sid in waiting:
         if info[sid].get("work_item_type") == "bug" and not info[sid]["problems"]:
+            if info[sid]["defect"] == "test":
+                holds = set(re.findall(ID, stories_by_id[sid].get("holds") or ""))
+                if not (holds & built or any(sid in deps[b] for b in built)):
+                    continue
             bug_work.update(closure[sid] | {sid})
 
     def key(sid):
@@ -1325,6 +1381,120 @@ def rank(stories, today, owner=None, backlog_priority=None, has_backlog=None, ji
         return (group, -i["blocks"] if group in (1, 2) else 0, i["priority_now"], SIZES.index(i["size"] or DEFAULT_SIZE), sid)
     return {"order": sorted((i for i in waiting if i not in held), key=key),
             "held": [(i, held[i]) for i in waiting if i in held], "info": info, "alerts": alerts}
+
+
+# ---------------------------------------------------------------- stopped-batch alarm
+BATCH_STALE_HOURS = 24   # 24 h: one missed daily run (the step E "has not run today" trigger) — chosen by Russell 2026-11-24 after batch runs silently stopped 18–23 Nov
+BATCH_LINE_RE = re.compile(r"^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2})(?: UTC)? \| ([^|]*?) \|")
+
+
+def batch_suites(root):
+    """[(name, [path globs])] from .claude/scaffolding.json inbox.suites; no list means one suite, `main`, with no paths."""
+    try:
+        with open(os.path.join(root, ".claude", "scaffolding.json"), encoding="utf-8") as f:
+            listed = json.load(f)["inbox"]["suites"]
+    except (OSError, ValueError, KeyError, TypeError):
+        listed = None
+    out = []
+    for s in listed if isinstance(listed, list) else []:
+        if isinstance(s, dict) and isinstance(s.get("name"), str) and s["name"].strip():
+            paths = s.get("paths") or []
+            paths = [paths] if isinstance(paths, str) else [p for p in paths if isinstance(p, str)] if isinstance(paths, list) else []
+            out.append((s["name"].strip(), paths))
+    return out or [("main", [])]
+
+
+def batch_last_runs(text):
+    """{suite: datetime (UTC, naive)} of the latest line per suite in batches.md; prose and other lines that do not parse are ignored."""
+    last = {}
+    for line in text.split("\n"):
+        m = BATCH_LINE_RE.match(line)
+        if not m:
+            continue
+        try:
+            at = datetime.datetime.strptime(m.group(1) + " " + m.group(2), "%Y-%m-%d %H:%M")
+        except ValueError:
+            continue
+        name = m.group(3).strip()
+        if name and (name not in last or at > last[name]):
+            last[name] = at
+    return last
+
+
+def path_matches(path, patterns):
+    """No patterns: any path. Else a pattern ending in / is a directory prefix; others are fnmatch globs (`**` reads as `*`,
+    which already crosses `/`; `a/**/b` also matches `a/b`), as test_stamp.py reads its tier patterns."""
+    if not patterns:
+        return True
+    for pat in patterns:
+        if pat.endswith("/"):
+            if path.startswith(pat):
+                return True
+        elif any(fnmatch.fnmatchcase(path, p) for p in {pat, pat.replace("**/", "")}):
+            return True
+    return False
+
+
+def batch_base(root):
+    """The base branch: git tool's base_branch, else the record's base_branch, else main, else master; None if none exists."""
+    mod = load_git_tool(root)[0]
+    try:
+        if mod is not None and hasattr(mod, "base_branch"):
+            return mod.base_branch(root)
+    except Exception:   # a project's git tool that can't answer falls back to the record and the usual names
+        pass
+    try:
+        with open(os.path.join(root, ".claude", "scaffolding.json"), encoding="utf-8") as f:
+            named = json.load(f).get("base_branch")
+    except (OSError, ValueError, AttributeError):
+        named = None
+    for cand in ([named] if isinstance(named, str) and named else []) + ["main", "master"]:
+        r = subprocess.run(["git", "-C", root, "rev-parse", "--verify", "-q", "refs/heads/" + cand],
+                           capture_output=True, text=True, timeout=20)
+        if r.returncode == 0:
+            return cand
+    return None
+
+
+def batch_alerts(root, now):
+    """`ALERT` texts for each suite whose last line in _dev/batches.md is over BATCH_STALE_HOURS old (or that has none) while
+    a first-parent merge into the base branch since then changed a path its `paths` match (no paths: any merge). `now` is a
+    naive UTC datetime. A flag only, never a refusal; any git or file trouble yields nothing."""
+    try:
+        try:
+            with open(os.path.join(root, "_dev", "batches.md"), encoding="utf-8") as f:
+                last = batch_last_runs(f.read())
+        except OSError:
+            return []
+        stale_before = now - datetime.timedelta(hours=BATCH_STALE_HOURS)
+        suites = [(n, p) for n, p in batch_suites(root) if last.get(n, datetime.datetime.min) < stale_before]
+        if not suites:
+            return []
+        base = batch_base(root)
+        if not base:
+            return []
+        epoch = lambda d: d.replace(tzinfo=datetime.timezone.utc).timestamp()
+        # no line at all: the window is the last 24 h; otherwise it starts at that suite's last line
+        since = min(last.get(n, stale_before) for n, _ in suites)
+        r = subprocess.run(["git", "-C", root, "log", "--first-parent", "--merges", "-m", "--name-only",
+                            "--format=%x01%ct", "--since=@%d" % int(epoch(since)), base],
+                           capture_output=True, text=True, timeout=30)
+        if r.returncode != 0:
+            return []
+        merges = []   # (commit time, [paths])
+        for chunk in r.stdout.split("\x01")[1:]:
+            head, _, rest = chunk.partition("\n")
+            merges.append((int(head), [p for p in rest.split("\n") if p.strip()]))
+        out = []
+        for name, patterns in suites:
+            after = epoch(last.get(name, stale_before))
+            n = sum(1 for t, paths in merges if t > after and any(path_matches(p, patterns) for p in paths))
+            if n:
+                when = "since " + last[name].strftime("%Y-%m-%d %H:%M") if name in last else None
+                out.append(f"batch {name} " + (f"has not run {when}" if when else "has never run") + f", {n} merge{'' if n == 1 else 's'} uncovered; run step E before claiming")
+        return out
+    except (OSError, ValueError, subprocess.SubprocessError):
+        return []
 
 
 WAIT_ACTION_RE = re.compile(r"^action:[A-Za-z0-9][A-Za-z0-9._\-]*$")
@@ -1367,7 +1537,7 @@ def format_queue(stories, result, stats=False):
         i = info[sid]
         tags = ["expedite"] if i["expedite"] else ([f"blocks {i['blocks']}"] if i["blocks"] else [])
         if i.get("work_item_type") == "bug":
-            tags.insert(0, "bug")
+            tags.insert(0, "bug(test)" if i.get("defect") == "test" else "bug")
         now, w, d = i["priority_now"], i["priority"], i["age_days"]
         aged = d is not None and d >= AGE_DAYS
         if w is None:
@@ -2410,6 +2580,8 @@ class Mail:
         stories = self.queue_stories()
         result = rank(stories, self.today, self.owner, self.backlog_priority, self.has_backlog, self.jira,
                       load_migrated(self.root, self.jira), migrations=load_migrations(self.root))
+        now = self._clock or datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)   # batches.md times are UTC
+        result["alerts"] = result["alerts"] + batch_alerts(self.root, now)
         if not self.team:
             return stories, result
         self._need_me()
@@ -2437,6 +2609,9 @@ class Mail:
             if gone:
                 raise MailError(f"{sid}: a story from Jira {story_jira_key(fields)} lacks required fields: {', '.join(gone)} "
                                 "(the description needs a heading for each; the sync comments on the issue)")
+        security = security_problem(fields, self.root)
+        if security:
+            raise MailError(f"{sid}: {security}")
         ui = ui_problem(text, sid, ui_required(self.root))
         if ui:
             raise MailError(f"{sid}: {ui}")

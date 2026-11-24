@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.9.1"      # first, so the update check finds it within its first lines, ahead of the long docstring
+VERSION = "1.10.0"      # first, so the update check finds it within its first lines, ahead of the long docstring
 __doc__ = """scaffold_git.py -- the one place a scaffolded project runs git for its dev inbox and its team. Vendored into a
 project's `_tools/` by project-scaffolding; a generic port of the Account Corpus's corpus_git.py.
 
@@ -1983,6 +1983,8 @@ def claim(root, story_id, points, now=None):
         return 2, "%r is not a story id" % story_id
     if points not in POINTS:
         return 2, "story points must be one of %s, not %r" % (", ".join(map(str, POINTS)), points)
+    if points == 21:   # 21 = too big to build as one story; Russell 2026-11-24
+        return 2, "21 points: split this story into stories of 13 or less before claiming (dev-inbox triage)"
     team = team_block(root)
     login = member_login(root) if team else None
     if team and not login:
