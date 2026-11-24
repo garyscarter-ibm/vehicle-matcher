@@ -12182,6 +12182,52 @@
       ],
       "native_observed_at": "2026-11-24T02:45:43.440Z",
       "evidence": "Native transition3 returned In Review after actual merged scoped repair and archived Result. Canonical run45313872525 still active; no acceptance inferred."
+    },
+    {
+      "id": "FUCQ-586",
+      "title": "Decline follow-up HTTP regression assumes historical run without arranging...",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-586",
+      "branch": "dev/DEV-2026-11-23-vesper-015",
+      "unsliced": false,
+      "note": "Source fbd33292aab91e3c5c11dda51f4b40fdb58da88a; original three ACs and one complete signed-OIDC/native-PG17 case passed, zero failures/errors/skips; independent source/spec/security/runtime/cleanup PASS. Root integration/canonical covering and human verdicts remain separate.",
+      "workers": [
+        {
+          "name": "Lord Business",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-24T03:27:10.142330+00:00",
+          "expires_at": "2026-11-24T03:27:10.142330+00:00",
+          "source": "Retained task /root/lord_business; actual F586 scoped result and independent review",
+          "status": "Scoped delivery completed; root integration/canonical covering pending"
+        }
+      ],
+      "slices": [
+        {
+          "id": "fixture-clock",
+          "title": "Historical input before startup with canonical metadata",
+          "status": "complete",
+          "observed_at": "2026-11-24T03:27:10.142330+00:00",
+          "evidence": "Lead one whole-class proof passed 1 case / 0 failures, errors or skips on source fbd33292aab91e3c5c11dda51f4b40fdb58da88a; explicit historical startup and all original semantic checks. Marvin independent original-AC/runtime/cleanup PASS; f586-validation/marvin-runtime-review.json."
+        },
+        {
+          "id": "regression",
+          "title": "Complete signed OIDC and PostgreSQL decline regression",
+          "status": "complete",
+          "observed_at": "2026-11-24T03:27:10.142330+00:00",
+          "evidence": "Lead one whole-class proof passed 1 case / 0 failures, errors or skips on source fbd33292aab91e3c5c11dda51f4b40fdb58da88a; explicit historical startup and all original semantic checks. Marvin independent original-AC/runtime/cleanup PASS; f586-validation/marvin-runtime-review.json."
+        },
+        {
+          "id": "integration",
+          "title": "Scoped reviewed handoff and integrated canonical covering",
+          "status": "in-progress",
+          "observed_at": "2026-11-24T03:27:10.142330+00:00",
+          "evidence": "Scoped source, original-AC proof, independent review and cleanup complete. Root merge/publication and integrated canonical green still pending; no acceptance inferred."
+        }
+      ],
+      "observed_at": "2026-11-24T03:27:10Z"
     }
   ]
 }
