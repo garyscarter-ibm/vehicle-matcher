@@ -28,6 +28,13 @@ STATUS = {'to do': 'developing', 'todo': 'developing', 'backlog': 'developing',
           'blocked': 'developing', 'in review': 'review', 'review': 'review',
           'done': 'accepted', 'completed': 'accepted', 'accepted': 'accepted',
           'rejected': 'removed', 'removed': 'removed', 'cancelled': 'removed', 'canceled': 'removed'}
+# Work nobody has started has no slice plan yet (plans are written at pick-up), so it is 0%, not unknown.
+NOT_STARTED = {'to do', 'todo', 'backlog', 'not started'}
+# Jira-order buckets for the tile's basis line: each in-scope story counts once.
+PHASES = {'to do': 'to_do', 'todo': 'to_do', 'backlog': 'to_do', 'not started': 'to_do',
+          'in progress': 'in_progress', 'developing': 'in_progress', 'blocked': 'in_progress',
+          'in review': 'in_review', 'review': 'in_review',
+          'done': 'accepted', 'completed': 'accepted', 'accepted': 'accepted'}
 LABELS = {'developing': 'In development', 'review': 'Development complete · awaiting acceptance',
           'accepted': 'Accepted', 'unknown': 'Incomplete progress data',
           'removed': 'Removed from scope', 'empty': 'No planned stories'}
@@ -154,6 +161,9 @@ def story_progress(story):
                 result['status_label'] = 'Awaiting story review transition'
         elif story.get('unsliced') is True and not counts['total']:
             result['progress'] = 0
+        elif not counts['total'] and text(story.get('status')).strip().lower() in NOT_STARTED:
+            result['progress'] = 0
+            result['status_label'] = 'Not started'
         else:
             result['state'] = 'unknown'
     else:
@@ -166,6 +176,14 @@ def story_progress(story):
         result['lower_bound'] = result['progress']
     result['progress_label'] = percentage(result['progress'])
     return result
+
+
+def status_counts(stories):
+    """Count in-scope stories once each by Jira status; unrecognised statuses are `other`."""
+    counts = dict.fromkeys(('to_do', 'in_progress', 'in_review', 'accepted', 'other'), 0)
+    for story in stories:
+        counts[PHASES.get(text(story.get('status')).strip().lower(), 'other')] += 1
+    return counts
 
 
 def worker(row, clock):
@@ -393,6 +411,7 @@ def project(root, include_branches=True, staged=False, revision=None):
                            'state': state, 'status_label': LABELS[state], 'unknown': unknown,
                            'accepted': sum(s['state'] == 'accepted' for s in scoped), 'total': len(scoped),
                            'developed': sum(s['progress'] == 100 for s in scoped),
+                           'status_counts': status_counts(scoped),
                            'workers': [w for s in scoped for w in s['workers']],
                            'diagnostics': problems, 'sources': row['_sources'],
                            'conflict': bool(row.get('conflict')), 'branch': text(row.get('branch'))})

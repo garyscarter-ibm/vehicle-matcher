@@ -117,6 +117,9 @@ Rules for Codex working in this project. The scaffolding clone is the `repo` val
 - **Gateway rule.** At the start of a session, run `<repo>/tools/gateway-check --harness codex`. If it prints FAIL,
   don't work on this project: tell the user which endpoint Codex is using and wait until it runs through the IBM
   gateway. PASS or UNKNOWN: carry on.
+- **Core behaviours.** Follow the global `Core behaviours` section (in `~/.codex/AGENTS.md`; if absent, read the
+  `agent-scaffolding-core` block of `<repo>/managed/CLAUDE.md.tmpl`). In short: test the changed code and its callers,
+  check a broad selector plan instead of running it, and never wait on an overrunning run.
 - **Every launching session owns test resources.** Direct tests at Ultra or any other effort obey the same
   lifecycle, resource, output and proportional-validation contract as delegated work, even with the inbox off.
   Apply the global `Test resources and large generated outputs` section; if absent, read that section of

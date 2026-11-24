@@ -117,6 +117,15 @@
   function basis(component) {
     const total = component.total == null ? array(component.stories).filter(s => s.state !== 'removed').length : component.total;
     if (state(component) === 'empty') return 'No planned stories';
+    const counts = component.status_counts;
+    if (counts && typeof counts === 'object') {
+      // Jira order; each in-scope story is counted once. Done is shown as accepted.
+      const n = key => Number.isFinite(counts[key]) ? counts[key] : 0;
+      const parts = [`${total} ${total === 1 ? 'story' : 'stories'}`, `${n('to_do')} to do`, `${n('in_progress')} in progress`,
+        `${n('in_review')} in review`, `${n('accepted')} accepted`];
+      if (n('other')) parts.push(`${n('other')} other status`);
+      return parts.join(' · ');
+    }
     const development = component.developed != null ? component.developed : component.development_complete == null ? array(component.stories).filter(s => s.progress === 100 && s.state !== 'removed').length : component.development_complete;
     const inReview = array(component.stories).filter(story => story.state === 'review' && story.status_label !== 'Awaiting story review transition').length;
     return `${total} ${total === 1 ? 'story' : 'stories'} · ${development} development complete · ${component.accepted == null ? 'Unknown' : component.accepted} accepted · ${inReview} in review`;
