@@ -3464,3 +3464,8 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-24 07:56 UTC · usget-vesper · DL-20261124-F555-01 · F547 envelope issues caught before allocation
 
 - Leadsource/spec/securityreviewPASS onisolated F547fixture; originalgoldenunchanged. Run-envelope review caught effectivehelper1200s versusdeclared600 and possibleTERM outsideexecute skipping postrun target/resultcleanup. Leadapplied600clamp/TERM+INT handling throughaudit/finalization while preservingcancelled/incomplete state; sharedhelpersuntouched. MelissaSol/high verificationpending,0test/DBallocations, no runtime resolution claimed. Existinglifecyclecontractonly; propose reusing reviewed supervisorvariants withliteral retargeting when equivalent.
+
+
+### 2026-11-24 08:04 UTC · usget-vesper · DL-20261124-F555-09 · Development status and acceptance gate conflated
+
+- Userqueried whycompleted589/547stillInProgress. F589all3technicalAC/review/merge95de5d418/cleanupcomplete; roothadheldnativeInProgressforremainingfullbatch. ExistingworkflowdistinguishesInReviewdevelopmentfromacceptedDone. Rootcorrectedactualnative589toInReview/transition3/comment5066169, refreshedmapandstaleResultintegrationlines; greenbatchacceptancegatepreserved. F547focused1/1+101/101green butfinalreview/mergepending, soInProgresscorrect. Overnightwordingcorrectedtoimplemented/focusedpassingversuscompletedelivery. Proposedimprovement: expose development/integration/batch/acceptance asdistinctevidencedfacts; nonecreatesanextraunapprovedstatusgate.
