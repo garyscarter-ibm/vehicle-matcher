@@ -2,9 +2,10 @@
 import { test, before, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { JSDOM } from 'jsdom';
 
-let panel; let fixtures; let adapterMod; let view; let stored;
+let panel; let fixtures; let adapterMod; let view; let stored; let reference;
 const tick = (ms = 0) => new Promise((resolve) => setTimeout(resolve, ms));
 const settle = async () => { for (let i = 0; i < 4; i += 1) await tick(); };
 before(async () => {
@@ -17,6 +18,7 @@ before(async () => {
   adapterMod = await import('../../blocks/gcsp/greg/comparison/http-adapter.js');
   view = await import('../../blocks/gcsp/greg/comparison/comparison-view.js');
   stored = JSON.parse(await readFile(new URL('./fixtures/gcsp-comparison-process-result.json', import.meta.url), 'utf8')).storedResult;
+  reference = JSON.parse(await readFile(new URL('./fixtures/gcsp-greg-comparison-reference-results.json', import.meta.url), 'utf8'));
 });
 beforeEach(() => document.body.replaceChildren());
 
@@ -78,7 +80,9 @@ test('toComparisonView gives one formatted row per stored difference and throws 
   assert.equal(v.assumptions.length, stored.result.assumptions.length); assert.equal(v.assumptions[0].status, 'Assumed');
   assert.equal(v.assumptions.find((a) => a.key === 'hold.buddy.durationSeconds').value, '7200');
   assert.match(v.assumptions.find((a) => a.key === 'comparison.noClearDifferenceRule').value, /^\{"schemaVersion":1/);
-  assert.equal(v.provenance.policyHash, '97df1a052794');
+  assert.equal(stored.result.manifest.policyHash, 'c0106882da69259021845df1a26128b218ac7dc7b79d5b528fe3806af7dff994');
+  assert.equal(stored.resultId, 'process-comparison-ce8b1e4cf5bc03164a08baf3f9c0d00c');
+  assert.equal(v.provenance.policyHash, 'c0106882da69'); assert.equal(v.provenance.resultId, stored.resultId);
   assert.equal(v.limitations.includes(v.caveat), false); assert.ok(v.limitations.some((l) => /re-offers its car at once/.test(l)));
   for (const bad of [null, {}, { ...stored, result: { ...stored.result, kind: 'other' } }, { ...stored, result: { ...stored.result, differences: 'x' } }, { ...stored, policyVersion: '' },
     { ...stored, result: { ...stored.result, differences: [{ ...stored.result.differences[0], verdict: 'winner' }] } },
@@ -86,8 +90,12 @@ test('toComparisonView gives one formatted row per stored difference and throws 
     { ...stored, result: { ...stored.result, manifest: null } }]) assert.throws(() => view.toComparisonView(bad), TypeError);
 });
 
-test('the no-clear-difference fixture is the stored result file, and the other fixtures are fixtures of the same shape', () => {
-  assert.deepEqual(fixtures.FIXTURE_VALUES['no-clear-difference'](), stored);
+test('the no-clear-difference fixture is the complete pinned historical result, and the other fixtures are fixtures of the same shape', () => {
+  assert.equal(reference.sourceRevision, '361510f6572570a14e8ee2c8a0fd66a203a84c0e');
+  assert.equal(reference.process.sourcePath, 'server/test/fixtures/gcsp-comparison-process-result.json');
+  assert.equal(reference.process.sourceByteSha256, '89da1123ed5c0d144de8023336f5643ce99d859cde086868b333a69bc0df7d63');
+  assert.equal(createHash('sha256').update(`${JSON.stringify(reference.process.envelope, null, 2)}\n`).digest('hex'), reference.process.sourceByteSha256);
+  assert.deepEqual(fixtures.FIXTURE_VALUES['no-clear-difference'](), reference.process.envelope.storedResult);
   for (const name of ['buddy-better', 'today-better', 'old-policy']) {
     const v = view.toComparisonView(fixtures.FIXTURE_VALUES[name]()); assert.equal(v.measures.length, stored.result.differences.length);
     assert.match(fixtures.FIXTURE_VALUES[name]().resultId, /fixture/);

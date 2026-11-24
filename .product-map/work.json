@@ -11976,6 +11976,50 @@
           "status": "source/spec/security/evidence review passed"
         }
       ]
+    },
+    {
+      "id": "FUCQ-582",
+      "title": "Pin preserved Greg comparison fixture readers separately from refreshed current-policy results",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Bug",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-582",
+      "branch": "dev/DEV-2026-11-24-vesper-001",
+      "native_observed_at": "2026-11-24T01:36:02.611Z",
+      "evidence": "Native adoption read-back fixture-lead/f582-adoption-verified.json; original observations retained there.",
+      "observed_at": "2026-11-24T01:38:27Z",
+      "slices": [
+        {
+          "id": "references",
+          "status": "complete",
+          "title": "Complete immutable historical envelopes and literal equality",
+          "observed_at": "2026-11-24T01:38:27Z",
+          "evidence": "Both complete envelopes independently equal revision361510f6 original bytes; original SHA256 pins and complete gallery literal deep equality pass. docs/gcsp/evidence/fucq-582/validation-and-review.md"
+        },
+        {
+          "id": "readers",
+          "status": "complete",
+          "title": "Current readers, provenance and complete scoped regression",
+          "observed_at": "2026-11-24T01:38:27Z",
+          "evidence": "Unchanged diagnostic69/65pass/4fail; final complete owning modules plus painted-copy80/80pass0skip, pinnedNode24.22.3, targetedcodekeyf64c1117. Current/historical provenance explicit; protected bytes unchanged."
+        },
+        {
+          "id": "review",
+          "status": "complete",
+          "title": "Independent code/spec and security review",
+          "observed_at": "2026-11-24T01:38:27Z",
+          "evidence": "Independent Marvin the Martian Sol/high code/spec PASS and security PASS; exact four source hashes, full original historical envelopes and45protected files verified. No tests or scratch allocated by reviewer."
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Post-merge exact canonical npm covering batch",
+          "observed_at": "2026-11-24T01:38:27Z",
+          "evidence": "Root retains merge/publication and one exact unfiltered canonical npm test over all248files/all37report-only cases. Original4284/4177pass/41fail/66skip RED unchanged. Not accepted."
+        }
+      ],
+      "unsliced": false
     }
   ],
   "version": 1

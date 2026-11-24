@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { JSDOM } from 'jsdom';
 
-let panel; let fixtures; let adapterMod; let rerun; let words; let HOLD;
+let panel; let fixtures; let adapterMod; let rerun; let words; let HOLD; let historicalHold;
 const tick = (ms = 0) => new Promise((resolve) => setTimeout(resolve, ms));
 const settle = async () => { for (let i = 0; i < 6; i += 1) await tick(); };
 const until = async (test, limit = 200) => { for (let i = 0; i < limit && !test(); i += 1) await tick(); assert.ok(test(), 'condition not met'); };
@@ -20,6 +20,7 @@ before(async () => {
   rerun = await import(`${base}rerun-form.js`);
   words = await import(`${base}experiment-copy.js`);
   HOLD = JSON.parse(await readFile(new URL('./fixtures/gcsp-comparison-experiment-result.json', import.meta.url), 'utf8')).storedResult;
+  historicalHold = JSON.parse(await readFile(new URL('./fixtures/gcsp-greg-comparison-reference-results.json', import.meta.url), 'utf8')).experiment.envelope.storedResult;
 });
 const teardowns = [];
 beforeEach(() => document.body.replaceChildren());
@@ -109,7 +110,7 @@ test('a what-if result shows the change, today first in each bar, every differen
   assert.ok(stage.querySelector('.gcsp-comparison-omits li'));
   const details = stage.querySelector('details'); assert.equal(details.open, false);
   const inside = text(details);
-  for (const part of ['comparison-a, comparison-b, comparison-c', 'gcsp-policy-v1', '97df1a052794', 'comparison-inputs.sha256.v1', 'fucq136-test', HOLD.resultId, 'hold.buddy.durationSeconds']) assert.ok(inside.includes(part), part);
+  for (const part of ['comparison-a, comparison-b, comparison-c', 'gcsp-policy-v1', '97df1a052794', 'comparison-inputs.sha256.v1', 'fucq136-test', historicalHold.resultId, 'hold.buddy.durationSeconds']) assert.ok(inside.includes(part), part);
   assert.equal(root.querySelector('.gcsp-comparison-measure h3'), null);
 });
 
@@ -119,6 +120,8 @@ test('a variant win and a baseline win read in the same plain style', async () =
   const inner = fixtures.experimentFixtureAdapter('experiments-ready');
   const loadAll = async (o) => { const state = await inner.loadAll(o); return { ...state, experiments: state.experiments.map((e) => (e.experimentId === 'hold-sweep' ? { ...e, latest: win } : e)) }; };
   const { root } = await mount('experiments-ready', { overrides: { loadAll } }); await choose(root, 'hold-sweep');
+  const provenance = text(root.querySelector('details'));
+  assert.ok(provenance.includes('c0106882da69')); assert.ok(provenance.includes(HOLD.resultId));
   const arms = [...root.querySelector('.gcsp-comparison-route .gcsp-comparison-measure').querySelectorAll('.gcsp-comparison-arm')];
   assert.match(arms[0].textContent, /15 min better$/); assert.match(arms[1].textContent, /Today's value better$/);
   assert.equal(arms[0].className, arms[1].className); assert.equal(arms[0].firstElementChild.className, arms[1].firstElementChild.className);
