@@ -343,7 +343,8 @@
         "FUCQ-454",
         "FUCQ-456",
         "FUCQ-481",
-        "FUCQ-482"
+        "FUCQ-482",
+        "FUCQ-585"
       ],
       "references": [
         "FUCQ-79",
@@ -446,7 +447,8 @@
         "FUCQ-465",
         "FUCQ-479",
         "FUCQ-481",
-        "FUCQ-564"
+        "FUCQ-564",
+        "FUCQ-585"
       ],
       "references": [
         "FUCQ-75",
