@@ -1,4 +1,4 @@
-> **Current run resumed, 23 November 2026:** Russell explicitly restarted the dev poller in a new chat and requested continuation from “Resume 555 session work”, without blocking questions overnight. Read [the current F555 overnight handover](poller-handover-2026-11-23-f555-overnight.md) first. The stop and earlier checkpoints below are historical; preserve their evidence and apply the later human scope and exact 37-case report-only ruling.
+> **Current run stopped, 24 November 2026:** Russell requested “Complete in-flight work and don't pick up more.” In-flight close-out is complete; poller and recovery are stopped, no new pickup is authorised. Read [the final F555 handover](poller-handover-2026-11-23-f555-overnight.md) first. Earlier continuation text below is historical; preserve evidence, original claims and human acceptance boundaries.
 
 # Angular port gap run — 22 November 2026
 

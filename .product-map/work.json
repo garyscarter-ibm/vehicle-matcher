@@ -11617,69 +11617,6 @@
     },
     {
       "assignee": "Russell Gowers",
-      "branch": "dev/DEV-2026-11-23-vesper-014",
-      "id": "FUCQ-581",
-      "native_status_observed_at": "2026-11-23T22:15:30.859Z",
-      "native_updated_at": "2026-11-23T16:14:09.588-0600",
-      "note": "Merged6818b8d76;418/418focusedPASS and independent review retained. F572 combined composition is merged76f095298. OriginalAC4 canonical Java/connected covering remains; first CI attempt atb3b742f9 ran0tests after Maven-wrapper download failure.",
-      "observed_at": "2026-11-23T23:01:32Z",
-      "original_status": "In Progress",
-      "slices": [
-        {
-          "evidence": "93e94bec5 scoped RunClaimClock binds existing environment/run DemoClock, supported fallback retained; real earlier-than-wall quote/claim HTTP passes.",
-          "id": "claim-clock",
-          "observed_at": "2026-11-23T22:39:28.214309+00:00",
-          "status": "complete",
-          "title": "Scoped persisted claim clock selection"
-        },
-        {
-          "evidence": "Same ClaimClock supplies OrderingTerms; unavailable before effects, durable pending/same-key recovery after possible effect and settled replay covered; wall lease/backoff remains.",
-          "id": "ordering",
-          "observed_at": "2026-11-23T22:39:28.214309+00:00",
-          "status": "complete",
-          "title": "Coherent order time and pending recovery"
-        },
-        {
-          "evidence": "Actual RED2assertions retained; final deterministic real OIDC/nativePG HTTP3/3 and unit4/4, expiry/isolation/retired/unavailable/pinned timestamps meaningful.",
-          "id": "regression",
-          "observed_at": "2026-11-23T22:39:28.214309+00:00",
-          "status": "complete",
-          "title": "Real quote/claim/expiry and unavailable regression"
-        },
-        {
-          "evidence": "418distinct focused cases/75classes PASS,0fail/errors/skips including four original lifecycle journeys/planning/wiring; independent review4293d6980344468d passes.",
-          "id": "callers-review",
-          "observed_at": "2026-11-23T22:39:28.214309+00:00",
-          "status": "complete",
-          "title": "Affected callers, wiring and independent review"
-        },
-        {
-          "evidence": "6818b8d76 merged; root verified1384 unchanged tested inputs after metadata-only refresh. Exact-source canonical Java/connected checks remain; no covering pass.",
-          "id": "integration",
-          "observed_at": "2026-11-23T22:39:28.214309+00:00",
-          "status": "in-progress",
-          "title": "Final-source integration and canonical Java covering"
-        }
-      ],
-      "status": "In Progress",
-      "title": "Java manual claims reject fresh run-clock quotes using wall time",
-      "type": "Bug",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-581",
-      "workers": [
-        {
-          "expires_at": "2026-11-23T22:39:28.214309+00:00",
-          "harness": "codex",
-          "name": "Speedy Gonzales",
-          "observed_at": "2026-11-23T22:20:29.810329+00:00",
-          "role": "story-lead",
-          "source": "Native collaboration.list_agents root observation; not inferred from commits",
-          "status": "F581 scoped delivery completed; covering pending"
-        }
-      ]
-    },
-    {
-      "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-23-vesper-009",
       "id": "FUCQ-576",
       "native_status_observed_at": "2026-11-23T23:01:31.499197+00:00",
@@ -11877,71 +11814,6 @@
       ]
     },
     {
-      "id": "FUCQ-585",
-      "title": "Canonical Java verification exceeds memory cap in a reused test JVM",
-      "type": "Bug",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "observed_at": "2026-11-24T02:41:58Z",
-      "branch": "dev/DEV-2026-11-24-vesper-004",
-      "evidence": "Source664563f88; candidate validation/review passed; AC2/3 scoped evidence in receipt1795486981; root canonical AC1 complete-run outcome/AC4 pending; Result partial",
-      "slices": [
-        {
-          "id": "candidate",
-          "status": "complete",
-          "title": "Bound package fork lifetime and prove selection/restart contracts",
-          "observed_at": "2026-11-24T02:29:34Z",
-          "evidence": "Source664563f88;31-group selection;163case brief/presenter +10focused cases; distinct actualJava forks and both handoffs; independent Cuthbert runtime review passed; exact receipt1795486981; full canonical pending root"
-        },
-        {
-          "id": "integration",
-          "status": "in-progress",
-          "title": "Canonical integrated inventory and bounded cleanup",
-          "observed_at": "2026-11-24T02:41:58Z",
-          "evidence": "POM merged ae69f79a7; root reconciled scoped 163+10 case/fork evidence and cleanup. Exact integrated canonical run45313872525 active at e7305f772, unchanged12GiB/2GiB/4800s. AC1 full-resource outcome and AC4 pending; no green claim."
-        }
-      ],
-      "unsliced": false,
-      "workers": [
-        {
-          "name": "Sniffles",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-24T02:29:35.031364+00:00",
-          "expires_at": "2026-11-24T02:29:35.031364+00:00",
-          "source": "01a20b15-abad-7e83-94ee-dcd194bfcb9e native active; runtime authorised after independent slot read",
-          "status": "scoped candidate delivered; worker stopped; canonical integration pending"
-        },
-        {
-          "name": "Mulan",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-24T02:29:35.031364+00:00",
-          "expires_at": "2026-11-24T02:29:35.031364+00:00",
-          "source": "01a20b18-acad-7c72-86d9-9093c2cf0223 native followup accepted after shared lane released",
-          "status": "scoped candidate delivered; worker stopped; canonical integration pending"
-        },
-        {
-          "name": "Cuthbert",
-          "harness": "codex",
-          "role": "source/spec reviewer",
-          "observed_at": "2026-11-24T02:29:35.031364+00:00",
-          "expires_at": "2026-11-24T02:29:35.031364+00:00",
-          "source": "01a20b20-638b-7aa1-ac0c-d6870b9d720c native completed review",
-          "status": "scoped candidate delivered; worker stopped; canonical integration pending"
-        },
-        {
-          "name": "Marvin the Martian",
-          "harness": "codex",
-          "role": "security/config reviewer",
-          "observed_at": "2026-11-24T01:20:35.507852+00:00",
-          "expires_at": "2026-11-24T01:23:57.348912+00:00",
-          "source": "01a20b23-98ad-7620-ae9b-2d484aff0795 native completed report",
-          "status": "scoped security/config passed; runtime pending"
-        }
-      ]
-    },
-    {
       "id": "FUCQ-582",
       "title": "Pin preserved Greg comparison fixture readers separately from refreshed current-policy results",
       "status": "In Review",
@@ -11984,194 +11856,6 @@
         }
       ],
       "unsliced": false
-    },
-    {
-      "id": "FUCQ-583",
-      "title": "Lifecycle HTTP tests age out their fixed collection dates at midnight",
-      "type": "Bug",
-      "status": "In Review",
-      "original_status": "In Review",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-583",
-      "branch": "dev/DEV-2026-11-24-vesper-002",
-      "unsliced": false,
-      "note": "Source 5d3693b83e680459b5c9a839845ad4446c0dbdde; original AC scoped evidence passed: 11 actual cases, zero failures/errors/skips; independent source/spec/security and runtime/cleanup review PASS. Integrated canonical covering and acceptance remain root-owned and pending; no accepted status inferred.",
-      "workers": [
-        {
-          "name": "Lord Business",
-          "role": "story-lead",
-          "harness": "codex",
-          "observed_at": "2026-11-24T02:29:38.948403+00:00",
-          "expires_at": "2026-11-24T02:29:38.948403+00:00",
-          "source": "Retained task /root/lord_business; actual final proof and independent review receipts",
-          "status": "Scoped delivery completed; root integration/canonical covering pending"
-        }
-      ],
-      "observed_at": "2026-11-24T02:47:21Z",
-      "slices": [
-        {
-          "id": "fixture-inputs",
-          "status": "complete",
-          "title": "Admissible canonical date inputs and preserved clock lineage",
-          "observed_at": "2026-11-24T02:29:38.948403+00:00",
-          "evidence": "Lead actual final whole-class proof: 11 cases pass, zero failures/errors/skips; unchanged reviewed source 5d3693b83e680459b5c9a839845ad4446c0dbdde. Marvin independent original-AC/runtime review PASS; f583-f584-final-validation/marvin-runtime-review.json."
-        },
-        {
-          "id": "regression-callers",
-          "status": "complete",
-          "title": "Real OIDC and PostgreSQL regression plus six HTTP callers",
-          "observed_at": "2026-11-24T02:29:38.948403+00:00",
-          "evidence": "Lead actual final whole-class proof: 11 cases pass, zero failures/errors/skips; unchanged reviewed source 5d3693b83e680459b5c9a839845ad4446c0dbdde. Marvin independent original-AC/runtime review PASS; f583-f584-final-validation/marvin-runtime-review.json."
-        },
-        {
-          "id": "integration",
-          "status": "in-progress",
-          "title": "Combine scoped evidence and independent review for handoff",
-          "observed_at": "2026-11-24T02:29:38.948403+00:00",
-          "evidence": "Scoped source, original-AC evidence, independent review and cleanup complete; source committed. Root integration, publication and green canonical covering still pending; no acceptance inferred."
-        }
-      ],
-      "native_observed_at": "2026-11-24T02:45:43.439Z",
-      "evidence": "Native transition3 returned In Review after actual merged scoped repair and archived Result. Canonical run45313872525 still active; no acceptance inferred."
-    },
-    {
-      "id": "FUCQ-584",
-      "title": "Auth route inventory omits the approved public demo issuer endpoints",
-      "type": "Bug",
-      "status": "In Review",
-      "original_status": "In Review",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-584",
-      "branch": "dev/DEV-2026-11-24-vesper-002",
-      "unsliced": false,
-      "note": "Source 5d3693b83e680459b5c9a839845ad4446c0dbdde; original AC scoped evidence passed: 33 actual cases, zero failures/errors/skips; independent source/spec/security and runtime/cleanup review PASS. Integrated canonical covering and acceptance remain root-owned and pending; no accepted status inferred.",
-      "workers": [
-        {
-          "name": "Lord Business",
-          "role": "story-lead",
-          "harness": "codex",
-          "observed_at": "2026-11-24T02:29:38.948403+00:00",
-          "expires_at": "2026-11-24T02:29:38.948403+00:00",
-          "source": "Retained task /root/lord_business; actual final proof and independent review receipts",
-          "status": "Scoped delivery completed; root integration/canonical covering pending"
-        }
-      ],
-      "observed_at": "2026-11-24T02:47:21Z",
-      "slices": [
-        {
-          "id": "inventory",
-          "status": "complete",
-          "title": "Exact protected and public issuer route union",
-          "observed_at": "2026-11-24T02:29:38.948403+00:00",
-          "evidence": "Lead actual final whole-class proof: 33 cases pass, zero failures/errors/skips; unchanged reviewed source 5d3693b83e680459b5c9a839845ad4446c0dbdde. Marvin independent original-AC/runtime review PASS; f583-f584-final-validation/marvin-runtime-review.json."
-        },
-        {
-          "id": "issuer-controls",
-          "status": "complete",
-          "title": "Protected bearer roles and issuer disabled/enabled controls",
-          "observed_at": "2026-11-24T02:29:38.948403+00:00",
-          "evidence": "Lead actual final whole-class proof: 33 cases pass, zero failures/errors/skips; unchanged reviewed source 5d3693b83e680459b5c9a839845ad4446c0dbdde. Marvin independent original-AC/runtime review PASS; f583-f584-final-validation/marvin-runtime-review.json."
-        },
-        {
-          "id": "integration",
-          "status": "in-progress",
-          "title": "Combine scoped evidence and independent review for handoff",
-          "observed_at": "2026-11-24T02:29:38.948403+00:00",
-          "evidence": "Scoped source, original-AC evidence, independent review and cleanup complete; source committed. Root integration, publication and green canonical covering still pending; no acceptance inferred."
-        }
-      ],
-      "native_observed_at": "2026-11-24T02:45:43.440Z",
-      "evidence": "Native transition3 returned In Review after actual merged scoped repair and archived Result. Canonical run45313872525 still active; no acceptance inferred."
-    },
-    {
-      "id": "FUCQ-586",
-      "title": "Decline follow-up HTTP regression assumes historical run without arranging...",
-      "type": "Bug",
-      "status": "In Review",
-      "original_status": "In Review",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-586",
-      "branch": "dev/DEV-2026-11-23-vesper-015",
-      "unsliced": false,
-      "note": "Native In Review transition observed 2026-11-24; scoped source fbd33292a and independent original-AC/runtime/cleanup PASS, merged 00f49ee8a and archived cleanup complete. Integrated canonical 45320472506 at f58cda97f remains running; no acceptance or complete covering claim.",
-      "workers": [
-        {
-          "name": "Lord Business",
-          "role": "story-lead",
-          "harness": "codex",
-          "observed_at": "2026-11-24T03:27:10.142330+00:00",
-          "expires_at": "2026-11-24T03:27:10.142330+00:00",
-          "source": "Retained task /root/lord_business; actual F586 scoped result and independent review",
-          "status": "Scoped delivery completed; root integration/canonical covering pending"
-        }
-      ],
-      "slices": [
-        {
-          "id": "fixture-clock",
-          "title": "Historical input before startup with canonical metadata",
-          "status": "complete",
-          "observed_at": "2026-11-24T03:27:10.142330+00:00",
-          "evidence": "Lead one whole-class proof passed 1 case / 0 failures, errors or skips on source fbd33292aab91e3c5c11dda51f4b40fdb58da88a; explicit historical startup and all original semantic checks. Marvin independent original-AC/runtime/cleanup PASS; f586-validation/marvin-runtime-review.json."
-        },
-        {
-          "id": "regression",
-          "title": "Complete signed OIDC and PostgreSQL decline regression",
-          "status": "complete",
-          "observed_at": "2026-11-24T03:27:10.142330+00:00",
-          "evidence": "Lead one whole-class proof passed 1 case / 0 failures, errors or skips on source fbd33292aab91e3c5c11dda51f4b40fdb58da88a; explicit historical startup and all original semantic checks. Marvin independent original-AC/runtime/cleanup PASS; f586-validation/marvin-runtime-review.json."
-        },
-        {
-          "id": "integration",
-          "title": "Scoped reviewed handoff and integrated canonical covering",
-          "status": "in-progress",
-          "observed_at": "2026-11-24T03:27:10.142330+00:00",
-          "evidence": "Scoped delivery/review/cleanup complete; source merged 00f49ee8a and archived cleanup complete. Native In Review observed; canonical run 45320472506 at f58cda97f remains in progress."
-        }
-      ],
-      "observed_at": "2026-11-24T03:43:47Z"
-    },
-    {
-      "id": "FUCQ-587",
-      "title": "Ordering HTTP journey setup ages out its fixed collection date",
-      "type": "Bug",
-      "status": "In Review",
-      "original_status": "In Review",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-587",
-      "branch": "dev/DEV-2026-11-23-vesper-016",
-      "unsliced": false,
-      "note": "Native In Review observed after mergef56fc682b/archivecleanupcomplete. Both Bug ACs scoped128passes; covering canonical45327329149 active atfc14378e. Human acceptance not inferred.",
-      "workers": [
-        {
-          "name": "Lord Business",
-          "role": "story-lead",
-          "harness": "codex",
-          "observed_at": "2026-11-24T04:27:56.271698+00:00",
-          "expires_at": "2026-11-24T04:27:56.271698+00:00",
-          "source": "Retained task /root/lord_business; actual F587 result and independent original-AC/runtime/cleanup review",
-          "status": "Scoped delivery completed; root integration/canonical covering pending"
-        }
-      ],
-      "slices": [
-        {
-          "id": "selector-callers",
-          "title": "Actual-account date selection in both ordering setup builders",
-          "status": "complete",
-          "observed_at": "2026-11-24T04:27:56.271698+00:00",
-          "evidence": "Lead+independent original-AC/runtime/cleanup PASS; source24d03ab6d; actual128cases/24classes,exact73originalordering,allthreecompletejourneys inclJordan,alltenstartup classes;0fail/error/skip. f587-validation/f587-result.json and marvin-runtime-review.json."
-        },
-        {
-          "id": "regression",
-          "title": "Whole ordering package and original composed journeys plus startup wiring",
-          "status": "complete",
-          "observed_at": "2026-11-24T04:27:56.271698+00:00",
-          "evidence": "Lead+independent original-AC/runtime/cleanup PASS; source24d03ab6d; actual128cases/24classes,exact73originalordering,allthreecompletejourneys inclJordan,alltenstartup classes;0fail/error/skip. f587-validation/f587-result.json and marvin-runtime-review.json."
-        },
-        {
-          "id": "integration",
-          "title": "Reviewed scoped handoff and integrated canonical covering",
-          "status": "in-progress",
-          "observed_at": "2026-11-24T04:27:56.271698+00:00",
-          "evidence": "Scoped reviewed handoff complete; originalXML independently parsed by lead/root/Marvin and exact cleanup verified. Root integration and covering canonical batch pending; no accepted state inferred."
-        }
-      ],
-      "observed_at": "2026-11-24T04:38:51Z"
     },
     {
       "id": "FUCQ-588",
@@ -12229,8 +11913,8 @@
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-022",
       "unsliced": false,
-      "observed_at": "2026-11-24T08:18:05Z",
-      "note": "Original two ACs met; method-alone 1/1 and policy 101/101 passed on unchanged full golden; independent source/spec/security/runtime review passed. Integrated 717148a079 and archived/cleaned fb7f834fb. Native In Review verified. Java covering batch 45353840595 is running; acceptance and Done await its green result.",
+      "observed_at": "2026-11-24T08:54:19Z",
+      "note": "Recorded technical integration and green canonical covering complete. Native In Review; collaborator acceptance remains separate.",
       "workers": [
         {
           "name": "Lord Business",
@@ -12239,7 +11923,7 @@
           "observed_at": "2026-11-24T07:56:49.373243+00:00",
           "expires_at": "2026-11-24T08:18:05.031322+00:00",
           "source": "Root verified delivery Result, independent audit851a36d8, merge717148a079, archive/cleanupfb7f834fb and native In Review",
-          "status": "Handoff, reviewed merge and branch cleanup complete; no active worker inferred"
+          "status": "Completed handoff; final covering integration recorded; no active worker"
         }
       ],
       "slices": [
@@ -12260,98 +11944,25 @@
         {
           "id": "integration",
           "title": "Reviewed integration and covering Java batch",
-          "status": "in-progress",
-          "observed_at": "2026-11-24T08:18:05.031322+00:00",
-          "evidence": "Reviewed source merged/pushed717148a079; archive and supported cleanup completefb7f834fb. Native In Review verified. One unchanged-cap canonical Java run45353840595 is in progress at717148a079; green covering result remains required before acceptance."
+          "status": "complete",
+          "observed_at": "2026-11-24T08:54:19.702202+00:00",
+          "evidence": "Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Original scoped review, identity and cleanup qualifications remain in the delivery Result; no human acceptance inferred."
         }
       ],
       "native_status_observed_at": "2026-11-24T08:18:05.031322+00:00",
-      "native_updated_at": "2026-11-24T02:08:21.619-0600"
-    },
-    {
-      "id": "FUCQ-589",
-      "title": "Planning journey expects a cart hold to survive advancing its authoritative expiry clock",
-      "type": "Bug",
-      "status": "In Review",
-      "original_status": "In Review",
-      "assignee": "Russell Gowers",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-589",
-      "branch": "dev/DEV-2026-11-23-vesper-018",
-      "unsliced": false,
-      "native_updated_at": "2026-11-24T02:04:00.129-0600",
-      "native_status_observed_at": "2026-11-24T08:18:05.031322+00:00",
-      "note": "All3originaltechnicalACmet; scoped231+3passed, independentreviewpassed, integrated95de5d418/cleanupcomplete. NativeInReviewconfirmed; fullJava greenbatch stillrequired beforecollaboratoracceptance. NoDoneorfullbatchpassinferred.",
-      "workers": [
-        {
-          "name": "Cuthbert",
-          "role": "story-lead",
-          "harness": "codex",
-          "observed_at": "2026-11-24T07:36:17.196786+00:00",
-          "expires_at": "2026-11-24T07:36:17.196786+00:00",
-          "status": "Scoped handoff complete; integrated and In Review, acceptance awaits green batch",
-          "source": "Actual collaboration.list_agents /root/sniffles/cuthbert observation; expiry bounds handoff"
-        },
-        {
-          "name": "Mulan",
-          "role": "implementer",
-          "harness": "codex",
-          "observed_at": "2026-11-24T07:36:17.196786+00:00",
-          "expires_at": "2026-11-24T07:36:17.196786+00:00",
-          "status": "Scoped handoff complete; integrated and In Review, acceptance awaits green batch",
-          "source": "Actual collaboration.list_agents /root/sniffles/mulan completed observation"
-        },
-        {
-          "name": "Marvin the Martian",
-          "role": "reviewer",
-          "harness": "codex",
-          "observed_at": "2026-11-24T07:36:17.196786+00:00",
-          "expires_at": "2026-11-24T07:36:17.196786+00:00",
-          "status": "Scoped handoff complete; integrated and In Review, acceptance awaits green batch",
-          "source": "Actual collaboration.list_agents /root/sniffles/marvin_the_martian completed observation"
-        }
-      ],
-      "observed_at": "2026-11-24T08:18:05Z",
-      "slices": [
-        {
-          "id": "ac1",
-          "status": "complete",
-          "title": "Advanced authority and smallest private Paula collection window",
-          "observed_at": "2026-11-24T07:36:17Z",
-          "evidence": "Exact c22 source/real OIDC+PG17 canonical 45341810266: Order6 PASS with actual172800 advance before authority, minimal canonical admissible private Paula window and ready account. canonical-runtime-reconciliation.json SHA7f50213a; independent Marvin passed."
-        },
-        {
-          "id": "ac2",
-          "status": "complete",
-          "title": "Live hold lineage and preserved expiry semantics",
-          "observed_at": "2026-11-24T07:36:18Z",
-          "evidence": "All 8 original journey identities and 175 planning PASS; Order6 real claim/quote/hold lineage and live expiry/read assertions,18 supply guards and 3 ClaimRunClock HTTP PASS. Source342e9480/2d608c28 unchanged; independent review passed."
-        },
-        {
-          "id": "ac3",
-          "status": "complete",
-          "title": "Public release, exact restoration and unchanged Sam journey",
-          "observed_at": "2026-11-24T07:36:18Z",
-          "evidence": "Order6 PASS includes public release200/no heldFor, exact Paula restoration with monotonic version and unchanged Sam input/version; original Sam Order7 byte-identical and PASS. Fresh46startup +canonical 10 wiring PASS; cleanup and review passed."
-        },
-        {
-          "id": "integration",
-          "status": "in-progress",
-          "title": "Root integration and green canonical batch covering",
-          "observed_at": "2026-11-24T08:18:05.031322+00:00",
-          "evidence": "Reviewed F589 source merged/pushed95de5d418 and archive/cleanup complete. Original231 selected passes plus3 clock cases and complete tested inputs reconciled. Native In Review verified; current canonical Java45353840595 includes F547/F589 and is running. Prior45341810266 incomplete result preserved; no acceptance inferred."
-        }
-      ]
+      "native_updated_at": "2026-11-24T02:08:21.619-0600",
+      "evidence": "Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Reviewed delivery/merge records remain authoritative; session stopped with no new pickup."
     },
     {
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-028",
       "covering_node_observation": "Exact full Node RED4284cases/4181pass/37fail/66skip. All37 match the human F555-only report-only ruling; no other failure or broad waiver.",
-      "evidence": "Final consolidated c13e Chromium12/12 and WEB1955/117/12 passed. Independent root audits2447118a/7db8afe7 verify complete inputs/raw results/current cleanup. Reviewed capture correction integrated/pushedf4ef137e; batch lines7e61e0501. Java45353840595 running; original F555AC8/F548AC6humanverdicts pending.",
+      "evidence": "Final c13e Chromium12/12 and WEB1955/117/12 passed, mergedf4ef137e. Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Original human AC8 remains pending; exact37 Node F555-only report-only/fullRED and historical WebKit/F548 limitations preserved.",
       "id": "FUCQ-555",
       "native_status_observed_at": "2026-11-24T08:34:35.298175+00:00",
       "native_updated_at": "2026-11-23T10:21:31.120-0600",
-      "note": "Original8AC and scope unchanged; partial/native In Progress freshly verified. Composed technical evidence, final Chromium12/12 and full WEB1955PASS recorded. Java canonical45353840595 terminal result remains pending, Node fullRED/exact37F555-only report-only preserved. Actual WebKit26.4c22 fullRED retained; actualSafari and humanAC8 pending. No acceptance inferred.",
-      "observed_at": "2026-11-24T08:34:35Z",
+      "note": "Session wound down at the human request. Final Chromium/WEB/Java covering complete with recorded variants/skips. F555 remains partial/native In Progress for original human AC8; F548 AC6 human verdict blank, WebKit26.4 c22 fullRED retained and actualSafari unproved. No acceptance inferred.",
+      "observed_at": "2026-11-24T08:54:19Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -12397,10 +12008,10 @@
           "title": "F548/F549/F550/F551 integration and shared source reuse"
         },
         {
-          "evidence": "Final c13e Chromium12/12 and WEB1955/117spec/12chunks PASS, independent source/spec/security review and root raw/input/cleanup audits2447118a/7db8afe7. All1834browser+1334WEB inputs equal integratedf4ef137e. Java45353840595 in progress; exact37Node report-only/fullRED preserved; no complete covering claim.",
+          "evidence": "Final c13e Chromium12/12 and WEB1955/117/12 passed; complete input equality at mergedf4ef137e. Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Exact37 Node report-only F555-only ruling applied while preserving fullRED; historical WebKit limits remain explicit.",
           "id": "source-validation",
-          "observed_at": "2026-11-24T08:34:35.298175+00:00",
-          "status": "in-progress",
+          "observed_at": "2026-11-24T08:54:19.702202+00:00",
+          "status": "complete",
           "title": "Lead review, focused regressions/callers, ratchet, boundaries/build"
         },
         {
@@ -12411,9 +12022,9 @@
           "title": "Actual Java/OIDC/DemoClock persistent browser behavior (AC1-7)"
         },
         {
-          "evidence": "Existing same-offer1280top+lowerTable/390support and independent F548bell1280pair preserve23Novsource/time/provenance; lead+Pluto critique passed with explicit framing/capture limits. Latest technical receipts updated separately in docs/gcsp/evidence/offer-and-bell-parity-2026-11-23.md. Original human F555AC8/F548AC6 ledger rows remain blank pending one root-owned review after technical disposition.",
+          "evidence": "Retained23Nov source/time/provenance same-offer1280top+lowerTable/390support and F548bell1280pair unchanged. Lead+Pluto critique and framing/capture limits retained. Human F555AC8/F548AC6 rows remain blank in docs/gcsp/evidence/offer-and-bell-parity-2026-11-23.md; no new review chat started during wind-down.",
           "id": "reviewed-parity",
-          "observed_at": "2026-11-24T08:34:35.298175+00:00",
+          "observed_at": "2026-11-24T08:54:19.702202+00:00",
           "status": "in-progress",
           "title": "Live same-offer 1280 Node/Angular attachments and human review (AC8)"
         }
@@ -12437,12 +12048,409 @@
           "name": "usget-vesper launcher",
           "role": "dispatcher carrying final covering and integration",
           "harness": "codex",
-          "observed_at": "2026-11-24T08:34:35.298175+00:00",
-          "expires_at": "2026-11-24T08:54:35.298175+00:00",
-          "source": "Active native root turn; actual merged frontend Results and remote Java45353840595 in_progress observation. No source implementer inferred.",
-          "status": "Awaiting actual Java terminal outcome and original human parity verdicts"
+          "observed_at": "2026-11-24T08:54:19.702202+00:00",
+          "expires_at": "2026-11-24T08:54:19.702202+00:00",
+          "source": "Explicit human wind-down; all native children returned, no active implementation/runtime; recovery stopped and poller lease released.",
+          "status": "Stopped; original partial Story claim/worktree/checkpoint preserved"
         }
       ]
+    },
+    {
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-23-vesper-014",
+      "id": "FUCQ-581",
+      "native_status_observed_at": "2026-11-23T22:15:30.859Z",
+      "native_updated_at": "2026-11-23T16:14:09.588-0600",
+      "note": "Recorded technical integration and green canonical covering complete. Original Story acceptance and native status remain as recorded; this updates only actual covering evidence.",
+      "observed_at": "2026-11-24T08:54:19Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "93e94bec5 scoped RunClaimClock binds existing environment/run DemoClock, supported fallback retained; real earlier-than-wall quote/claim HTTP passes.",
+          "id": "claim-clock",
+          "observed_at": "2026-11-23T22:39:28.214309+00:00",
+          "status": "complete",
+          "title": "Scoped persisted claim clock selection"
+        },
+        {
+          "evidence": "Same ClaimClock supplies OrderingTerms; unavailable before effects, durable pending/same-key recovery after possible effect and settled replay covered; wall lease/backoff remains.",
+          "id": "ordering",
+          "observed_at": "2026-11-23T22:39:28.214309+00:00",
+          "status": "complete",
+          "title": "Coherent order time and pending recovery"
+        },
+        {
+          "evidence": "Actual RED2assertions retained; final deterministic real OIDC/nativePG HTTP3/3 and unit4/4, expiry/isolation/retired/unavailable/pinned timestamps meaningful.",
+          "id": "regression",
+          "observed_at": "2026-11-23T22:39:28.214309+00:00",
+          "status": "complete",
+          "title": "Real quote/claim/expiry and unavailable regression"
+        },
+        {
+          "evidence": "418distinct focused cases/75classes PASS,0fail/errors/skips including four original lifecycle journeys/planning/wiring; independent review4293d6980344468d passes.",
+          "id": "callers-review",
+          "observed_at": "2026-11-23T22:39:28.214309+00:00",
+          "status": "complete",
+          "title": "Affected callers, wiring and independent review"
+        },
+        {
+          "evidence": "Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Original scoped review, identity and cleanup qualifications remain in the delivery Result; no human acceptance inferred.",
+          "id": "integration",
+          "observed_at": "2026-11-24T08:54:19.702202+00:00",
+          "status": "complete",
+          "title": "Final-source integration and canonical Java covering"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Java manual claims reject fresh run-clock quotes using wall time",
+      "type": "Bug",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-581",
+      "workers": [
+        {
+          "expires_at": "2026-11-23T22:39:28.214309+00:00",
+          "harness": "codex",
+          "name": "Speedy Gonzales",
+          "observed_at": "2026-11-23T22:20:29.810329+00:00",
+          "role": "story-lead",
+          "source": "Native collaboration.list_agents root observation; not inferred from commits",
+          "status": "Completed handoff; final covering integration recorded; no active worker"
+        }
+      ],
+      "evidence": "Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Reviewed delivery/merge records remain authoritative; session stopped with no new pickup."
+    },
+    {
+      "id": "FUCQ-583",
+      "title": "Lifecycle HTTP tests age out their fixed collection dates at midnight",
+      "type": "Bug",
+      "status": "In Review",
+      "original_status": "In Review",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-583",
+      "branch": "dev/DEV-2026-11-24-vesper-002",
+      "unsliced": false,
+      "note": "Recorded technical integration and green canonical covering complete. Native In Review; collaborator acceptance remains separate.",
+      "workers": [
+        {
+          "name": "Lord Business",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-24T02:29:38.948403+00:00",
+          "expires_at": "2026-11-24T02:29:38.948403+00:00",
+          "source": "Retained task /root/lord_business; actual final proof and independent review receipts",
+          "status": "Completed handoff; final covering integration recorded; no active worker"
+        }
+      ],
+      "observed_at": "2026-11-24T08:54:20Z",
+      "slices": [
+        {
+          "id": "fixture-inputs",
+          "status": "complete",
+          "title": "Admissible canonical date inputs and preserved clock lineage",
+          "observed_at": "2026-11-24T02:29:38.948403+00:00",
+          "evidence": "Lead actual final whole-class proof: 11 cases pass, zero failures/errors/skips; unchanged reviewed source 5d3693b83e680459b5c9a839845ad4446c0dbdde. Marvin independent original-AC/runtime review PASS; f583-f584-final-validation/marvin-runtime-review.json."
+        },
+        {
+          "id": "regression-callers",
+          "status": "complete",
+          "title": "Real OIDC and PostgreSQL regression plus six HTTP callers",
+          "observed_at": "2026-11-24T02:29:38.948403+00:00",
+          "evidence": "Lead actual final whole-class proof: 11 cases pass, zero failures/errors/skips; unchanged reviewed source 5d3693b83e680459b5c9a839845ad4446c0dbdde. Marvin independent original-AC/runtime review PASS; f583-f584-final-validation/marvin-runtime-review.json."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Combine scoped evidence and independent review for handoff",
+          "observed_at": "2026-11-24T08:54:19.702202+00:00",
+          "evidence": "Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Original scoped review, identity and cleanup qualifications remain in the delivery Result; no human acceptance inferred."
+        }
+      ],
+      "native_observed_at": "2026-11-24T02:45:43.439Z",
+      "evidence": "Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Reviewed delivery/merge records remain authoritative; session stopped with no new pickup."
+    },
+    {
+      "id": "FUCQ-584",
+      "title": "Auth route inventory omits the approved public demo issuer endpoints",
+      "type": "Bug",
+      "status": "In Review",
+      "original_status": "In Review",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-584",
+      "branch": "dev/DEV-2026-11-24-vesper-002",
+      "unsliced": false,
+      "note": "Recorded technical integration and green canonical covering complete. Native In Review; collaborator acceptance remains separate.",
+      "workers": [
+        {
+          "name": "Lord Business",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-24T02:29:38.948403+00:00",
+          "expires_at": "2026-11-24T02:29:38.948403+00:00",
+          "source": "Retained task /root/lord_business; actual final proof and independent review receipts",
+          "status": "Completed handoff; final covering integration recorded; no active worker"
+        }
+      ],
+      "observed_at": "2026-11-24T08:54:20Z",
+      "slices": [
+        {
+          "id": "inventory",
+          "status": "complete",
+          "title": "Exact protected and public issuer route union",
+          "observed_at": "2026-11-24T02:29:38.948403+00:00",
+          "evidence": "Lead actual final whole-class proof: 33 cases pass, zero failures/errors/skips; unchanged reviewed source 5d3693b83e680459b5c9a839845ad4446c0dbdde. Marvin independent original-AC/runtime review PASS; f583-f584-final-validation/marvin-runtime-review.json."
+        },
+        {
+          "id": "issuer-controls",
+          "status": "complete",
+          "title": "Protected bearer roles and issuer disabled/enabled controls",
+          "observed_at": "2026-11-24T02:29:38.948403+00:00",
+          "evidence": "Lead actual final whole-class proof: 33 cases pass, zero failures/errors/skips; unchanged reviewed source 5d3693b83e680459b5c9a839845ad4446c0dbdde. Marvin independent original-AC/runtime review PASS; f583-f584-final-validation/marvin-runtime-review.json."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Combine scoped evidence and independent review for handoff",
+          "observed_at": "2026-11-24T08:54:19.702202+00:00",
+          "evidence": "Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Original scoped review, identity and cleanup qualifications remain in the delivery Result; no human acceptance inferred."
+        }
+      ],
+      "native_observed_at": "2026-11-24T02:45:43.440Z",
+      "evidence": "Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Reviewed delivery/merge records remain authoritative; session stopped with no new pickup."
+    },
+    {
+      "id": "FUCQ-585",
+      "title": "Canonical Java verification exceeds memory cap in a reused test JVM",
+      "type": "Bug",
+      "status": "In Review",
+      "original_status": "In Review",
+      "observed_at": "2026-11-24T08:54:20Z",
+      "branch": "dev/DEV-2026-11-24-vesper-004",
+      "evidence": "Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Reviewed delivery/merge records remain authoritative; session stopped with no new pickup.",
+      "slices": [
+        {
+          "id": "candidate",
+          "status": "complete",
+          "title": "Bound package fork lifetime and prove selection/restart contracts",
+          "observed_at": "2026-11-24T02:29:34Z",
+          "evidence": "Source664563f88;31-group selection;163case brief/presenter +10focused cases; distinct actualJava forks and both handoffs; independent Cuthbert runtime review passed; exact receipt1795486981; full canonical pending root"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Canonical integrated inventory and bounded cleanup",
+          "observed_at": "2026-11-24T08:54:19.702202+00:00",
+          "evidence": "Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Original scoped review, identity and cleanup qualifications remain in the delivery Result; no human acceptance inferred."
+        }
+      ],
+      "unsliced": false,
+      "workers": [
+        {
+          "name": "Sniffles",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-24T02:29:35.031364+00:00",
+          "expires_at": "2026-11-24T02:29:35.031364+00:00",
+          "source": "01a20b15-abad-7e83-94ee-dcd194bfcb9e native active; runtime authorised after independent slot read",
+          "status": "Completed handoff; final covering integration recorded; no active worker"
+        },
+        {
+          "name": "Mulan",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-24T02:29:35.031364+00:00",
+          "expires_at": "2026-11-24T02:29:35.031364+00:00",
+          "source": "01a20b18-acad-7c72-86d9-9093c2cf0223 native followup accepted after shared lane released",
+          "status": "Completed handoff; final covering integration recorded; no active worker"
+        },
+        {
+          "name": "Cuthbert",
+          "harness": "codex",
+          "role": "source/spec reviewer",
+          "observed_at": "2026-11-24T02:29:35.031364+00:00",
+          "expires_at": "2026-11-24T02:29:35.031364+00:00",
+          "source": "01a20b20-638b-7aa1-ac0c-d6870b9d720c native completed review",
+          "status": "Completed handoff; final covering integration recorded; no active worker"
+        },
+        {
+          "name": "Marvin the Martian",
+          "harness": "codex",
+          "role": "security/config reviewer",
+          "observed_at": "2026-11-24T01:20:35.507852+00:00",
+          "expires_at": "2026-11-24T01:23:57.348912+00:00",
+          "source": "01a20b23-98ad-7620-ae9b-2d484aff0795 native completed report",
+          "status": "Completed handoff; final covering integration recorded; no active worker"
+        }
+      ],
+      "note": "All original F585 AC1–AC4 met; Result-only close-out merged98569042e, archived7529db5a8, supported cleanup862e3aa3f. Native transition3 returned In Review; exact sync operation acknowledged. Native In Review; collaborator acceptance remains separate.",
+      "native_status_observed_at": "2026-11-24T08:54:19.702202+00:00",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-585"
+    },
+    {
+      "id": "FUCQ-586",
+      "title": "Decline follow-up HTTP regression assumes historical run without arranging...",
+      "type": "Bug",
+      "status": "In Review",
+      "original_status": "In Review",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-586",
+      "branch": "dev/DEV-2026-11-23-vesper-015",
+      "unsliced": false,
+      "note": "Recorded technical integration and green canonical covering complete. Native In Review; collaborator acceptance remains separate.",
+      "workers": [
+        {
+          "name": "Lord Business",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-24T03:27:10.142330+00:00",
+          "expires_at": "2026-11-24T03:27:10.142330+00:00",
+          "source": "Retained task /root/lord_business; actual F586 scoped result and independent review",
+          "status": "Completed handoff; final covering integration recorded; no active worker"
+        }
+      ],
+      "slices": [
+        {
+          "id": "fixture-clock",
+          "title": "Historical input before startup with canonical metadata",
+          "status": "complete",
+          "observed_at": "2026-11-24T03:27:10.142330+00:00",
+          "evidence": "Lead one whole-class proof passed 1 case / 0 failures, errors or skips on source fbd33292aab91e3c5c11dda51f4b40fdb58da88a; explicit historical startup and all original semantic checks. Marvin independent original-AC/runtime/cleanup PASS; f586-validation/marvin-runtime-review.json."
+        },
+        {
+          "id": "regression",
+          "title": "Complete signed OIDC and PostgreSQL decline regression",
+          "status": "complete",
+          "observed_at": "2026-11-24T03:27:10.142330+00:00",
+          "evidence": "Lead one whole-class proof passed 1 case / 0 failures, errors or skips on source fbd33292aab91e3c5c11dda51f4b40fdb58da88a; explicit historical startup and all original semantic checks. Marvin independent original-AC/runtime/cleanup PASS; f586-validation/marvin-runtime-review.json."
+        },
+        {
+          "id": "integration",
+          "title": "Scoped reviewed handoff and integrated canonical covering",
+          "status": "complete",
+          "observed_at": "2026-11-24T08:54:19.702202+00:00",
+          "evidence": "Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Original scoped review, identity and cleanup qualifications remain in the delivery Result; no human acceptance inferred."
+        }
+      ],
+      "observed_at": "2026-11-24T08:54:20Z",
+      "evidence": "Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Reviewed delivery/merge records remain authoritative; session stopped with no new pickup."
+    },
+    {
+      "id": "FUCQ-587",
+      "title": "Ordering HTTP journey setup ages out its fixed collection date",
+      "type": "Bug",
+      "status": "In Review",
+      "original_status": "In Review",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-587",
+      "branch": "dev/DEV-2026-11-23-vesper-016",
+      "unsliced": false,
+      "note": "Recorded technical integration and green canonical covering complete. Native In Review; collaborator acceptance remains separate.",
+      "workers": [
+        {
+          "name": "Lord Business",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-24T04:27:56.271698+00:00",
+          "expires_at": "2026-11-24T04:27:56.271698+00:00",
+          "source": "Retained task /root/lord_business; actual F587 result and independent original-AC/runtime/cleanup review",
+          "status": "Completed handoff; final covering integration recorded; no active worker"
+        }
+      ],
+      "slices": [
+        {
+          "id": "selector-callers",
+          "title": "Actual-account date selection in both ordering setup builders",
+          "status": "complete",
+          "observed_at": "2026-11-24T04:27:56.271698+00:00",
+          "evidence": "Lead+independent original-AC/runtime/cleanup PASS; source24d03ab6d; actual128cases/24classes,exact73originalordering,allthreecompletejourneys inclJordan,alltenstartup classes;0fail/error/skip. f587-validation/f587-result.json and marvin-runtime-review.json."
+        },
+        {
+          "id": "regression",
+          "title": "Whole ordering package and original composed journeys plus startup wiring",
+          "status": "complete",
+          "observed_at": "2026-11-24T04:27:56.271698+00:00",
+          "evidence": "Lead+independent original-AC/runtime/cleanup PASS; source24d03ab6d; actual128cases/24classes,exact73originalordering,allthreecompletejourneys inclJordan,alltenstartup classes;0fail/error/skip. f587-validation/f587-result.json and marvin-runtime-review.json."
+        },
+        {
+          "id": "integration",
+          "title": "Reviewed scoped handoff and integrated canonical covering",
+          "status": "complete",
+          "observed_at": "2026-11-24T08:54:19.702202+00:00",
+          "evidence": "Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Original scoped review, identity and cleanup qualifications remain in the delivery Result; no human acceptance inferred."
+        }
+      ],
+      "observed_at": "2026-11-24T08:54:20Z",
+      "evidence": "Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Reviewed delivery/merge records remain authoritative; session stopped with no new pickup."
+    },
+    {
+      "id": "FUCQ-589",
+      "title": "Planning journey expects a cart hold to survive advancing its authoritative expiry clock",
+      "type": "Bug",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-589",
+      "branch": "dev/DEV-2026-11-23-vesper-018",
+      "unsliced": false,
+      "native_updated_at": "2026-11-24T02:04:00.129-0600",
+      "native_status_observed_at": "2026-11-24T08:18:05.031322+00:00",
+      "note": "Recorded technical integration and green canonical covering complete. Native In Review; collaborator acceptance remains separate.",
+      "workers": [
+        {
+          "name": "Cuthbert",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-24T07:36:17.196786+00:00",
+          "expires_at": "2026-11-24T07:36:17.196786+00:00",
+          "status": "Completed handoff; final covering integration recorded; no active worker",
+          "source": "Actual collaboration.list_agents /root/sniffles/cuthbert observation; expiry bounds handoff"
+        },
+        {
+          "name": "Mulan",
+          "role": "implementer",
+          "harness": "codex",
+          "observed_at": "2026-11-24T07:36:17.196786+00:00",
+          "expires_at": "2026-11-24T07:36:17.196786+00:00",
+          "status": "Completed handoff; final covering integration recorded; no active worker",
+          "source": "Actual collaboration.list_agents /root/sniffles/mulan completed observation"
+        },
+        {
+          "name": "Marvin the Martian",
+          "role": "reviewer",
+          "harness": "codex",
+          "observed_at": "2026-11-24T07:36:17.196786+00:00",
+          "expires_at": "2026-11-24T07:36:17.196786+00:00",
+          "status": "Completed handoff; final covering integration recorded; no active worker",
+          "source": "Actual collaboration.list_agents /root/sniffles/marvin_the_martian completed observation"
+        }
+      ],
+      "observed_at": "2026-11-24T08:54:20Z",
+      "slices": [
+        {
+          "id": "ac1",
+          "status": "complete",
+          "title": "Advanced authority and smallest private Paula collection window",
+          "observed_at": "2026-11-24T07:36:17Z",
+          "evidence": "Exact c22 source/real OIDC+PG17 canonical 45341810266: Order6 PASS with actual172800 advance before authority, minimal canonical admissible private Paula window and ready account. canonical-runtime-reconciliation.json SHA7f50213a; independent Marvin passed."
+        },
+        {
+          "id": "ac2",
+          "status": "complete",
+          "title": "Live hold lineage and preserved expiry semantics",
+          "observed_at": "2026-11-24T07:36:18Z",
+          "evidence": "All 8 original journey identities and 175 planning PASS; Order6 real claim/quote/hold lineage and live expiry/read assertions,18 supply guards and 3 ClaimRunClock HTTP PASS. Source342e9480/2d608c28 unchanged; independent review passed."
+        },
+        {
+          "id": "ac3",
+          "status": "complete",
+          "title": "Public release, exact restoration and unchanged Sam journey",
+          "observed_at": "2026-11-24T07:36:18Z",
+          "evidence": "Order6 PASS includes public release200/no heldFor, exact Paula restoration with monotonic version and unchanged Sam input/version; original Sam Order7 byte-identical and PASS. Fresh46startup +canonical 10 wiring PASS; cleanup and review passed."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Root integration and green canonical batch covering",
+          "observed_at": "2026-11-24T08:54:19.702202+00:00",
+          "evidence": "Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Original scoped review, identity and cleanup qualifications remain in the delivery Result; no human acceptance inferred."
+        }
+      ],
+      "evidence": "Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Reviewed delivery/merge records remain authoritative; session stopped with no new pickup."
     }
   ]
 }

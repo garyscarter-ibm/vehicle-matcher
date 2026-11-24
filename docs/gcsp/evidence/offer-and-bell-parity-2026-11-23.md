@@ -1,10 +1,10 @@
 # Offer and bell parity evidence — 23 November 2026
 
-Two original human decisions remain pending: **Offer (FUCQ-555 AC8)** and **Employee notification bell (FUCQ-548 AC6)**. Each can receive its own verdict. No human verdict has been recorded, and neither Bug is accepted. Root will open one review thread after the remaining authorised technical work and its disposition are complete.
+Two original human decisions remain pending: **Offer (FUCQ-555 AC8)** and **Employee notification bell (FUCQ-548 AC6)**. Each can receive its own verdict. No human verdict has been recorded, and neither Bug is accepted. The session is stopped after the requested wind-down; the prepared evidence remains available for human review. No new review chat was started during wind-down.
 
 The latest registered Chromium suite at `c13e604bc4bf3578c1fcf76e9c948fe72e95d09b` passed **12/12 reported tests** across all six F548/F555 compositions, with all seven stage exits zero. Root independently reconciled all 1834 tracked inputs, actual checks/counts, complete dependency identities and current cleanup: `.claude/test-runs/f555-overnight-20261123/final-consolidated-chromium-20261124/root-independent-audit.json` (SHA `2447118a488f7383a8b6cf181c22c9562d18bb1a06719e9b481ca48be51bd6e1`). The test-only correction waits for specification visibility before the unchanged full-text comparison; no product, assertion, normalizer or frozen reference changed. The final WEB shared-cache variant separately passed **1955 cases / 117 specs / 12 serial chunks**; no npm ci is claimed. Root audit SHA `7db8afe706597fde734faa3c6feeb7552318a3e7d5bff614bed45ed09dd78f93` records exact inputs/raw reports and cleanup.
 
-WebKit26.4 at the preceding c22 candidate remains full RED on the separate F548 immutable-reference deadline-copy comparison and a navigation-context error; all five F555 flows passed there. This is not actual Safari proof or a cross-engine green. Latest exact unfiltered Node remains RED:4284 tests/4181 passes/37 failures/66 skips; all37 match the human F555-only report-only decision. Canonical Java45353840595 is running at717148a079, whose full API tree equals c13e; no terminal outcome or covering pass is claimed. Original F555AC8/F548AC6 human verdicts remain pending. Historical failures, capture diagnostics and limitations remain in their original receipts.
+WebKit26.4 at the preceding c22 candidate remains full RED on the separate F548 immutable-reference deadline-copy comparison and a navigation-context error; all five F555 flows passed there. This is not actual Safari proof or a cross-engine green. Latest exact unfiltered Node remains RED:4284 tests/4181 passes/37 failures/66 skips; all37 match the human F555-only report-only decision. Canonical Java45353840595 completed successfully at08:35:45UTC on24November at717148a079, whose full API tree equals c13e and integrated source:371reports/2296cases/2294pass/0failures/errors/2original opt-in skips, all31groups/0unrun. Root inventory/resource audit04d8b7b4 and cleanup79481ad1 reconciled; green batchd4ce61cb7, lease and batch branch/worktree released. RawXML absent; no fresh remote OS/catalogue claim. Original F555AC8/F548AC6 human verdicts remain pending. Historical failures, capture diagnostics and limitations remain in their original receipts.
 
 The scenario and screenshot package below is the retained **23 November** human-review evidence. Its original source/time/provenance stays unchanged; the new runtime receipts above are separate.
 
@@ -60,7 +60,7 @@ Root independently verified all 19 browser-owned process identities and groups, 
 
 | Work | Evidence used by this delivery | Remaining boundary |
 | --- | --- | --- |
-| F548 | Supported global styles/bell; final five leaves and active/expired/keyboard/count/polling evidence | Original AC6 human bell verdict and root Node/Java covering disposition remain pending. |
+| F548 | Supported global styles/bell; final five leaves and active/expired/keyboard/count/polling evidence | Original AC6 human bell verdict remains pending. Final Java covering is green; exact Node RED/report-only and historical WebKit limitations above remain. |
 | F549 | Published shell/navigation/breadcrumb/focus ports used by the actual offer exits | Whole navigation/role-screen acceptance stays with F549. |
 | F550 | Published shared refresh registration used by actual signed deadline rereads | Whole refresh acceptance stays with F550. |
 | F551 | Published canonical assets, FactList/DataTable and supported Account/Activity ports; actual comparison winners and saved Activity | Whole Account/assets/Activity acceptance stays with F551. |
@@ -74,7 +74,7 @@ F556's already-published compatible Button and supported Orders route are consum
 
 ## Human verdict ledger
 
-Status: **pending one root-owned review thread** after technical work completes. One response can give a separate verdict for each row. The fields below stay blank until a human collaborator gives a cited verdict: `matches`, `differs: <Bug key>` or `intended change: <cited ruling>`. A described difference can be tracked before closure. Any collaborator has equal authority.
+Status: **human review pending; session stopped after technical disposition.** One response can give a separate verdict for each row. The fields below stay blank until a human collaborator gives a cited verdict: `matches`, `differs: <Bug key>` or `intended change: <cited ruling>`. A described difference can be tracked before closure. Any collaborator has equal authority.
 
 | Screen / original criterion | State and viewport | Pair | Verdict | Human reviewer | Date | Source |
 | --- | --- | --- | --- | --- | --- | --- |
