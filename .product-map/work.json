@@ -12276,6 +12276,80 @@
       "observed_at": "2026-11-24T04:38:51Z"
     },
     {
+      "id": "FUCQ-589",
+      "title": "Planning journey expects a cart hold to survive advancing its authoritative expiry clock",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-589",
+      "branch": "dev/DEV-2026-11-23-vesper-018",
+      "unsliced": false,
+      "native_updated_at": "2026-11-23T23:20:42.177-0600",
+      "native_status_observed_at": null,
+      "note": "Scoped technical AC1-3 met on c22de077d; 175 planning +56 wiring=231 PASS, plus 3 ClaimRunClock. Full batch INCOMPLETE: later F547 policy failure,410 methods unrun. Root integration/green covering pending; no acceptance inferred. Native In Progress from retained readback; its collection timestamp is unavailable. This local work observation does not freshen Jira.",
+      "workers": [
+        {
+          "name": "Cuthbert",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-24T07:36:17.196786+00:00",
+          "expires_at": "2026-11-24T07:36:17.196786+00:00",
+          "status": "Running at observation: final Result/map handoff; no continuing claim asserted",
+          "source": "Actual collaboration.list_agents /root/sniffles/cuthbert observation; expiry bounds handoff"
+        },
+        {
+          "name": "Mulan",
+          "role": "implementer",
+          "harness": "codex",
+          "observed_at": "2026-11-24T07:36:17.196786+00:00",
+          "expires_at": "2026-11-24T07:36:17.196786+00:00",
+          "status": "Completed: implementation and exact46-case wiring completion; cleanup verified",
+          "source": "Actual collaboration.list_agents /root/sniffles/mulan completed observation"
+        },
+        {
+          "name": "Marvin the Martian",
+          "role": "reviewer",
+          "harness": "codex",
+          "observed_at": "2026-11-24T07:36:17.196786+00:00",
+          "expires_at": "2026-11-24T07:36:17.196786+00:00",
+          "status": "Completed: independent source/spec/security/runtime/resource review passed",
+          "source": "Actual collaboration.list_agents /root/sniffles/marvin_the_martian completed observation"
+        }
+      ],
+      "observed_at": "2026-11-24T07:36:18Z",
+      "slices": [
+        {
+          "id": "ac1",
+          "status": "complete",
+          "title": "Advanced authority and smallest private Paula collection window",
+          "observed_at": "2026-11-24T07:36:17Z",
+          "evidence": "Exact c22 source/real OIDC+PG17 canonical 45341810266: Order6 PASS with actual172800 advance before authority, minimal canonical admissible private Paula window and ready account. canonical-runtime-reconciliation.json SHA7f50213a; independent Marvin passed."
+        },
+        {
+          "id": "ac2",
+          "status": "complete",
+          "title": "Live hold lineage and preserved expiry semantics",
+          "observed_at": "2026-11-24T07:36:18Z",
+          "evidence": "All 8 original journey identities and 175 planning PASS; Order6 real claim/quote/hold lineage and live expiry/read assertions,18 supply guards and 3 ClaimRunClock HTTP PASS. Source342e9480/2d608c28 unchanged; independent review passed."
+        },
+        {
+          "id": "ac3",
+          "status": "complete",
+          "title": "Public release, exact restoration and unchanged Sam journey",
+          "observed_at": "2026-11-24T07:36:18Z",
+          "evidence": "Order6 PASS includes public release200/no heldFor, exact Paula restoration with monotonic version and unchanged Sam input/version; original Sam Order7 byte-identical and PASS. Fresh46startup +canonical 10 wiring PASS; cleanup and review passed."
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Root integration and green canonical batch covering",
+          "observed_at": "2026-11-24T07:36:18Z",
+          "evidence": "Root owns merge and complete-input reconciliation/green canonical covering. Tested c22 API0bd4 preserved by metadata-only ffefd322 refresh. Full canonical 45341810266 INCOMPLETE:303 reports/1886 cases,1883pass/1later F547 policy fail/2originalskips;410 methods unrun. Native In Progress; no acceptance inferred."
+        }
+      ]
+    },
+    {
       "id": "FUCQ-588",
       "title": "Notification deadline shows the full date in WebKit instead of HH:MM",
       "type": "Bug",
@@ -12284,7 +12358,7 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-588",
       "branch": "dev/DEV-2026-11-23-vesper-017",
       "unsliced": false,
-      "note": "Source 34895c581 and scoped 119 Angular / 135 Node ratchet passed with independent source/spec/security review. Changed-source registered WebKit, rendered desktop/narrow critique and any immutable-reference difference remain F588 work owned by root. No human acceptance inferred.",
+      "note": "Actual connected WebKit26.4 on c22 observed correct Angular13:30 row/note at375/1280; all5 F555flows passed. Registered suite remains RED9pass/3fail: unchanged frozenNode full-date comparator and navigation-context-destroyed refresh check. AC1/AC2 observedmet;AC3partial. No Safari or human acceptance inferred; F548AC6/F555AC8pending.",
       "workers": [
         {
           "name": "Lord Business",
@@ -12293,7 +12367,7 @@
           "observed_at": "2026-11-24T05:17:49.796448+00:00",
           "expires_at": "2026-11-24T05:17:49.796448+00:00",
           "source": "Retained task /root/lord_business; actual scoped delivery, reviewed source and exact cleanup",
-          "status": "Scoped handoff complete; root connected integration pending"
+          "status": "Scoped handoff complete; actual connected partial result recorded by root"
         }
       ],
       "slices": [
@@ -12314,12 +12388,12 @@
         {
           "id": "connected-integration",
           "title": "Registered changed-source WebKit assertions and reviewed integration",
-          "status": "not-started",
-          "observed_at": "2026-11-24T05:17:49.796448+00:00",
-          "evidence": "Root owns once-on-final-merged-source registered connected WebKit run and rendered desktop/narrow critique. Immutable frozen Node comparator may remain RED; no waiver or human verdict."
+          "status": "in-progress",
+          "observed_at": "2026-11-24T07:12:00Z",
+          "evidence": "Actual registered changed-source WebKit c22 RED9pass/3fail, all5 F555flowspass. Rootaudit66b8ddf5 reconciles1834inputs/14seals/cleanup; viewed375row/1280note13:30. Unchanged frozenNode date comparator differs; refresh evaluation context destroyed after GET200. OriginalAC3partial; humanverdicts remainpending."
         }
       ],
-      "observed_at": "2026-11-24T05:17:49Z"
+      "observed_at": "2026-11-24T07:42:33Z"
     }
   ]
 }
