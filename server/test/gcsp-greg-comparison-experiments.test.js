@@ -2,8 +2,9 @@
 import { test, before } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 
-let adapterMod; let ev; let copy; let fixtures; let expFixture; let stored; let processStored;
+let adapterMod; let ev; let copy; let fixtures; let expFixture; let stored; let processStored; let reference;
 before(async () => {
   const base = '../../blocks/gcsp/greg/comparison/';
   adapterMod = await import(`${base}http-adapter.js`);
@@ -13,14 +14,19 @@ before(async () => {
   expFixture = await import(`${base}experiment-fixture.js`);
   stored = JSON.parse(await readFile(new URL('./fixtures/gcsp-comparison-experiment-result.json', import.meta.url), 'utf8')).storedResult;
   processStored = JSON.parse(await readFile(new URL('./fixtures/gcsp-comparison-process-result.json', import.meta.url), 'utf8')).storedResult;
+  reference = JSON.parse(await readFile(new URL('./fixtures/gcsp-greg-comparison-reference-results.json', import.meta.url), 'utf8'));
 });
 const clone = (v) => structuredClone(v);
 const job = (over = {}) => ({ jobId: 'comparison-job-1', experimentId: 'hold-sweep', status: 'running', progress: { seedsDone: 1, seedsTotal: 3, stepsDone: 12, stepsTotal: 36 },
   startedAt: '2026-11-08T12:00:00.000Z', finishedAt: null, resultId: null, reason: null, request: { experimentId: 'hold-sweep', change: { values: [900, 5400], basis: 'Why' } }, ...over });
 const OTHER = [[500, { status: 'error' }], [503, { status: 'unavailable', reason: 'Store is down.' }], [200, null], [200, { status: 'ok' }], [200, { status: 'other' }], [418, {}]];
 
-test('the fixture copy equals the stored experiment result file', () => {
-  assert.deepEqual(expFixture.STORED_HOLD_SWEEP, stored);
+test('the fixture copy equals the complete pinned historical experiment result', () => {
+  assert.equal(reference.sourceRevision, '361510f6572570a14e8ee2c8a0fd66a203a84c0e');
+  assert.equal(reference.experiment.sourcePath, 'server/test/fixtures/gcsp-comparison-experiment-result.json');
+  assert.equal(reference.experiment.sourceByteSha256, '27ebe66556a1e711b867d2a56124793ad09d4a23fec5b67c6a17fc5028aee286');
+  assert.equal(createHash('sha256').update(`${JSON.stringify(reference.experiment.envelope, null, 2)}\n`).digest('hex'), reference.experiment.sourceByteSha256);
+  assert.deepEqual(expFixture.STORED_HOLD_SWEEP, reference.experiment.envelope.storedResult);
 });
 
 test('listOutcomeToState maps ready, refused, lapsed access and unavailable', () => {
@@ -141,6 +147,9 @@ const verdictOf = (view, route, measure, arm) => view.routes.find((r) => r.key =
 
 test('toExperimentView presents the stored hold sweep with figures only from the result', () => {
   const view = ev.toExperimentView(stored);
+  assert.equal(stored.result.manifest.policyHash, 'c0106882da69259021845df1a26128b218ac7dc7b79d5b528fe3806af7dff994');
+  assert.equal(stored.resultId, 'hold-sweep-comparison-e939356bbdb3a9c8172ef01bf87bfe78');
+  assert.equal(view.provenance.policyHash, 'c0106882da69');
   assert.equal(view.id, 'hold-sweep'); assert.equal(view.label, 'Hold duration');
   assert.equal(view.change.key, 'hold.buddy.durationSeconds'); assert.equal(view.change.unit, 'seconds'); assert.equal(view.change.status, 'what-if');
   assert.equal(view.change.basis, stored.result.manifest.change.basis);
