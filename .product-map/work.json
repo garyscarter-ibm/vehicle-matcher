@@ -12274,6 +12274,52 @@
         }
       ],
       "observed_at": "2026-11-24T04:38:51Z"
+    },
+    {
+      "id": "FUCQ-588",
+      "title": "Notification deadline shows the full date in WebKit instead of HH:MM",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-588",
+      "branch": "dev/DEV-2026-11-23-vesper-017",
+      "unsliced": false,
+      "note": "Source 34895c581 and scoped 119 Angular / 135 Node ratchet passed with independent source/spec/security review. Changed-source registered WebKit, rendered desktop/narrow critique and any immutable-reference difference remain F588 work owned by root. No human acceptance inferred.",
+      "workers": [
+        {
+          "name": "Lord Business",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-24T05:17:49.796448+00:00",
+          "expires_at": "2026-11-24T05:17:49.796448+00:00",
+          "source": "Retained task /root/lord_business; actual scoped delivery, reviewed source and exact cleanup",
+          "status": "Scoped handoff complete; root connected integration pending"
+        }
+      ],
+      "slices": [
+        {
+          "id": "deadline-format",
+          "title": "Direct London HH:MM notification deadline with existing guards",
+          "status": "complete",
+          "observed_at": "2026-11-24T05:17:49.796448+00:00",
+          "evidence": "Reviewed source 34895c581; direct en-GB h23 Europe/London time formatter, unchanged active/valid guards. Actual model and source regression checks passed; f588-validation-r2/f588-result.json."
+        },
+        {
+          "id": "focused-regression",
+          "title": "Affected activity, source, shell and bell regression checks",
+          "status": "complete",
+          "observed_at": "2026-11-24T05:17:49.796448+00:00",
+          "evidence": "Actual 119 cases across exact eight Angular files and 135 ui-ratchet cases passed, no skips; Sniffles final source/spec/security review passed. f588-validation-r2/f588-result.json and f588-source-review-addendum.json."
+        },
+        {
+          "id": "connected-integration",
+          "title": "Registered changed-source WebKit assertions and reviewed integration",
+          "status": "not-started",
+          "observed_at": "2026-11-24T05:17:49.796448+00:00",
+          "evidence": "Root owns once-on-final-merged-source registered connected WebKit run and rendered desktop/narrow critique. Immutable frozen Node comparator may remain RED; no waiver or human verdict."
+        }
+      ],
+      "observed_at": "2026-11-24T05:17:49Z"
     }
   ]
 }

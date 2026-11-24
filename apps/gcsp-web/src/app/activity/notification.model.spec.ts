@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { notificationModel, notificationRows } from './notification.model';
+import { notificationDeadline, notificationModel, notificationRows } from './notification.model';
 import { ActivityOffer, ActivityOfferDisplay, ActivityProjection } from './activity.types';
 
 export const offer = (id: string, state = 'active', expiresAt = '2026-07-01T12:30:00Z'): ActivityOffer => ({
@@ -20,6 +20,31 @@ describe('notification projection', () => {
     expect(model.rows[0]).toEqual({ key: 'offer:new', kind: 'offer', waiting: true, title: 'Your buddy found a car', car: 'BMW X2',
       detail: 'Reserved for you. Respond by 13:30.', image: { src: '/assets/brand-hero/bmw.jpg' },
       action: { label: 'View your offer', href: '/gcsp/offers/new', variant: 'button' } });
+  });
+  it('keeps a time-only deadline when the full Activity formatter uses WebKit punctuation', () => {
+    const descriptor = Object.getOwnPropertyDescriptor(Intl.DateTimeFormat.prototype, 'format')!;
+    Object.defineProperty(Intl.DateTimeFormat.prototype, 'format', { ...descriptor, get(this: Intl.DateTimeFormat) {
+      const original = descriptor.get!.call(this);
+      return this.resolvedOptions().year ? () => '23 Nov 2026 at 13:30' : original;
+    } });
+    try {
+      const model = notificationModel(activity(offer('new', 'active', '2026-11-23T13:30:00Z')), display);
+      expect(model.rows[0].detail).toBe('Reserved for you. Respond by 13:30.');
+    } finally {
+      Object.defineProperty(Intl.DateTimeFormat.prototype, 'format', descriptor);
+    }
+  });
+  it.each([
+    ['2026-11-23T13:30:00Z', '13:30'],
+    ['2026-07-01T12:30:00Z', '13:30'],
+    ['2026-11-23T00:05:00Z', '00:05'],
+    ['2026-07-01T23:05:00Z', '00:05'],
+  ])('keeps London HH:MM for the seasonal expiry %s', (expiresAt, deadline) => {
+    expect(notificationDeadline(offer('new', 'active', expiresAt))).toBe(`Respond by ${deadline}`);
+  });
+  it('omits deadlines for inactive offers and missing or invalid expiry values', () => {
+    for (const state of ['accepted', 'expired', 'decision-pending']) expect(notificationDeadline(offer('new', state))).toBeNull();
+    for (const expiresAt of [null, undefined, '', 'not-a-date']) expect(notificationDeadline({ ...offer('new'), expiresAt })).toBeNull();
   });
   it('deduplicates and caps six current/expired offers, newest expired first; ignores other history', () => {
     const rows = notificationRows(activity(offer('new'), [offer('new', 'expired'), offer('accepted', 'accepted'),

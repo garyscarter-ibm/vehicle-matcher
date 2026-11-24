@@ -1,10 +1,13 @@
 import { NotificationModel, NotificationRow } from '../kit/notification-bell.types';
 import { isApprovedActivityThumbnail } from './activity-image-registry';
-import { formatActivityTime, respondBy } from './activity.copy';
+import { respondBy } from './activity.copy';
 import { ActivityOffer, ActivityOfferDisplay, ActivityProjection } from './activity.types';
 
+const deadlineTime = new Intl.DateTimeFormat('en-GB', {
+  hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: 'Europe/London',
+});
 export const notificationDeadline = (offer: ActivityOffer): string | null => respondBy(offer)
-  ? `Respond by ${formatActivityTime(offer.expiresAt!).split(', ').pop()}` : null;
+  ? `Respond by ${deadlineTime.format(new Date(offer.expiresAt!))}` : null;
 const timeOf = (value: string | null | undefined): number => value && Number.isFinite(Date.parse(value)) ? Date.parse(value) : -Infinity;
 const localAction = (href: string | undefined): href is string => typeof href === 'string' && href.startsWith('/gcsp/') && !href.startsWith('//');
 
