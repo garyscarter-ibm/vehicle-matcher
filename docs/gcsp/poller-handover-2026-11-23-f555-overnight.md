@@ -25,3 +25,14 @@ F555 AC8 and F548 AC6 human pair verdicts remain pending in the prepared same-st
 The initial resumed Jira sync fetched44delta/268openBugs/269audit rows and99origin witnesses with complete pagination/types/attachments. All14cached attachment files are ready, none missing. The project-owned older audit helper lacks the new `--plan/--complete` switches; its supported full audit with the saved complete pages checked260 and needs no derived parent write. Seven previously known unparented Bugs remain525/527/528/530/534/545/547; do not guess their Epics. Claimed-record differences were reporter/date, completion checkmarks and one Result-heading parsing boundary, not new acceptance scope. Evidence lives under `jira-initial/` in the retained run root.
 
 At each pass, reconcile current results, renew the registration, pull through the helper, check mail and the live queue, finish owned work, process merges and covering suites, and retry only applicable archived cleanup. An empty queue does not end the recurring poller. Current Goal is absent; continue active native work in this chat and use at most one thread heartbeat only at a genuinely idle boundary with no active children/results. Do not create an unrequested Goal. Stop or pause only on a human instruction or the shared handover boundary, preserving unfinished work and disarming this root's recovery before releasing registration.
+
+
+## Checkpoint — 24 November, after midnight
+
+F576/577/578 integrated and pushed at `817182c05eb8b4fba1c22cb852d9226737ddeb4b`; independent AC review passed and saved151pass/4authorised-report-only failures preserved. Every209tested input still matches; root cleanup audit passed. All three remain pending covering acceptance.
+
+Canonical Node first envelope refused before npm with differing inherited NODE_OPTIONS, zero tests, cleanup independently clear. Fresh root-authored launcher `launch-final-node-20261124a.py` pins the exact planned flags and fresh namespaces, unchanged reviewed adapter/plan; retained Baymax will execute once when the shared heavy slot is free. Preserve live peer slot ownership and renew our node lease while waiting.
+
+Reviewed Java diagnostic candidate `ef8aa9a97fc1038eef9b1928a5bfdd18bfcd5a50` is pushed on `dev/batch-java-diagnostic-20261123`; all1462API tree entries match817182c05. Exact manual `default-profile` run `45294821482` activated successfully. Hiccup monitors and diagnoses; no base merge or canonical dispatch yet. Supplemental Kronk review covers final workflow hash `e7b93b2da0c077c75360905a6d12b1a9d805794c1eae86a862d03871f2ec35da`.
+
+Lord Business reconciles all saved WEB inputs/runtime/dependencies without rerunning. Final registered browser suite remains required on final Java. Original human F555AC8/F548AC6 and all37Node-report-only boundaries remain unchanged.
