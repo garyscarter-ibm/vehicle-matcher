@@ -11983,15 +11983,16 @@
       "type": "Bug",
       "status": "In Progress",
       "original_status": "In Progress",
-      "observed_at": "2026-11-24T02:08:51Z",
+      "observed_at": "2026-11-24T02:29:35Z",
       "branch": "dev/DEV-2026-11-24-vesper-004",
-      "evidence": "Source664563f88;31-group discovery and collector controls reviewed; claim-file evidence checkpoint; original canonical AC pending",
+      "evidence": "Source664563f88; candidate validation/review passed; AC2/3 scoped evidence in receipt1795486981; root canonical AC1 complete-run outcome/AC4 pending; Result partial",
       "slices": [
         {
           "id": "candidate",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Bound package fork lifetime and prove selection/restart contracts",
-          "observed_at": "2026-11-24T01:07:29Z"
+          "observed_at": "2026-11-24T02:29:34Z",
+          "evidence": "Source664563f88;31-group selection;163case brief/presenter +10focused cases; distinct actualJava forks and both handoffs; independent Cuthbert runtime review passed; exact receipt1795486981; full canonical pending root"
         },
         {
           "id": "integration",
@@ -12005,28 +12006,28 @@
           "name": "Sniffles",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-24T02:08:51.442403+00:00",
-          "expires_at": "2026-11-24T05:08:51.442403+00:00",
-          "source": "01a20b15-abad-7e83-94ee-dcd194bfcb9e native active; source/evidence review complete",
-          "status": "waiting for shared heavy queue; scoped runtime pending"
+          "observed_at": "2026-11-24T02:29:35.031364+00:00",
+          "expires_at": "2026-11-24T02:29:35.031364+00:00",
+          "source": "01a20b15-abad-7e83-94ee-dcd194bfcb9e native active; runtime authorised after independent slot read",
+          "status": "scoped candidate delivered; worker stopped; canonical integration pending"
         },
         {
           "name": "Mulan",
           "harness": "codex",
           "role": "implementer",
-          "observed_at": "2026-11-24T02:08:51.442403+00:00",
-          "expires_at": "2026-11-24T02:08:51.442403+00:00",
-          "source": "01a20b18-acad-7c72-86d9-9093c2cf0223 native completed checkpoint",
-          "status": "selection and collector repair complete; idle before runtime"
+          "observed_at": "2026-11-24T02:29:35.031364+00:00",
+          "expires_at": "2026-11-24T02:29:35.031364+00:00",
+          "source": "01a20b18-acad-7c72-86d9-9093c2cf0223 native followup accepted after shared lane released",
+          "status": "scoped candidate delivered; worker stopped; canonical integration pending"
         },
         {
           "name": "Cuthbert",
           "harness": "codex",
           "role": "source/spec reviewer",
-          "observed_at": "2026-11-24T02:08:51.442403+00:00",
-          "expires_at": "2026-11-24T02:08:51.442403+00:00",
+          "observed_at": "2026-11-24T02:29:35.031364+00:00",
+          "expires_at": "2026-11-24T02:29:35.031364+00:00",
           "source": "01a20b20-638b-7aa1-ac0c-d6870b9d720c native completed review",
-          "status": "source/scoped selection/collector controls passed; runtime pending"
+          "status": "scoped candidate delivered; worker stopped; canonical integration pending"
         },
         {
           "name": "Marvin the Martian",
