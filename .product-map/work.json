@@ -12276,80 +12276,6 @@
       "observed_at": "2026-11-24T04:38:51Z"
     },
     {
-      "id": "FUCQ-589",
-      "title": "Planning journey expects a cart hold to survive advancing its authoritative expiry clock",
-      "type": "Bug",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "Russell Gowers",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-589",
-      "branch": "dev/DEV-2026-11-23-vesper-018",
-      "unsliced": false,
-      "native_updated_at": "2026-11-23T23:20:42.177-0600",
-      "native_status_observed_at": null,
-      "note": "Scoped technical AC1-3 met on c22de077d; 175 planning +56 wiring=231 PASS, plus 3 ClaimRunClock. Full batch INCOMPLETE: later F547 policy failure,410 methods unrun. Root integration/green covering pending; no acceptance inferred. Native In Progress from retained readback; its collection timestamp is unavailable. This local work observation does not freshen Jira.",
-      "workers": [
-        {
-          "name": "Cuthbert",
-          "role": "story-lead",
-          "harness": "codex",
-          "observed_at": "2026-11-24T07:36:17.196786+00:00",
-          "expires_at": "2026-11-24T07:36:17.196786+00:00",
-          "status": "Running at observation: final Result/map handoff; no continuing claim asserted",
-          "source": "Actual collaboration.list_agents /root/sniffles/cuthbert observation; expiry bounds handoff"
-        },
-        {
-          "name": "Mulan",
-          "role": "implementer",
-          "harness": "codex",
-          "observed_at": "2026-11-24T07:36:17.196786+00:00",
-          "expires_at": "2026-11-24T07:36:17.196786+00:00",
-          "status": "Completed: implementation and exact46-case wiring completion; cleanup verified",
-          "source": "Actual collaboration.list_agents /root/sniffles/mulan completed observation"
-        },
-        {
-          "name": "Marvin the Martian",
-          "role": "reviewer",
-          "harness": "codex",
-          "observed_at": "2026-11-24T07:36:17.196786+00:00",
-          "expires_at": "2026-11-24T07:36:17.196786+00:00",
-          "status": "Completed: independent source/spec/security/runtime/resource review passed",
-          "source": "Actual collaboration.list_agents /root/sniffles/marvin_the_martian completed observation"
-        }
-      ],
-      "observed_at": "2026-11-24T07:36:18Z",
-      "slices": [
-        {
-          "id": "ac1",
-          "status": "complete",
-          "title": "Advanced authority and smallest private Paula collection window",
-          "observed_at": "2026-11-24T07:36:17Z",
-          "evidence": "Exact c22 source/real OIDC+PG17 canonical 45341810266: Order6 PASS with actual172800 advance before authority, minimal canonical admissible private Paula window and ready account. canonical-runtime-reconciliation.json SHA7f50213a; independent Marvin passed."
-        },
-        {
-          "id": "ac2",
-          "status": "complete",
-          "title": "Live hold lineage and preserved expiry semantics",
-          "observed_at": "2026-11-24T07:36:18Z",
-          "evidence": "All 8 original journey identities and 175 planning PASS; Order6 real claim/quote/hold lineage and live expiry/read assertions,18 supply guards and 3 ClaimRunClock HTTP PASS. Source342e9480/2d608c28 unchanged; independent review passed."
-        },
-        {
-          "id": "ac3",
-          "status": "complete",
-          "title": "Public release, exact restoration and unchanged Sam journey",
-          "observed_at": "2026-11-24T07:36:18Z",
-          "evidence": "Order6 PASS includes public release200/no heldFor, exact Paula restoration with monotonic version and unchanged Sam input/version; original Sam Order7 byte-identical and PASS. Fresh46startup +canonical 10 wiring PASS; cleanup and review passed."
-        },
-        {
-          "id": "integration",
-          "status": "in-progress",
-          "title": "Root integration and green canonical batch covering",
-          "observed_at": "2026-11-24T07:36:18Z",
-          "evidence": "Root owns merge and complete-input reconciliation/green canonical covering. Tested c22 API0bd4 preserved by metadata-only ffefd322 refresh. Full canonical 45341810266 INCOMPLETE:303 reports/1886 cases,1883pass/1later F547 policy fail/2originalskips;410 methods unrun. Native In Progress; no acceptance inferred."
-        }
-      ]
-    },
-    {
       "id": "FUCQ-588",
       "title": "Notification deadline shows the full date in WebKit instead of HH:MM",
       "type": "Bug",
@@ -12394,6 +12320,127 @@
         }
       ],
       "observed_at": "2026-11-24T07:42:33Z"
+    },
+    {
+      "id": "FUCQ-547",
+      "title": "GregPolicyHttpTest presentation-outcomes golden test fails on gcsp-poc-dev",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-547",
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-22-vesper-022",
+      "unsliced": false,
+      "observed_at": "2026-11-24T07:56:49Z",
+      "note": "Existing Bug/originF448/parent432 reconciled. Reviewed isolated test fixture source published32e47a96 and refreshedf05765e6; original method-alone/package101 and fullgolden criteria retained. Runtime pending; original date/price/revision symptoms retained. No acceptance inferred.",
+      "workers": [
+        {
+          "name": "Lord Business",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-24T07:56:49.373243+00:00",
+          "expires_at": "2026-11-24T08:16:49.373243+00:00",
+          "source": "Retained task /root/lord_business live message: reviewed source plus owned runtime-envelope corrections, no runtime yet",
+          "status": "Active F547 scoped repair/validation lead; Sol/high requested and selected"
+        }
+      ],
+      "slices": [
+        {
+          "id": "isolated-policy-regression",
+          "title": "Deterministic full golden in method-alone and policy package",
+          "status": "in-progress",
+          "observed_at": "2026-11-24T07:56:49.373243+00:00",
+          "evidence": "Source/spec/security reviewed source checkpoint; original101policy identities frozen, runtime pending."
+        },
+        {
+          "id": "golden-fixture-contract",
+          "title": "Keep every consumed field with explicit clock and predecessor fixture",
+          "status": "in-progress",
+          "observed_at": "2026-11-24T07:56:49.373243+00:00",
+          "evidence": "Golden unchanged; isolated test fixture source reviewed. Actual original alone and package results pending."
+        },
+        {
+          "id": "integration",
+          "title": "Reviewed integration and covering Java batch",
+          "status": "not-started",
+          "observed_at": "2026-11-24T07:56:49.373243+00:00",
+          "evidence": "Root next changed-source canonical plan retains410previouslyunrunmethods/eightgroups. Fullbatch stillINCOMPLETE."
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-589",
+      "title": "Planning journey expects a cart hold to survive advancing its authoritative expiry clock",
+      "type": "Bug",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-589",
+      "branch": "dev/DEV-2026-11-23-vesper-018",
+      "unsliced": false,
+      "native_updated_at": "2026-11-24T02:04:00.129-0600",
+      "native_status_observed_at": null,
+      "note": "All3originaltechnicalACmet; scoped231+3passed, independentreviewpassed, integrated95de5d418/cleanupcomplete. NativeInReviewconfirmed; fullJava greenbatch stillrequired beforecollaboratoracceptance. NoDoneorfullbatchpassinferred.",
+      "workers": [
+        {
+          "name": "Cuthbert",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-24T07:36:17.196786+00:00",
+          "expires_at": "2026-11-24T07:36:17.196786+00:00",
+          "status": "Scoped handoff complete; integrated and In Review, acceptance awaits green batch",
+          "source": "Actual collaboration.list_agents /root/sniffles/cuthbert observation; expiry bounds handoff"
+        },
+        {
+          "name": "Mulan",
+          "role": "implementer",
+          "harness": "codex",
+          "observed_at": "2026-11-24T07:36:17.196786+00:00",
+          "expires_at": "2026-11-24T07:36:17.196786+00:00",
+          "status": "Scoped handoff complete; integrated and In Review, acceptance awaits green batch",
+          "source": "Actual collaboration.list_agents /root/sniffles/mulan completed observation"
+        },
+        {
+          "name": "Marvin the Martian",
+          "role": "reviewer",
+          "harness": "codex",
+          "observed_at": "2026-11-24T07:36:17.196786+00:00",
+          "expires_at": "2026-11-24T07:36:17.196786+00:00",
+          "status": "Scoped handoff complete; integrated and In Review, acceptance awaits green batch",
+          "source": "Actual collaboration.list_agents /root/sniffles/marvin_the_martian completed observation"
+        }
+      ],
+      "observed_at": "2026-11-24T08:04:47Z",
+      "slices": [
+        {
+          "id": "ac1",
+          "status": "complete",
+          "title": "Advanced authority and smallest private Paula collection window",
+          "observed_at": "2026-11-24T07:36:17Z",
+          "evidence": "Exact c22 source/real OIDC+PG17 canonical 45341810266: Order6 PASS with actual172800 advance before authority, minimal canonical admissible private Paula window and ready account. canonical-runtime-reconciliation.json SHA7f50213a; independent Marvin passed."
+        },
+        {
+          "id": "ac2",
+          "status": "complete",
+          "title": "Live hold lineage and preserved expiry semantics",
+          "observed_at": "2026-11-24T07:36:18Z",
+          "evidence": "All 8 original journey identities and 175 planning PASS; Order6 real claim/quote/hold lineage and live expiry/read assertions,18 supply guards and 3 ClaimRunClock HTTP PASS. Source342e9480/2d608c28 unchanged; independent review passed."
+        },
+        {
+          "id": "ac3",
+          "status": "complete",
+          "title": "Public release, exact restoration and unchanged Sam journey",
+          "observed_at": "2026-11-24T07:36:18Z",
+          "evidence": "Order6 PASS includes public release200/no heldFor, exact Paula restoration with monotonic version and unchanged Sam input/version; original Sam Order7 byte-identical and PASS. Fresh46startup +canonical 10 wiring PASS; cleanup and review passed."
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Root integration and green canonical batch covering",
+          "observed_at": "2026-11-24T07:36:18Z",
+          "evidence": "Root owns merge and complete-input reconciliation/green canonical covering. Tested c22 API0bd4 preserved by metadata-only ffefd322 refresh. Full canonical 45341810266 INCOMPLETE:303 reports/1886 cases,1883pass/1later F547 policy fail/2originalskips;410 methods unrun. Native In Progress; no acceptance inferred."
+        }
+      ]
     }
   ]
 }
