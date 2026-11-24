@@ -3469,3 +3469,15 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-24 08:04 UTC · usget-vesper · DL-20261124-F555-09 · Development status and acceptance gate conflated
 
 - Userqueried whycompleted589/547stillInProgress. F589all3technicalAC/review/merge95de5d418/cleanupcomplete; roothadheldnativeInProgressforremainingfullbatch. ExistingworkflowdistinguishesInReviewdevelopmentfromacceptedDone. Rootcorrectedactualnative589toInReview/transition3/comment5066169, refreshedmapandstaleResultintegrationlines; greenbatchacceptancegatepreserved. F547focused1/1+101/101green butfinalreview/mergepending, soInProgresscorrect. Overnightwordingcorrectedtoimplemented/focusedpassingversuscompletedelivery. Proposedimprovement: expose development/integration/batch/acceptance asdistinctevidencedfacts; nonecreatesanextraunapprovedstatusgate.
+
+### 2026-11-24 08:20 UTC · usget-vesper · DL-20261124-F555-09 · Both development states reconciled
+
+- F547's independent source/spec/security/runtime review passed, source merged and pushed at `717148a079`, and archive/branch cleanup completed at `fb7f834fb`. Native transition 3/comment 5066172 put it In Review at 08:08 UTC. Fresh native reads confirm both F547 and F589 In Review; the product map now records the completed technical slices, reviewed merges, expired workers and pending covering batch separately. Canonical Java run 45353840595 is running, not passed. The development-status correction does not infer acceptance or Done.
+
+### 2026-11-24 08:20 UTC · usget-vesper · DL-20261124-F555-01 · F547 registry sampling limitation preserved
+
+- Independent review found that the executed F547 envelope traversed the outer `databases.json` wrapper instead of its inner `databases` rows. Its historical preflight/final registry predicate is invalid, and live owned-registry observations are unobserved, not zero. Original runner and receipts remain unchanged. The addendum `722c0c52` and root audit `851a36d8` independently verify current native fixed-database/owned-registry absence, 17 PID/start identities, four groups, scratch/target/tokens absence and preserved shared PostgreSQL. Raw XML and 1/1 plus 101/101 results remain valid; no test rerun was needed. Future runner `7d79f827` corrects the three traversals but is unexecuted. Proposed improvement: decode registry contracts through the authoritative reader and record unavailable observations explicitly; this corrects existing resource evidence without adding an acceptance gate.
+
+### 2026-11-24 08:20 UTC · usget-vesper · DL-20261124-F555-08 · Refresh attribution discrepancy retained
+
+- F547 refresh `f05765e6` used the helper's default Claude Code trailer because the lead had not set `sg.ATTRIBUTION`; published history is preserved. Source, tests and final reviewed Result are unchanged by attribution. Subsequent root refresh/merge/checkpoint messages carry the literal Codex trailer. The helper's separate commit and merge attribution paths remain an observed interface issue, not a framework change in this Story.
