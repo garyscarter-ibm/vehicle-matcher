@@ -3500,3 +3500,16 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-24 08:54 UTC · usget-vesper · DL-20261124-F555-01 · Lifecycle reconciled at human wind-down
 
 - All children completed; final retained runs/collectors have teardown evidence, suite leases and batch worktrees released. Recovery disabled/stopped before poller registration release, scoped statuses none and exact watcher95368 absent. Original partial F555 claim/worktree remains, original human F555AC8/F548AC6 ledger rows blank; screenshot23Novsource/provenance preserved. Existing fullNodeRED/exact37F555-only ruling and WebKitRED/actualSafari-unproved remain explicit. Session takes no further work. This is observed shutdown of this run, not proof of automatic recovery or statistical flake elimination; no new acceptance gate or framework implementation.
+
+
+### 2026-11-24 23:56 UTC · usget-sorrel · DL-20261124-SORREL-01 · Stop an auxiliary startup overrun
+
+- Greeting helper PID5749 ran over two minutes with no output or child activity. Root stopped and joined only that owned process (exit143); its selected setup was already recorded in both allowed local ledgers. Later cross-project ledger propagation remains unverified; no foreign ledger cleanup or helper repair attempted. Source greeting.py performs unbounded ledger locks and propagates to known projects. Proposed improvement: bounded locking and explicit allowed-ledger scope so auxiliary greeting work cannot delay product delivery or enter excluded storage.
+
+### 2026-11-24 23:56 UTC · usget-sorrel · DL-20261124-SORREL-02 · Note acknowledgement is already its answer
+
+- The documented ack/show/reply sequence produced “answered: nothing to reply to” for MSG-2026-11-22-vesper-013. Source ack() answers a single-addressee note; reply() correctly refuses an answered thread. Runner did not retry that reply, completed the remaining four note acknowledgements and one chat, and verified helper commits pushed at816c9a289. Applied mitigation: inspect post-ack state before replying. Proposed framework improvement: document note auto-answer semantics in stepA; no code change or new gate.
+
+### 2026-11-24 23:56 UTC · usget-sorrel · DL-20261123-F555-13 · Existing-branch refresh again aborted on overlap
+
+- Resuming F552 on its preserved clean branch, supported refresh aborted conflicts in the map, catalogue, account integration/gallery and preferences sources; no source was dropped. Lead reports helper has no manual-resolution mode. Current action is a named-path source reconciliation checkpoint followed by one supported refresh retry; outcome remains pending. Proposed improvement: an explicit helper-supported conflict-resolution lifecycle, preserving both sides and existing ownership rather than forcing raw Git or framework repair during product work.
