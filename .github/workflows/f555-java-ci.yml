@@ -7,13 +7,22 @@ on:
     paths:
       - .github/workflows/f555-java-ci.yml
   workflow_dispatch:
+    inputs:
+      mode:
+        description: Verification scope (diagnostic is not a canonical batch)
+        required: true
+        default: canonical
+        type: choice
+        options:
+          - canonical
+          - default-profile
 
 permissions:
   contents: read
 
 jobs:
   canonical-java:
-    name: Canonical Java suite
+    name: ${{ github.event_name == 'push' && 'Canonical Java suite' || inputs.mode == 'canonical' && 'Canonical Java suite' || inputs.mode == 'default-profile' && 'Default profile diagnostic (not canonical)' || 'Invalid scope (refused)' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     env:
@@ -51,17 +60,20 @@ jobs:
         with:
           node-version: '24.22.3'
 
-      - name: Run the owned, resource-bounded Java suite
+      - name: Run the owned Java scope (${{ github.event_name == 'push' && 'canonical' || inputs.mode || 'invalid' }})
         timeout-minutes: 85
         shell: bash
         env:
           PG_SERVICE_ID: ${{ job.services.postgres.id }}
+          F555_EVENT_NAME: ${{ github.event_name }}
+          F555_REQUESTED_MODE: ${{ inputs.mode }}
         run: |
           python3 - <<'PY'
           import collections
           import json
           import os
           from pathlib import Path
+          import re
           import shutil
           import signal
           import subprocess
@@ -79,16 +91,44 @@ jobs:
           SAMPLE_SECONDS = 5
           DISK_SAMPLE_SECONDS = 60
           CHECKPOINT_SECONDS = 300
-          COMMAND_SECONDS = 80 * 60
+          def select_scope(event, requested):
+              if event == "push":
+                  mode = "canonical"
+              elif event == "workflow_dispatch" and requested in ("canonical", "default-profile"):
+                  mode = requested
+              else:
+                  raise ValueError("unknown Java verification event or mode; launch refused")
+              if mode == "canonical":
+                  return mode, ["./mvnw", "-B", "clean", "verify"], 80 * 60
+              return mode, ["./mvnw", "-B", "clean", "test", "-Dtest=gcsp.api.DefaultProfileTest"], 600
+
+          scope_error = None
+          try:
+              mode, command_argv, COMMAND_SECONDS = select_scope(
+                  os.environ.get("F555_EVENT_NAME", ""), os.environ.get("F555_REQUESTED_MODE", "")
+              )
+          except ValueError as error:
+              mode, command_argv, COMMAND_SECONDS = "invalid", [], 0
+              scope_error = str(error)
+          scope = {"mode": mode, "canonical_inventory": mode == "canonical",
+                   "label": "Canonical Java suite" if mode == "canonical" else
+                            "Default profile diagnostic (not a canonical batch)" if mode == "default-profile"
+                            else "Invalid scope (launch refused)"}
           LOG_TAIL_CAP = 256 * 1024
           CONSOLE_CAP = 64 * 1024
           CONSOLE_EVENT_CAP = 2048
           SKIP_DETAIL_CAP = 128 * 1024
+          FAILED_IDENTITY_CAP = 128 * 1024
+          FAILURE_SAMPLE_CAP = 256 * 1024
+          FAILURE_CLASS_CAP = 16 * 1024
+          PROCESS_TELEMETRY_CAP = 512 * 1024
 
           run_id = os.environ["GITHUB_RUN_ID"]
           attempt = os.environ["GITHUB_RUN_ATTEMPT"]
           sha = os.environ["GITHUB_SHA"]
           prefix = f"f555-java-{run_id}-{attempt}"
+          if mode != "canonical":
+              prefix += "-" + mode
           runner_temp = Path(os.environ["RUNNER_TEMP"]).resolve()
           workspace = Path(os.environ["GITHUB_WORKSPACE"]).resolve()
           api_dir = workspace / "services/gcsp-api"
@@ -199,6 +239,54 @@ jobs:
               return [row for row in rows.values()
                       if row["pgid"] == group and not row["stat"].startswith("Z")]
 
+          def sanitize_diagnostic(value):
+              text = str(value)
+              text = re.sub(r"-----BEGIN [^-]*PRIVATE KEY-----.*?(?:-----END [^-]*PRIVATE KEY-----|\Z)",
+                            "[private key redacted]", text, flags=re.S)
+              text = re.sub(r"(?i)([a-z][a-z0-9+.-]*://)[^/\s@]+@", r"\1[redacted]@", text)
+              sensitive = re.compile(
+                  r"(?i)(?<![A-Za-z0-9])(?:authorization|bearer|password|passwd|secret|credentials?|token|"
+                  r"api[_. -]?key|private[_. -]?key|signing[_. -]?jwk|rotation[_. -]?jwk)(?![A-Za-z0-9])|"
+                  r"\b[A-Za-z0-9_.-]*(?:secret|password|credential|token|api[_.-]?key)[A-Za-z0-9_.-]*\s*[:=]|"
+                  r"\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]*|"
+                  r"\\?[\"'](?:kty|d|p|q|dp|dq|qi)\\?[\"']\s*:"
+              )
+              return "\n".join("[sensitive diagnostic line redacted]" if sensitive.search(line) else line
+                               for line in text.splitlines())
+
+          def encoded_size(value):
+              return len(json.dumps(value, ensure_ascii=True, separators=(",", ":")).encode("utf-8"))
+
+          def bounded_diagnostic(fields, cap):
+              entry = {key: sanitize_diagnostic(value) for key, value in fields.items()}
+              truncated = set()
+              entry["truncated_fields"] = []
+              while encoded_size(entry) > cap:
+                  key = max(fields, key=lambda name: len(entry[name]))
+                  entry[key] = entry[key][:len(entry[key]) // 2]
+                  truncated.add(key)
+                  entry["truncated_fields"] = sorted(truncated)
+              return entry
+
+          def retain_process_sample(rows, maven_pids, postgres_pids, elapsed):
+              telemetry = monitor["process_telemetry"]
+              sample = {"elapsed_seconds": int(elapsed), "processes": [], "omitted_processes": 0}
+              for pid in sorted(maven_pids | postgres_pids):
+                  row = rows[pid]
+                  entry = {key: row[key] for key in ("pid", "ppid", "pgid", "start", "rss")}
+                  entry["comm"] = sanitize_diagnostic(Path(row["comm"]).name)[:128]
+                  entry["owner"] = "maven" if pid in maven_pids else "postgres"
+                  if encoded_size(sample) + encoded_size(entry) + 1 <= 32 * 1024:
+                      sample["processes"].append(entry)
+                  else:
+                      sample["omitted_processes"] += 1
+              size = encoded_size(sample) + 1
+              if telemetry["bytes"] + size <= PROCESS_TELEMETRY_CAP:
+                  telemetry["samples"].append(sample)
+                  telemetry["bytes"] += size
+              else:
+                  telemetry["omitted_samples"] += 1
+
           def report_validation_issues(summary):
               issues = []
               if summary.get("status") != "reports-present":
@@ -221,12 +309,22 @@ jobs:
                   issues.append("Surefire reports contain failures or errors")
               if summary.get("skipped_details_omitted", 0):
                   issues.append("bounded skipped-test details are incomplete")
+              if mode == "default-profile" and (
+                      summary.get("testcase_count") != 10 or summary.get("diagnostic_case_count") != 10
+                      or summary.get("executed_tests") != 10 or summary.get("skipped", 0)):
+                  issues.append("default-profile diagnostic requires its ten unskipped cases")
               return issues
 
           def write_summary():
               reports = sorted((target / "surefire-reports").glob("TEST-*.xml"))
               totals = {"tests": 0, "failures": 0, "errors": 0, "skipped": 0}
               failed_cases = []
+              failed_identities = []
+              failed_identity_bytes, failed_identity_omitted = 2, 0
+              failure_samples = []
+              sampled_classes = set()
+              failure_sample_bytes, failure_sample_omitted = 2, 0
+              diagnostic_case_count = 0
               skipped_cases = []
               skipped_bytes = 0
               skipped_omitted = 0
@@ -249,20 +347,45 @@ jobs:
                       for case in (node for node in root.iter()
                                    if node.tag.rsplit("}", 1)[-1] == "testcase"):
                           testcase_count += 1
+                          diagnostic_case_count += case.attrib.get("classname") == "gcsp.api.DefaultProfileTest"
                           skips = []
                           for detail in case:
                               kind = detail.tag.rsplit("}", 1)[-1]
                               if kind in ("failure", "error"):
                                   failure_details += kind == "failure"
                                   error_details += kind == "error"
+                                  identity = bounded_diagnostic({
+                                      "class": case.attrib.get("classname", ""),
+                                      "test": case.attrib.get("name", ""), "kind": kind,
+                                      "report": report.name
+                                  }, 2048)
                                   if len(failed_cases) < 20:
-                                      failed_cases.append({
-                                          "class": case.attrib.get("classname", "")[:512],
-                                          "test": case.attrib.get("name", "")[:512], "kind": kind
-                                      })
+                                      failed_cases.append({key: identity[key] for key in ("class", "test", "kind")})
+                                  size = encoded_size(identity) + 1
+                                  if failed_identity_bytes + size <= FAILED_IDENTITY_CAP:
+                                      failed_identities.append(identity)
+                                      failed_identity_bytes += size
+                                  else:
+                                      failed_identity_omitted += 1
+                                  class_name = case.attrib.get("classname", "")
+                                  if class_name not in sampled_classes:
+                                      sampled_classes.add(class_name)
+                                      sample = bounded_diagnostic({
+                                          "class": class_name, "test": case.attrib.get("name", ""),
+                                          "kind": kind, "report": report.name,
+                                          "type": detail.attrib.get("type", ""),
+                                          "message": detail.attrib.get("message", ""),
+                                          "body": "".join(detail.itertext()).strip()
+                                      }, FAILURE_CLASS_CAP)
+                                      size = encoded_size(sample) + 1
+                                      if failure_sample_bytes + size <= FAILURE_SAMPLE_CAP:
+                                          failure_samples.append(sample)
+                                          failure_sample_bytes += size
+                                      else:
+                                          failure_sample_omitted += 1
                               elif kind == "skipped":
-                                  message = detail.attrib.get("message", "")
-                                  detail_text = "".join(detail.itertext()).strip()
+                                  message = sanitize_diagnostic(detail.attrib.get("message", ""))
+                                  detail_text = sanitize_diagnostic("".join(detail.itertext()).strip())
                                   skips.append("\n".join(part for part in (message, detail_text)
                                                          if part) or detail.attrib.get("type", "")
                                                or "No reason recorded in Surefire XML")
@@ -284,9 +407,11 @@ jobs:
                               executed_tests += 1
                       parsed_reports += 1
               except Exception as error:
-                  parse_issue = type(error).__name__ + ": " + str(error)[:300]
+                  parse_issue = type(error).__name__ + ": " + sanitize_diagnostic(str(error))[:300]
               summary = {
                   "source_sha": sha,
+                  "scope": scope,
+                  "diagnostic_case_count": diagnostic_case_count,
                   "status": ("reports-parse-error" if parse_issue else
                              "reports-present" if reports else "no-surefire-reports"),
                   "report_count": len(reports), "parsed_report_count": parsed_reports,
@@ -298,11 +423,22 @@ jobs:
                   "skipped_details_omitted": skipped_omitted,
                   "first_failures": failed_cases, "parse_issue": parse_issue
               }
+              summary["failure_capture"] = {
+                  "state": "incomplete" if parse_issue else "no-reports" if not reports else
+                           "complete-with-omissions" if failed_identity_omitted or failure_sample_omitted else "complete",
+                  "order": "sorted report filename, then testcase order; not execution chronology",
+                  "failed_identities": failed_identities, "identity_bytes": failed_identity_bytes,
+                  "identity_cap_bytes": FAILED_IDENTITY_CAP, "identities_omitted": failed_identity_omitted,
+                  "class_samples": failure_samples, "sample_bytes": failure_sample_bytes,
+                  "sample_cap_bytes": FAILURE_SAMPLE_CAP, "per_class_cap_bytes": FAILURE_CLASS_CAP,
+                  "sample_classes_omitted": failure_sample_omitted,
+                  "issue": parse_issue
+              }
               issues = report_validation_issues(summary)
               summary["validation"] = {"valid": not issues, "issues": issues}
               atomic_json(summary_path, summary)
               with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as output:
-                  output.write("## Java Surefire summary\n\n")
+                  output.write("## " + scope["label"] + " Surefire summary\n\n")
                   output.write(f"- Source: {sha}\n")
                   output.write(f"- Reports: {len(reports)}; parsed: {parsed_reports}\n")
                   output.write(
@@ -324,6 +460,8 @@ jobs:
 
           # Preflight and externally persist ownership before creating the run-owned root.
           preflight_errors = []
+          if scope_error:
+              preflight_errors.append(scope_error)
           try:
               memory = memory_info()
           except Exception as error:
@@ -360,6 +498,7 @@ jobs:
               "run_id": run_id,
               "attempt": attempt,
               "source_sha": sha,
+              "scope": scope,
               "runner": {
                   "label": "ubuntu-24.04",
                   "memory_total_bytes": memory.get("MemTotal"),
@@ -408,7 +547,7 @@ jobs:
                   raise RuntimeError("external run artifact path already exists")
           atomic_json(receipt_path, receipt)
           atomic_json(summary_path, {
-              "source_sha": sha, "status": "not-run", "report_count": 0,
+              "source_sha": sha, "scope": scope, "status": "not-run", "report_count": 0,
               "tests": 0, "failures": 0, "errors": 0, "skipped": 0,
               "first_failures": [], "parse_issue": None
           })
@@ -450,6 +589,8 @@ jobs:
               "peak_scratch_plus_target_bytes": 0,
               "minimum_free_disk_bytes": disk_free_start,
               "checkpoints": [],
+              "process_telemetry": {"samples": [], "bytes": 2,
+                                    "cap_bytes": PROCESS_TELEMETRY_CAP, "omitted_samples": 0},
               "last_sample": None
           }
           status = "starting"
@@ -663,7 +804,7 @@ jobs:
               if interrupt_requested:
                   raise RuntimeError("supervisor interrupted before Maven launch")
               process = subprocess.Popen(
-                  ["./mvnw", "-B", "clean", "verify"],
+                  command_argv,
                   cwd=str(api_dir), env=child_env,
                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                   start_new_session=True, bufsize=0
@@ -682,7 +823,7 @@ jobs:
                   reader_result["state"] = "running"
               reader.start()
               receipt["maven"] = {
-                  "argv": ["./mvnw", "-B", "clean", "verify"],
+                  "argv": command_argv,
                   "pid": process.pid, "pgid": process.pid, "process_start": process_start,
                   "started_at_unix": time.time(), "status": "running"
               }
@@ -704,6 +845,7 @@ jobs:
                   try:
                       rows = process_snapshot()
                       rss, maven_pids, postgres_pids = measure(rows)
+                      retain_process_sample(rows, maven_pids, postgres_pids, elapsed)
                       monitor["samples"] += 1
                       monitor["last_sample"] = {
                           "elapsed_seconds": int(elapsed), "inclusive_rss_bytes": rss,
@@ -736,7 +878,7 @@ jobs:
                       if rss > RSS_CAP:
                           abort_reason = "inclusive RSS exceeded the 12 GiB supervisor cap"
                       if elapsed >= COMMAND_SECONDS:
-                          abort_reason = "80-minute command deadline reached"
+                          abort_reason = f"{COMMAND_SECONDS}-second {mode} command deadline reached"
                       if abort_reason:
                           status = "aborted-by-budget"
                           break
@@ -774,6 +916,7 @@ jobs:
                   try:
                       rows = process_snapshot()
                       final_rss, final_maven, final_postgres = measure(rows)
+                      retain_process_sample(rows, final_maven, final_postgres, time.monotonic() - start)
                       monitor["samples"] += 1
                       monitor["last_sample"] = {
                           "elapsed_seconds": int(time.monotonic() - start),
@@ -838,9 +981,10 @@ jobs:
                   summary = write_summary()
               except Exception as error:
                   summary = {
-                      "source_sha": sha, "status": "summary-error", "report_count": 0,
+                      "source_sha": sha, "scope": scope, "status": "summary-error", "report_count": 0,
                       "tests": 0, "failures": 0, "errors": 0, "skipped": 0,
-                      "first_failures": [], "parse_issue": type(error).__name__ + ": " + str(error)[:300]
+                      "first_failures": [],
+                      "parse_issue": type(error).__name__ + ": " + sanitize_diagnostic(str(error))[:300]
                   }
                   try:
                       atomic_json(summary_path, summary)
@@ -911,7 +1055,8 @@ jobs:
                   "outcome": {"success": success, "report_issues": report_issues,
                               "collector_issues": collector_issues},
                   "covering_disposition": {
-                      "state": "pending-root-scope-reconciliation",
+                      "state": ("pending-root-scope-reconciliation" if mode == "canonical"
+                                else "diagnostic-only-not-a-canonical-batch"),
                       "skipped_tests": summary.get("skipped", 0),
                       "note": "No skipped test becomes executed or waived; command/evidence success is not a covering decision."
                   },
@@ -948,7 +1093,7 @@ jobs:
               })
               if process is not None:
                   receipt["maven"] = {
-                      "argv": ["./mvnw", "-B", "clean", "verify"],
+                      "argv": command_argv,
                       "pid": process.pid, "pgid": process.pid, "process_start": process_start,
                       "exit_code": command_exit, "status": status
                   }
@@ -957,9 +1102,10 @@ jobs:
                   receipt["postgres"]["process_start"] = postgres_identity["start"]
               emit_progress({
                   "state": receipt["state"], "source_sha": sha, "maven_exit_code": command_exit,
+                  "scope": scope,
                   "inclusive_peak_rss_bytes": monitor["peak_inclusive_rss_bytes"],
                   "receipt": str(receipt_path), "success": success,
-                  "covering_disposition": "pending-root-scope-reconciliation"
+                  "covering_disposition": receipt["covering_disposition"]["state"]
               })
               receipt["console"].update(console_result)
               atomic_json(receipt_path, receipt)
@@ -971,10 +1117,10 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: f555-java-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          name: f555-java-evidence-${{ github.event_name == 'push' && 'canonical' || inputs.mode || 'invalid' }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            ${{ runner.temp }}/f555-java-${{ github.run_id }}-${{ github.run_attempt }}-resource-receipt.json
-            ${{ runner.temp }}/f555-java-${{ github.run_id }}-${{ github.run_attempt }}-surefire-summary.json
-            ${{ runner.temp }}/f555-java-${{ github.run_id }}-${{ github.run_attempt }}-maven-tail.log
+            ${{ runner.temp }}/f555-java-${{ github.run_id }}-${{ github.run_attempt }}*-resource-receipt.json
+            ${{ runner.temp }}/f555-java-${{ github.run_id }}-${{ github.run_attempt }}*-surefire-summary.json
+            ${{ runner.temp }}/f555-java-${{ github.run_id }}-${{ github.run_attempt }}*-maven-tail.log
           if-no-files-found: warn
           retention-days: 7
