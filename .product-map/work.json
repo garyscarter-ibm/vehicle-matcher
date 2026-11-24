@@ -12394,6 +12394,53 @@
         }
       ],
       "observed_at": "2026-11-24T07:42:33Z"
+    },
+    {
+      "id": "FUCQ-547",
+      "title": "GregPolicyHttpTest presentation-outcomes golden test fails on gcsp-poc-dev",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-547",
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-22-vesper-022",
+      "unsliced": false,
+      "observed_at": "2026-11-24T07:56:49Z",
+      "note": "Existing Bug/originF448/parent432 reconciled. Reviewed isolated test fixture source published32e47a96 and refreshedf05765e6; original method-alone/package101 and fullgolden criteria retained. Runtime pending; original date/price/revision symptoms retained. No acceptance inferred.",
+      "workers": [
+        {
+          "name": "Lord Business",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-24T07:56:49.373243+00:00",
+          "expires_at": "2026-11-24T08:16:49.373243+00:00",
+          "source": "Retained task /root/lord_business live message: reviewed source plus owned runtime-envelope corrections, no runtime yet",
+          "status": "Active F547 scoped repair/validation lead; Sol/high requested and selected"
+        }
+      ],
+      "slices": [
+        {
+          "id": "isolated-policy-regression",
+          "title": "Deterministic full golden in method-alone and policy package",
+          "status": "in-progress",
+          "observed_at": "2026-11-24T07:56:49.373243+00:00",
+          "evidence": "Source/spec/security reviewed source checkpoint; original101policy identities frozen, runtime pending."
+        },
+        {
+          "id": "golden-fixture-contract",
+          "title": "Keep every consumed field with explicit clock and predecessor fixture",
+          "status": "in-progress",
+          "observed_at": "2026-11-24T07:56:49.373243+00:00",
+          "evidence": "Golden unchanged; isolated test fixture source reviewed. Actual original alone and package results pending."
+        },
+        {
+          "id": "integration",
+          "title": "Reviewed integration and covering Java batch",
+          "status": "not-started",
+          "observed_at": "2026-11-24T07:56:49.373243+00:00",
+          "evidence": "Root next changed-source canonical plan retains410previouslyunrunmethods/eightgroups. Fullbatch stillINCOMPLETE."
+        }
+      ]
     }
   ]
 }
