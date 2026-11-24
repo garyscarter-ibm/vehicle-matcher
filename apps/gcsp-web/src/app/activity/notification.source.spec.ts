@@ -36,12 +36,13 @@ describe('notification source', () => {
     expect(source.getModel().waiting).toBe(1); expect(source.getModel().status).toBe('ok');
     stop(); expect(stopActions).toHaveBeenCalledOnce();
   });
-  it('announces only a newly arriving active id, never first read or remount', async () => {
+  it.each(['2026-11-23T13:30:00Z', '2026-07-01T12:30:00Z'])('keeps row and note deadlines aligned and announces only a newly arriving active id, never first read or remount (%s)', async (expiresAt) => {
     const readActivity = vi.fn().mockResolvedValue(ok());
     const source = createNotificationSource({ adapter: { readActivity }, document });
     const update = vi.fn(); let stop = source.connect(update); await flush();
-    readActivity.mockResolvedValue(ok('new')); await source.refresh();
-    expect(update.mock.calls.at(-1)?.[0].note).toMatchObject({ id: 'new', title: 'Your buddy found a car' });
+    readActivity.mockResolvedValue({ status: 'ok', value: { ...projection('new'), currentOffer: { ...offer('new'), expiresAt } } }); await source.refresh();
+    expect(update.mock.calls.at(-1)?.[0].note).toEqual({ id: 'new', title: 'Your buddy found a car', text: 'Respond by 13:30.' });
+    expect(source.getModel().rows[0].detail).toBe('Reserved for you. Respond by 13:30.');
     expect(source.getModel().note).toBeNull(); stop();
     const remount = vi.fn(); stop = source.connect(remount); await flush();
     expect(remount.mock.calls.every(([model]) => model.note === null)).toBe(true); stop();
