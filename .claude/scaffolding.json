@@ -85,7 +85,10 @@
         "ttl_minutes": 30,
         "kind": "unit",
         "paths": [
-          "apps/gcsp-web/**"
+          "apps/gcsp-web/src/**",
+          "apps/gcsp-web/*.json",
+          "apps/gcsp-web/vitest.config.ts",
+          "apps/gcsp-web/tools/**"
         ],
         "needs": "npm registry access for npm ci"
       },
