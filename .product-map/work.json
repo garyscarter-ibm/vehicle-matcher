@@ -11979,6 +11979,69 @@
       ]
     },
     {
+      "id": "FUCQ-585",
+      "title": "Canonical Java verification exceeds memory cap in a reused test JVM",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "observed_at": "2026-11-24T02:29:35Z",
+      "branch": "dev/DEV-2026-11-24-vesper-004",
+      "evidence": "Source664563f88; candidate validation/review passed; AC2/3 scoped evidence in receipt1795486981; root canonical AC1 complete-run outcome/AC4 pending; Result partial",
+      "slices": [
+        {
+          "id": "candidate",
+          "status": "complete",
+          "title": "Bound package fork lifetime and prove selection/restart contracts",
+          "observed_at": "2026-11-24T02:29:34Z",
+          "evidence": "Source664563f88;31-group selection;163case brief/presenter +10focused cases; distinct actualJava forks and both handoffs; independent Cuthbert runtime review passed; exact receipt1795486981; full canonical pending root"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Canonical integrated inventory and bounded cleanup"
+        }
+      ],
+      "unsliced": false,
+      "workers": [
+        {
+          "name": "Sniffles",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-24T02:29:35.031364+00:00",
+          "expires_at": "2026-11-24T02:29:35.031364+00:00",
+          "source": "01a20b15-abad-7e83-94ee-dcd194bfcb9e native active; runtime authorised after independent slot read",
+          "status": "scoped candidate delivered; worker stopped; canonical integration pending"
+        },
+        {
+          "name": "Mulan",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-24T02:29:35.031364+00:00",
+          "expires_at": "2026-11-24T02:29:35.031364+00:00",
+          "source": "01a20b18-acad-7c72-86d9-9093c2cf0223 native followup accepted after shared lane released",
+          "status": "scoped candidate delivered; worker stopped; canonical integration pending"
+        },
+        {
+          "name": "Cuthbert",
+          "harness": "codex",
+          "role": "source/spec reviewer",
+          "observed_at": "2026-11-24T02:29:35.031364+00:00",
+          "expires_at": "2026-11-24T02:29:35.031364+00:00",
+          "source": "01a20b20-638b-7aa1-ac0c-d6870b9d720c native completed review",
+          "status": "scoped candidate delivered; worker stopped; canonical integration pending"
+        },
+        {
+          "name": "Marvin the Martian",
+          "harness": "codex",
+          "role": "security/config reviewer",
+          "observed_at": "2026-11-24T01:20:35.507852+00:00",
+          "expires_at": "2026-11-24T01:23:57.348912+00:00",
+          "source": "01a20b23-98ad-7620-ae9b-2d484aff0795 native completed report",
+          "status": "scoped security/config passed; runtime pending"
+        }
+      ]
+    },
+    {
       "id": "FUCQ-583",
       "title": "Lifecycle HTTP tests age out their fixed collection dates at midnight",
       "type": "Bug",
