@@ -12284,7 +12284,7 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-588",
       "branch": "dev/DEV-2026-11-23-vesper-017",
       "unsliced": false,
-      "note": "Source 34895c581 and scoped 119 Angular / 135 Node ratchet passed with independent source/spec/security review. Changed-source registered WebKit, rendered desktop/narrow critique and any immutable-reference difference remain F588 work owned by root. No human acceptance inferred.",
+      "note": "Actual connected WebKit26.4 on c22 observed correct Angular13:30 row/note at375/1280; all5 F555flows passed. Registered suite remains RED9pass/3fail: unchanged frozenNode full-date comparator and navigation-context-destroyed refresh check. AC1/AC2 observedmet;AC3partial. No Safari or human acceptance inferred; F548AC6/F555AC8pending.",
       "workers": [
         {
           "name": "Lord Business",
@@ -12293,7 +12293,7 @@
           "observed_at": "2026-11-24T05:17:49.796448+00:00",
           "expires_at": "2026-11-24T05:17:49.796448+00:00",
           "source": "Retained task /root/lord_business; actual scoped delivery, reviewed source and exact cleanup",
-          "status": "Scoped handoff complete; root connected integration pending"
+          "status": "Scoped handoff complete; actual connected partial result recorded by root"
         }
       ],
       "slices": [
@@ -12314,26 +12314,73 @@
         {
           "id": "connected-integration",
           "title": "Registered changed-source WebKit assertions and reviewed integration",
-          "status": "not-started",
-          "observed_at": "2026-11-24T05:17:49.796448+00:00",
-          "evidence": "Root owns once-on-final-merged-source registered connected WebKit run and rendered desktop/narrow critique. Immutable frozen Node comparator may remain RED; no waiver or human verdict."
+          "status": "in-progress",
+          "observed_at": "2026-11-24T07:12:00Z",
+          "evidence": "Actual registered changed-source WebKit c22 RED9pass/3fail, all5 F555flowspass. Rootaudit66b8ddf5 reconciles1834inputs/14seals/cleanup; viewed375row/1280note13:30. Unchanged frozenNode date comparator differs; refresh evaluation context destroyed after GET200. OriginalAC3partial; humanverdicts remainpending."
         }
       ],
-      "observed_at": "2026-11-24T05:17:49Z"
+      "observed_at": "2026-11-24T07:42:33Z"
+    },
+    {
+      "id": "FUCQ-547",
+      "title": "GregPolicyHttpTest presentation-outcomes golden test fails on gcsp-poc-dev",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-547",
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-22-vesper-022",
+      "unsliced": false,
+      "observed_at": "2026-11-24T07:56:49Z",
+      "note": "Existing Bug/originF448/parent432 reconciled. Reviewed isolated test fixture source published32e47a96 and refreshedf05765e6; original method-alone/package101 and fullgolden criteria retained. Runtime pending; original date/price/revision symptoms retained. No acceptance inferred.",
+      "workers": [
+        {
+          "name": "Lord Business",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-24T07:56:49.373243+00:00",
+          "expires_at": "2026-11-24T08:16:49.373243+00:00",
+          "source": "Retained task /root/lord_business live message: reviewed source plus owned runtime-envelope corrections, no runtime yet",
+          "status": "Active F547 scoped repair/validation lead; Sol/high requested and selected"
+        }
+      ],
+      "slices": [
+        {
+          "id": "isolated-policy-regression",
+          "title": "Deterministic full golden in method-alone and policy package",
+          "status": "in-progress",
+          "observed_at": "2026-11-24T07:56:49.373243+00:00",
+          "evidence": "Source/spec/security reviewed source checkpoint; original101policy identities frozen, runtime pending."
+        },
+        {
+          "id": "golden-fixture-contract",
+          "title": "Keep every consumed field with explicit clock and predecessor fixture",
+          "status": "in-progress",
+          "observed_at": "2026-11-24T07:56:49.373243+00:00",
+          "evidence": "Golden unchanged; isolated test fixture source reviewed. Actual original alone and package results pending."
+        },
+        {
+          "id": "integration",
+          "title": "Reviewed integration and covering Java batch",
+          "status": "not-started",
+          "observed_at": "2026-11-24T07:56:49.373243+00:00",
+          "evidence": "Root next changed-source canonical plan retains410previouslyunrunmethods/eightgroups. Fullbatch stillINCOMPLETE."
+        }
+      ]
     },
     {
       "id": "FUCQ-589",
       "title": "Planning journey expects a cart hold to survive advancing its authoritative expiry clock",
       "type": "Bug",
-      "status": "In Progress",
-      "original_status": "In Progress",
+      "status": "In Review",
+      "original_status": "In Review",
       "assignee": "Russell Gowers",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-589",
       "branch": "dev/DEV-2026-11-23-vesper-018",
       "unsliced": false,
-      "native_updated_at": "2026-11-23T23:20:42.177-0600",
+      "native_updated_at": "2026-11-24T02:04:00.129-0600",
       "native_status_observed_at": null,
-      "note": "Scoped technical AC1-3 met on c22de077d; 175 planning +56 wiring=231 PASS, plus 3 ClaimRunClock. Full batch INCOMPLETE: later F547 policy failure,410 methods unrun. Root integration/green covering pending; no acceptance inferred. Native In Progress from retained readback; its collection timestamp is unavailable. This local work observation does not freshen Jira.",
+      "note": "All3originaltechnicalACmet; scoped231+3passed, independentreviewpassed, integrated95de5d418/cleanupcomplete. NativeInReviewconfirmed; fullJava greenbatch stillrequired beforecollaboratoracceptance. NoDoneorfullbatchpassinferred.",
       "workers": [
         {
           "name": "Cuthbert",
@@ -12341,7 +12388,7 @@
           "harness": "codex",
           "observed_at": "2026-11-24T07:36:17.196786+00:00",
           "expires_at": "2026-11-24T07:36:17.196786+00:00",
-          "status": "Running at observation: final Result/map handoff; no continuing claim asserted",
+          "status": "Scoped handoff complete; integrated and In Review, acceptance awaits green batch",
           "source": "Actual collaboration.list_agents /root/sniffles/cuthbert observation; expiry bounds handoff"
         },
         {
@@ -12350,7 +12397,7 @@
           "harness": "codex",
           "observed_at": "2026-11-24T07:36:17.196786+00:00",
           "expires_at": "2026-11-24T07:36:17.196786+00:00",
-          "status": "Completed: implementation and exact46-case wiring completion; cleanup verified",
+          "status": "Scoped handoff complete; integrated and In Review, acceptance awaits green batch",
           "source": "Actual collaboration.list_agents /root/sniffles/mulan completed observation"
         },
         {
@@ -12359,11 +12406,11 @@
           "harness": "codex",
           "observed_at": "2026-11-24T07:36:17.196786+00:00",
           "expires_at": "2026-11-24T07:36:17.196786+00:00",
-          "status": "Completed: independent source/spec/security/runtime/resource review passed",
+          "status": "Scoped handoff complete; integrated and In Review, acceptance awaits green batch",
           "source": "Actual collaboration.list_agents /root/sniffles/marvin_the_martian completed observation"
         }
       ],
-      "observed_at": "2026-11-24T07:36:18Z",
+      "observed_at": "2026-11-24T08:04:47Z",
       "slices": [
         {
           "id": "ac1",

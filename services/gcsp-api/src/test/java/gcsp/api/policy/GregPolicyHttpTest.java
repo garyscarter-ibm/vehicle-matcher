@@ -14,8 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import gcsp.api.clock.ClockConfiguration;
 import gcsp.api.clock.ClockReading;
 import gcsp.api.clock.RunClockHolder;
+import gcsp.api.clock.ScenarioClockStart;
 import gcsp.api.persistence.Persistence;
 import gcsp.api.persistence.RunContext;
 import io.agroal.api.AgroalDataSource;
@@ -28,6 +30,7 @@ import jakarta.inject.Inject;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.time.Instant;
 import java.util.Iterator;
@@ -540,7 +543,9 @@ class GregPolicyHttpTest {
     }
 
     @Test
+    @Order(Integer.MIN_VALUE)
     void theBackendPresentationOutcomesTheGregScreenConsumesAreStable() throws Exception {
+        preparePresentationFixture();
         CLOCK.advance();
         JsonNode before = read();
         JsonNode first = before.get("fields").get(0);
@@ -579,6 +584,55 @@ class GregPolicyHttpTest {
             }
         }
         assertNull(outcomes.get("accepted").get("body").get("code"));
+    }
+
+    private void preparePresentationFixture() throws Exception {
+        // This golden owns the initial state, before sibling tests publish their own policy versions.
+        Instant at = Instant.parse("2026-11-18T09:00:00Z");
+        ClockConfiguration.Loaded loaded = ClockConfiguration.read(policy, "run-1", at);
+        assertTrue(loaded.ok(), loaded.problem());
+        ClockConfiguration config = loaded.configuration();
+        ScenarioClockStart.Dated dated = ScenarioClockStart.derive(config.startsAt(), config.namedTimes(), at);
+        ObjectNode named = JSON.createObjectNode();
+        dated.namedTimes().forEach((name, instant) -> named.put(name, instant.toString()));
+        assertTrue(schema.matches("gcsp_p_http_[0-9a-f]+"));
+        try (Connection c = GregPolicyProfiles.plain().getConnection(); Statement st = c.createStatement()) {
+            c.setAutoCommit(false);
+            try {
+                st.execute("SET LOCAL search_path TO " + schema);
+                try (var rs = st.executeQuery("SELECT environment_id, run_id FROM run_clocks")) {
+                    assertTrue(rs.next());
+                    assertEquals(GregPolicyProfiles.ENV, rs.getString(1));
+                    assertEquals("run-1", rs.getString(2));
+                    assertFalse(rs.next());
+                }
+                // Re-seed only this private fixture table; the production forward-only guard stays intact.
+                st.execute("TRUNCATE run_clocks");
+                try (PreparedStatement ps = c.prepareStatement("INSERT INTO run_clocks (environment_id, run_id, "
+                        + "clock_instant, clock_version, scenario_version, fixture_version, starts_at, named_times) "
+                        + "VALUES (?, 'run-1', ?::timestamptz, ?, ?, ?, ?::timestamptz, ?::jsonb)")) {
+                    ps.setString(1, GregPolicyProfiles.ENV);
+                    ps.setString(2, dated.startsAt().toString());
+                    ps.setLong(3, config.initialClockVersion());
+                    ps.setString(4, config.scenarioVersion());
+                    ps.setString(5, config.fixtureVersion());
+                    ps.setString(6, dated.startsAt().toString());
+                    ps.setString(7, named.toString());
+                    assertEquals(1, ps.executeUpdate());
+                }
+                c.commit();
+            } catch (Exception | AssertionError e) {
+                c.rollback();
+                throw e;
+            }
+        }
+        CLOCK.advance();
+        JsonNode baseline = read();
+        assertEquals(V1, baseline.get("activeVersion").textValue());
+        JsonNode first = baseline.get("fields").get(0);
+        Response predecessor = post(greg, "/publish", change(uniqueName("fixture"), V1,
+                "greg-" + uniqueName("fixture"), CLOCK.now, first.get("id").textValue(), first.get("value").intValue() + 1));
+        assertEquals(200, predecessor.statusCode(), predecessor.asString());
     }
 
     private static ObjectNode outcome(Response response, Map<String, String> names) throws Exception {
