@@ -25,13 +25,13 @@ let sequence = 0;
       <div class="gcsp-prefs-foot"><div class="gcsp-prefs-statusline"><p class="gcsp-prefs-status" [class.is-failed]="!!store.failure()" [class.is-pending]="store.saving()" role="status" [id]="id + '-status'">{{ store.message() }}</p>
         @if (store.failure() && !store.locked()) { <button gcspButton class="vm-btn vm-btn-ghost" variant="ghost" type="button" (click)="store.retry()">Try again</button> }@if (store.failure()) { <button gcspButton class="vm-btn vm-btn-ghost" variant="ghost" type="button" (click)="store.reload()">Reload preferences</button> }@if (store.queueNeedsReview()) { <button gcspButton class="vm-btn vm-btn-ghost" variant="ghost" type="button" (click)="store.retry()">Save kept changes</button> }
       </div><div class="gcsp-prefs-action" data-slot="action"></div></div>
-      <gcsp-buddy-controls [buddy]="editor.initial.buddy" [disabledReason]="store.buddyBlockedReason() ?? ''" [message]="store.buddyMessage()" [pendingAction]="store.buddyPendingAction()" [failure]="store.buddyFailure()" [operationId]="store.buddyOperationId()" [canRetry]="store.buddyCanRetry()" [refreshing]="store.buddyRefreshing()" (action)="store.runBuddyCommand($event)" (retryRequest)="store.retryBuddy()" (reloadStatus)="store.reloadBuddyStatus()" />
+      <gcsp-buddy-controls [buddyControls]="buddyControls()" [buddy]="editor.initial.buddy" [disabledReason]="store.buddyBlockedReason() ?? ''" [message]="store.buddyMessage()" [pendingAction]="store.buddyPendingAction()" [failure]="store.buddyFailure()" [operationId]="store.buddyOperationId()" [canRetry]="store.buddyCanRetry()" [refreshing]="store.buddyRefreshing()" (action)="store.runBuddyCommand($event)" (retryRequest)="store.retryBuddy()" (reloadStatus)="store.reloadBuddyStatus()" />
     </section>
   } @else { <gcsp-status-screen title="Your preferences" [level]="2" [busy]="store.loading()" [message]="store.loading() ? 'Loading your preferences.' : store.message() || 'Your preferences are unavailable.'">@if (!store.loading()) { <button gcspButton type="button" (click)="store.load()">Try again</button> }</gcsp-status-screen> }
 ` })
 export class AccountPreferencesComponent {
   private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
-  readonly store = inject(BriefEditorStore); readonly carDescription = input(''); readonly id = `account-preferences-${++sequence}`;
+  readonly store = inject(BriefEditorStore); readonly carDescription = input(''); readonly buddyControls = input(false); readonly id = `account-preferences-${++sequence}`;
   constructor() {
     effect(() => {
       const key = this.store.pendingRemoval(); const root = this.element.nativeElement; const active = root.ownerDocument.activeElement;

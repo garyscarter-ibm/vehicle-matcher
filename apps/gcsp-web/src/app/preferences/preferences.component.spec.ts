@@ -1,6 +1,7 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { provideRouter } from '@angular/router';
 import { AuthPort } from '../auth/auth.port';
 import { routes } from '../routes';
 import { reasonText } from './brief.copy';
@@ -17,7 +18,7 @@ describe('native preference controls', () => {
     client.saveDraft.mockReset(); client.confirm.mockReset();
     client.readEditor.mockReset().mockResolvedValue({ status: 'ok', value: briefEditorFixture() });
     client.savePreferences.mockReset().mockResolvedValue({ status: 'ok', value: preferenceSaveFixture() });
-    TestBed.configureTestingModule({ providers: [{ provide: BriefClient, useValue: client }, { provide: AuthPort, useValue: { state: signal({ status: 'ready', context: { subject: 's', environmentId: 'dev', runId: 'r', employeeId: 'e', roles: ['employee'] } }) } }] });
+    TestBed.configureTestingModule({ providers: [provideRouter([]), { provide: BriefClient, useValue: client }, { provide: AuthPort, useValue: { state: signal({ status: 'ready', context: { subject: 's', environmentId: 'dev', runId: 'r', employeeId: 'e', roles: ['employee'] } }) } }] });
   });
   it('shares compact/rating load and gates stars by the exact server current contract', async () => {
     const preferences = TestBed.createComponent(AccountPreferencesComponent); const rating = TestBed.createComponent(CurrentCarRatingComponent);
@@ -37,12 +38,12 @@ describe('native preference controls', () => {
     expect(root.querySelector<HTMLFieldSetElement>('.gcsp-prefs-mode-choices')!.disabled).toBe(true);
     const categoryControls = root.querySelectorAll<HTMLButtonElement>('gcsp-preference-category button'); expect(categoryControls.length).toBeGreaterThan(0); categoryControls.forEach(control => expect(control.disabled).toBe(true));
     root.querySelectorAll<HTMLButtonElement>('.gcsp-prefs-open, .gcsp-prefs-removal button').forEach((button) => expect(button.disabled).toBe(true));
-    expect(stars.querySelector<HTMLFieldSetElement>('fieldset')!.disabled).toBe(true);
+    expect(stars.querySelectorAll<HTMLInputElement>('input')).toHaveLength(5); stars.querySelectorAll<HTMLInputElement>('input').forEach((radio) => expect(radio.disabled).toBe(true));
     expect(root.textContent).toContain('Medium'); expect(root.textContent).toContain('Remove your economy preference?');
     expect(root.querySelector<HTMLInputElement>('.gcsp-prefs-mode-choices input')!.checked).toBe(true);
     resolve({ status: 'ok', value: briefEditorFixture() }); await refreshing; await preferences.whenStable(); await rating.whenStable();
     expect(root.querySelector<HTMLFieldSetElement>('.gcsp-prefs-mode-choices')!.disabled).toBe(false);
-    expect(stars.querySelector<HTMLFieldSetElement>('fieldset')!.disabled).toBe(false);
+    expect(stars.querySelectorAll<HTMLInputElement>('input')).toHaveLength(5); stars.querySelectorAll<HTMLInputElement>('input').forEach((radio) => expect(radio.disabled).toBe(false));
     expect(client.savePreferences).not.toHaveBeenCalled();
   });
   it('presents native independent preference, importance, practical and read-only fact controls', async () => {
@@ -51,6 +52,20 @@ describe('native preference controls', () => {
     expect(root.textContent).toContain('These facts are read-only.'); expect(root.textContent).toContain('Your current-car feedback');
     expect(root.querySelectorAll('input[name=practical-seats]').length).toBe(3); expect(root.textContent).toContain('Not sure yet');
     expect(root.querySelector('gcsp-error-summary')).toBeTruthy();
+  });
+  it('offers Activity only after a clean successful save with Buddy search engaged', async () => {
+    const fixture = TestBed.createComponent(PreferencesComponent); await fixture.whenStable();
+    const root = fixture.nativeElement as HTMLElement; const store = fixture.componentInstance.store;
+    const onward = () => Array.from(root.querySelectorAll<HTMLAnchorElement>('a')).find(link => link.textContent?.trim() === 'See your buddy at work');
+    expect(onward()).toBeUndefined();
+    store.consent.set({ search: true, hold: true }); store.fullState.set('saved'); store.fullDirty.set(false); await fixture.whenStable();
+    expect(onward()?.getAttribute('href')).toBe('/activity');
+    store.fullDirty.set(true); await fixture.whenStable(); expect(onward()).toBeUndefined();
+    store.fullDirty.set(false); store.consent.set({ search: false, hold: false }); await fixture.whenStable(); expect(onward()).toBeUndefined();
+    store.consent.set({ search: true, hold: true }); store.fullState.set('failed'); await fixture.whenStable(); expect(onward()).toBeUndefined();
+    client.readEditor.mockResolvedValueOnce({ status: 'ok', value: { ...briefEditorFixture(), selection: { state: 'accepted' } } });
+    await store.reload(); store.fullState.set('saved'); store.consent.set({ search: true, hold: true });
+    await fixture.whenStable(); expect(onward()).toBeUndefined();
   });
   it('uses source option buttons and an importance switch, with explicit removal/cancel intents', async () => {
     const fixture = TestBed.createComponent(PreferenceCategoryComponent); const definition = briefEditorFixture().context.accountPreferences.categories['body'];
@@ -62,8 +77,8 @@ describe('native preference controls', () => {
   });
   it('gives every star a native accessible name and a clear action', async () => {
     const fixture = TestBed.createComponent(StarRatingComponent); fixture.componentRef.setInput('id', 'rating-example'); fixture.componentRef.setInput('value', 4); await fixture.whenStable();
-    const root = fixture.nativeElement as HTMLElement; const inputs = root.querySelectorAll<HTMLInputElement>('input'); expect(inputs.length).toBe(5); expect(inputs[3].checked).toBe(true); expect(inputs[3].closest('label')?.textContent).toContain('4 stars');
-    const rated = vi.fn(); fixture.componentInstance.rated.subscribe(rated); root.querySelector<HTMLButtonElement>('button')!.click(); expect(rated).toHaveBeenCalledWith(null);
+    const root = fixture.nativeElement as HTMLElement; const inputs = root.querySelectorAll<HTMLInputElement>('input'); expect(inputs.length).toBe(5); expect(inputs[3].checked).toBe(true); expect(inputs[3].getAttribute('aria-label')).toBe('4 stars: I really like it');
+    const rated = vi.fn(); fixture.componentInstance.rated.subscribe(rated); inputs[3].click(); expect(rated).toHaveBeenCalledWith(null);
   });
   it('retains source plain-copy reasons and supplied facts without ranking or technical metadata', async () => {
     expect(reasonText({ code: 'preference-fit', field: 'comfort', score: 100 }, 'reasons')).toBe('Comfort matches your preference.');
