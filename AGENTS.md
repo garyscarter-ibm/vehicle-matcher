@@ -122,6 +122,20 @@ Rules for Codex working in this project. The scaffolding clone is the `repo` val
   Apply the global `Test resources and large generated outputs` section; if absent, read that section of
   `<repo>/managed/CLAUDE.md.tmpl`. Pass selected checks, owned scratch, output path, chunk limits, checkpoint and
   teardown duties in every child brief, at every depth. Keep the parent responsible for the final receipt.
+- **Keep the main conversation small.** Every tool result stays in the conversation and is re-sent on every later
+  turn. Aim for results under about 8,000 characters (`grep -n`, `sed -n` ranges, `head`, a log tail, `--stat`), and
+  read in full only a file you are about to edit, a diff you are reviewing or the primary source for a customer-facing
+  fact. When an answer or a fix needs more than about eight reads, probes or polls before the next decision, spawn a
+  read-only child with the exact question and a reply limit; it returns facts, and the conclusion stays with you.
+  (Same rule as Claude's managed "Keep the main conversation small", 2026-11-24.)
+- **Review in proportion to risk.** Check a child's result by reading its diff against the brief and rerunning the
+  tests that cover it, once. That is the whole review for routine changes, and always for changes only to tests,
+  fixtures, goldens or test tooling. Add an independent reviewer only for the managed `reviewer` risk list (security,
+  auth, secrets, concurrency, data migrations, state machines, public APIs). Don't re-derive a child's evidence: no
+  rehashing inputs, re-reading every report file or writing reconciliation records; read its summary line and the
+  command it ran. If a test change removes or loosens an assertion, skips a test or changes an expected value, the
+  Result says which criterion it still proves and why the old expectation was wrong. (Russell, 2026-11-24: an
+  overnight run spent about five of eight and a half hours on test-side work and about 17 minutes on product code.)
 - **Before every spawn,** run `<repo>/tools/tiers spawn <agent> --harness codex`. It prints, as JSON, the `model`, the
   `effort`, the turn cap, the tools and the agent's brief. Pass that `model` and `effort` to the spawn, and begin the
   child's brief with that brief. Don't map tiers from memory. `tiers spawn` is authoritative; as of 2026-10-30 on
