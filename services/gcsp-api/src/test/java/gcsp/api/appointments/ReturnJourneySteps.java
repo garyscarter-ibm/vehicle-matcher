@@ -24,7 +24,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -32,7 +34,7 @@ import java.util.Map;
 import org.postgresql.ds.PGSimpleDataSource;
 
 /** The shared steps of the old-car return journeys: one real handover order driven over HTTP, plus return helpers. */
-final class ReturnJourneySteps {
+public final class ReturnJourneySteps {
 
     static final String PRESENTER = BASE + "/presenter";
     static final String PLAN = BASE + "/return-plan";
@@ -106,6 +108,72 @@ final class ReturnJourneySteps {
 
     // ---- ordering ----
 
+    /** Change only the date, using the server's selected account, policy and window at every required phase. */
+    public static ObjectNode withCollectionDate(JsonNode account, ObjectNode choices, Instant... laterPhases) {
+        assertEquals("ready", account.path("state").asText());
+        JsonNode trusted = account.get("choices");
+        assertEquals(trusted.get("slotId"), choices.get("slotId"));
+        assertEquals(trusted.get("schemeId"), choices.get("schemeId"));
+        JsonNode slot = selected(account.get("slots"), "entitlementSlotId", choices.get("slotId").asText());
+        assertTrue(slot.at("/ordering/enabled").asBoolean(), "the selected slot must permit ordering");
+        JsonNode rules = selected(account.get("assumptions"), "key", "manual.context.v1").get("value");
+        JsonNode driver = selected(account.get("drivers"), "driverId", choices.get("driverId").asText());
+        JsonNode contract = selected(rules.get("contractOptions"), "contractOptionId", choices.get("contractOptionId").asText());
+        assertTrue(includes(contract.get("schemeIds"), choices.get("schemeId").asText()));
+        assertTrue(includes(contract.get("driverKinds"), driver.get("kind").asText()));
+        JsonNode location = selected(rules.get("locations"), "locationId", choices.get("collectionLocationId").asText());
+        assertTrue(includes(location.get("contractOptionIds"), contract.get("contractOptionId").asText()));
+        assertTrue(includes(location.get("driverKinds"), driver.get("kind").asText()));
+        assertTrue(rules.path("minimumLeadDays").isIntegralNumber() && rules.path("maximumLeadDays").isIntegralNumber());
+        long min = rules.get("minimumLeadDays").longValue(), max = rules.get("maximumLeadDays").longValue();
+        assertTrue(min >= 0 && max >= min, "the canonical collection lead bounds must be valid");
+        // AccountService uses the first ten characters of its own asOf, rather than the test machine's date.
+        LocalDate day = LocalDate.parse(account.get("asOf").asText().substring(0, 10));
+        LocalDate first = day.plusDays(min), last = day.plusDays(max);
+        for (Instant phase : laterPhases) {
+            LocalDate phaseDay = LocalDate.ofInstant(phase, ZoneOffset.UTC);
+            if (phaseDay.plusDays(min).isAfter(first)) first = phaseDay.plusDays(min);
+            if (phaseDay.plusDays(max).isBefore(last)) last = phaseDay.plusDays(max);
+        }
+        JsonNode window = account.get("currentContract");
+        if (window == null || window.isNull()) window = slot;
+        if (window.hasNonNull("earliestCollectionDate")) {
+            LocalDate earliest = LocalDate.parse(window.get("earliestCollectionDate").asText());
+            if (earliest.isAfter(first)) first = earliest;
+        }
+        if (window.hasNonNull("latestCollectionDate")) {
+            LocalDate latest = LocalDate.parse(window.get("latestCollectionDate").asText());
+            if (latest.isBefore(last)) last = latest;
+        }
+        JsonNode licence = driver.get("licence");
+        assertTrue(includes(licence.get("categories"), "car"));
+        LocalDate validFrom = LocalDate.parse(licence.get("validFrom").asText());
+        LocalDate validUntil = LocalDate.parse(licence.get("validUntil").asText());
+        if (validFrom.isAfter(first)) first = validFrom;
+        if (validUntil.isBefore(last)) last = validUntil;
+        JsonNode closed = location.get("closedDates");
+        assertTrue(closed == null || closed.isNull() || closed.isArray(), "closedDates must be an array");
+        for (LocalDate date = first; !date.isAfter(last); date = date.plusDays(1)) {
+            if (closed == null || closed.isNull() || !includes(closed, date.toString())) {
+                return choices.deepCopy().put("requestedCollectionDate", date.toString());
+            }
+        }
+        throw new AssertionError("No admissible collection date between " + first + " and " + last
+                + " at " + choices.get("collectionLocationId").asText());
+    }
+
+    private static JsonNode selected(JsonNode rows, String key, String value) {
+        assertTrue(rows != null && rows.isArray(), "missing server array for " + key);
+        for (JsonNode row : rows) if (value.equals(row.path(key).asText())) return row;
+        throw new AssertionError("No server selection for " + key + "=" + value);
+    }
+
+    private static boolean includes(JsonNode rows, String value) {
+        assertTrue(rows != null && rows.isArray(), "missing canonical selection list");
+        for (JsonNode row : rows) if (row.isTextual() && value.equals(row.textValue())) return true;
+        return false;
+    }
+
     /** Released stock is upstream supply, so it is the one thing seeded; the fixture rows suit paula's grade. */
     void seedStock() throws Exception {
         var run = persistence.guard().currentRun();
@@ -118,8 +186,9 @@ final class ReturnJourneySteps {
     String placeOrder(String who) throws Exception {
         JsonNode account = body(http.as(who).get(BASE + "/manual/account")).get("value");
         assertEquals("ready", account.get("state").asText());
-        String draft = StockDbFixture.complete().toString().replace("paula", who).replace("Paula Mason", who)
-                .replace("2026-11-12", "2026-11-30");
+        ObjectNode choices = (ObjectNode) ApptHttp.JSON.readTree(StockDbFixture.complete().toString()
+                .replace("paula", who).replace("Paula Mason", who));
+        String draft = withCollectionDate(account, choices).toString();
         Response saved = http.as(who).body("{\"commandId\":\"draft-" + ApptHttp.id() + "\",\"expectedDraftVersion\":0,"
                 + "\"expectedContextVersion\":\"" + account.get("contextVersion").asText() + "\",\"choices\":" + draft + "}")
                 .post(BASE + "/manual/draft");

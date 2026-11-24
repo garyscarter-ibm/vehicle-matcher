@@ -6,9 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import gcsp.api.account.StockDbFixture;
 import gcsp.api.approvals.HandoverPort;
 import gcsp.api.approvals.OrderSourcePort;
@@ -117,8 +119,9 @@ class HandoverJourneyHttpTest {
         JsonNode account = body(http.as(who).get(BASE + "/manual/account")).get("value");
         assertEquals("ready", account.get("state").asText());
         assertTrue(account.get("slots").get(0).get("ordering").get("enabled").asBoolean());
-        String draft = StockDbFixture.complete().toString().replace("paula", who).replace("Paula Mason", who)
-                .replace("2026-11-12", "2026-11-30");
+        ObjectNode choices = (ObjectNode) ApptHttp.JSON.readTree(StockDbFixture.complete().toString()
+                .replace("paula", who).replace("Paula Mason", who));
+        String draft = ReturnJourneySteps.withCollectionDate(account, choices).toString();
         Response saved = http.as(who).body("{\"commandId\":\"draft-" + ApptHttp.id() + "\",\"expectedDraftVersion\":0,"
                 + "\"expectedContextVersion\":\"" + account.get("contextVersion").asText() + "\",\"choices\":" + draft + "}")
                 .post(BASE + "/manual/draft");
@@ -224,11 +227,56 @@ class HandoverJourneyHttpTest {
 
     // ---- the journey ----
 
+    /** Hand-derived selector controls; these projection copies do not change the server's account or clock. */
+    private void collectionDateBoundaries(JsonNode account) {
+        ObjectNode sample = account.deepCopy();
+        JsonNode rules = null;
+        for (JsonNode row : sample.get("assumptions")) {
+            if ("manual.context.v1".equals(row.path("key").asText())) rules = row.get("value");
+        }
+        assertNotNull(rules);
+        ((ObjectNode) rules).put("minimumLeadDays", 7).put("maximumLeadDays", 180);
+        ObjectNode window = (ObjectNode) sample.get("currentContract");
+        window.put("earliestCollectionDate", "2026-11-12").put("latestCollectionDate", "2026-12-01");
+        JsonNode location = null;
+        for (JsonNode row : rules.get("locations")) {
+            if ("demo-collection-centre".equals(row.path("locationId").asText())) location = row;
+        }
+        assertNotNull(location);
+        ((ObjectNode) location).putArray("closedDates");
+        ObjectNode choices = StockDbFixture.complete();
+        sample.put("asOf", "2026-11-24T23:59:59Z");
+        ObjectNode selected = ReturnJourneySteps.withCollectionDate(sample, choices);
+        assertEquals("2026-12-01", selected.get("requestedCollectionDate").asText());
+        selected.remove("requestedCollectionDate");
+        ObjectNode unchanged = choices.deepCopy();
+        unchanged.remove("requestedCollectionDate");
+        assertEquals(unchanged, selected, "date selection must preserve every other choice");
+
+        // The packaged December 1 window is genuinely empty after this midnight; never silently extend it.
+        sample.put("asOf", "2026-11-25T00:00:00Z");
+        AssertionError expired = assertThrows(AssertionError.class,
+                () -> ReturnJourneySteps.withCollectionDate(sample, choices));
+        assertTrue(expired.getMessage().startsWith("No admissible collection date"));
+        // A later admissible server projection follows its own window, not another fixed successful date.
+        window.put("latestCollectionDate", "2027-05-24");
+        assertEquals("2026-12-02", ReturnJourneySteps.withCollectionDate(sample, choices).get("requestedCollectionDate").asText());
+        ((ObjectNode) location).putArray("closedDates").add("2026-12-02");
+        assertEquals("2026-12-03", ReturnJourneySteps.withCollectionDate(sample, choices).get("requestedCollectionDate").asText());
+        window.put("earliestCollectionDate", "2026-12-05");
+        assertEquals("2026-12-05", ReturnJourneySteps.withCollectionDate(sample, choices).get("requestedCollectionDate").asText());
+        ((ObjectNode) rules).put("maximumLeadDays", 7);
+        AssertionError empty = assertThrows(AssertionError.class,
+                () -> ReturnJourneySteps.withCollectionDate(sample, choices));
+        assertTrue(empty.getMessage().startsWith("No admissible collection date"));
+    }
+
     @Test
     void theWholeHandoverJourneyRunsOnTheRealPortsAndSurvivesARestart() throws Exception {
         Assumptions.assumeTrue(persistence.active(), "GCSP_TEST_DATABASE_URL is not set");
         ownedSchema = schema;
         http = new ApptHttp(signingJwk);
+        collectionDateBoundaries(body(http.as("paula").get(BASE + "/manual/account")).get("value"));
 
         // The lifecycle ports resolve to the real adapters: no test alternative stands in for any of them.
         assertEquals(ApprovalsOrderStage.class, beanClass(OrderStagePort.class));
