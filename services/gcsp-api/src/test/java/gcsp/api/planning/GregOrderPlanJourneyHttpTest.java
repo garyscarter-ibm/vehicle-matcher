@@ -14,6 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import gcsp.api.account.StockDbFixture;
+import gcsp.api.appointments.ReturnJourneySteps;
+import gcsp.api.claims.ClaimClock;
 import gcsp.api.identity.Principal;
 import gcsp.api.persistence.Persistence;
 import gcsp.api.persistence.RunContext;
@@ -33,7 +35,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -60,8 +64,8 @@ import org.postgresql.ds.PGSimpleDataSource;
  * Config knobs used: the dev composition (oidc accounts, demo scenario, synthetic ordering and production, local claim
  * stock, demo supply) and long sweep and drain intervals so no background pass touches the rows. No fixed account
  * clock is set, because the released cars are available from the run clock's date and a fixed earlier account clock
- * would call them not-yet-available. The account window in the demo preparation ends 2026-12-01, so the claim step
- * needs a run before that date.
+ * would call them not-yet-available. The ahead-of-wall case temporarily changes only its private Paula collection
+ * window; the packaged account, renewal date and Sam inputs stay unchanged.
  */
 @QuarkusTest
 @TestProfile(GregOrderPlanJourneyProfile.class)
@@ -108,6 +112,9 @@ class GregOrderPlanJourneyHttpTest {
 
     @Inject
     PolicyService policy;
+
+    @Inject
+    ClaimClock claimClock;
 
     private String greg;
     private String presenter;
@@ -291,53 +298,147 @@ class GregOrderPlanJourneyHttpTest {
     @Order(6)
     void aRealCartHoldStaysHeldInThePlanWhenTheRunClockRunsTwoDaysAheadOfWallTime() throws Exception {
         String paula = token("sub-paula", "employee");
-        saveDraft(paula);
-        JsonNode eligible = null;
-        for (JsonNode d : get(paula, API + "/manual/stock").body().at("/value/decisions")) {
-            if ("eligible".equals(d.get("gateStatus").asText())) {
-                eligible = d;
-                break;
-            }
-        }
-        assertNotNull(eligible, "the real release has a car Paula may claim");
-        heldCar = eligible.get("orderUuid").asText();
-        ObjectNode claimInput = ((ObjectNode) eligible.get("claimInput")).deepCopy();
-        claimInput.put("commandId", cmd());
-        Resp claim = post(paula, API + "/manual/claim", claimInput.toString());
-        assertEquals(200, claim.status(), claim.toString());
-        JsonNode hold = claim.body().at("/value/hold");
-        holdId = hold.get("holdId").asText();
-        assertEquals("cart", text("SELECT hold_type FROM custody_holds WHERE hold_id = ?", holdId));
-        String stockBefore = firstPlanVersion("stock");
+        AccountInput originalPaula = accountInput("employee-paula");
+        AccountInput originalSam = accountInput("employee-sam");
+        assertEquals(0, count("SELECT count(*) FROM manual_claims WHERE environment_id = ? AND run_id = ? "
+                + "AND employee_id = ?", ENV, RUN, "employee-paula"), "advance before creating any Paula quote or hold");
+        assertEquals(0, count("SELECT count(*) FROM custody_holds WHERE environment_id = ? AND run_id = ? "
+                + "AND employee_id = ?", ENV, RUN, "employee-paula"));
 
-        // The held car is held for Paula's slot, and the plan still reads while the run clock is at its release cue.
-        Resp held = get(greg, PLAN);
-        assertEquals(200, held.status(), held.toString());
-        assertNotEquals(stockBefore, held.body().at("/value/plan/versions/stock").asText(), "the hold is part of the stock version");
-        assertEquals("slot-paula", heldFor(heldCar));
-
-        // The real presenter route moves the run clock two days on; the wall-stamped hold now ends before run time.
+        // Advance the real authority first; never rebase a business timestamp or rewind a clock after claiming.
+        Instant beforeAdvance = runClockNow();
         JsonNode clock = get(presenter, API + "/presenter/clock").body().get("value");
         Resp advance = post(presenter, API + "/presenter/clock/advance", "{\"commandId\":\"" + cmd() + "\",\"expectedClockVersion\":"
                 + clock.get("clockVersion") + ",\"bySeconds\":172800}");
         assertEquals(200, advance.status(), advance.toString());
         Instant runNow = runClockNow();
-        Instant expires = instant("SELECT expires_at FROM custody_holds WHERE hold_id = ?", holdId);
-        assertTrue(expires.isBefore(runNow), "control: the old rule would call this hold expired: " + expires + " < " + runNow);
+        assertEquals(beforeAdvance.plusSeconds(172800), runNow, "the real presenter advanced the persisted authority by exactly two days");
         assertTrue(runNow.isAfter(Instant.now().plusSeconds(86_400)), "the run clock is ahead of wall time");
+        assertEquals(runNow, claimClock.now(new RunContext(ENV, RUN, "sub-paula")));
 
-        Resp after = get(greg, PLAN);
-        assertEquals(200, after.status(), "the read must not be refused as planning-held-stock-unresolved: " + after);
-        assertEquals("ok", after.body().get("status").asText());
-        assertEquals(PolicyClock.iso(runNow), after.body().at("/value/plan/asOf").asText());
-        assertEquals("slot-paula", heldFor(heldCar), "the car is still held for the claimant's slot");
+        JsonNode hold = null;
+        boolean inputOwned = false;
+        Throwable primaryFailure = null;
+        try {
+            Resp before = get(paula, API + "/manual/account");
+            assertEquals(200, before.status(), before.toString());
+            JsonNode account = before.body().get("value");
+            assertEquals(PolicyClock.iso(runNow), account.get("asOf").asText());
+            String collection = smallestCollectionDate(account);
+            ObjectNode varied = originalPaula.record().deepCopy();
+            List<ObjectNode> windows = paulaCollectionWindows(varied);
+            for (ObjectNode window : windows) {
+                assertTrue(LocalDate.parse(collection).isAfter(LocalDate.parse(window.get("latestCollectionDate").asText())));
+                window.put("latestCollectionDate", collection);
+            }
+            ObjectNode roundTrip = varied.deepCopy();
+            List<ObjectNode> originalWindows = paulaCollectionWindows(originalPaula.record());
+            List<ObjectNode> restoredWindows = paulaCollectionWindows(roundTrip);
+            for (int i = 0; i < windows.size(); i++) {
+                restoredWindows.get(i).set("latestCollectionDate", originalWindows.get(i).get("latestCollectionDate"));
+            }
+            assertEquals(originalPaula.record(), roundTrip, "only the two identified collection-window paths differ");
+            inputOwned = true;
+            replacePaulaRecord(varied, originalPaula.version());
+            assertEquals(new AccountInput(varied, originalPaula.version() + 1), accountInput("employee-paula"));
+            Resp ready = get(paula, API + "/manual/account");
+            assertEquals(200, ready.status(), ready.toString());
+            assertEquals("ready", ready.body().at("/value/state").asText(), ready.toString());
+            assertEquals("current:employee-paula", ready.body().at("/value/currentContract/contractId").asText());
+            assertEquals(collection, ready.body().at("/value/currentContract/latestCollectionDate").asText());
+            saveDraft(paula, ready.body().get("value"), collection);
 
-        // The real release route lets the car go, and the plan stops showing it held.
-        Resp release = post(paula, API + "/manual/claim/release", M.createObjectNode().put("commandId", cmd()).put("holdId", holdId)
-                .put("expectedHoldVersion", hold.get("version").asLong()).put("expectedDraftVersion", 1).put("reason", "cancel").toString());
-        assertEquals(200, release.status(), release.toString());
-        assertEquals(200, get(greg, PLAN).status());
-        assertNull(heldFor(heldCar), "a released car is no longer held");
+            JsonNode eligible = null;
+            Resp stock = get(paula, API + "/manual/stock");
+            assertEquals(200, stock.status(), stock.toString());
+            for (JsonNode d : stock.body().at("/value/decisions")) {
+                if ("eligible".equals(d.get("gateStatus").asText())) {
+                    eligible = d;
+                    break;
+                }
+            }
+            assertNotNull(eligible, "the real release has a car Paula may claim");
+            heldCar = eligible.get("orderUuid").asText();
+            ObjectNode claimInput = ((ObjectNode) eligible.get("claimInput")).deepCopy();
+            claimInput.put("commandId", cmd());
+            Resp claim = post(paula, API + "/manual/claim", claimInput.toString());
+            assertEquals(200, claim.status(), claim.toString());
+            hold = claim.body().at("/value/hold");
+            holdId = hold.get("holdId").asText();
+            assertEquals("cart", text("SELECT hold_type FROM custody_holds WHERE hold_id = ?", holdId));
+            JsonNode quote = claim.body().at("/value/quote");
+            assertEquals(heldCar, quote.get("orderUuid").asText());
+            assertEquals("employee-paula", quote.get("employeeId").asText());
+            assertEquals("slot-paula", quote.get("entitlementSlotId").asText());
+            assertEquals(claimInput.get("expectedDraftVersion"), quote.get("draftVersion"));
+            assertEquals(claimInput.get("expectedContextVersion"), quote.get("contextVersion"));
+            assertEquals(claimInput.get("expectedTermsDigest"), quote.get("termsDigest"));
+            assertEquals(claimInput.get("expectedStockVersion").asLong() + 1, quote.get("stockVersion").asLong());
+            assertEquals(POLICY, quote.get("policyVersion").asText());
+            ObjectNode storedQuote = ((ObjectNode) quote).deepCopy();
+            assertFalse(storedQuote.remove("quoteId").asText().isBlank());
+            assertEquals(storedQuote, M.readTree(text("SELECT quote::text FROM manual_claims WHERE hold_id = ?", holdId)));
+            Instant quotedAt = instant("SELECT quoted_at FROM manual_claims WHERE hold_id = ?", holdId);
+            assertEquals(runNow, quotedAt);
+            assertEquals(PolicyClock.iso(quotedAt), quote.get("quotedAt").asText());
+            long previewSeconds = policy.getAssumption("hold.cart.durationSeconds",
+                    new PolicyRead(RUN, PolicyClock.iso(runNow), POLICY)).value().get("value").asLong();
+            assertTrue(previewSeconds > 0);
+            assertEquals(previewSeconds, quote.at("/timing/previewSeconds").asLong());
+            Instant expires = instant("SELECT expires_at FROM custody_holds WHERE hold_id = ?", holdId);
+            assertEquals(quotedAt.plusSeconds(previewSeconds), expires);
+            assertTrue(expires.isAfter(claimClock.now(new RunContext(ENV, RUN, "sub-paula"))), "the actual cart authority is live");
+            String stockBefore = firstPlanVersion("stock");
+
+            Resp held = get(greg, PLAN);
+            assertEquals(200, held.status(), held.toString());
+            assertNotEquals(stockBefore, held.body().at("/value/plan/versions/stock").asText(), "the hold is part of the stock version");
+            assertEquals("slot-paula", heldFor(heldCar));
+            Resp after = get(greg, PLAN);
+            assertEquals(200, after.status(), "the read must not be refused as planning-held-stock-unresolved: " + after);
+            assertEquals("ok", after.body().get("status").asText());
+            assertEquals(PolicyClock.iso(runNow), after.body().at("/value/plan/asOf").asText());
+            assertEquals("slot-paula", heldFor(heldCar), "the car is still held for the claimant's slot");
+            System.out.println("F589 live private Paula window=" + collection + " run=" + runNow + " hold=" + holdId
+                    + " quotedAt=" + quotedAt + " expires=" + expires + " previewSeconds=" + previewSeconds);
+        } catch (Throwable failure) {
+            primaryFailure = failure;
+            throw failure;
+        } finally {
+            Throwable cleanupFailure = null;
+            try {
+                if (hold != null) {
+                    // The case owns the public release before restoring its account and before Sam runs.
+                    Resp release = post(paula, API + "/manual/claim/release", M.createObjectNode().put("commandId", cmd()).put("holdId", holdId)
+                            .put("expectedHoldVersion", hold.get("version").asLong()).put("expectedDraftVersion", 1).put("reason", "cancel").toString());
+                    assertEquals(200, release.status(), release.toString());
+                    assertEquals(200, get(greg, PLAN).status());
+                    assertNull(heldFor(heldCar), "a released car is no longer held");
+                    System.out.println("F589 released owned hold=" + holdId + " through public route; no heldFor");
+                }
+            } catch (Throwable failure) {
+                cleanupFailure = failure;
+            }
+            try {
+                if (inputOwned) {
+                    long restoreVersion = accountInput("employee-paula").version();
+                    replacePaulaRecord(originalPaula.record(), restoreVersion);
+                    assertEquals(new AccountInput(originalPaula.record(), restoreVersion + 1), accountInput("employee-paula"));
+                    assertTrue(restoreVersion > originalPaula.version(), "the override was a monotonic source transition");
+                    System.out.println("F589 exact Paula record restored; versions=" + originalPaula.version() + "->"
+                            + restoreVersion + "->" + (restoreVersion + 1));
+                }
+                assertEquals(originalSam, accountInput("employee-sam"), "Sam input and repository version stay unchanged before Order7");
+            } catch (Throwable failure) {
+                if (cleanupFailure == null) cleanupFailure = failure; else cleanupFailure.addSuppressed(failure);
+            }
+            if (cleanupFailure != null) {
+                if (primaryFailure != null) primaryFailure.addSuppressed(cleanupFailure);
+                else if (cleanupFailure instanceof Exception failure) throw failure;
+                else if (cleanupFailure instanceof Error failure) throw failure;
+                else throw new AssertionError(cleanupFailure);
+            }
+        }
     }
 
     // ---- 7: FUCQ-528, a confirmed driver lets the plan order for Sam ----
@@ -453,19 +554,111 @@ class GregOrderPlanJourneyHttpTest {
         assertEquals(1, confirm.body().at("/value/brief/briefVersion").asInt());
     }
 
-    /** A complete manual draft for Paula, dated at the end of her own collection window. */
-    private void saveDraft(String paula) throws Exception {
-        JsonNode account = get(paula, API + "/manual/account").body();
-        String latest = account.findValue("latestCollectionDate").asText();
+    /** A complete manual draft, checked again against the actual ready account's canonical date constraints. */
+    private void saveDraft(String paula, JsonNode account, String collection) throws Exception {
         ObjectNode choices = StockDbFixture.complete();
-        choices.put("slotId", "slot-paula").put("driverId", "driver:employee-paula").put("oldContractId", "current:employee-paula")
-                .put("requestedCollectionDate", latest);
+        choices.put("slotId", "slot-paula").put("driverId", "driver:employee-paula").put("oldContractId", "current:employee-paula");
+        choices = ReturnJourneySteps.withCollectionDate(account, choices);
+        assertEquals(collection, choices.get("requestedCollectionDate").asText());
         ((ObjectNode) choices.get("contact")).put("email", "paula@gcsp-demo.com");
         ObjectNode in = M.createObjectNode().put("commandId", cmd()).put("expectedDraftVersion", 0)
-                .put("expectedContextVersion", account.at("/value/contextVersion").asText());
+                .put("expectedContextVersion", account.get("contextVersion").asText());
         in.set("choices", choices);
         Resp saved = post(paula, API + "/manual/draft", in.toString());
-        assertEquals(200, saved.status(), "the demo account window must still be open (ends " + latest + "): " + saved);
+        assertEquals(200, saved.status(), saved.toString());
+    }
+
+    /** Only latestCollectionDate is varied; all other bounds remain actual account/policy inputs. */
+    private String smallestCollectionDate(JsonNode account) {
+        JsonNode rules = selected(account.get("assumptions"), "key", "manual.context.v1").get("value");
+        ObjectNode choices = StockDbFixture.complete();
+        JsonNode driver = selected(account.get("drivers"), "driverId", "driver:employee-paula");
+        JsonNode location = selected(rules.get("locations"), "locationId", choices.get("collectionLocationId").asText());
+        JsonNode option = selected(rules.get("contractOptions"), "contractOptionId", choices.get("contractOptionId").asText());
+        assertEquals(account.at("/choices/schemeId"), choices.get("schemeId"));
+        assertTrue(includes(option.get("schemeIds"), choices.get("schemeId").asText()));
+        assertTrue(includes(option.get("driverKinds"), driver.get("kind").asText()));
+        assertTrue(includes(location.get("contractOptionIds"), option.get("contractOptionId").asText()));
+        assertTrue(includes(location.get("driverKinds"), driver.get("kind").asText()));
+        assertTrue(rules.get("minimumLeadDays").isIntegralNumber() && rules.get("maximumLeadDays").isIntegralNumber());
+        long min = rules.get("minimumLeadDays").asLong(), max = rules.get("maximumLeadDays").asLong();
+        assertTrue(min >= 0 && max >= min);
+        LocalDate day = LocalDate.parse(account.get("asOf").asText().substring(0, 10));
+        LocalDate first = day.plusDays(min), last = day.plusDays(max);
+        JsonNode contract = account.get("currentContract");
+        assertEquals("current:employee-paula", contract.get("contractId").asText());
+        if (contract.hasNonNull("earliestCollectionDate")) {
+            LocalDate earliest = LocalDate.parse(contract.get("earliestCollectionDate").asText());
+            if (earliest.isAfter(first)) first = earliest;
+        }
+        JsonNode licence = driver.get("licence");
+        assertTrue(includes(licence.get("categories"), "car"));
+        LocalDate validFrom = LocalDate.parse(licence.get("validFrom").asText());
+        LocalDate validUntil = LocalDate.parse(licence.get("validUntil").asText());
+        if (validFrom.isAfter(first)) first = validFrom;
+        if (validUntil.isBefore(last)) last = validUntil;
+        JsonNode closed = location.get("closedDates");
+        assertTrue(closed == null || closed.isNull() || closed.isArray());
+        for (LocalDate date = first; !date.isAfter(last); date = date.plusDays(1)) {
+            if (closed == null || closed.isNull() || !includes(closed, date.toString())) return date.toString();
+        }
+        throw new AssertionError("No open collection day within canonical lead, earliest and licence bounds");
+    }
+
+    private static boolean includes(JsonNode rows, String value) {
+        assertTrue(rows != null && rows.isArray());
+        for (JsonNode row : rows) if (value.equals(row.asText())) return true;
+        return false;
+    }
+
+    private static JsonNode selected(JsonNode rows, String key, String value) {
+        assertTrue(rows != null && rows.isArray());
+        List<JsonNode> found = new ArrayList<>();
+        for (JsonNode row : rows) if (value.equals(row.path(key).asText())) found.add(row);
+        assertEquals(1, found.size(), "one canonical selection for " + key + "=" + value);
+        return found.get(0);
+    }
+
+    private static List<ObjectNode> paulaCollectionWindows(JsonNode record) {
+        List<ObjectNode> windows = new ArrayList<>();
+        for (JsonNode contract : record.get("contracts")) if (paulaContract(contract)) windows.add((ObjectNode) contract);
+        assertEquals(1, windows.size(), "one identified current contract");
+        for (JsonNode history : record.get("histories")) {
+            for (JsonNode contract : history.get("entries")) if (paulaContract(contract)) windows.add((ObjectNode) contract);
+        }
+        assertEquals(2, windows.size(), "one matching history mirror");
+        return windows;
+    }
+
+    private static boolean paulaContract(JsonNode contract) {
+        return "current:employee-paula".equals(contract.path("contractId").asText())
+                && "employee-paula".equals(contract.path("employeeId").asText())
+                && "slot-paula".equals(contract.path("slotId").asText());
+    }
+
+    private record AccountInput(JsonNode record, long version) {}
+
+    private AccountInput accountInput(String employee) throws Exception {
+        try (Connection c = dataSource.get().getConnection(); PreparedStatement ps = c.prepareStatement(
+                "SELECT record::text, version FROM employee_account_records WHERE environment_id = ? AND run_id = ? AND employee_id = ?")) {
+            ps.setString(1, ENV); ps.setString(2, RUN); ps.setString(3, employee);
+            try (ResultSet rs = ps.executeQuery()) {
+                assertTrue(rs.next(), "the owned composition's account exists");
+                AccountInput input = new AccountInput(M.readTree(rs.getString(1)), rs.getLong(2));
+                assertFalse(rs.next());
+                return input;
+            }
+        }
+    }
+
+    private void replacePaulaRecord(JsonNode record, long expectedVersion) throws Exception {
+        try (Connection c = dataSource.get().getConnection(); PreparedStatement ps = c.prepareStatement(
+                "UPDATE employee_account_records SET record = ?::jsonb, version = version + 1 "
+                        + "WHERE environment_id = ? AND run_id = ? AND employee_id = ? AND version = ?")) {
+            ps.setString(1, record.toString()); ps.setString(2, ENV); ps.setString(3, RUN);
+            ps.setString(4, "employee-paula"); ps.setLong(5, expectedVersion);
+            assertEquals(1, ps.executeUpdate(), "one scoped versioned private record transition");
+        }
     }
 
     private Instant runClockNow() throws Exception {
