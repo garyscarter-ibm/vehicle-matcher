@@ -3449,3 +3449,8 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-24 07:43 UTC · usget-vesper · DL-20261124-F555-08 · Claim commits use a separate attribution path
 
 - Rootwrapped commit_paths forclaim attribution, but actualclaimbda895581 uses _commit_two directly and publishedwithoutCodextrailer. Postcommitinspection caughtit; publishedhistorypreserved. Futurehelperclaim calls need explicit attribution at _commit_two aswell asordinarycommit_paths; thisis an observedremaininghelperinterface issue, noframeworkchangeornewgate. Merge95de5d418 andpublishedF555candidatea5a2cc165 includeactualCodextrailers.
+
+
+### 2026-11-24 07:54 UTC · usget-vesper · DL-20261117-GCC-013 · Current native parenting and evidence reconciled
+
+- Fresh0745nativequery terminal19delta/276openBug/277auditrows;286pullunion. Missingattachmentfields hydrated onlyfromretained nativeevidence atsameexactkey/updated orfourfreshGET+empty-membershipwitnesses; noomissiontreatedempty. Actualread_issues/offlinepull0failed/0changes/0notify;14cacheimagesfreshlyready/0missing. Fresh102typednativeoriginStories yield268checked/0fetch/0setparent/0mismatch; F547originalF448/derived432 nowresolved, leaving6needsEpic(525/527/528/530/534/545) and29originunknown. Rejected76/399 legitimatelyskipped; customhelperreconciliationmarker remains pending. Rootinitialraw libraryarguments raisedTypeError/KeyError beforeimport; correctedvia read_issues. Generic --plan/--complete auditflags unsupportedbyproject-ownedhelper, so actualsupported libraryaudit used aftercompletepagination; no cache.recorded claim. Retainedlocal0745manifest7162415B/no scratch/OneDrive. Proposedimprovement remains version-aligned helpercontracts and legitimateRejectedskip handling; noframeworkchange.
