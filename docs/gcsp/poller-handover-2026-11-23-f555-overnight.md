@@ -36,3 +36,12 @@ Canonical Node first envelope refused before npm with differing inherited NODE_O
 Reviewed Java diagnostic candidate `ef8aa9a97fc1038eef9b1928a5bfdd18bfcd5a50` is pushed on `dev/batch-java-diagnostic-20261123`; all1462API tree entries match817182c05. Exact manual `default-profile` run `45294821482` activated successfully. Hiccup monitors and diagnoses; no base merge or canonical dispatch yet. Supplemental Kronk review covers final workflow hash `e7b93b2da0c077c75360905a6d12b1a9d805794c1eae86a862d03871f2ec35da`.
 
 Lord Business reconciles all saved WEB inputs/runtime/dependencies without rerunning. Final registered browser suite remains required on final Java. Original human F555AC8/F548AC6 and all37Node-report-only boundaries remain unchanged.
+
+
+## Latest validation checkpoint — 24 November
+
+Diagnostic45294821482 passed10/10 at ef8aa9a97, zero errors/failures/skips and clean teardown. Root independently reconciled it; no canonical credit. Full capture-enabled canonical run45295939764 is active at300e9bbe7b28e0400edf7c89e6b02cf5a235a682 on `dev/batch-java-canonical-20261124`, every other tracked file exactly current basef4fc7e191. Root Java lease covers f4fc7e191 through04:16:59Z. Hiccup monitors this exact run; no class hopping, retry or heap changes.
+
+WEB1948/1948 is reusable for its recorded linked-cache whole-spec variant. Root checked all1309original+25supplemental external input hashes and twelve raw reports. Supplemental closure records23Java goldens/two Node helpers omitted by the original manifest, matching saved clean tested checkout and both commits; no retroactive runtime hashing or fresh npmci claimed. Evidence: `web-reuse-{reconciliation,root-assessment}.json` in current runroot.
+
+Final unfiltered browser plan/input inventory prepared at `final-web-e2e-{plan,inputs}.json`, fresh worktree `batch-web-e2e-20261124-final` pinnedf4fc7e191. Existing registered runner owns heavy/PG/build/scratch/children; new parent envelope only owns the exact temporary cache link and command lifetime. Kronk performs narrow envelope source review, no execution. Launch follows Node and final Java source closure; human verdicts stay pending.
