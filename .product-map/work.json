@@ -11983,9 +11983,9 @@
       "type": "Bug",
       "status": "In Progress",
       "original_status": "In Progress",
-      "observed_at": "2026-11-24T01:10:07Z",
+      "observed_at": "2026-11-24T02:08:51Z",
       "branch": "dev/DEV-2026-11-24-vesper-004",
-      "evidence": "Claimed DEV-2026-11-24-vesper-004; canonical AC pending",
+      "evidence": "Source664563f88;31-group discovery and collector controls reviewed; claim-file evidence checkpoint; original canonical AC pending",
       "slices": [
         {
           "id": "candidate",
@@ -12005,19 +12005,37 @@
           "name": "Sniffles",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-24T01:10:07.240035+00:00",
-          "expires_at": "2026-11-24T04:10:07.240035+00:00",
-          "source": "01a20b15-abad-7e83-94ee-dcd194bfcb9e title read-back, native active",
-          "status": "reviewing candidate"
+          "observed_at": "2026-11-24T02:08:51.442403+00:00",
+          "expires_at": "2026-11-24T05:08:51.442403+00:00",
+          "source": "01a20b15-abad-7e83-94ee-dcd194bfcb9e native active; source/evidence review complete",
+          "status": "waiting for shared heavy queue; scoped runtime pending"
         },
         {
           "name": "Mulan",
           "harness": "codex",
           "role": "implementer",
-          "observed_at": "2026-11-24T01:10:07.240035+00:00",
-          "expires_at": "2026-11-24T04:10:07.240035+00:00",
-          "source": "01a20b18-acad-7c72-86d9-9093c2cf0223 title read-back, native active",
-          "status": "effective model and candidate"
+          "observed_at": "2026-11-24T02:08:51.442403+00:00",
+          "expires_at": "2026-11-24T02:08:51.442403+00:00",
+          "source": "01a20b18-acad-7c72-86d9-9093c2cf0223 native completed checkpoint",
+          "status": "selection and collector repair complete; idle before runtime"
+        },
+        {
+          "name": "Cuthbert",
+          "harness": "codex",
+          "role": "source/spec reviewer",
+          "observed_at": "2026-11-24T02:08:51.442403+00:00",
+          "expires_at": "2026-11-24T02:08:51.442403+00:00",
+          "source": "01a20b20-638b-7aa1-ac0c-d6870b9d720c native completed review",
+          "status": "source/scoped selection/collector controls passed; runtime pending"
+        },
+        {
+          "name": "Marvin the Martian",
+          "harness": "codex",
+          "role": "security/config reviewer",
+          "observed_at": "2026-11-24T01:20:35.507852+00:00",
+          "expires_at": "2026-11-24T01:23:57.348912+00:00",
+          "source": "01a20b23-98ad-7620-ae9b-2d484aff0795 native completed report",
+          "status": "scoped security/config passed; runtime pending"
         }
       ]
     }
