@@ -10761,7 +10761,7 @@
       "native_status_observed_at": "2026-11-23T19:37:24.986Z",
       "native_updated_at": "2026-11-23T09:45:31.059-0600",
       "note": "Former clock blocker resolved by F564; final five bell leaves pass. Original6AC unchanged. One prepared batch has independent pending F548AC6 bell/F555AC8 offer human rows. WEB1948/117/12 GREEN; Node observed RED/investigating; Java pending; physical visibility/BFCache/Safari limits retained. Native status observed19:37:24.986Z, not inferred from this local record update.",
-      "observed_at": "2026-11-23T19:58:26Z",
+      "observed_at": "2026-11-25T18:15:20Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10779,10 +10779,10 @@
           "title": "Native notification bell and refresh source (5 points)"
         },
         {
-          "evidence": "Final3dd/defaultboth193939: five bell leaves + parent pass, actual active/expired/count/note/keyboard/polling and source1280pair. Root cleanup exit0/owned resources absent. Lead+Pluto critique no scoped finding; F566375clipping and synthetic lifecycle/platform limits explicit. OriginalAC6 human row and Node/Java covering pending. docs/gcsp/evidence/offer-and-bell-parity-2026-11-23.md",
+          "evidence": "Original AC1-5 validated in the final retained source/connected result; AC6 Gary 2026-11-25 15:57 says bell matches, recorded in the latest Story Result and docs/gcsp/evidence/offer-and-bell-parity-2026-11-23.md. Matching WEB/browser/Java batch coverage is retained. Preserve the exact 37 F555-only Node report-only RED qualification, F548 WebKit RED checks, actual Safari and synthetic lifecycle limits; no cross-engine green.",
           "id": "integration",
-          "observed_at": "2026-11-23T19:51:32.452250+00:00",
-          "status": "in-progress",
+          "observed_at": "2026-11-25T18:15:20Z",
+          "status": "complete",
           "title": "Connected browser suite, screenshot pairs and critique (3 points)"
         }
       ],
