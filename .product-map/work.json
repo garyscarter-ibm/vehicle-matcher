@@ -4396,17 +4396,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-339"
     },
     {
-      "assignee": "",
-      "id": "FUCQ-340",
-      "observed_at": "2026-11-10T11:32:23Z",
-      "original_status": "To Do",
-      "status": "To Do",
-      "title": "Prepare a repeatable second walkthrough where Paula requests an SUV",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-340"
-    },
-    {
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-10-GC-023",
       "id": "FUCQ-342",
@@ -12703,6 +12692,49 @@
         }
       ],
       "evidence": "_dev/in-progress/DEV-2026-11-24-001.md Result; .claude/poller/sorrel-f592-20261125/result.json; source 66ea3361475d7524e683090342b79c4da055548e"
+    },
+    {
+      "assignee": "",
+      "id": "FUCQ-340",
+      "observed_at": "2026-11-25T03:32:58Z",
+      "original_status": "To Do",
+      "status": "In Progress",
+      "title": "Prepare a repeatable second walkthrough where Paula requests an SUV",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-340",
+      "branch": "dev/DEV-2026-11-10-GC-021",
+      "workers": [
+        {
+          "name": "Mary-Sue Walton",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-25T03:32:00Z",
+          "expires_at": "2026-11-25T06:32:00Z",
+          "source": "dispatcher-authorized F340 delivery"
+        },
+        {
+          "name": "Scooby Doo",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-25T03:32:58.372274+00:00",
+          "expires_at": "2026-11-25T06:32:00Z",
+          "source": "F340 allocated bounded SUV preparation"
+        }
+      ],
+      "slices": [
+        {
+          "id": "preparation",
+          "status": "in-progress",
+          "title": "Bounded SUV inputs and actual run instructions (AC1-3)",
+          "observed_at": "2026-11-25T03:31:17Z"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Reset/replay browser proof and independent rendered critique (AC1-4)"
+        }
+      ]
     }
   ]
 }
