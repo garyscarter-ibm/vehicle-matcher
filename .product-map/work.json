@@ -12860,21 +12860,21 @@
       "assignee": "usget",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-561",
       "evidence": "Native In Progress/assignee readback by Rapunzel on 25 November 2026; local claim DEV-2026-11-22-vesper-033. All seven original acceptance criteria retained.",
-      "observed_at": "2026-11-25T02:44:37Z",
+      "observed_at": "2026-11-25T18:12:13Z",
       "slices": [
         {
           "id": "console-panels",
           "status": "in-progress",
           "title": "Basic console, release, suitability and captured mail (AC1–5)",
-          "observed_at": "2026-11-25T02:44:37Z",
-          "evidence": "Sam owns UI/kit/mail extraction; source in progress, no passing execution yet. Release aggregate projection awaits explicit Java file-scope decision; AC2 remains open."
+          "observed_at": "2026-11-25T18:12:12Z",
+          "evidence": "AC1–5 source implemented. Postrefresh 1fcdf376d: Angular 19 files / 409 passes; static 147 / 147, boundary analyzer and e2e syntax pass. Corrected native 36 and parent 86 pass separately; initial 119 / 2 failed run retained. Optional policy preserves cars/counts; custody contradiction returns 503. Individual actual 1280/375 composition screens remain pending. See DEV-2026-11-22-vesper-033 Result."
         },
         {
           "id": "integration",
           "status": "in-progress",
           "title": "Connected Main, actual hosted cue and human pair (AC6–7)",
-          "observed_at": "2026-11-25T02:44:37Z",
-          "evidence": "Existing runner f561 coverage drafted; no browser run yet. Actual hosted cue and human same-scenario 1280 pair remain unverified."
+          "observed_at": "2026-11-25T18:12:13Z",
+          "evidence": "Registered f561 and stable Advanced helper c04f1f166; refreshed source 1fcdf376d. Existing true 3 GiB caller is retargeted for planned daytime f561 execution after commit; browser remains unrun, no measured minimum. Hosted 25 Nov 17:55:51 UTC still shows Clock/reset mechanics, no cue and disabled Next release; revision unknown, no click. Actual Node/Angular 1280 pair and human verdict remain pending. All seven ACs stay open; see DEV-2026-11-22-vesper-033 Result."
         }
       ],
       "unsliced": false
