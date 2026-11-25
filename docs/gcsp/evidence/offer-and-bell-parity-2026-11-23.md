@@ -224,3 +224,24 @@ PNG SHA-256: Node `ce66644dae0378036e546a57bf6b221188b0bbd315aed1e6ece2216b22c0c
 | Preferences — F552 AC7, corrected 3b | Editor categories/axes, 1280×800; automatic preview settled | Node attachment `1647676`; Angular attachment `1647677` above | | | | |
 
 F552 remains **partial / In Progress, 13 points**, with AC1–6 checked and AC7 unchecked. The new human-verdict cells remain blank.
+
+
+## F561 — Presenter after Basic release — original AC7 — 25 November
+
+This pair extends the existing combined review record. No new human review question or mailbox thread was opened after the run's question cutoff. FUCQ-561 remains **partial / In Progress, 13 points**: AC1–5 are evidenced; AC6 actual hosted release cue/action and AC7 human verdict remain unchecked.
+
+Both captures use the actual public Main reset and first Basic release, at **1280×800**. They show Day 2, **26 November 2026 at 11:30 GMT**, the same 100 released cars, 99 unallocated, 1 Buddy allocated and 0 manually allocated. Frozen Node reference is `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`; Angular/Java proof source is `12e6e9486e44192d778dc6ef7418e98fcafa33ea`, integrated through partial merge `59a46fc49`. Java ran with signed OIDC and an owned native PostgreSQL composition. Each engine retains its own generated run identity.
+
+The registered family passed 7/7 reported entries (six subtests plus parent), including strict prepared brief/policy/consent/clock, full-stock/count/allocation/chart semantics and reviewed image registration checks. These engineering checks prepare the pair for review; they do not supply a human verdict.
+
+| Frozen Node | Angular / Java |
+| --- | --- |
+| [presenter-node-after-release-1280.png](https://ibm-consulting.atlassian.net/secure/attachment/1647708/presenter-node-after-release-1280.png) — attachment `1647708`, 277,604 bytes | [presenter-after-release-1280.png](https://ibm-consulting.atlassian.net/secure/attachment/1647709/presenter-after-release-1280.png) — attachment `1647709`, 268,590 bytes |
+
+Agent observations: Angular uses the dedicated authenticated shell and day bar, with different insets/vertical spacing; the old **Open the portal** action remains deliberately absent under the migration's presenter boundary. The same released vehicles and totals are painted. The separate 375px captured-email view paints its real image but clips its right side inside the existing iframe; that limitation is disclosed in the F561 Result. Actual hosted AC6 remains unproved.
+
+The two PNG attachments, sizes and native description/AC state were read back on 25 November. Receipt: `.claude/poller/velko-f561-20261125/publication-receipt.json`. Runtime evidence and local captures: `.claude/poller/velko-f561-20261125/browser-12e6e9486-chromium159/`.
+
+| Screen / original criterion | State and viewport | Pair | Verdict | Human reviewer | Date | Source |
+| --- | --- | --- | --- | --- | --- | --- |
+| Presenter — F561 AC7 | Main after first Basic release, 1280×800 | Node attachment `1647708`; Angular attachment `1647709` above | | | | |
