@@ -46,15 +46,8 @@
         <section class="order-panel order-stages" aria-labelledby="order-stages-title">
           <h2 id="order-stages-title" class="order-actions-heading" tabindex="-1">Your order</h2>
           @if (p.stages.state !== 'ok') { <p class="gcsp-note">{{ sectionMessage(p.stages) }}</p> }
-          @if (p.stages.value; as stages) {
-            <ol class="stage-list">@for (step of stageRows(); track $index) {
-              <li [class.is-current]="step.current" [class.is-complete]="step.complete" [class.is-failed]="step.failed" [attr.aria-current]="step.current ? 'step' : null">
-                <span>{{ step.label }}</span><strong>{{ step.state }}</strong>
-                @if (step.at) { <time [attr.datetime]="step.at">{{ time(step.at) }}</time> }
-              </li>
-            }</ol>
-            <gcsp-fact-list [rows]="ownership(stages)" />
-            @if (stages.blocked?.reason) { <p class="order-attention">{{ stages.blocked?.reason }}</p> }
+          @if (p.stages.state === 'ok' && p.stages.value; as stages) {
+            <gcsp-stage-tracker heading="Steps" [stages]="stageRows()" [level]="3" />
             @if (stages.outcome === 'declined') { <a gcspButton variant="ghost" routerLink="/help">Get help</a> }
           }
         </section>
@@ -82,19 +75,16 @@
         </section>
         <section class="order-panel" aria-labelledby="documents-title"><h2 id="documents-title">Documents and checks</h2>
           @if (p.documents.state !== 'ok') { <p class="gcsp-note">{{ sectionMessage(p.documents) }}</p> }
-          @if (p.documents.value; as d) {
+          @if (p.documents.state === 'ok' && p.documents.value; as d) {
             <p class="order-state">{{ d.readiness.ready ? 'Ready for handover' : 'Not ready for handover' }}</p>
             <gcsp-fact-list [rows]="[{ label: 'Documents', value: d.readiness.documentsComplete ? 'Complete' : 'Outstanding' }, { label: 'Vehicle preparation', value: d.readiness.vehicleReady ? 'Ready' : 'Outstanding' }]" />
-            <ul class="task-list">@for (item of d.items; track item.itemId) {
-              <li [class.is-failed]="item.status === 'failed'"><div><h3>{{ item.label || words(item.itemId) }}</h3><p>{{ owner(item.owner) }} · {{ item.status === 'waiting-for-employee' ? 'Waiting for you' : words(item.status) }}</p>
-                @if (item['overdue'] === true) { <p class="order-attention">Overdue</p> }
-                @if (item['dueAt'] && item.status !== 'complete') { <p class="gcsp-note">Due {{ time(item['dueAt']) }}</p> }
-                @if (item.reason) { <p class="order-attention">{{ item.reason }}</p> }</div>
-                @if (p.actions.documentTaskIds.includes(item.itemId)) { <button gcspButton variant="ghost" type="button" [disabled]="!canAct('documents')" (click)="prepare({ kind: 'acknowledge', itemId: item.itemId })">{{ item.action || 'Acknowledge' }}</button> }
-              </li>
-            } @empty { <li>No documents or checks are listed yet.</li> }</ul>
-            @if (d.readiness.failed.length) { <p class="order-attention">Needs attention: {{ d.readiness.failed.join(', ') }}</p> }
-            @if (d.readiness.blocking.length && !d.readiness.ready) { <p class="gcsp-note">Still to do: {{ d.readiness.blocking.join(', ') }}</p> }
+            @for (group of documentChecklist().readiness; track $index) {
+              <div class="gcsp-order-todo gcsp-order-choice">
+                <p class="gcsp-order-todo-title gcsp-order-choice-label">{{ group.heading }}</p>
+                <ul class="gcsp-order-todo-list">@for (label of group.labels; track $index) { <li>{{ label }}</li> }</ul>
+              </div>
+            }
+            <section gcspTaskList heading="Checklist" emptyText="No documents or checks are listed yet." [level]="3" [rows]="true" [groups]="documentChecklist().groups"></section>
           }
         </section>
         <section class="order-panel" aria-labelledby="relationship-title"><h2 id="relationship-title">Current car</h2>
