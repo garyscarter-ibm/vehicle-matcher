@@ -16,6 +16,21 @@ const focused = (locator) => locator.evaluate((node) => document.activeElement =
 const project = (value, keys) => Object.fromEntries(keys.map((key) => [key, value[key]]));
 const briefKeys = ['schemaVersion', 'preferences', 'essentials', 'buddy', 'briefVersion', 'status', 'policyVersion',
   'confirmedBy', 'currentCarFeedback', 'currentCarRating', 'sameAgain'];
+const timestampFields = new Set(['confirmedAt', 'disengagedAt', 'ratedAt', 'setAt', 'asOf', 'observedAt']);
+function timestampInstants(value, key = '') {
+  if (value === null || value === undefined) return value;
+  if (timestampFields.has(key)) {
+    assert.equal(typeof value, 'string', `${key} must be a timestamp`);
+    assert.match(value, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?Z$/, `${key} must be a valid UTC instant`);
+    const instant = Date.parse(value); assert.ok(Number.isFinite(instant), `${key} must be a valid instant`);
+    const canonical = value.replace(/(?:\.(\d{1,3}))?Z$/, (_match, fraction) => `.${(fraction ?? '').padEnd(3, '0')}Z`);
+    assert.equal(new Date(instant).toISOString(), canonical, `${key} must be a valid calendar timestamp`);
+    return instant;
+  }
+  if (Array.isArray(value)) return value.map((item) => timestampInstants(item));
+  if (typeof value === 'object') return Object.fromEntries(Object.entries(value).map(([name, item]) => [name, timestampInstants(item, name)]));
+  return value;
+}
 
 async function readbacks(suite, page) {
   const paths = ['/context', '/manual/account', '/brief', '/brief/editor'];
@@ -23,16 +38,18 @@ async function readbacks(suite, page) {
   return Object.fromEntries(paths.map((route, index) => [route, good(responses[index], `Actual ${route}`)]));
 }
 
-async function capture(suite, page, name) {
+async function capture(suite, page, name, anchor) {
   const destination = path.join(process.env.GCSP_E2E_OUTPUT, 'f552', `${name}.png`);
+  if (anchor) await anchor.evaluate((node) => node.scrollIntoView({ block: 'start', inline: 'nearest' }));
   // Off-screen lazy images deliberately have no response yet. Wait for the actual visible/eager images;
-  // keep the full-page capture honest rather than changing loading policy or replacing image responses.
+  // capture the named viewport state without changing loading policy or replacing image responses.
   await page.waitForFunction(() => [...document.images].filter((image) => {
     const box = image.getBoundingClientRect();
     return image.loading !== 'lazy' || box.bottom > 0 && box.top < innerHeight && box.right > 0 && box.left < innerWidth;
   }).every((image) => image.complete), null, { timeout: 15000 });
-  await page.screenshot({ path: destination, fullPage: true });
-  suite.receipt.screenshots.push({ name, path: destination, viewport: page.viewportSize() });
+  await page.screenshot({ path: destination, fullPage: false });
+  suite.receipt.screenshots.push({ name, path: destination, viewport: page.viewportSize(),
+    anchor: anchor?.toString() ?? 'current interaction', scroll: await page.evaluate(() => ({ x: scrollX, y: scrollY })) });
   return destination;
 }
 
@@ -133,7 +150,7 @@ test('FUCQ-552: source preferences, real preview, keyboard and accepted exits', 
       suite.receipt.preferences.account = await accountChecks(employee, async () =>
         good(await suite.call(employee, 'GET', '/brief/editor'), 'Actual compact save readback'));
       before = await readbacks(suite, employee); suite.receipt.preferences.before = before;
-      await capture(suite, employee, 'angular-account-sportiness-1280');
+      await capture(suite, employee, 'angular-account-sportiness-1280', employee.locator('.gcsp-prefs').first());
       const root = employee.locator('.gcsp-prefs').first();
       await root.getByRole('button', { name: 'Done', exact: true }).click();
       const info = root.getByRole('button', { name: 'About Same again, please!', exact: true });
@@ -169,39 +186,47 @@ test('FUCQ-552: source preferences, real preview, keyboard and accepted exits', 
       for (const question of angularEditor.questions) assert.deepEqual(question.choices, ['Yes', 'No', 'Not sure yet']);
       assert.ok(angularEditor.cards.every((card) => card.member && card.gate && card.title));
       suite.receipt.preferences.editor = angularEditor;
-      await capture(suite, employee, 'angular-editor-1280');
+      await capture(suite, employee, 'angular-editor-1280', employee.locator('.gcsp-brief').first());
+      await capture(suite, employee, 'angular-editor-practical-1280', employee.locator('.gcsp-brief-question').first());
+      await capture(suite, employee, 'angular-editor-preview-1280', employee.locator('.gcsp-brief-cards article.vm-card').first());
       completed++;
     });
 
     await check('AC7 engineering pair: frozen live account/editor use the same actual brief, account and clock', async () => {
       const replay = await suite.visitFrozenNode({ ...suite.receipt.offer, hold: state.hold, clock: state.clock,
-        finalAccount: state.account }, async ({ page, origin, runtime, employee: sourceEmployee }) => {
+        finalAccount: state.account }, async ({ page, origin, runtime, employee: sourceEmployee, receipt: sourceReceipt }) => {
         await page.goto(`${origin}/gcsp-account.html`, { waitUntil: 'domcontentloaded' });
         const sourceAccount = await accountChecks(page, async () => {
           const actual = await runtime.editor.readEditor(sourceEmployee); assert.equal(actual.status, 'ok'); return actual.value;
         });
         const sourceBrief = await runtime.brief.readCurrent(sourceEmployee);
         assert.equal(sourceBrief.status, 'ok');
-        assert.deepEqual(project(sourceBrief.value.brief, briefKeys), project(before['/brief'].brief, briefKeys), 'Actual saved brief inputs match across engines');
+        sourceReceipt.preferences = { actualBrief: sourceBrief.value,
+          timestampComparison: 'Only confirmedAt, disengagedAt, ratedAt, setAt, asOf and observedAt compare as valid UTC instants; raw readbacks are retained.' };
+        assert.deepEqual(timestampInstants(project(sourceBrief.value.brief, briefKeys)), timestampInstants(project(before['/brief'].brief, briefKeys)), 'Actual saved brief inputs match across engines');
         assert.deepEqual(project(sourceEmployee, ['runId', 'employeeId', 'policyVersion']),
           project(before['/context'], ['runId', 'employeeId', 'policyVersion']), 'Actual contexts map only the isolated environment');
         const sourceAccountRead = await runtime.account.readAccount(sourceEmployee); assert.equal(sourceAccountRead.status, 'ok');
-        assert.deepEqual(project(sourceAccountRead.value, ['state', 'asOf', 'account', 'drivers', 'contracts', 'currentContract', 'contractState', 'choices', 'allowance', 'versions']),
-          project(before['/manual/account'], ['state', 'asOf', 'account', 'drivers', 'contracts', 'currentContract', 'contractState', 'choices', 'allowance', 'versions']), 'Actual accounts and clocks match');
+        sourceReceipt.preferences.actualAccount = sourceAccountRead.value;
+        assert.deepEqual(timestampInstants(project(sourceAccountRead.value, ['state', 'asOf', 'account', 'drivers', 'contracts', 'currentContract', 'contractState', 'choices', 'allowance', 'versions'])),
+          timestampInstants(project(before['/manual/account'], ['state', 'asOf', 'account', 'drivers', 'contracts', 'currentContract', 'contractState', 'choices', 'allowance', 'versions'])), 'Actual accounts and clocks match');
         const sourceEditorRead = await runtime.editor.readEditor(sourceEmployee); assert.equal(sourceEditorRead.status, 'ok');
+        sourceReceipt.preferences.actualEditor = sourceEditorRead.value;
         for (const key of ['preferences', 'essentials', 'practicalQuestions', 'slider', 'accountPreferences']) {
-          assert.deepEqual(sourceEditorRead.value.context[key], before['/brief/editor'].context[key], `Actual editor context ${key}`);
+          assert.deepEqual(timestampInstants(sourceEditorRead.value.context[key]), timestampInstants(before['/brief/editor'].context[key]), `Actual editor context ${key}`);
         }
         assert.deepEqual(sourceAccount, suite.receipt.preferences.account, 'Same actual categories, mode, importance and completeness');
-        const accountCapture = await capture(suite, page, 'node-account-sportiness-1280');
+        const accountCapture = await capture(suite, page, 'node-account-sportiness-1280', page.locator('.gcsp-prefs').first());
         await openEditor(page, `${origin}/gcsp-brief-live.html`);
         await until(async () => await page.locator('.gcsp-brief-cards article.vm-card').count() > 0, 'Frozen real preview produces decision cards');
         const sourceEditor = await editorSurface(page);
         assert.deepEqual(sourceEditor, angularEditor, 'Both actual editors render the same schema and preview decisions');
-        const editorCapture = await capture(suite, page, 'node-editor-1280');
-        return { preferences: { actualBrief: sourceBrief.value, actualAccount: sourceAccountRead.value, actualEditor: sourceEditorRead.value,
+        const editorCapture = await capture(suite, page, 'node-editor-1280', page.locator('.gcsp-brief').first());
+        const practicalCapture = await capture(suite, page, 'node-editor-practical-1280', page.locator('.gcsp-brief-question').first());
+        const previewCapture = await capture(suite, page, 'node-editor-preview-1280', page.locator('.gcsp-brief-cards article.vm-card').first());
+        return { preferences: { ...sourceReceipt.preferences,
           account: sourceAccount, editor: sourceEditor,
-          screenshots: [accountCapture, editorCapture], humanReview: 'pending' } };
+          screenshots: [accountCapture, editorCapture, practicalCapture, previewCapture], humanReview: 'pending' } };
       });
       assert.equal(replay.state, 'matched', 'A missing frozen reference cannot establish the required pair');
       completed++;
@@ -230,7 +255,7 @@ test('FUCQ-552: source preferences, real preview, keyboard and accepted exits', 
         project(before['/brief'].brief, briefKeys), 'Keyboard drafts never save implicitly');
       await employee.goto(`${suite.origins.web}/gcsp/account`, { waitUntil: 'domcontentloaded' });
       await accountChecks(employee, async () => good(await suite.call(employee, 'GET', '/brief/editor'), 'Actual narrow compact readback'));
-      await capture(suite, employee, 'angular-account-sportiness-390');
+      await capture(suite, employee, 'angular-account-sportiness-390', employee.locator('.gcsp-prefs').first());
       assert.equal(await employee.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true, 'Narrow tiles and stopped slider fit the viewport');
       const custom = employee.getByRole('radio', { name: 'Set my preferences', exact: true });
       await custom.focus(); await employee.keyboard.press('Space');
