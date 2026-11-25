@@ -148,14 +148,25 @@ test('FUCQ-340: actual Main reset and normal preference/release processing repla
           state.record.variant = variant; await state.employee.setViewportSize({ width, height });
           await prepare(suite, state.employee, variant, state.record);
           const offer = await release(suite, state.employee, presenter, state.record);
-          const semantic = { orderUuid: offer.orderUuid, body: bodyFor(suite, offer.orderUuid) };
-          if (results[variant]) assert.deepEqual(semantic, results[variant], 'Repeat reset recomputes the same fixed-input result');
+          const quote = state.record.offer.quote;
+          assert.equal(quote.orderUuid, offer.orderUuid, 'The rendered quote belongs to the computed source car');
+          const facts = quote.facts.facts;
+          assert.ok(facts.eligibilityModelKey.value, 'The computed offer has a source model identity');
+          // The normal allocator seeds equal-fit ties with the fresh run ID. Replay promises the
+          // same model, fit and terms; exact source paint/upholstery may differ between tied cars.
+          const semantic = {
+            model: facts.eligibilityModelKey.value, body: bodyFor(suite, offer.orderUuid),
+            fuel: facts.fuel.value, seats: facts.seats.value, decision: quote.decision,
+            policyVersion: quote.policyVersion, briefVersion: quote.briefVersion,
+            terms: quote.terms, allowance: quote.allowance,
+          };
+          if (results[variant]) assert.deepEqual(semantic, results[variant], 'Repeat reset recomputes the same model, eligible fit and terms');
           results[variant] = semantic; await state.employee.close();
         });
       }
     }
     assert.equal(runIds.length, 4); assert.equal(new Set(runIds).size, 4);
-    assert.notEqual(results.baseline.orderUuid, results.suv.orderUuid);
+    assert.notEqual(results.baseline.model, results.suv.model);
     assert.deepEqual(suite.receipt.consoleErrors, [], 'The checked walkthroughs have no app runtime errors');
     suite.receipt.namedReset = { used: true, count: runIds.length, runIds, scenarioId: input.reset.scenarioId };
     suite.receipt.checks.f340 = true; await presenter.close();
