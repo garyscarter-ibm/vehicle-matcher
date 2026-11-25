@@ -15,6 +15,14 @@ with `npm --prefix apps/gcsp-web run test:e2e -- --case f555`; repeat `--case f5
 Only those allowlisted names are accepted. The heavy-slot re-exec preserves the selection, and the run receipt
 lists the selected files. A selected run is scoped evidence; it does not stamp the full browser batch.
 
+Select the bounded FUCQ-551 account family with `npm --prefix apps/gcsp-web run test:e2e -- --case f551`.
+One real Main composition checks the held Buddy, current-car styling/image, shared history, drawer focus and
+390px keyboard/layout, then actual Pause/Resume, transport-read failure/recovery and acceptance to finished Buddy.
+It retains full redacted material readbacks and a full-page 1280 Node/Angular held pair before commands mutate
+the brief. Supply the frozen reference below. Account parser states are labelled inferred from uniquely gated
+UI states and actual envelopes. Image framing/dimensions remain distinct; the separate hosted asset probe is
+availability evidence. The pair awaits human review; this local run does not prove a hosted sign-in journey.
+
 Select the bounded FUCQ-552 preferences family with `npm --prefix apps/gcsp-web run test:e2e -- --case f552`.
 It reuses this composition and unchanged Main inputs to check category icons, importance/bin/stops, segmented
 mode/help, understanding segments, editor chips/range axes/end labels, actual preview decision cards and keyboard

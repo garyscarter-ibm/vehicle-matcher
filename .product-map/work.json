@@ -10882,48 +10882,48 @@
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-026",
       "id": "FUCQ-551",
-      "observed_at": "2026-11-23T11:56:57Z",
+      "observed_at": "2026-11-25T06:47:11.466505Z",
       "original_status": "To Do",
       "slices": [
         {
-          "evidence": "Source9f668374f; lead reviewed frozen markup/classes, factCSSspecificity, rating scopedqueue/canonicalack/retry, help lifecycle, exactcountdown and photo-base mapping; fresh89/89 in6specs passed lead-current-car-review receipt. Source boundary only; fullAC/pair remain pending.",
+          "evidence": "Final source1eb11b323 real composition passes actual23px title, two-column facts, photo pill/help/countdown and loaded retained photo; frozen title/facts/grid/held-copy match. Lead viewed1280pair/390. Different Node live-image framing and human verdict remain explicit.",
           "id": "current-car",
-          "observed_at": "2026-11-22T23:20:17Z",
+          "observed_at": "2026-11-25T06:47:11.466505Z",
           "status": "complete",
           "title": "Current car source styling and rating (5 points)"
         },
         {
-          "evidence": "Source793b9f51f. Lead compared frozen ports/composition, scoped command authority, adjacent canonical editor sync, journey omission, neutral preference frame and focus. Worker29 distinct focused cases plus lead84 caller cases/final6 HTTP passed;126ratchet/4inline/boundary receipts verified. Source boundary only; rendered/global-style/live/pair acceptance remains open.",
+          "evidence": "Final1eb11b323 real Main/OIDC/Java/PostgreSQL run passes held/lamp/history/drawers, Pause200, public Sameagain autosave then Resume200, accepted offer200 and finished Buddy/Track order. Shared Node boundary checks actual same car/deadline/hold semantics; generated IDs stay independent.",
           "id": "buddy",
-          "observed_at": "2026-11-22T23:37:17.621716+00:00",
+          "observed_at": "2026-11-25T06:47:11.466505Z",
           "status": "complete",
           "title": "Account Buddy composition (5 points)"
         },
         {
-          "evidence": "Source76607f189: lead reviewed frozen DataTable/history and explicit callers;26hashes/6receipts matched,101scoped cases/128ratchet/4inline/boundary passed. Clean pinned build and921compiled/assembled WebP hashes/87265982B pass. Actual authenticated hosted current-image200 remains unproved; all6ACs open.",
+          "evidence": "Shared real history/tag/named records and drawer focus pass; no false warning for no-order, actual aborted-read warning/retry recovers. Public current-derived hosted asset200 image/webp40050bytes matches repo. Local actual image loads; signed-in hosted journey remains unproved.",
           "id": "account-history-media",
-          "observed_at": "2026-11-22T23:54:50.278295+00:00",
+          "observed_at": "2026-11-25T06:47:11.466505Z",
           "status": "in-progress",
           "title": "Shared history, failure regression and hosted image (3 points)"
         },
         {
-          "evidence": "Own source76607f189 clean production build and explicit targeted built boundary passed; code_key6fe81454, tree61d1da70. Supported F548/549/550/552/555 sibling/global/shared-presenter integration remains dispatcher work. No copying/manual stacking or rendered acceptance claimed.",
+          "evidence": "Integrated product0a6fdcc30/final family1eb11b323: lead independently114 account+340 kit+7 boundary checks pass; final bounded targeted static stamp and real six-group f551 pass. No unchanged Java/full-suite rerun; covering dispatcher batch remains separate.",
           "id": "integration-validation",
-          "observed_at": "2026-11-22T23:54:50.278295+00:00",
-          "status": "blocked",
+          "observed_at": "2026-11-25T06:47:11.466505Z",
+          "status": "complete",
           "title": "Supported sibling integration and focused validation"
         },
         {
-          "evidence": "No connected runtime/browser/deploy work performed. F562reset503/F564clock decisions remain unanswered; no equality weakened. Actual hosted src200, real same-state1280Node/Angular pair, attachments, independent visual critique and human-signed ledger remain absent. All6original ACs stay open.",
+          "evidence": "Final six real groups pass at1eb11b323, fullPage1280held pair before mutations and390/paused/failure/finished viewed by lead. Material sanitized envelopes retained. Engineering proof complete within tested scope; signed-in hosted evidence and human pair verdict remain open.",
           "id": "connected-parity",
-          "observed_at": "2026-11-22T23:54:50.278295+00:00",
-          "status": "blocked",
+          "observed_at": "2026-11-25T06:47:11.466505Z",
+          "status": "in-progress",
           "title": "Actual live same-state Node Angular parity"
         },
         {
-          "evidence": "Partial Result/plan1f5b0bbe5 published after lead source/caller review, verified receipts, pinned build/asset proof and targeted boundary.71/71owned roots/groups/reservations absent; own dist/dependency link removed, shared caches preserved, heavy slot released. Source handoff only; all6ACs unticked and Jira In Progress unchanged.",
+          "evidence": "Lead reviewed final diff/receipts/screenshots and independently reran covering tests; retained Pugh Sol/high authority review passes scoped parser repair. Final resource receipt DB/scratch/link/process cleanup clear. Durable25Nov Result preserves all six original ACs and remaining human/hosted/batch limits.",
           "id": "review-handoff",
-          "observed_at": "2026-11-22T23:54:50.278295+00:00",
+          "observed_at": "2026-11-25T06:47:11.466505Z",
           "status": "complete",
           "title": "Lead review, fixed AC evidence and cleanup"
         }
@@ -10942,7 +10942,7 @@
           "observed_at": "2026-11-22T23:54:50.278295+00:00",
           "role": "story-lead",
           "source": "Observed running via collaboration.list_agents; completing final metadata publication and partial source handoff. All6ACs remain unticked; no connected work active. Parent will reconcile final completion.",
-          "status": "active"
+          "status": "stopped"
         },
         {
           "expires_at": "2026-11-22T23:54:50.278295+00:00",
@@ -10953,6 +10953,46 @@
           "role": "implementer",
           "source": "Observed completed via collaboration.list_agents; canonical source reviewed and published76607f189; matching worker receipts/cleanup verified. No descendants.",
           "status": "stopped"
+        },
+        {
+          "id": "01a2113c-19bd-7a01-a6f9-9fb237f12fda",
+          "name": "Spike",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-25T06:47:11.466505Z",
+          "expires_at": "2026-11-25T06:47:11.466505Z",
+          "status": "stopped",
+          "source": "Observed completed scoped review/handoff preparation; source and final real six-group evidence delivered. Root retains refresh/merge/native publication/human and hosted acceptance."
+        },
+        {
+          "id": "/root/spike/melissa_duck",
+          "name": "Melissa Duck",
+          "role": "runner",
+          "harness": "codex",
+          "observed_at": "2026-11-25T06:47:11.466505Z",
+          "expires_at": "2026-11-25T06:47:11.466505Z",
+          "status": "stopped",
+          "source": "Observed final delivery via native collaboration: six-group canonical1eb11b323 PASS, real receipts/screenshots retained, owned DB/scratch/processes/link removed. No active runtime."
+        },
+        {
+          "id": "/root/spike/cecil_turtle",
+          "name": "Cecil Turtle",
+          "role": "mechanic",
+          "harness": "codex",
+          "observed_at": "2026-11-25T06:47:11.466505Z",
+          "expires_at": "2026-11-25T06:47:11.466505Z",
+          "status": "stopped",
+          "source": "Observed completed scoped parser red/green; lead independently reviewed and reran114account tests. No active worker."
+        },
+        {
+          "id": "/root/spike/speedy_gonzales",
+          "name": "Speedy Gonzales",
+          "role": "implementer",
+          "harness": "codex",
+          "observed_at": "2026-11-25T06:47:11.466505Z",
+          "expires_at": "2026-11-25T06:47:11.466505Z",
+          "status": "stopped",
+          "source": "Observed completed source family plus read-only six-probe remaining-precondition audit; public Sameagain-after-Pause prep independently checked in final passing composition. No active worker."
         }
       ]
     },

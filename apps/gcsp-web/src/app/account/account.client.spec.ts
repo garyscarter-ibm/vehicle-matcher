@@ -59,6 +59,18 @@ describe('native signed-in account client', () => {
       `${config.apiBaseUrl}/offers/offer%2Fid%3Fwith-query?runId=${encodeURIComponent(context.runId)}`, `${config.apiBaseUrl}/orders/progress/all`, `${config.apiBaseUrl}/manual/order`]);
     for (const [, options] of fetcher.mock.calls) { expect(options).toMatchObject({ method: 'GET', credentials: 'omit', headers: { Authorization: 'Bearer access-token' } }); expect(options?.body).toBeUndefined(); }
   });
+  it('accepts the current-offer row without runId and uses the signed-in run for pending detail', async () => {
+    // Reconstructed from the producer contract and captured keys; the raw envelope was not retained.
+    const offers = { offers: [{ createdAt: '2026-11-25T10:00:00Z', offerId: 'offer-current', state: 'active' }] };
+    const detail = { offerId: 'offer-current', runId: context.runId, state: 'pending' };
+    fetcher.mockResolvedValueOnce(ok(offers)).mockResolvedValueOnce(ok(detail));
+
+    expect(await client.readOffers()).toEqual({ status: 'ok', value: { offers: [{ ...offers.offers[0], state: 'pending' }] } });
+    expect(fetcher.mock.calls.map(([url]) => url)).toEqual([
+      `${config.apiBaseUrl}/offers/current`,
+      `${config.apiBaseUrl}/offers/offer-current?runId=${encodeURIComponent(context.runId)}`,
+    ]);
+  });
   it('keeps empty previews distinct from failed reads and rejects embedded foreign offer authority before detail fetch', async () => {
     fetcher.mockResolvedValueOnce(ok({ offers: [] })).mockResolvedValueOnce(ok(page()));
     expect(await client.readOffers()).toEqual({ status: 'ok', value: { offers: [] } }); expect(await client.readOrders()).toEqual({ status: 'ok', value: { orders: [], failed: [], failedCount: 0, nextAfter: null, pageEvidence: [{ after: null, nextAfter: null, failedCount: 0 }] } });

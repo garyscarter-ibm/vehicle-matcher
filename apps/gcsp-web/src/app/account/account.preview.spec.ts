@@ -25,8 +25,14 @@ describe('account offer and order previews', () => {
     expect(placedOrderRecord({ ...order, entitlementSlotId: 'other-slot' }, null, account)).toBeNull();
   });
   it('validates required shapes while preserving optional authoritative facts', () => {
-    expect(validOffers({ offers: [] })).toBe(true); expect(validOffers({ offers: [{ offerId: 'id', runId: 'run', reason: 'supplied' }] })).toBe(true);
-    expect(validOffers({ offers: [{ offerId: 'id' }] })).toBe(false); expect(validOffers({ offers: [{ offerId: '..', runId: 'run' }] })).toBe(false); expect(validOrders({ orders: [{ orderUuid: 'id' }] })).toBe(false);
+    expect(validOffers({ offers: [] })).toBe(true);
+    expect(validOffers({ offers: [{ offerId: 'id', createdAt: '2026-11-25T10:00:00Z', state: 'active' }] })).toBe(true);
+    expect(validOffers({ offers: [{ offerId: 'id', runId: 'run', reason: 'supplied' }] })).toBe(true);
+    for (const runId of ['', null, 7, undefined]) expect(validOffers({ offers: [{ offerId: 'id', runId }] })).toBe(false);
+    expect(validOffers({ offers: [{ offerId: '', state: 'active' }] })).toBe(false);
+    expect(validOffers({ offers: [{ offerId: '..', state: 'active' }] })).toBe(false);
+    expect(validOffers({ offers: [{ offerId: 'id', state: 7 }] })).toBe(false);
+    expect(validOrders({ orders: [{ orderUuid: 'id' }] })).toBe(false);
     expect(validOrders({ orders: [{ orderUuid: 'id', entitlementSlotId: 'slot', source: { receivedAt: 'supplied', orderNumber: 123 } }] })).toBe(false);
     expect(validOrderSnapshot({ selection: { stock: { orderUuid: 'id', facts: { display: { name: 123 } } } } })).toBe(false);
     expect(validOrderSnapshot({ selection: { stock: { orderUuid: 'id', facts: { display: { name: 'Car', extra: 'evidence' } } } } })).toBe(true);
