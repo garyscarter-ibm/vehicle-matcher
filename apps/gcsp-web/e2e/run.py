@@ -20,6 +20,7 @@ import test_resources as resources
 
 CASES = {
     'f548': 'apps/gcsp-web/e2e/notification-bell.test.mjs',
+    'f549': 'apps/gcsp-web/e2e/navigation-parity.test.mjs',
     'f552': 'apps/gcsp-web/e2e/preferences-parity.test.mjs',
     'f555': 'apps/gcsp-web/e2e/offer-parity.test.mjs',
 }
