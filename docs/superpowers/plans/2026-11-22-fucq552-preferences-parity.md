@@ -62,3 +62,17 @@ Consume existing `store.understanding()` `{value,maximum,pending}`, `store.failu
 ## Self-review
 
 All seven ACs map to tasks/slices above. Initial independent delivery covers source AC1-3 only; editor/cards/link integration and real composition remain explicit. Existing public category/store types are retained. Diagram topology is unchanged inside the existing Angular component, so design-with-drawio's topology gate does not fire. Full suites remain deferred to dispatcher batches under the 19 November hold.
+
+## Continuation, 25 November 2026
+
+The original seven acceptance items and original 13-point claim remain unchanged. Remaining product work feels like a dog-sized UI increment (about 8 points), plus the already-required connected proof and human pair verdict. This is a continuation of the same Bug, not a split or a new acceptance contract.
+
+Prerequisites: shared F548/F549/F551 source is integrated at merge `db4654b72` from `gcsp-poc-dev` `4168b4115`. Russell authorized the one-off direct merge and its five conflict resolutions; ordinary Git work returns to the supported helpers. The newest `jira_changed` notice concerns requested/priority metadata only, with no acceptance change or hold.
+
+The initial independent-allocation restrictions above (no shared integration or connected runtime) ended with that source checkpoint. The current authorized phase completes canonical HelpTip integration, source editor chips/ranges/axes, exact source preview cards and accepted-order/Activity links, then checks the actual local Java/OIDC composition and captures a same-state 1280 pair. No backend feature, auth, persistence, redesign or Buddy-tile change is added. The topology remains inside the existing Angular app, so no design diagram change is needed.
+
+Road Runner owns the bounded product source/spec slice; Timone owns only the F552 case family in the existing browser suite and its allowlist/usage entry. Reuse existing composition, shared Node installation, build cache and lifecycle supervision. No test-harness rebuild.
+
+Validation selection: focused mode, new preview-card and preferences specs while iterating; final changed specs plus category, understanding-meter, account-preferences/store/account composition and kit direct callers; UI ratchet; changed-path drift; production compilation and scoped registered `--case f552` on real Java/OIDC/PostgreSQL plus the frozen live Node reference. Browser checks run after the final source commit. Full suites are deferred to the dispatcher's batch. An agent screenshot comparison cannot sign AC7; the Result remains partial until a human ledger verdict exists.
+
+Resources: run `sorrel-f552-20261124`, bounded local manifests/logs under the shared `.claude/poller/sorrel-f552-20261124/`; one worker and 600-second chunks, at most 2 GiB owned scratch/RAM unless the existing shared heavy composition records its required allocation. No OneDrive access. Each allocation registers cleanup before creation and records owned filesystem/process absence afterward.
