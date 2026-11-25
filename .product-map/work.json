@@ -10959,10 +10959,10 @@
     {
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-029",
-      "evidence": "Published223fe4844 tracker/tasks checkpoint; settled lead164/164 across11Orders/kit specs.347ratchet/boundary checks plus11painted-copy cases and boundaryCLI pass; missing-dependency attempts retained. No connected/human claim.",
+      "evidence": "Sourcea5d14378d; finalcb18938ba registered family2pass/0fail/1declineskip; lead164/root146focused cases, scoped static checks green; PughSol/high no blocking source findings. Actual1280/390pair reviewed by lead; human pending.",
       "id": "FUCQ-556",
-      "note": "Original13point/sixAC build. Canonical tracker/tasks/slots/history composition source reviewed; connected and human parity remain pending.",
-      "observed_at": "2026-11-25T06:50:42Z",
+      "note": "Partial original13point/sixAC build. AC1/2/3/5source+connected evidence; AC4declined/proposed connected and AC6human pair remain. Material full-screen visual differences reported; no Done/InReview claim.",
+      "observed_at": "2026-11-25T07:09:34Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10974,22 +10974,22 @@
         },
         {
           "id": "tracker-documents",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Orders tracker and document checklist composition (5 points)",
-          "observed_at": "2026-11-25T06:50:42.216573+00:00",
-          "evidence": "Source composition reviewed and focused164Orders/kit cases green; actual connected and human parity pending."
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
+          "evidence": "Canonical source reviewed; lead164and root146focused tests; actual tracker/currentowner/Next/blocked plus grouped task/acknowledgement readback pass in cb18938ba connected run."
         },
         {
-          "evidence": "Source composition reviewed and focused164Orders/kit cases green; actual connected and human parity pending.",
+          "evidence": "Canonical slot/history and actual booking/no-show/rebook/earlier-missed/return-missed pass. Original declined/proposed-handover connected help substates remain unavailable; no criterion waived.",
           "id": "appointment-return",
-          "observed_at": "2026-11-25T06:50:42.216573+00:00",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
           "status": "in-progress",
           "title": "Appointment return history help and missed-state parity (3 points)"
         },
         {
-          "evidence": "Authored three-case registered-family draft and syntax reviewed. F551 shared support refresh, actual composition, screenshot review and human pair remain pending.",
+          "evidence": "cb18938ba real family2pass/0fail/1declineskip; exact1280/390same-order pair captured and lead-reviewed. Human verdict, observed full-screen differences and covering batch remain; Safari not run.",
           "id": "integration-proof",
-          "observed_at": "2026-11-25T06:50:42.216573+00:00",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
           "status": "in-progress",
           "title": "Supported sibling integration and actual same-state pair (2 points)"
         }
@@ -11003,20 +11003,20 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-556",
       "workers": [
         {
-          "expires_at": "2026-11-23T00:41:42.562696+00:00",
+          "expires_at": "2026-11-25T07:09:34.292279+00:00",
           "harness": "codex",
           "id": "01a20553-daae-7f10-944e-1d8cb280ed69",
           "name": "Chester",
-          "observed_at": "2026-11-23T00:16:14.987181+00:00",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
           "role": "story-lead",
           "source": "Active F556 allocation observed through parent dispatch; requested/selected/effective gpt-6.1-sol/xhigh explicit StoryLead override, no fallback; actual identity/title independently verified by parent. Claim1f1080595.",
           "status": "stopped; child422; launcher continues"
         },
         {
-          "expires_at": "2026-11-23T01:26:42.562696+00:00",
+          "expires_at": "2026-11-25T07:09:34.292279+00:00",
           "harness": "codex",
           "name": "usget-vesper launcher",
-          "observed_at": "2026-11-23T00:41:42.562696+00:00",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
           "role": "dispatcher carrying source implementation",
           "source": "Direct work observed in root after child422; primary runtime pair not independently exposed. No substitute model/provider.",
           "status": "active; F556 source checkpoint publication"
@@ -11026,10 +11026,10 @@
           "name": "Egghead Jr",
           "role": "story-lead",
           "harness": "codex",
-          "status": "active",
-          "observed_at": "2026-11-25T06:15:15.576028+00:00",
-          "expires_at": "2026-11-25T08:15:15.579675+00:00",
-          "source": "Native collaboration dispatch/title confirmed; requested/selected Sol/high, no fallback. Original scope and existing claim unchanged."
+          "status": "complete; partial handoff",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
+          "expires_at": "2026-11-25T07:09:34.292279+00:00",
+          "source": "Published source and two real connected groups; original pending criteria explicit; requested/selected Sol/high, no fallback."
         },
         {
           "id": "01a21158-dabc-7343-a360-c18b1d041fd9",
@@ -11037,8 +11037,8 @@
           "role": "mechanic",
           "harness": "codex",
           "status": "complete; source reviewed",
-          "observed_at": "2026-11-25T06:50:42.216573+00:00",
-          "expires_at": "2026-11-25T06:50:42.216573+00:00",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
+          "expires_at": "2026-11-25T07:09:34.292279+00:00",
           "source": "Requested/selected Luna/high, no fallback; both source slices reviewed by lead and164settled Orders/kit cases rerun. No runtime claim."
         },
         {
@@ -11047,8 +11047,8 @@
           "role": "runner",
           "harness": "codex",
           "status": "complete; read-only inventory",
-          "observed_at": "2026-11-25T06:41:42.200446+00:00",
-          "expires_at": "2026-11-25T06:41:42.200446+00:00",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
+          "expires_at": "2026-11-25T07:09:34.292279+00:00",
           "source": "Title/result observed; requested/selected Luna/high, no fallback; source-only composition/provider inventory, no runtime/test/edit."
         },
         {
@@ -11057,8 +11057,8 @@
           "role": "implementer",
           "harness": "codex",
           "status": "complete; source review",
-          "observed_at": "2026-11-25T06:41:42.200446+00:00",
-          "expires_at": "2026-11-25T06:41:42.200446+00:00",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
+          "expires_at": "2026-11-25T07:09:34.292279+00:00",
           "source": "Title/result observed; requested/selected Sol/medium, no fallback; original integration family drafted/refined; syntax only, no runtime."
         }
       ]
