@@ -79,10 +79,19 @@ async function displayedImage(suite, page, images) {
     'actual displayed image complete with positive natural dimensions; response outside existing observer coverage' };
 }
 
-async function dismissDrawer(page, opener, name) {
+async function offerLink(dialog, page, offer) {
+  const link = dialog.getByRole('link', { name: 'View offer', exact: true }); await link.waitFor();
+  const actual = new URL(await link.getAttribute('href'), page.url());
+  assert.equal(actual.href, new URL(offer.href, page.url()).href, 'The link uses its actual activity API offer target');
+  assert.equal(actual.searchParams.get('offerId') ?? decodeURIComponent(actual.pathname.split('/').at(-1)), offer.offerRef.offerId);
+  return { href: actual.href, offerId: offer.offerRef.offerId };
+}
+
+async function dismissDrawer(page, opener, name, inspect = async () => {}) {
   await opener.focus(); await page.keyboard.press('Enter');
   const dialog = page.getByRole('dialog', { name, exact: true }); await dialog.waitFor();
   assert.equal(await dialog.evaluate((node) => node.contains(document.activeElement)), true, `${name}: focus enters drawer`);
+  await inspect(dialog);
   await page.keyboard.press('Tab');
   assert.equal(await dialog.evaluate((node) => node.contains(document.activeElement)), true, `${name}: keyboard stays in drawer`);
   await page.keyboard.press('Escape'); await dialog.waitFor({ state: 'hidden' });
@@ -169,6 +178,10 @@ test('FUCQ-551: actual held account, frozen pair, commands, truthful failure and
         assert.equal(sourceActivity.value.currentOffer.offerRef.offerId, offer.offerRef.offerId);
         evidence.offerIdentityMapping = { node: offer.offerRef.offerId, java: state.offer.offerRef.offerId,
           basis: 'Each engine creates its own offer ID; the shared boundary verifies the actual same car, deadline and hold semantics.' };
+        await page.getByRole('button', { name: 'View held offer', exact: true }).click();
+        const dialog = page.getByRole('dialog', { name: 'Your held offer', exact: true }); await dialog.waitFor();
+        receipt.account.offerLink = await offerLink(dialog, page, sourceActivity.value.currentOffer);
+        await page.keyboard.press('Escape'); await dialog.waitFor({ state: 'hidden' });
         evidence.imageComparison = { node: receipt.account.image, angular: evidence.angularImage,
           sameNaturalDimensions: receipt.account.image.naturalWidth === evidence.angularImage.naturalWidth &&
             receipt.account.image.naturalHeight === evidence.angularImage.naturalHeight,
@@ -188,7 +201,9 @@ test('FUCQ-551: actual held account, frozen pair, commands, truthful failure and
       const currentRecord = currentRow.getByRole('button', { name: /^View record for / });
       await dismissDrawer(employee, currentRecord, evidence.angularHeld.title);
       await dismissDrawer(employee, tile.getByRole('button', { name: 'Buddy history', exact: true }), 'Buddy history');
-      await dismissDrawer(employee, tile.getByRole('button', { name: 'View held offer', exact: true }), 'Your held offer');
+      await dismissDrawer(employee, tile.getByRole('button', { name: 'View held offer', exact: true }), 'Your held offer', async (dialog) => {
+        evidence.offerLink = await offerLink(dialog, employee, evidence.heldReadbacks['/activity'].body.value.currentOffer);
+      });
       await employee.setViewportSize({ width: 390, height: 844 });
       await dismissDrawer(employee, tile.getByRole('button', { name: 'Buddy history', exact: true }), 'Buddy history');
       const star = employee.locator('.gcsp-feature .gcsp-star-rating input').first(); await star.focus();
