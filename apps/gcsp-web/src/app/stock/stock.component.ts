@@ -45,6 +45,7 @@ export class StockComponent {
   readonly review = output<StockCar['review']>();
   readonly back = output<void>();
   readonly reservation = input<GalleryReservation | null>(null);
+  readonly availabilityRefresh = output<void>();
   readonly checkReservation = output<void>(); readonly retryReservation = output<void>(); readonly viewOffer = output<string>();
   readonly offerId = computed(() => { const value = this.store.projection()?.source?.heldOffer?.['offerId']; return typeof value === 'string' && value ? value : null; });
   readonly carTaken = computed(() => this.reservation()?.failure === 'car-taken');
@@ -163,7 +164,7 @@ export class StockComponent {
     this.focus(() => Array.from(this.host.nativeElement.querySelectorAll<HTMLElement>('[data-details-id]')).find(node => node.dataset['detailsId'] === id)
       ?? this.host.nativeElement.querySelector<HTMLElement>('#stock-query'));
   }
-  async reload(): Promise<void> { await this.store.reload(); }
+  async reload(): Promise<void> { this.availabilityRefresh.emit(); await this.store.reload(); }
   reviewDetail(): void { const car = this.store.selectedCar(); if (car?.reviewAvailable && !this.reviewUnavailableReason()) this.review.emit(car.review); }
   private publish(): void {
     const snapshot = this.store.navigationSnapshot();

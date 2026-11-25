@@ -67,9 +67,10 @@ function identity(pid) {
     ? { pid: Number(parts[0]), pgid: Number(parts[1]), start: parts.slice(2, 7).join(' '), executable: parts.slice(7).join(' ') } : null;
 }
 
-export async function startComposition({ caseId = 'f548', ordering = 'synthetic' } = {}) {
-  assert.ok(['f340', 'f548', 'f549', 'f550', 'f551', 'f552', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked', 'f561'].includes(caseId));
+export async function startComposition({ caseId = 'f548', ordering = 'synthetic', claims = 'local' } = {}) {
+  assert.ok(['f340', 'f548', 'f549', 'f550', 'f551', 'f552', 'f553', 'f595', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked', 'f561'].includes(caseId));
   assert.ok(['synthetic', 'rejected', 'unknown-then-rejected'].includes(ordering));
+  assert.ok(['local', 'controlled'].includes(claims));
   const scratch = local(process.env.SCRATCH ?? '');
   assert.ok(scratch.startsWith('/private/tmp/'), 'The supervisor must own /private/tmp scratch');
   const runOutput = local(process.env.GCSP_E2E_OUTPUT ?? '');
@@ -141,12 +142,14 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
   let browserServer;
   const imageObservers = new Map();
   let closed = false;
+  const claimToken = randomUUID();
+  const claimRequests = []; const claimReplies = new Map(); let claimMode = 'unknown';
   const orderingToken = randomUUID();
   const orderingReplies = new Map();
   const orderingRequests = [];
   let rejectPending = false;
   const receipt = { schema: 'gcsp-notification-browser/1', sourceRevision: process.env.PROOF_SOURCE_REVISION,
-    reference: input.reference, caseId, composition: { origins, issuer, environmentId: envId, runId, database: database[3], ordering,
+    reference: input.reference, caseId, composition: { origins, issuer, environmentId: envId, runId, database: database[3], ordering, claims,
       identity: 'started Java demo issuer, code/PKCE and signed bearer validation', supply: 'tranche-plan over exact retained Node input' },
     input: { stockPlan: input.stockPlan, scenario: input.scenario, clock: input.clock },
     ...(walkthroughPreparation ? { walkthroughPreparation } : {}),
@@ -208,6 +211,7 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       try { await action(); } catch (error) { errors.push(error.message); }
     }
     receipt.cleanupErrors = errors;
+    receipt.claimStockSubstitute = { variant: claims, requests: claimRequests };
     receipt.orderingSubstitute = { variant: ordering, requests: orderingRequests };
     receipt.finishedAt = new Date().toISOString();
     writeFileSync(path.join(output, 'browser-receipt.json'), JSON.stringify(receipt, null, 2));
@@ -235,6 +239,25 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       '.png': 'image/png', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.woff2': 'font/woff2' };
     server = createServer({ key: readFileSync(cert('leaf.key')), cert: readFileSync(cert('leaf.pem')) }, async (req, res) => {
       const requested = decodeURIComponent(new URL(req.url, origins.web).pathname);
+      if (requested.startsWith('/proof-claims/')) {
+        const answer = (status, value) => { res.writeHead(status, { 'Content-Type': 'application/json' }); res.end(JSON.stringify(value)); };
+        if (claims !== 'controlled' || req.headers.authorization !== `Bearer ${claimToken}`) return answer(403, {});
+        let input;
+        if (req.method === 'POST' && requested === '/proof-claims/execute') {
+          const chunks = []; let bytes = 0;
+          for await (const chunk of req) { bytes += chunk.length; if (bytes > 65536) return answer(413, {}); chunks.push(chunk); }
+          try { input = JSON.parse(Buffer.concat(chunks).toString()); } catch { return answer(400, {}); }
+        } else if (req.method === 'GET' && requested === '/proof-claims/reconcile') input = Object.fromEntries(new URL(req.url, origins.web).searchParams);
+        else return answer(405, {});
+        if (!['operationId', 'runId', 'orderUuid'].every(key => typeof input?.[key] === 'string' && input[key])) return answer(400, {});
+        const ids = Object.fromEntries(['operationId', 'runId', 'orderUuid'].map(key => [key, input[key]]));
+        if (req.method === 'POST' && req.headers['idempotency-key'] !== ids.operationId) return answer(400, {});
+        const operation = JSON.stringify(ids); const previous = claimReplies.get(operation);
+        const status = previous ?? (claimMode === 'unknown' ? 'unknown' : claimMode);
+        if (status !== 'unknown') claimReplies.set(operation, status);
+        claimRequests.push({ method: req.method, path: requested, ...ids, type: input.type ?? null, status });
+        return status === 'unknown' ? answer(503, { status: 'unavailable' }) : answer(200, { status, ...ids, providerReference: `proof:${ids.operationId}` });
+      }
       if (requested.startsWith('/proof-ordering/')) {
         const answer = (status, value) => { res.writeHead(status, { 'Content-Type': 'application/json' }); res.end(JSON.stringify(value)); };
         if (ordering === 'synthetic' || req.headers.authorization !== `Bearer ${orderingToken}` || orderingRequests.length >= 64) return answer(403, {});
@@ -306,6 +329,8 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       GCSP_SCENARIO_PROVIDER: 'demo', GCSP_ACCOUNT_PROVIDER: 'repository', GCSP_ORDERING_PROVIDER: ordering === 'synthetic' ? 'synthetic' : 'remote', GCSP_RESET_ALLOWED: 'true',
       ...(ordering === 'synthetic' ? {} : { GCSP_ORDERING_EXECUTE_URL: `${origins.web}/proof-ordering/execute`,
         GCSP_ORDERING_RECONCILE_URL: `${origins.web}/proof-ordering/reconcile`, GCSP_ORDERING_TOKEN: orderingToken, GCSP_ORDERING_TIMEOUT: '5s' }),
+      ...(claims === 'local' ? {} : { GCSP_CLAIM_STOCK_PROVIDER: 'remote', GCSP_CLAIM_STOCK_EXECUTE_URL: `${origins.web}/proof-claims/execute`,
+        GCSP_CLAIM_STOCK_RECONCILE_URL: `${origins.web}/proof-claims/reconcile`, GCSP_CLAIM_STOCK_TOKEN: claimToken, GCSP_CLAIM_STOCK_TIMEOUT: '2s' }),
       GCSP_SUPPLY_PROVIDER: 'tranche-plan', GCSP_SUPPLY_TRANCHE_PLAN_FILE: planFile,
       GCSP_ALLOCATION_CANDIDATES_PROVIDER: 'recommendation',
       ...ordersProviders,
@@ -657,6 +682,7 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
     return { context, receipt, origins, apiBase, input, plan, newPage, call, prepareInitialBrief, releaseMainOffer,
       readImage: (page, locator) => imageObservers.get(page).read(locator),
       readActualHold, readOfferPersistence, restartApi, screenshot, compareFrozenNode, visitFrozenNode,
+      claims: { requests: claimRequests, pending() { claimMode = 'unknown'; }, rejectPending() { claimMode = 'rejected'; }, confirm() { claimMode = 'confirmed'; } },
       ordering: { requests: orderingRequests, rejectPending() { assert.equal(ordering, 'unknown-then-rejected'); rejectPending = true; } }, close };
   } catch (error) {
     receipt.failure = { name: error.name, message: error.message.slice(0, 1000) };

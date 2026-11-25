@@ -48,7 +48,7 @@ describe('released stock route and browser history', () => {
   let harness: RouterTestingHarness; let router: Router; let location: Location; let platform: MockPlatformLocation;
   const state = signal<SessionState>(ready); const client = { readStock: vi.fn() };
   const reserved = signal<any>({ state: 'ready', blocked: false, selection: null, claim: null, failure: null, refresh: 0 });
-  const reservation = { state: reserved, load: vi.fn(async () => {}), dispose: vi.fn(), reserve: vi.fn(), checkStatus: vi.fn(), retry: vi.fn() };
+  const reservation = { state: reserved, load: vi.fn(async () => {}), dispose: vi.fn(), dismissFailure: vi.fn(), reserve: vi.fn(), checkStatus: vi.fn(), retry: vi.fn() };
   const manual = { enter: vi.fn(), projection: () => ({ claim: reserved().claim }), confirmResume: vi.fn() };
   const screen = () => harness.routeDebugElement!.query(By.directive(StockComponent)).componentInstance as StockComponent;
   const settle = async () => { harness.detectChanges(); await harness.fixture.whenStable(); harness.detectChanges(); };
@@ -258,6 +258,13 @@ describe('gallery reservation command ownership', () => {
       await controller.reserve(selected()); expect(controller.state().state).toBe('failed');
       expect(controller.state().failure).toBe('car-taken'); expect(controller.state().refresh).toBe(0);
     });
+  it('dismisses a resolved single-car notice for explicit refresh without clearing an unresolved attempt', async () => {
+    await controller.load(); api.claim.mockResolvedValueOnce({ status: 'conflict', code: 'stock-unavailable', retryable: false });
+    await controller.reserve(selected()); controller.dismissFailure();
+    expect(controller.state().state).toBe('ready'); expect(controller.state().failure).toBeNull();
+    await controller.reserve(selected()); expect(controller.state().state).toBe('retry-available');
+    controller.dismissFailure(); expect(controller.state().state).toBe('retry-available'); expect(controller.state().blocked).toBe(true);
+  });
   it('clears the old single-car refusal when a new deliberate reservation begins', async () => {
     await controller.load(); api.claim.mockResolvedValueOnce({ status: 'conflict', code: 'stock-unavailable', retryable: false });
     await controller.reserve(selected()); expect(controller.state().failure).toBe('car-taken');

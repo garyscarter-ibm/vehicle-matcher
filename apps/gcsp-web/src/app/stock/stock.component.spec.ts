@@ -62,7 +62,8 @@ describe('released stock screen', () => {
     fixture.componentRef.setInput('reservation', { state: 'failed', blocked: false, selection: null, claim: null, failure: 'car-taken', refresh: 0 });
     fixture.detectChanges(); expect(root.textContent).toContain('This car is no longer available');
     expect(root.querySelectorAll('gcsp-vehicle-card')).toHaveLength(6);
-    button(root, 'Refresh availability').click(); await fixture.whenStable(); expect(client.readStock).toHaveBeenCalledTimes(2);
+    const refreshed = vi.fn(); component.availabilityRefresh.subscribe(refreshed);
+    button(root, 'Refresh availability').click(); await fixture.whenStable(); expect(client.readStock).toHaveBeenCalledTimes(2); expect(refreshed).toHaveBeenCalledOnce();
   });
   it('exposes only deliberate status/retry actions and blocks back while reservation custody is unresolved', async () => {
     const { root, fixture, component } = await screen(); const check = vi.fn(); const retry = vi.fn(); const back = vi.fn();

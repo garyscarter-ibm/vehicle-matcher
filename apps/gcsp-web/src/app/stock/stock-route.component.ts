@@ -68,6 +68,7 @@ export class GalleryReservationController {
     this.active = true; return this.run(false);
   }
   checkStatus(): Promise<void> { return this.active ? this.run(false) : this.load(); }
+  dismissFailure(): void { if (!this.state().blocked) this.publish('ready', false, { failure: null }); }
   reserve(selection: ManualHandoff): Promise<void> {
     if (this.operation) return this.operation;
     if (!this.active || this.state().blocked || !selection.claimInput) return Promise.resolve();
@@ -125,7 +126,7 @@ export class GalleryReservationController {
   imports: [StockComponent],
   template: `<gcsp-stock [navigation]="navigation()" (navigationChange)="saveNavigation($event)"
     [reservation]="reservation.state()" [reviewUnavailableReason]="reservation.state().blocked ? 'Check your reservation before choosing another car.' : null"
-    (checkReservation)="checkReservation()" (retryReservation)="retryReservation()" (viewOffer)="viewOffer($event)"
+    (availabilityRefresh)="reservation.dismissFailure()" (checkReservation)="checkReservation()" (retryReservation)="retryReservation()" (viewOffer)="viewOffer($event)"
     (review)="reviewSelection($event)" (back)="backToChoices()" />`,
 })
 export class StockRouteComponent {
