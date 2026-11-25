@@ -91,27 +91,7 @@ public class PresenterReleaseResource {
     public Response latest(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri) {
         Response early = guard(authorization, uri, Set.of());
         if (early != null) return early;
-        return withScope(scope -> {
-            Optional<ReleaseReceipt> receipt = supply.stock().latest(scope);
-            ObjectNode value = JSON.createObjectNode();
-            value.put("runId", scope.runId());
-            if (receipt.isEmpty()) {
-                value.putNull("release");
-            } else {
-                ReleaseReceipt r = receipt.get();
-                ObjectNode out = value.putObject("release");
-                out.put("trancheId", r.trancheId());
-                out.put("windowId", r.windowId());
-                if (r.supplyId() == null) out.putNull("supplyId"); else out.put("supplyId", r.supplyId());
-                out.put("releasedAt", Iso.format(r.releasedAt()));
-                out.put("policyVersion", r.policyVersion());
-                out.set("source", r.source());
-                out.set("orderUuids", r.orderUuids());
-                out.set("visibleOrderUuids", r.visibleOrderUuids());
-                out.put("tickId", r.tickId());
-            }
-            return ok(value);
-        });
+        return withScope(scope -> ok(supply.latest(scope.environmentId())));
     }
 
     @GET
@@ -200,6 +180,9 @@ public class PresenterReleaseResource {
         }
         try {
             return action.run(supply.scope());
+        } catch (PresenterReleaseProjection.Unavailable e) {
+            return ApiError.response(503, "unavailable", "release-evidence-unavailable",
+                    "The latest release could not be read. Try again.", true);
         } catch (SQLException | IllegalStateException e) {
             return ApiError.response(503, "unavailable", "database-unavailable",
                     "The database could not be reached.", true);

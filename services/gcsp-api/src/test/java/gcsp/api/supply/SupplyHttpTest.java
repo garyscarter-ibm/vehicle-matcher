@@ -161,7 +161,9 @@ class SupplyHttpTest {
                 .body("value.runId", equalTo("run-1")).body("value.release.windowId", equalTo("test-weekly-window"))
                 .body("value.release.source.mode", equalTo("synthetic"))
                 .body("value.release.visibleOrderUuids", hasItems(PLAN_CARS.get(0)))
-                .body("value.release.trancheId", org.hamcrest.Matchers.notNullValue());
+                .body("value.release.trancheId", org.hamcrest.Matchers.notNullValue())
+                .body("value.counts.released", equalTo(5)).body("value.counts.totalReleased", equalTo(5))
+                .body("value.cars.size()", equalTo(5)).body("value.charts.fuel.size()", equalTo(0));
         presenter().get(BASE + "/ticks/" + id).then().statusCode(200).body("value.tickId", equalTo(id))
                 .body("value.state", equalTo("completed")).body("value.attempts", equalTo(0))
                 .body("value.clockVersion", org.hamcrest.Matchers.greaterThan(0))

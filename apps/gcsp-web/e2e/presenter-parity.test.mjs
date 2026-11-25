@@ -80,6 +80,8 @@ test('FUCQ-561: presenter console follows the actual signed-in release, inspecti
       await presenter.setViewportSize({ width: 1280, height: 800 });
       await noInternals(presenter);
       const initialClock = await resetMain();
+      await presenter.getByRole('heading', { name: 'Ready for the next release', exact: true }).waitFor();
+      assert.equal(await presenter.locator('.gcsp-console-week li').count(), 7);
       const catalogue = await suite.call(presenter, 'GET', '/presenter/scenarios');
       assert.equal(catalogue.status, 200);
       const scenario = catalogue.body.value.scenarios.find((item) => item.scenarioId === 'main-successful-journey');
@@ -119,6 +121,9 @@ test('FUCQ-561: presenter console follows the actual signed-in release, inspecti
         latest.counts.onScheme + latest.counts.buddyAllocated + latest.counts.manuallyAllocated);
       for (const key of ['pending', 'declined', 'accepted']) assert.ok(Number.isSafeInteger(latest.allocation?.[key]));
       assert.ok(latest.allocation.pending > 0, 'The actual active offer is counted as pending');
+      await presenter.getByRole('heading', {
+        name: `${latest.counts.released} ${latest.counts.released === 1 ? 'car' : 'cars'} released`, exact: true,
+      }).waitFor();
       await presenter.getByRole('heading', { name: "Today's release", exact: true }).waitFor();
       await until(async () => await presenter.locator('.gcsp-release-grid [role=gridcell]').count() === latest.cars.length,
         'The grid must render every car from the authoritative release, including image fallbacks');
@@ -159,8 +164,15 @@ test('FUCQ-561: presenter console follows the actual signed-in release, inspecti
       assert.ok(read.body.value.cars.length && read.body.value.buddies.length);
       await noInternals(presenter);
       await suite.screenshot(presenter, 'presenter-suitability-1280');
+      await presenter.setViewportSize({ width: 375, height: 812 });
+      await presenter.locator('.gcsp-suitability-details h3').waitFor({ state: 'visible' });
+      assert.equal(await cell.getAttribute('aria-pressed'), 'true');
+      await fits(presenter);
+      await noInternals(presenter);
+      await suite.screenshot(presenter, 'presenter-suitability-375');
+      await presenter.setViewportSize({ width: 1280, height: 800 });
       await presenter.getByText('Car suitability', { exact: true }).click();
-      suite.receipt.checks.suitability = { actualRead: true, keyboardInspection: true };
+      suite.receipt.checks.suitability = { actualRead: true, keyboardInspection: true, narrowInspection: true };
     });
 
     await t.test('AC4/5: What happened opens actual captured mail in the safe drawer', async () => {
