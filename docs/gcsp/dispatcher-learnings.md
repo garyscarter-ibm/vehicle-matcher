@@ -3851,7 +3851,7 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 - Story-lead Taz (FUCQ-520, DEV-2026-11-22-vesper-009) returned `waiting` after about 232k tokens and 25 min, with nothing committed, no Result and its implementer still running; it named the forced hand-back as the cause. The poller resumed the same story-lead with SendMessage so it keeps its context and its implementer's work. Impact: the story stalled until the poller noticed; no work lost (the worktree was intact). Proposed framework improvement: story-leads commit a work-in-progress checkpoint and a partial Result before any hand-back, and the poller resumes rather than restarting. Applied: resume only.
 
 
-### 2026-11-25 22:39 UTC · usget-velko · DL-20261125-VELKO-06 · Presenter proof reads rendered state too early
+### 2026-11-25 22:35 UTC · usget-velko · DL-20261125-VELKO-06 · Presenter proof reads rendered state too early
 
 - Observed: registered F559 at cf66b7ef5 passed its real slider/form/request checks then failed `showAdvanced` on immediate aria-pressed false versus true; registered F595 at62967cc54 independently stopped at the same helper before any AC group. No product failure or acceptance result follows. F595 suite11.14s, database dropped, manifest-owned scratch absent and process cleanup remaining[]; F559 lead reports matching teardown and2.205GB peak.
 - Cause/action: helper clicked the Angular signal-backed toggle then synchronously asserted its rendered attribute. Isolated proof-only fe0de918b waits boundedly for the same true attribute and retains the assertion. Root reuses that correction; no product/CSS/role change. Applied mitigation, final registered verification pending. This repeats the earlier observed signal-versus-render distinction.
