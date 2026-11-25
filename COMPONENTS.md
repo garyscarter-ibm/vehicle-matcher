@@ -555,7 +555,7 @@ specs establish these local behaviors; connected Java/OIDC/PostgreSQL and human 
 `gcsp-preference-category` and `gcsp-star-rating` in the Angular kit are native standalone
 presenters. Category inputs are the server definition, considered/unset state, open/removing and
 disabled flags. Outputs express value/importance changes, open, request removal, remove and keep.
-Multi choices use checkboxes; stops and medium/high importance use separate radio groups. Unset
+Category multi choices use source option buttons, stopped values use the source range slider, and medium/high importance uses its source switch. Unset
 categories read Not important. Removal requires an explicit Remove preference action with a Keep
 preference alternative. Stars port Node `starRating` with its source classes, `RATING_WORDS`, selected-star clearing,
 arrow/Home/End selection and Enter/Space activation (including the synthetic-click guard).
@@ -600,8 +600,9 @@ assembled CSS owned by FUCQ-548. The assembled stylesheet is now available on th
 | Source presenter | Angular target and contract |
 |---|---|
 | `categoryPreferences` (`blocks/gcsp/kit/category-preferences.js`) | `PreferenceCategoryComponent` / `gcsp-preference-category`: existing `id`, server `definition`, considered/unset `state`, `open`, `removing`, `disabled` inputs and intent outputs remain. Additive `categoryKey` supplies the source icon key, `panelId` gives tiles one shared panel target, and `presentation: 'all'` (default), `'tile'`, `'panel'` or `'removal'` lets account composition keep the source grid and sibling regions. `closed` emits Done intent; the caller owns closing and focus restoration. Source `gcsp-prefs-*`, `vm-option`, stopped slider and importance-switch structure is retained. |
-| Category choice mode plus `helpTip` | `PreferenceModeComponent` / `gcsp-preference-mode`: inputs `id`, `description`, `on`, `available`, `reason`, `disabled`; output `toggled(boolean)`. Source alternative native radios, current-car summary and About Same again help preserve unavailable, hover/focus, Escape, outside-pointer dismissal and mode-toggle behavior. The shared presenter emits intent only. |
+| Category choice mode plus `helpTip` | `PreferenceModeComponent` / `gcsp-preference-mode`: inputs `id`, `description`, `on`, `available`, `reason`, `disabled`; output `toggled(boolean)`. Source segmented radio alternatives, current-car summary and About Same again help preserve unavailable and mode-toggle behavior. The presenter reuses canonical `HelpTipDirective` with `below-start`, `dismissOnActivate: false` and the info button as its trigger; it emits mode intent only. |
 | `understandingMeter` (`understanding-meter.js`) | `UnderstandingMeterComponent` / `gcsp-understanding-meter`: inputs `id`, `label`, `value`, `maximum`, `pending`, `failed`. Read-only projected input completeness, never confidence/probability/fit; source rounding/clamping (maximum 1–99), n/max wording, equal segments and saving/not-saved accessible suffixes remain. No policy or projection is changed. |
+| `matchCard` / `previewTile` explicit view (`blocks/vehicle-matcher/modes/result-card.js`) | `BriefPreviewCardComponent` / `gcsp-brief-preview-card`: read-only `BriefPreviewCardView` supplies exact member identity, name/line, media/caption, terms, facts, gate, reason groups and an optional supplied score/label. The presenter preserves `.vm-card.vm-card-explicit`, compact noneligible previews, media/body/head/terms/facts/decision/pick/actions structure and the source FactList. It preserves safe media/failure behavior and derives no ranking, outcome, score or action. This is the frozen explicit-card subcomposition, not a port of every retail matchCard option. |
 
 The three Angular presenter hosts use `display: contents` solely to avoid a framework wrapper changing
 the source geometry; no source stylesheet is copied or restyled. Account composition supplies one
@@ -614,8 +615,7 @@ categories, mode, completeness projections, save/retry/reload and Buddy-command 
 Gallery: the existing **Preference categories and current-car rating** section now includes source category,
 unset/stopped/medium/high/disabled, mode/help/unavailable and pending/failed completeness states. Focused
 kit and account composition specs plus the existing store/preferences/account callers cover source behavior.
-The full preferences editor remains on its existing controls/preview here: original FUCQ-552 AC4/5 and
-FUCQ-549 Activity-link integration plus the accepted-order link still require their allocated source work.
+The full preferences editor uses source practical-answer chips, range scales with readouts/end labels and independent Preference/Importance axes, plus the shared explicit preview cards. It retains FUCQ-549's clean-save Activity link and the supplied accepted-state Orders destination. The gallery includes eligible and needs-confirmation preview states.
 Real Java/OIDC, keyboard/browser/narrow/Safari inspection, same-state 1280px pairs and human review remain
 required evidence; component tests do not establish them.
 

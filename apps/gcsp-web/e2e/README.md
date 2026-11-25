@@ -15,6 +15,14 @@ with `npm --prefix apps/gcsp-web run test:e2e -- --case f555`; repeat `--case f5
 Only those allowlisted names are accepted. The heavy-slot re-exec preserves the selection, and the run receipt
 lists the selected files. A selected run is scoped evidence; it does not stamp the full browser batch.
 
+Select the bounded FUCQ-552 preferences family with `npm --prefix apps/gcsp-web run test:e2e -- --case f552`.
+It reuses this composition and unchanged Main inputs to check category icons, importance/bin/stops, segmented
+mode/help, understanding segments, editor chips/range axes/end labels, actual preview decision cards and keyboard
+interaction at 1280/390. It captures live Node/Angular account and editor pairs at 1280 against the same actual
+brief/account/clock, then saves through the editor and follows Activity and an actual accepted offer to Orders.
+Supply the frozen reference below; this family fails an omitted comparison rather than claiming a pair.
+Run once on the final committed source. Screenshots await human parity review; full suites remain in the batch.
+
 Use `_tools/test_stack_build.py node link --app <absolute-app-path>` for the lockfile-keyed install first.
 The only added development dependency is `playwright-core@1.60.0`; Node's test runner owns the tests. Install
 its matching Chromium browser once using the team's normal local browser setup. No browser download happens

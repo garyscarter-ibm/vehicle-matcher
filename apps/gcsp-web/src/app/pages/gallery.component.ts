@@ -1,3 +1,4 @@
+import { BriefPreviewCardComponent, BriefPreviewCardView } from '../kit/brief-preview-card.component';
 import { MediaWellComponent } from '../kit/media-well.component';
 import { Component, signal } from '@angular/core';
 import { PreferenceModeComponent } from '../kit/preference-mode.component';
@@ -43,7 +44,7 @@ const buddyPreview = (patch: Partial<ActivityProjection> = {}): ActivityProjecti
   searchEvidence: { status: 'recorded', checks: 1 }, currentOffer: null, offers: [], stateChanges: [], stateChangesEvidence: { status: 'recorded', rejectedReceipts: 0 }, ...patch });
 const galleryOffer: ActivityOffer = { offerRef: { offerId: 'gallery-held' }, state: 'active', displayState: 'active', version: 1, briefVersion: 4, createdAt: '2026-11-22T09:00:00Z', expiresAt: '2026-11-23T12:00:00Z' };
 const readyBuddy = (value: ActivityProjection): ActivityResult<ActivityProjection> => ({ status: 'ok', value });
-@Component({ selector: 'gcsp-gallery', imports: [NotificationBellComponent, MailStatusChipComponent, GregNavigationComponent, MediaWellComponent, PreferenceCategoryComponent, PreferenceModeComponent, UnderstandingMeterComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LoadingSkeletonComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent, VehicleDetailsComponent, MediaGalleryComponent, CheckboxFieldComponent, OptionListComponent, TaskListComponent, SlotPickerComponent, BuddyStatusComponent, BuddyTileComponent, ActivityTimelineComponent, ActivityOfferComponent], styleUrl: './gallery.component.css', template: `
+@Component({ selector: 'gcsp-gallery', imports: [BriefPreviewCardComponent, NotificationBellComponent, MailStatusChipComponent, GregNavigationComponent, MediaWellComponent, PreferenceCategoryComponent, PreferenceModeComponent, UnderstandingMeterComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LoadingSkeletonComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent, VehicleDetailsComponent, MediaGalleryComponent, CheckboxFieldComponent, OptionListComponent, TaskListComponent, SlotPickerComponent, BuddyStatusComponent, BuddyTileComponent, ActivityTimelineComponent, ActivityOfferComponent], styleUrl: './gallery.component.css', template: `
   <gcsp-screen-intro title="Angular components" lede="Shared portal components and states." />
   <section class="gcsp-panel"><h2>GCSP notification bell</h2><div class="notification-gallery">
     @for (example of bells; track example.label) { <div class="notification-example" [class.has-panel]="example.open"><h3>{{ example.label }}</h3>
@@ -85,6 +86,7 @@ const readyBuddy = (value: ActivityProjection): ActivityResult<ActivityProjectio
     <span gcspMailStatusChip state="sent" label="Delivery status unknown"></span>
     <span gcspMailStatusChip state="unrecognised" label="Delivery status unknown"></span>
   </div></section>
+  <section class="gcsp-panel vm gcsp-brief"><h2>Preferences preview cards</h2><div class="gcsp-brief-cards">@for (view of briefPreviewCards; track view.id) { <gcsp-brief-preview-card [view]="view" /> }</div></section>
   <section class="gcsp-panel"><h2>Preference categories and current-car rating</h2>
     <section class="gcsp-prefs gcsp-prefs-choice" [class.is-same-again]="sameAgain()">
       <div class="gcsp-prefs-head"><h3>Category preferences</h3><div class="gcsp-prefs-understanding" data-slot="understanding"><gcsp-understanding-meter id="gallery-understanding" [value]="3" [maximum]="11" /></div></div>
@@ -331,6 +333,10 @@ export class GalleryComponent {
   ];
   readonly tableColumns = [{ key: 'employee', label: 'Employee' }, { key: 'status', label: 'Status' }, { key: 'owner', label: 'Owner' }];
   readonly tableRows = [{ id: 'gallery-paula', label: 'Paula', cells: { employee: 'Paula', status: 'Open', owner: 'Scheme team' } }];
+  readonly briefPreviewCards: readonly BriefPreviewCardView[] = [
+    { id: 'gallery-brief-eligible', name: 'BMW 3 Series Touring 320i M Sport', line: '3 Series Touring', photo: null, caption: null, terms: '1,200 points per month · Allowance 1,500', facts: [{ label: 'Body style', value: 'Estate' }, { label: 'Fuel', value: 'Petrol' }, { label: 'Seats', value: '5' }], gate: 'eligible', score: 87, groups: [{ label: 'Why it suits you', entries: ['Body style matches your preference.'] }] },
+    { id: 'gallery-brief-confirmation', name: 'BMW i5 Touring eDrive40 M Sport', line: 'i5 Touring', photo: null, caption: null, terms: '1,400 points per month · Allowance 1,500', facts: [{ label: 'Body style', value: 'Estate' }, { label: 'Fuel', value: 'Electric' }, { label: 'Seats', value: 'Not supplied' }], gate: 'needs-confirmation', scoreLabel: null, groups: [{ label: 'Needs confirmation', entries: ['Check whether this car meets your practical needs.'] }] },
+  ];
   readonly sameAgain = signal(false); readonly removing = signal(false); readonly rating = signal<number | null>(4);
   readonly stoppedCategory = { kind: 'stops' as const, label: 'Economy', question: 'How economical?', openDefault: 50, stops: [{ value: 0, label: 'Less' }, { value: 50, label: 'Medium' }, { value: 100, label: 'More' }] };
   readonly category = { kind: 'multi' as const, label: 'Body style', question: 'What body styles?', options: [{ value: 'saloon', label: 'Saloon' }, { value: 'estate', label: 'Estate' }] };

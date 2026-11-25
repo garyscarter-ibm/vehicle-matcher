@@ -1,8 +1,19 @@
+import { By } from '@angular/platform-browser';
+import { HelpTipDirective } from './help-tip.directive';
 import { TestBed } from '@angular/core/testing';
 import { describe, expect, it, vi } from 'vitest';
 import { PreferenceModeComponent } from './preference-mode.component';
 const mount = async () => { const f = TestBed.createComponent(PreferenceModeComponent); f.componentRef.setInput('id', 'mode'); f.componentRef.setInput('description', 'BMW Touring'); await f.whenStable(); return f; };
 describe('source preference mode and help', () => {
+  it('uses the canonical help port with source placement, retained activation and live description', async () => {
+    const f = await mount(); const host = f.debugElement.query(By.directive(HelpTipDirective));
+    expect(host).not.toBeNull();
+    const help = host.injector.get(HelpTipDirective);
+    expect(help.helpTipPlacement).toBe('below-start'); expect(help.helpTipDismissOnActivate).toBe(false);
+    f.componentRef.setInput('description', 'BMW i4'); await f.whenStable();
+    expect(f.nativeElement.querySelector('[role=tooltip]').textContent).toContain('BMW i4');
+    expect(f.nativeElement.querySelectorAll('[role=tooltip]')).toHaveLength(1);
+  });
   it('presents the alternative radios and emits controlled mode intent while hiding help', async () => {
     const f = await mount(); const root: HTMLElement = f.nativeElement; const changed = vi.fn(); f.componentInstance.toggled.subscribe(changed);
     const info = root.querySelector<HTMLButtonElement>('.gcsp-prefs-info')!; info.click(); await f.whenStable(); expect(root.querySelector<HTMLElement>('[role=tooltip]')!.hidden).toBe(false);
