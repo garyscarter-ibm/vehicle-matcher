@@ -154,7 +154,9 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       ? 'The initial source fixture is bootstrap only. F340 discards it through actual named Main resets and prepares both walkthroughs through the normal editor; reset outcomes are recorded separately.'
       : 'Java named Main reset availability is recorded separately (FUCQ-562); no successful reset is claimed.',
       'A bootstrap run migrates the owned database, then is legally retired. A fresh replay run receives the exact initial clock before Java restarts; no clock guard is bypassed.',
-      'The exact initial Main brief and consent are fixture inputs in the owned test database; public editor validation is unchanged.',
+      caseId === 'f559-learned'
+        ? 'The separate covered learned scenario starts without a brief; normal public preferences, the registered430L answer and consent create it, as in LearnedPlanHttpBase.'
+        : 'The exact initial Main brief and consent are fixture inputs in the owned test database; public editor validation is unchanged.',
       'The frozen Node stock instance enters Java through its existing tranche-plan provider; release, allocation, holds and offers are actual services.'],
     requests: [], screenshots: [], checks: {}, browsers: {}, consoleErrors: [], imageResponses: [], processes };
   const journalPath = path.join(runOutput, 'processes.json');
@@ -339,7 +341,7 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       // BriefContent owns editable values; account/provider facts stay in their canonical source rows.
       const editableKeys = ['schemaVersion', 'preferences', 'essentials', 'currentCarFeedback', 'currentCarRating', 'sameAgain'];
       const content = Object.fromEntries(editableKeys.filter((key) => Object.hasOwn(initial, key)).map((key) => [key, initial[key]]));
-      receipt.canonicalBriefFixture = { rawNodeKnownFacts: initial.knownFacts, editableKeys: Object.keys(content),
+      receipt.canonicalBriefFixture = { applied: caseId !== 'f559-learned', rawNodeKnownFacts: initial.knownFacts, editableKeys: Object.keys(content),
         absentOptionalNodeFields: editableKeys.slice(3).filter((key) => !Object.hasOwn(initial, key)),
         nodeFieldsOutsideEditableContent: Object.fromEntries(Object.entries(initial).filter(([key]) => !editableKeys.includes(key))),
         authority: 'BriefContent.java:41 editable whitelist; BuddyJourneySeed.java:137. Source facts are read back and proven through /manual/account and /brief/editor.' };
@@ -366,14 +368,16 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
         INSERT INTO employee_account_records(environment_id,run_id,employee_id,record_set_id,record,version)
           VALUES(${literal(envId)},${literal(runId)},${literal(initial.employeeId)},${literal(record.recordSetId)},${literal(JSON.stringify(record))}::jsonb,${account.versions.employee});
         ${slotStatements.join('\n')}
-        INSERT INTO brief_heads(environment_id,run_id,employee_id,brief_version) VALUES(${literal(envId)},${literal(runId)},${literal(initial.employeeId)},1);
+        ${caseId === 'f559-learned' ? '' : `INSERT INTO brief_heads(environment_id,run_id,employee_id,brief_version) VALUES(${literal(envId)},${literal(runId)},${literal(initial.employeeId)},1);
         INSERT INTO briefs(environment_id,run_id,employee_id,brief_version,previous_brief_version,operation,content,buddy,semantic_digest,
           policy_version,confirmed_by,confirmed_at,command_id) VALUES(${literal(envId)},${literal(runId)},${literal(initial.employeeId)},1,NULL,'confirmed',
           ${literal(JSON.stringify(content))}::jsonb,${literal(JSON.stringify(initial.buddy))}::jsonb,${literal(sha(canonical(content)))},
-          ${literal(initial.policyVersion)},${literal(initial.confirmedBy)},${literal(initial.confirmedAt)}::timestamptz,'frozen-main-initial-input');
+          ${literal(initial.policyVersion)},${literal(initial.confirmedBy)},${literal(initial.confirmedAt)}::timestamptz,'frozen-main-initial-input');`}
         COMMIT;`);
       receipt.initialFixture = { bootstrapRunId, replayRunId: runId, replayIdentity: NODE_REPLAY_IDENTITY, identifierMapping: { environment: envId,
-        fromRun: input.reference.runId, toRun: runId }, source: 'Exact captured Main input; parent-authorized BuddyJourneySeed pattern' };
+        fromRun: input.reference.runId, toRun: runId }, source: caseId === 'f559-learned'
+          ? 'Retained account/source/clock input with no initial brief; the separate native covered scenario is created through public editor commands.'
+          : 'Exact captured Main input; parent-authorized BuddyJourneySeed pattern' };
       api = start('api', path.join(javaHome, 'bin/java'), apiArgs, replayApiEnv);
       await waitForApi();
     } finally { await ready.dispose(); }

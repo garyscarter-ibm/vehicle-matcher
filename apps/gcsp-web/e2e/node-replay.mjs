@@ -274,6 +274,12 @@ export async function withNodeReplay({ browser, input, plan, cert, key, output, 
     assert.equal(initialClock.now, input.clock.now);
     assert.equal(initialClock.clockVersion, input.clock.clockVersion);
     assert.equal(control.policyVersion, input.clock.policyVersion);
+    if (expected.gregPlanning) {
+      receipt.firstPublicTick = good(await runtime.clock.tick(control, {
+        tickId: 'f559-initial-production-clock', expectedClockVersion: initialClock.clockVersion,
+      }), 'Frozen first public supply tick');
+      assert.equal(receipt.firstPublicTick.state, 'completed');
+    }
     if (expected.gregPlanning || expected.gregPresentation) {
       // Use the frozen login service and its configured Greg, with the separate real Presenter
       // cookie for source Production controls. Credentials never leave this in-memory closure.

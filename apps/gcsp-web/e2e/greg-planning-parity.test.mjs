@@ -45,12 +45,21 @@ async function refresh(suite, greg) {
 test('FUCQ-559: intentional planning and role-separated Production responses use the real composition',
   { timeout: 480000 }, async t => {
     const suite = await startComposition({ caseId: 'f559' }); t.after(() => suite.close());
-    const greg = await suite.newPage('greg', 'demo-greg', 'greg/plan');
     const presenter = await suite.newPage('presenter', 'demo-presenter', 'presenter');
+    const initialClock = good(await suite.call(presenter, 'GET', '/presenter/clock'), 'Actual initial Presenter clock');
+    const firstTick = await suite.call(presenter, 'POST', '/presenter/clock/tick', {
+      tickId: 'f559-initial-production-clock', expectedClockVersion: initialClock.clockVersion,
+    });
+    assert.equal(good(firstTick, 'Actual first public supply tick').state, 'completed');
+    const greg = await suite.newPage('greg', 'demo-greg', 'greg/plan');
     const states = {}; const screenshots = {}; const commands = [];
-    suite.receipt.gregPlanning = { states, screenshots, commands,
+    suite.receipt.gregPlanning = { states, screenshots, commands, initialClock, firstTick,
       humanReview: 'Pending actual collaborator verdict; automated rendering and source comparisons do not satisfy AC4.' };
-    const readOrders = async () => good(await suite.call(greg, 'GET', '/greg/orders'), 'Greg orders');
+    const readOrders = async () => {
+      const response = await suite.call(greg, 'GET', '/greg/orders');
+      (suite.receipt.gregPlanning.reads ??= []).push(response);
+      return good(response, 'Greg orders');
+    };
     const initial = await readOrders();
     assert.deepEqual(initial.requests, [], 'The owned Main scenario begins without Production requests');
     const choice = initial.provider.choices.find(row => row.model === '3 Series Saloon' && row.derivative === '320i');
@@ -164,8 +173,40 @@ test('FUCQ-559: intentional planning and role-separated Production responses use
 test('FUCQ-559: actual configured learned-model differences retain source changed-cell emphasis',
   { timeout: 240000 }, async t => {
     const suite = await startComposition({ caseId: 'f559-learned' }); t.after(() => suite.close());
+    const inputs = suite.receipt.coveredLearnedInputs = {
+      source: 'LearnedPlanHttpBase.confirmBrief(sub-paula,true): estate, comfort50, sportiness50, Sameagain and registered430L',
+    };
+    const setup = async (name, actor, method, route, body) => {
+      const response = await suite.call(actor, method, route, body); inputs[name] = response;
+      return good(response, name);
+    };
+    const presenter = await suite.newPage('presenter-learned', 'demo-presenter', 'presenter');
+    const clock = await setup('initialClock', presenter, 'GET', '/presenter/clock');
+    const tick = await setup('firstPublicTick', presenter, 'POST', '/presenter/clock/tick', {
+      tickId: 'f559-learned-initial-clock', expectedClockVersion: clock.clockVersion,
+    });
+    assert.equal(tick.state, 'completed');
+    const employee = await suite.newPage('employee-learned', 'demo-paula', 'preferences');
+    const editor = await setup('freshEditor', employee, 'GET', '/brief/editor');
+    assert.equal(editor.initial.briefVersion, 0, 'The separate native covered scenario starts without a confirmed brief');
+    const preferences = await setup('coveredPreferences', employee, 'POST', '/brief/preferences', {
+      commandId: 'f559-covered-preferences', expectedBriefVersion: editor.initial.briefVersion, expectedDraftVersion: editor.initial.draftVersion,
+      changes: { comfort: { value: 50 }, body: { value: ['estate'] }, sportiness: { value: 50 } },
+      sameAgain: { contractId: editor.initial.currentCarRating.contractId, on: true },
+    });
+    const current = await setup('preferenceReadback', employee, 'GET', '/brief/editor');
+    const brief = structuredClone(current.initial.brief);
+    brief.essentials.boot = { ...brief.essentials.boot, value: 430, state: 'draft', source: 'employee' };
+    const draft = await setup('covered430L', employee, 'POST', '/brief/draft', {
+      commandId: 'f559-covered-boot', expectedBriefVersion: current.initial.briefVersion, expectedDraftVersion: preferences.draftVersion, brief,
+    });
+    await setup('confirmedBriefAndConsent', employee, 'POST', '/brief/confirm', {
+      commandId: 'f559-covered-confirm', expectedBriefVersion: draft.baseBriefVersion, expectedDraftVersion: draft.draftVersion,
+      consent: { search: true, hold: true },
+    });
     const greg = await suite.newPage('greg-learned', 'demo-greg', 'greg/plan');
     const response = await suite.call(greg, 'GET', '/greg/order-plan');
+    suite.receipt.learnedPlanning = { response };
     const value = good(response, 'Actual configured learned-model plan');
     assert.equal(value.learned.status, 'available', 'The native configured model supplies real learned figures');
     assert.equal(value.learned.differences.comparable, true);
