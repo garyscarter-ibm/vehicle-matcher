@@ -79,11 +79,19 @@ class BriefJourneyPhase2HttpTest {
         assertEquals(counts.get("outbox_events").longValue(), rows[3]);
 
         // The reads equal phase 1 exactly, including the policy and account facts versions on every history row.
-        assertEquals(phase1.get("current"), read(paula, ""));
+        JsonNode currentRead = read(paula, "");
+        assertEquals(phase1.get("current"), currentRead);
         JsonNode history = read(paula, "/history");
         assertEquals(phase1.get("history"), history);
         assertEquals(phase1.get("draft"), read(paula, "/draft"));
-        for (JsonNode row : history.get("versions")) {
+        JsonNode versions = history.get("versions");
+        JsonNode current = currentRead.get("brief");
+        assertEquals(versions.get(versions.size() - 1), current);
+        for (int i = 0; i < versions.size(); i++) {
+            JsonNode row = versions.get(i);
+            assertTrue(row.has("previousBriefVersion"));
+            if (i == 0) assertTrue(row.get("previousBriefVersion").isNull());
+            else assertEquals(i, row.get("previousBriefVersion").longValue());
             assertEquals("gcsp-policy-v1", row.get("policyVersion").textValue());
             assertTrue(row.get("accountFactsVersion").isTextual());
         }
