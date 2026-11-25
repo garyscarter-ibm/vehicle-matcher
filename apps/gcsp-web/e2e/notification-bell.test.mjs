@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { startComposition } from './composition.mjs';
+import { showAdvanced, startComposition } from './composition.mjs';
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 async function until(check, message, timeout = 10000) {
@@ -56,6 +56,7 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
     await until(() => activityRequests(suite).length > before, 'Initial source reread reaches Java');
     let actionAt = Date.now();
     before = activityRequests(suite).length;
+    await showAdvanced(presenter);
     await presenter.getByRole('button', { name: 'Next release', exact: true }).click();
     await until(() => activityRequests(suite).length > before, 'Presenter action must cause an employee activity read', 8000);
     let clock = await suite.call(presenter, 'GET', '/presenter/controls');

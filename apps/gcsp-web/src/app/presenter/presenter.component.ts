@@ -1,3 +1,11 @@
+import { OutboxClient, OutboxMessage } from '../outbox/outbox.client';
+import { basicModel, weekDays } from './basic-model';
+import { PresenterRelease } from './presenter.projections';
+import { ReleaseSectionComponent } from './release-section.component';
+import { SuitabilitySectionComponent } from './suitability-section.component';
+import { HappenedFeedComponent } from './happened-feed.component';
+import { friendlyTime } from '../kit/friendly-time';
+import { LiveRefreshService } from '../live-refresh.service';
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, computed, effect, inject, signal, untracked } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthPort, SessionState } from '../auth/auth.port';
@@ -13,11 +21,25 @@ import { PresenterCatalogue, PresenterClientFailure, PresenterCommand, Presenter
 let serial = 0;
 @Component({
   selector: 'gcsp-presenter',
-  imports: [RouterLink, ButtonDirective, FactListComponent, LabelledFieldComponent, ScreenIntroComponent, StatusScreenComponent],
+  imports: [ReleaseSectionComponent, SuitabilitySectionComponent, HappenedFeedComponent, RouterLink, ButtonDirective, FactListComponent, LabelledFieldComponent, ScreenIntroComponent, StatusScreenComponent],
   templateUrl: './presenter.component.html', styleUrl: './presenter.component.css',
 })
 export class PresenterComponent implements OnDestroy {
   readonly auth = inject(AuthPort);
+  private readonly outbox = inject(OutboxClient);
+  readonly release = signal<PresenterRelease | null>(null);
+  readonly orderCount = signal<number | null>(null);
+  readonly emails = signal<readonly OutboxMessage[]>([]);
+  readonly emailsUnavailable = signal(false);
+  readonly advanced = signal(false);
+  readonly basicReset = signal(false);
+  readonly mainScenario = computed(() => this.catalogue()?.scenarios.find(s => s.scenarioId === 'main-successful-journey') ?? null);
+  readonly startAllowed = computed(() => this.clockReady() && this.mainScenario()?.availability.available === true);
+  readonly basic = computed(() => basicModel(this.controls(), this.current()?.currentScenario?.scenarioId === 'main-successful-journey', this.orderCount()));
+  readonly days = computed(() => weekDays(this.controls()?.now, this.controls()?.startsAt));
+  readonly clockDay = computed(() => this.basic().clock?.split(' · ')[0] ?? '');
+  readonly clockTime = computed(() => this.basic().clock?.split(' · ').slice(1).join(' · ') || this.basic().clock || '');
+  readonly formatTime = friendlyTime;
   private readonly client = inject(PresenterClient);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly detector = inject(ChangeDetectorRef);
@@ -58,31 +80,20 @@ export class PresenterComponent implements OnDestroy {
   readonly faultAllowed = computed(() => !this.faultEditorsLocked() && !!this.fault()?.available && this.modes().includes(this.selectedMode())
     && this.faults()?.runId === this.controls()?.runId);
   readonly nextReleaseReason = computed(() => { const release = this.controls()?.controls.nextRelease;
-    return release?.status === 'unavailable' ? release.reason : release ? `Next release: ${release.at} (UTC)` : 'Current release information is unavailable.'; });
+    return release?.status === 'unavailable' ? this.publicText(release.reason) : release ? `Next release: ${friendlyTime(release.at)}` : 'Current release information is unavailable.'; });
   readonly nextReleaseAvailable = computed(() => this.clockReady() && this.controls()?.controls.nextRelease.status === 'available');
-  readonly clockFacts = computed<readonly FactRow[]>(() => { const clock = this.controls(); return clock ? [
-    { label: 'Current time (UTC)', value: clock.now }, { label: 'Run', value: clock.runId }, { label: 'Clock version', value: clock.clockVersion },
-    { label: 'Scenario', value: this.current()?.currentScenario?.name }, { label: 'Scenario version', value: clock.scenarioVersion },
-    { label: 'Fixture version', value: clock.fixtureVersion }, { label: 'Policy version', value: clock.controls.policyVersion },
-  ] : []; });
-  readonly resetFacts = computed<readonly FactRow[]>(() => { const review = this.resetReview(); return review ? [
-    { label: 'Run to replace', value: review.input.expectedRunId }, { label: 'Scenario', value: review.input.scenarioId },
-    { label: 'Scenario version', value: review.input.scenarioVersion }, { label: 'Fixture version', value: review.input.fixtureVersion },
-    { label: 'Policy version', value: review.input.policyVersion },
-  ] : []; });
-  readonly retryFacts = computed<readonly FactRow[]>(() => {
-    const command = this.retryCommand(); if (!command) return [];
-    const labels: Readonly<Record<string, string>> = { commandId: 'Command reference', tickId: 'Tick reference', expectedClockVersion: 'Expected clock version',
-      bySeconds: 'Seconds', to: 'Target', mode: 'Mode', expectedRunId: 'Run to replace', scenarioId: 'Scenario', scenarioVersion: 'Scenario version',
-      fixtureVersion: 'Fixture version', policyVersion: 'Policy version', adapter: 'Adapter' };
-    return [{ label: 'Command', value: command.kind }, ...Object.entries(command.input).map(([key, value]) => ({ label: labels[key] ?? key, value }))];
-  });
-  readonly namedTimes = computed(() => Object.entries(this.controls()?.controls.namedTimes ?? {}).map(([name, at]) => ({ name, at })));
+  readonly clockFacts = computed<readonly FactRow[]>(() => this.controls() ? [
+    { label: 'Scheme clock', value: friendlyTime(this.controls()!.now) }, { label: 'Scenario', value: this.current()?.currentScenario?.name },
+  ] : []);
+  readonly resetFacts = computed<readonly FactRow[]>(() => this.resetReview() ? [{ label: 'Scenario', value: this.catalogue()?.scenarios.find(s => s.scenarioId === this.resetReview()!.input.scenarioId)?.name || 'Selected scenario' }] : []);
+  readonly retryFacts = computed<readonly FactRow[]>(() => { const command = this.retryCommand(); return command ? [{ label: 'Action', value: ({ advance: 'Advance clock', tick: 'Tick current time', 'control-tick': command.kind === 'control-tick' && command.input.mode === 'next-release' ? 'Next release' : 'Step the scheme clock', reset: 'Start a fresh scenario', fault: 'Set fault mode' })[command.kind] }] : []; });
+  readonly namedTimes = computed(() => Object.entries(this.controls()?.controls.namedTimes ?? {}).map(([name, at]) => ({ name, at: friendlyTime(at) })));
   private recoveredReset: { readonly input: PresenterResetInput; readonly subject: string; readonly environmentId: string; readonly needsPreparation: boolean } | null = null;
   private session: SessionState | null = null;
   private controller = new AbortController();
   private generation = 0;
   private destroyed = false;
+  private readonly stopRefresh = inject(LiveRefreshService).subscribe(() => this.permitted() && !this.locked() ? this.readCurrent() : undefined);
 
   constructor() {
     effect(() => { const session = this.auth.state(); untracked(() => this.changeSession(session)); });
@@ -93,7 +104,9 @@ export class PresenterComponent implements OnDestroy {
   faultChanged(event: Event): void { this.selectedFault.set(this.text(event)); this.selectedMode.set(''); }
   kindChanged(event: Event): void { this.advanceKind.set(this.text(event) === 'to' ? 'to' : 'seconds'); }
   described(name: string): string { return `${this.control(name)}-hint${this.validationField() === name ? ` ${this.control('validation')}` : ''}`; }
-  outcome(value: Readonly<Record<string, unknown>>): string { return JSON.stringify(value, null, 2); }
+  handlerLabel(id: string): string { return ({ 'stock-release': 'Stock release', 'buddy-allocation': 'Buddy allocation', 'buddy-expiry': 'Buddy hold expiry', 'manual-claim-expiry': 'Manual hold expiry', 'captured-outbox': 'Email dispatch', 'lifecycle-approvals': 'Order approvals', 'lifecycle-documents': 'Documents', 'lifecycle-appointments': 'Appointments', 'renewal-risk-cases': 'Renewal cases', 'buddy-pending-operations': 'Buddy reconciliation', 'selection-order-reconciliation': 'Order reconciliation' } as Record<string, string>)[id] ?? 'Scheme step'; }
+  outcome(value: Readonly<Record<string, unknown>>): string { return value['status'] === 'ok' ? 'Completed' : value['status'] === 'pending' || value['status'] === 'unavailable' ? 'Waiting to complete' : 'Not completed'; }
+  private publicText(value: string): string { return value.replace(/\b\d{4}-\d\d-\d\dT\S+/g, 'the scheme time').replace(/\brun[-_:][A-Za-z0-9._:-]+\b/gi, 'the current scenario'); }
 
   async refresh(): Promise<void> {
     if (!this.permitted() || this.pending() || this.reading() || this.destroyed) return;
@@ -122,18 +135,24 @@ export class PresenterComponent implements OnDestroy {
     if (!this.tickId().trim()) { this.invalid('Enter a tick reference.', 'tick'); return; }
     await this.sendPrepared(this.client.prepareTick({ tickId: this.tickId().trim(), expectedClockVersion: controls.clockVersion }));
   }
-  reviewReset(): void {
-    const scenario = this.selectedScenario(); const controls = this.controls();
-    if (!scenario || !controls || !this.resetAllowed()) return;
+  async releaseTomorrow(): Promise<void> {
+    const controls = this.controls(); const body = this.basic().release.body;
+    if (!controls || !body || !this.clockReady() || this.basic().release.disabled) return;
+    await this.sendPrepared(this.client.prepareControlTick({ commandId: this.commandId(), expectedClockVersion: controls.clockVersion, ...body }));
+    if (this.permitted()) this.focus(this.clockReady() && !this.basic().release.disabled ? '[data-basic-release]' : '[data-start-again]');
+  }
+  reviewReset(): void { const scenario = this.selectedScenario(); if (scenario && this.resetAllowed()) this.prepareReset(scenario, false); }
+  reviewStartAgain(): void { const scenario = this.mainScenario(); if (scenario && this.startAllowed()) this.prepareReset(scenario, true); }
+  private prepareReset(scenario: NonNullable<ReturnType<typeof this.selectedScenario>>, basic: boolean): void {
+    const controls = this.controls(); if (!controls) return;
     const command = this.client.prepareReset({ commandId: this.commandId(), expectedRunId: controls.runId, scenarioId: scenario.scenarioId,
       scenarioVersion: scenario.scenarioVersion, fixtureVersion: scenario.fixtureVersion, policyVersion: scenario.policyVersion });
-    if ('state' in command) { this.invalid(command.problem); return; }
-    if (command.kind !== 'reset') return;
-    this.resetReview.set(command); this.validation.set(''); this.focus('[data-reset-review]');
+    if ('state' in command) { this.invalid(command.problem); return; } if (command.kind !== 'reset') return;
+    this.basicReset.set(basic); this.resetReview.set(command); this.validation.set(''); this.focus(basic ? '[data-basic-confirm]' : '[data-reset-review]');
   }
-  cancelReset(): void { if (this.pending()) return; this.resetReview.set(null); this.focus('[data-reset-trigger]'); }
+  cancelReset(): void { if (this.pending()) return; const basic = this.basicReset(); this.resetReview.set(null); this.focus(basic ? '[data-start-again]' : '[data-reset-trigger]'); }
   async confirmReset(): Promise<void> {
-    const command = this.resetReview(); if (!command || !this.resetAllowed()) return;
+    const command = this.resetReview(); if (!command || !(this.basicReset() ? this.startAllowed() : this.resetAllowed())) return;
     this.resetReview.set(null); await this.sendPrepared(command);
   }
   async setFault(event: Event): Promise<void> {
@@ -174,12 +193,12 @@ export class PresenterComponent implements OnDestroy {
     }
   }
   async signIn(): Promise<void> { await this.auth.signIn('/gcsp/presenter'); }
-  ngOnDestroy(): void { this.destroyed = true; this.generation++; this.controller.abort(); }
+  ngOnDestroy(): void { this.stopRefresh(); this.destroyed = true; this.generation++; this.controller.abort(); }
 
   private changeSession(session: SessionState): void {
     if (this.session === session) return;
     this.session = session; this.displayedSession.set(session); this.generation++; this.controller.abort(); this.controller = new AbortController();
-    this.controls.set(null); this.catalogue.set(null); this.current.set(null); this.faults.set(null);
+    this.controls.set(null); this.catalogue.set(null); this.current.set(null); this.faults.set(null); this.release.set(null); this.orderCount.set(null); this.emails.set([]); this.emailsUnavailable.set(false);
     this.pending.set(false); this.reading.set(false); this.retryCommand.set(null); this.faultRetryCommand.set(null); this.resetReview.set(null);
     this.selectedScenarioId.set(''); this.selectedFault.set(''); this.selectedMode.set('');
     this.commandMessage.set(''); this.validation.set(''); this.validationField.set(''); this.readProblems.set([]);
@@ -202,20 +221,24 @@ export class PresenterComponent implements OnDestroy {
     this.message.set('Reading current backend state.');
     const options = { signal: this.controller.signal };
     try {
-      const [controls, catalogue, current, faults] = await Promise.all([
-        this.client.readControls(options), this.client.readCatalogue(options), this.client.readCurrentScenario(options), this.client.readFaults(options),
+      const [controls, catalogue, current, faults, release, outbox, orders] = await Promise.all([
+        this.client.readControls(options), this.client.readCatalogue(options), this.client.readCurrentScenario(options), this.client.readFaults(options), this.client.readLatestRelease(options), this.outbox.read(options), this.client.readOrderCount(options),
       ]);
       if (!this.active(generation)) return;
       this.controls.set(controls.state === 'ready' ? controls.value : null);
       this.catalogue.set(catalogue.state === 'ready' ? catalogue.value : null);
       this.current.set(current.state === 'ready' ? current.value : null);
       this.faults.set(faults.state === 'ready' ? faults.value : null);
+      this.release.set(release.state === 'ready' && release.value.runId === controls.value?.runId ? release.value : null);
+      this.emails.set(outbox.status === 'ok' && outbox.value.runId === controls.value?.runId ? outbox.value.messages : []);
+      this.emailsUnavailable.set(outbox.status !== 'ok');
+      this.orderCount.set(orders.state === 'ready' ? orders.value.count : null);
       const problems: string[] = [];
       for (const [label, result] of [['Clock and release', controls], ['Scenario catalogue', catalogue], ['Current scenario', current], ['Faults', faults]] as const) {
         if (result.state !== 'ready') problems.push(`${label}: ${this.problem(result)}`);
       }
       if (controls.state === 'ready' && current.state === 'ready' && controls.value.runId !== current.value.runId) {
-        this.controls.set(null); this.current.set(null); problems.push('The active run changed during readback. Refresh current state.');
+        this.controls.set(null); this.current.set(null); this.release.set(null); this.orderCount.set(null); this.emails.set([]); problems.push('The active run changed during readback. Refresh current state.');
       }
       if (controls.state === 'ready' && faults.state === 'ready' && controls.value.runId !== faults.value.runId) {
         this.faults.set(null); problems.push('Fault state belongs to a changed run. Refresh current state.');
@@ -225,7 +248,7 @@ export class PresenterComponent implements OnDestroy {
       this.message.set(problems.length ? 'Some current state is unavailable. Review the readback below.' : 'Current backend state loaded.');
     } catch {
       if (!this.active(generation)) return;
-      this.controls.set(null); this.catalogue.set(null); this.current.set(null); this.faults.set(null);
+      this.controls.set(null); this.catalogue.set(null); this.current.set(null); this.faults.set(null); this.release.set(null); this.orderCount.set(null); this.emails.set([]); this.emailsUnavailable.set(false);
       this.message.set('Current state could not be read. Refresh before preparing a new command.');
     } finally { if (this.active(generation)) this.reading.set(false); }
   }
@@ -246,7 +269,7 @@ export class PresenterComponent implements OnDestroy {
     if (result.state === 'ready') {
       this.retryCommand.set(retainedTick); this.faultRetryCommand.set(null); this.recoveredReset = null;
       this.commandMessage.set(retainedTick ? 'Fault command acknowledged. The original tick remains available for deliberate retry.' : command.kind === 'reset' && 'activatedRunId' in result.value
-        ? `Reset acknowledged. Activated run: ${result.value.activatedRunId}. Refresh sign-in context to read the active run.`
+        ? 'Started again on day 1.'
         : 'Command acknowledged. Checking current state.');
     } else {
       const retryable = result.state === 'refused' ? result.refusal.status !== 'conflict' && (result.refusal.status === 'pending' || result.refusal.retryable)
@@ -255,13 +278,23 @@ export class PresenterComponent implements OnDestroy {
       else this.retryCommand.set(retryable ? command : null);
       this.commandMessage.set(this.problem(result, true));
     }
+    if (result.state === 'ready' && command.kind === 'reset' && 'activatedRunId' in result.value) {
+      this.reading.set(true);
+      try { await this.auth.retry(); } catch {
+        if (this.destroyed) return;
+        this.commandMessage.set('Started again. Refresh sign-in context to continue.');
+      }
+      if (this.destroyed) return;
+      const session = this.auth.state();
+      if (session !== this.session) { this.changeSession(session); return; }
+    }
     await this.readCurrent();
     if (this.active(generation)) this.focus('[data-presenter-status]');
   }
   private problem(result: Exclude<PresenterResult<unknown>, { state: 'ready' }>, command = false): string {
     if (result.state === 'refused') {
       const refusal = result.refusal;
-      return `${refusal.status === 'pending' ? 'Command outcome pending' : refusal.status === 'conflict' ? 'Current-version conflict' : 'Request refused'}: ${refusal.reason}${refusal.currentVersion !== undefined ? ` Current version: ${refusal.currentVersion}.` : ''}${refusal.operationId ? ` Operation: ${refusal.operationId}.` : ''}`;
+      return `${refusal.status === 'pending' ? 'Command outcome pending' : refusal.status === 'conflict' ? 'Current-version conflict' : 'Request refused'}: ${this.publicText(refusal.reason)}`;
     }
     if (result.state === 'failed') return `${result.writeOutcome === 'unknown' ? 'Command outcome unknown. ' : result.writeOutcome === 'not-sent' ? 'Command not sent. ' : ''}${result.problem}`;
     if (result.state === 'scope-mismatch') return 'The account or active run changed. Refresh sign-in context before continuing.';

@@ -21,6 +21,11 @@ async function until(check, message, timeout = 12000) {
   while (Date.now() < deadline) { if (await check()) return; await delay(100); }
   assert.fail(message);
 }
+export async function showAdvanced(page) {
+  const advanced = page.getByRole('button', { name: 'Advanced', exact: true });
+  if (await advanced.getAttribute('aria-pressed') === 'false') await advanced.click();
+  assert.equal(await advanced.getAttribute('aria-pressed'), 'true');
+}
 const sha = (value) => createHash('sha256').update(value).digest('hex');
 const literal = (value) => `'${String(value).replaceAll("'", "''")}'`;
 const canonical = (value) => JSON.stringify(value, (_key, item) => item && typeof item === 'object' && !Array.isArray(item)
@@ -63,7 +68,7 @@ function identity(pid) {
 }
 
 export async function startComposition({ caseId = 'f548', ordering = 'synthetic' } = {}) {
-  assert.ok(['f548', 'f552', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain'].includes(caseId));
+  assert.ok(['f548', 'f552', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f561'].includes(caseId));
   assert.ok(['synthetic', 'rejected', 'unknown-then-rejected'].includes(ordering));
   const scratch = local(process.env.SCRATCH ?? '');
   assert.ok(scratch.startsWith('/private/tmp/'), 'The supervisor must own /private/tmp scratch');
@@ -541,6 +546,7 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       return actual;
     }
     async function releaseMainOffer(employeePage, presenterPage) {
+      await showAdvanced(presenterPage);
       const catalogue = await call(presenterPage, 'GET', '/presenter/scenarios');
       assert.equal(catalogue.status, 200);
       const main = catalogue.body.value.scenarios.find((item) => item.scenarioId === 'main-successful-journey');

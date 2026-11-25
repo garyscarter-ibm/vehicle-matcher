@@ -1,44 +1,46 @@
-<section class="presenter-screen" [attr.aria-busy]="pending() || reading() ? 'true' : null">
-  <gcsp-screen-intro title="Presenter controls" lede="Operate the clock and scenario, then inspect the current outcome." />
-  <div class="presenter-status" role="status" aria-live="polite" aria-atomic="true" tabindex="-1" data-presenter-status>
-    @if (permitted() && commandMessage()) { <p>{{ commandMessage() }}</p> }
-    <p>{{ message() }}</p>
-  </div>
-  @if (!permitted()) {
-    @if (auth.state().status === 'signed-out') {
-      <gcsp-status-screen title="Sign in to use presenter controls" [level]="2" [announcement]="null"><button gcspButton type="button" (click)="signIn()">Sign in</button></gcsp-status-screen>
-    } @else if (auth.state().status === 'loading') {
-      <gcsp-status-screen title="Checking presenter access" [level]="2" [busy]="true" [announcement]="null" />
+<div class="gcsp-console" [attr.aria-busy]="pending() || reading() ? 'true' : null">
+  <header class="gcsp-console-head"><div class="gcsp-console-brand"><img src="assets/brand-logos/bmwgroup-bmw-mini.svg" alt="" width="88" height="24" /><span>Group Car Schemes</span><strong>Presenter</strong></div>
+    @if (permitted() && controls()) { <div class="gcsp-console-time"><span class="gcsp-console-day">{{ clockDay() }}</span><span class="gcsp-console-clock">{{ clockTime() }}</span></div> }
+    <button class="gcsp-console-mode" type="button" [attr.aria-pressed]="advanced()" (click)="advanced.set(!advanced())">{{ advanced() ? 'Basic' : 'Advanced' }}</button>
+  </header>
+  <div class="gcsp-console-main">
+    @if (!permitted()) {
+      @if (auth.state().status === 'signed-out') { <gcsp-status-screen title="Sign in to use presenter controls" [level]="1" [announcement]="null"><button gcspButton type="button" (click)="signIn()">Sign in</button></gcsp-status-screen> }
+      @else if (auth.state().status === 'loading') { <gcsp-status-screen title="Checking presenter access" [level]="1" [busy]="true" [announcement]="null" /> }
+      @else { <gcsp-status-screen title="Presenter controls unavailable" message="A current presenter login is required." [level]="1" [announcement]="null"><button gcspButton type="button" (click)="retryAuthentication()">Refresh sign-in context</button></gcsp-status-screen> }
     } @else {
-      <gcsp-status-screen title="Presenter controls unavailable" message="A current presenter login is required." [level]="2" [announcement]="null">
-        <button gcspButton type="button" (click)="retryAuthentication()">Refresh sign-in context</button>
-      </gcsp-status-screen>
-    }
-  } @else {
-    <div class="gcsp-actions">
-      <button gcspButton variant="ghost" type="button" [disabled]="pending() || reading()" (click)="refresh()">Refresh current state</button>
-      <button gcspButton variant="ghost" type="button" [disabled]="pending() || reading()" (click)="retryAuthentication()">Refresh sign-in context</button>
-    </div>
-    @if (readProblems().length) {
-      <section class="gcsp-panel" aria-label="Unavailable current state"><ul>@for (problem of readProblems(); track $index) { <li>{{ problem }}</li> }</ul></section>
-    }
-    @if (retryCommand()) {
-      <section class="gcsp-panel" aria-label="Command retry">
-        <h2>Review the same command</h2>
-        <p>Refreshing state does not prove whether this command completed. Retry only if you intend to send these exact submitted inputs again.</p>
-        <gcsp-fact-list [rows]="retryFacts()" />
-        <button gcspButton type="button" [disabled]="pending() || reading() || !!faultRetryCommand()" (click)="retry()">Retry the same command</button>
+      <section class="gcsp-console-stage" [hidden]="advanced()" [attr.aria-labelledby]="control('headline')">
+        <div class="gcsp-console-text"><h1 [id]="control('headline')">{{ basic().headline }}</h1><p class="gcsp-console-sub">{{ basic().sub }}</p></div>
+        <div class="gcsp-console-screen"></div>
+        <div class="gcsp-console-actions">
+          <button gcspButton type="button" data-basic-release [disabled]="!clockReady() || basic().release.disabled" [attr.aria-describedby]="basic().release.disabled ? control('basic-release-reason') : null" (click)="releaseTomorrow()">{{ basic().release.label }}</button>
+          <div class="gcsp-console-restart">
+            @if (!resetReview() || !basicReset()) { <button gcspButton variant="ghost" type="button" data-start-again [disabled]="!startAllowed()" [attr.aria-controls]="control('start-confirm')" [attr.aria-expanded]="false" (click)="reviewStartAgain()">Start again</button> }
+            @else { <div class="gcsp-console-confirm" role="group" [id]="control('start-confirm')" [attr.aria-labelledby]="control('start-title')" (keydown.escape)="cancelReset()"><span class="gcsp-console-confirm-copy"><strong [id]="control('start-title')" tabindex="-1" data-reset-review>Start again?</strong> <span class="gcsp-console-confirm-note">Day 1, cars cleared. Preferences kept.</span></span><button gcspButton variant="ghost" type="button" data-basic-confirm [disabled]="!startAllowed()" (click)="confirmReset()">Confirm</button><button gcspButton variant="ghost" type="button" (click)="cancelReset()">Cancel</button></div> }
+          </div>
+        </div>
+        <ol class="gcsp-console-week" aria-label="Scheme week">@for (day of days(); track day.label) { <li [class.is-done]="day.done" [class.is-today]="day.today" [class.is-weekend]="day.weekend" [class.is-before]="day.beforeStart" [attr.aria-current]="day.today ? 'date' : null">{{ day.label }}</li> }</ol>
+        <p class="gcsp-console-reason" [id]="control('basic-release-reason')" [hidden]="!basic().release.disabled">{{ basic().release.reason }}</p>
+        <gcsp-presenter-release [value]="release()" [loading]="pending() || (reading() && !release())" [animate]="!!controls()?.lastTick" />
+        @if (controls(); as clock) { <gcsp-presenter-suitability [controls]="clock" [busy]="reading() || pending()" /><gcsp-presenter-happened [controls]="clock" [messages]="emails()" [unavailable]="emailsUnavailable()" /> }
       </section>
-    }
-    @if (validation()) { <p class="gcsp-field-error" role="alert" tabindex="-1" [id]="control('validation')" data-presenter-validation>{{ validation() }}</p> }
+      <div class="gcsp-console-status" role="status" aria-live="polite" aria-atomic="true" tabindex="-1" data-presenter-status>
+        @if (commandMessage()) { <p>{{ commandMessage() }}</p> }
+        @if (reading() || readProblems().length || !controls()) { <p>{{ message() }}</p> }
+      </div>
+      @if (readProblems().length) { <section aria-label="Unavailable current state"><ul>@for (problem of readProblems(); track $index) { <li>{{ problem }}</li> }</ul></section> }
+      @if (retryCommand()) { <section class="gcsp-console-recovery" aria-label="Command retry"><h2>Review the same command</h2><p>Its outcome is not confirmed. Retry only if you intend to repeat the same action.</p><gcsp-fact-list [rows]="retryFacts()" /><button gcspButton type="button" [disabled]="pending() || reading() || !!faultRetryCommand()" (click)="retry()">Retry the same command</button></section> }
+      @if (validation()) { <p class="gcsp-field-error" role="alert" tabindex="-1" [id]="control('validation')" data-presenter-validation>{{ validation() }}</p> }
+      <section class="gcsp-console-advanced" [hidden]="!advanced()"><h2>Presenter controls</h2><div class="gcsp-console-controls">
+        <div class="gcsp-actions"><button gcspButton variant="ghost" type="button" [disabled]="pending() || reading()" (click)="refresh()">Refresh current state</button><button gcspButton variant="ghost" type="button" [disabled]="pending() || reading()" (click)="retryAuthentication()">Refresh sign-in context</button></div>
     <section class="gcsp-panel" aria-labelledby="presenter-clock-heading">
       <h2 id="presenter-clock-heading">Clock and release</h2>
       @if (controls(); as clock) {
         <gcsp-fact-list [rows]="clockFacts()" />
-        <p [id]="control('release-reason')" class="gcsp-note">{{ nextReleaseReason() }}</p>
+        <p [id]="control('advanced-release-reason')" class="gcsp-note">{{ nextReleaseReason() }}</p>
         <div class="gcsp-actions">
           <button gcspButton variant="ghost" type="button" [disabled]="!clockReady()" (click)="step('step')">Step {{ clock.controls.step.value }} seconds</button>
-          <button gcspButton type="button" [disabled]="!nextReleaseAvailable()" [attr.aria-describedby]="control('release-reason')" (click)="step('next-release')">Next release</button>
+          <button gcspButton type="button" [disabled]="!nextReleaseAvailable()" [attr.aria-describedby]="control('advanced-release-reason')" (click)="step('next-release')">Next release</button>
         </div>
         <details class="presenter-details"><summary>Advanced clock controls</summary>
           <form (submit)="advance($event)">
@@ -50,7 +52,7 @@
                 <input [id]="control('seconds')" type="number" min="1" step="1" required [value]="seconds()" [disabled]="!clockReady()" [attr.aria-describedby]="described('seconds')" [attr.aria-invalid]="validationField() === 'seconds' ? 'true' : null" (input)="seconds.set(text($event))" />
               </gcsp-labelled-field>
             } @else {
-              <gcsp-labelled-field [controlId]="control('target')" label="Named time or instant" hint="Use a supplied name or an ISO instant with a UTC offset.">
+              <gcsp-labelled-field [controlId]="control('target')" label="Named time or instant" hint="Choose a supplied name or enter the intended time.">
                 <input [id]="control('target')" type="text" required maxlength="200" [attr.list]="control('named-times')" [value]="target()" [disabled]="!clockReady()" [attr.aria-describedby]="described('target')" [attr.aria-invalid]="validationField() === 'target' ? 'true' : null" (input)="target.set(text($event))" />
                 <datalist [id]="control('named-times')">@for (time of namedTimes(); track time.name) { <option [value]="time.name">{{ time.at }}</option> }</datalist>
               </gcsp-labelled-field>
@@ -75,14 +77,13 @@
           </select>
         </gcsp-labelled-field>
         @if (selectedScenario(); as selected) {
-          <p class="gcsp-note">Scenario {{ selected.scenarioVersion }} · Fixture {{ selected.fixtureVersion }} · Policy {{ selected.policyVersion }}</p>
           @if (!selected.availability.available) { <p [id]="control('scenario-reason')">Unavailable: {{ selected.availability.outcome }}. Missing capabilities: {{ selected.availability.missingCapabilities.join(', ') || 'Not supplied' }}.</p> }
         }
         <button gcspButton variant="ghost" type="button" data-reset-trigger [disabled]="!resetAllowed() || !!resetReview()" [attr.aria-describedby]="selectedScenario() && !selectedScenario()!.availability.available ? control('scenario-reason') : null" [attr.aria-controls]="control('reset-review')" [attr.aria-expanded]="!!resetReview()" (click)="reviewReset()">Reset scenario</button>
-        @if (resetReview()) {
+        @if (resetReview() && !basicReset()) {
           <section class="presenter-confirmation" [id]="control('reset-review')" (keydown.escape)="cancelReset()">
             <h3 tabindex="-1" data-reset-review>Confirm scenario reset</h3>
-            <p>This replaces the active run with the selected scenario and fixture versions. Check the run below before confirming.</p>
+            <p>Start a fresh run of the selected scenario. Current cars and progress will be cleared.</p>
             <gcsp-fact-list [rows]="resetFacts()" />
             <div class="gcsp-actions"><button gcspButton type="button" [disabled]="!resetAllowed()" (click)="confirmReset()">Confirm reset</button><button gcspButton variant="ghost" type="button" [disabled]="pending()" (click)="cancelReset()">Cancel</button></div>
           </section>
@@ -113,13 +114,12 @@
       } @else { <p class="gcsp-note">Fault state is unavailable.</p> }
     </section>
     <section class="gcsp-panel" aria-labelledby="presenter-tick-heading">
-      <h2 id="presenter-tick-heading">Last tick readback</h2>
+      <h2 id="presenter-tick-heading">Last step</h2>
       @if (controls()?.lastTick; as tick) {
-        <gcsp-fact-list [rows]="[{label: 'Tick', value: tick.tickId}, {label: 'State', value: tick.state}, {label: 'Time (UTC)', value: tick.now}, {label: 'Run', value: tick.runId}, {label: 'Clock version', value: tick.clockVersion}]" />
-        <h3>Bound handlers</h3><ol>@for (handler of tick.handlerOrder; track $index) { <li>{{ handler.stage }}: {{ handler.handlerId }}</li> } @empty { <li>No bound handlers were reported.</li> }</ol>
-        <h3>Missing stages</h3><ul>@for (stage of tick.missingStages; track stage) { <li>{{ stage }}</li> } @empty { <li>No missing stages were reported.</li> }</ul>
-        <h3>Reported outcomes</h3>@for (item of tick.outcomes; track $index) { <details class="presenter-details"><summary>{{ item.stage }}: {{ item.handlerId }}</summary><pre>{{ outcome(item.outcome) }}</pre></details> } @empty { <p>No handler outcomes were reported.</p> }
-      } @else { <p class="gcsp-note">No last tick is available from the current clock readback.</p> }
+        <p>{{ formatTime(tick.now) }} · {{ tick.state === 'completed' ? 'Completed' : 'Waiting to complete' }}</p>
+        <ol>@for (item of tick.outcomes; track $index) { <li>{{ handlerLabel(item.handlerId) }}: {{ outcome(item.outcome) }}</li> } @empty { <li>No step outcomes were reported.</li> }</ol>
+        @if (tick.missingStages.length) { <p class="gcsp-note">Some scheme steps are not available.</p> }
+      } @else { <p class="gcsp-note">No step has been recorded yet.</p> }
     </section>
     <section class="gcsp-panel" aria-labelledby="presenter-inspection-heading">
       <h2 id="presenter-inspection-heading">Read-only inspection</h2>
@@ -129,5 +129,7 @@
       </div>
       <p class="gcsp-note">Employee and Greg actions require their respective account's own login.</p>
     </section>
-  }
-</section>
+      </div></section>
+    }
+  </div>
+</div>

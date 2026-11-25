@@ -15,6 +15,13 @@ with `npm --prefix apps/gcsp-web run test:e2e -- --case f555`; repeat `--case f5
 Only those allowlisted names are accepted. The heavy-slot re-exec preserves the selection, and the run receipt
 lists the selected files. A selected run is scoped evidence; it does not stamp the full browser batch.
 
+Select FUCQ-561 presenter coverage with `npm --prefix apps/gcsp-web run test:e2e -- --case f561`.
+Run once on the final committed source. It checks the Basic console, actual release projection,
+suitability, captured mail, restart and the live frozen 1280px comparison. The local composition
+uses each engine's public Main reset and Basic release button, comparing semantic inputs, confirmed
+brief, clock and stock while retaining the distinct generated run IDs. It does not establish the
+actual hosted-dev release cue or human acceptance of the screenshot pair.
+
 Select the bounded FUCQ-552 preferences family with `npm --prefix apps/gcsp-web run test:e2e -- --case f552`.
 It reuses this composition and unchanged Main inputs to check category icons, importance/bin/stops, segmented
 mode/help, understanding segments, editor chips/range axes/end labels, actual preview decision cards and keyboard

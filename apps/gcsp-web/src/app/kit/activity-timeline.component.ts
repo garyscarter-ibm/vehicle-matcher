@@ -8,14 +8,15 @@ export interface TimelineEvent {
 }
 let sequence = 0;
 @Component({ selector: 'gcsp-activity-timeline', imports: [NgTemplateOutlet], template: `
-  <section class="gcsp-activity-timeline" [attr.aria-labelledby]="id">
-    @switch (level()) {
+  <section class="gcsp-activity-timeline" [attr.aria-labelledby]="headingHidden() ? null : id" [attr.aria-label]="headingHidden() ? heading() : null">
+    @if (!headingHidden()) { @switch (level()) {
       @case (1) { <h1 class="gcsp-timeline-heading" [id]="id">{{ heading() }}</h1> }
       @case (3) { <h3 class="gcsp-timeline-heading" [id]="id">{{ heading() }}</h3> }
       @case (4) { <h4 class="gcsp-timeline-heading" [id]="id">{{ heading() }}</h4> }
       @case (5) { <h5 class="gcsp-timeline-heading" [id]="id">{{ heading() }}</h5> }
       @case (6) { <h6 class="gcsp-timeline-heading" [id]="id">{{ heading() }}</h6> }
       @default { <h2 class="gcsp-timeline-heading" [id]="id">{{ heading() }}</h2> }
+    }
     }
     @if (note()) { <p class="gcsp-timeline-note">{{ note() }}</p> }
     @if (!rows().length) { <p class="gcsp-timeline-empty">{{ emptyText() }}</p> }
@@ -32,7 +33,7 @@ let sequence = 0;
   </section>` })
 export class ActivityTimelineComponent {
   readonly id = `gcsp-timeline-${++sequence}`;
-  readonly events = input<readonly TimelineEvent[]>([]); readonly heading = input('Activity history'); readonly emptyText = input('No activity is recorded.');
+  readonly events = input<readonly TimelineEvent[]>([]); readonly heading = input('Activity history'); readonly headingHidden = input(false); readonly emptyText = input('No activity is recorded.');
   readonly level = input(2); readonly collapseRepeats = input(false); readonly formatTime = input<(instant: string) => string>(formatActivityTime); readonly note = input<string | null>(null);
   readonly rows = computed(() => {
     if (!this.collapseRepeats()) return this.events(); let last: string | null = null;

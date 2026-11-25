@@ -61,7 +61,7 @@ export function observeImageResponses(page, { origins, records, label }) {
   };
 }
 
-export function assertImageParity(node, angular) {
+export function assertImageParity(node, angular, { dimensions = { width: 84, height: 56 } } = {}) {
   for (const [name, image] of [['Node', node], ['Angular', angular]]) {
     assert.equal(image.response.status, 200, `${name}: actual displayed image response succeeded`);
     assert.match(image.response.sha256 ?? '', /^[a-f0-9]{64}$/, `${name}: actual response bytes were hashed`);
@@ -82,7 +82,14 @@ export function assertImageParity(node, angular) {
   assert.equal(angular.response.bytes, registration.bytes);
   assert.equal(angular.naturalWidth, registration.width); assert.equal(angular.naturalHeight, registration.height);
   for (const image of [node, angular]) {
-    assert.equal(image.renderedWidth, 84); assert.equal(image.renderedHeight, 56); assert.equal(image.objectFit, 'cover');
+    if (dimensions) {
+      assert.equal(image.renderedWidth, dimensions.width); assert.equal(image.renderedHeight, dimensions.height);
+    }
+    assert.equal(image.objectFit, 'cover');
+  }
+  if (!dimensions) {
+    assert.ok(Math.abs(node.renderedWidth - angular.renderedWidth) <= 1, 'Responsive image widths agree within one CSS pixel');
+    assert.ok(Math.abs(node.renderedHeight - angular.renderedHeight) <= 1, 'Responsive image heights agree within one CSS pixel');
   }
   return { catalogueSha256, registration,
     nodeBytesMatchRecordedSource: node.response.sha256 === registration.sourceSha256,
@@ -137,8 +144,9 @@ export async function withNodeReplay({ browser, input, plan, cert, key, output, 
     'The environment and slot creation/update wall timestamps differ; the replay run ID and semantic source/brief/clock values are asserted.',
   ] };
   try {
+    const wallInstant = expected.presenterMain?.initialClock.now ?? input.clock.now;
     runtime = good(await createGcspRuntime({ mode: 'memory', repository, environmentId: NODE_REPLAY_IDENTITY.environmentId,
-      commandId: NODE_REPLAY_IDENTITY.bootstrapCommandId, policyAsOf: input.clock.now, wallNow: () => new Date(input.clock.now),
+      commandId: NODE_REPLAY_IDENTITY.bootstrapCommandId, policyAsOf: input.clock.now, wallNow: () => new Date(wallInstant),
       stockProvider, production: createDemoUpstream().production, adoptOfferJourney: true,
       offerLandingUrl: 'https://gcsp-proof.example.test/gcsp-offer.html',
       mail: { env: { GCSP_PUBLIC_ORIGIN: 'http://127.0.0.1:7548' } } }), 'Node runtime');
@@ -155,6 +163,85 @@ export async function withNodeReplay({ browser, input, plan, cert, key, output, 
     const selected = catalogue.scenarios.find((item) => item.scenarioId === input.scenario.scenarioId);
     const state = good(await runtime.scenarios.readState(control), 'Node initial state');
     assert.equal(state.runId, NODE_REPLAY_IDENTITY.initialRunId, 'Actual frozen bootstrap identity follows its unchanged clock initializer');
+    if (expected.presenterMain) {
+      const actual = expected.presenterMain;
+      assert.equal(actual.scenario.scenarioId, 'main-successful-journey');
+      assert.deepEqual(selected.inputs, actual.scenario.inputs, 'Both public Main resets use identical semantic inputs');
+      context = await browser.newContext({ ignoreHTTPSErrors: true, viewport: { width: 1280, height: 800 },
+        reducedMotion: 'reduce', locale: 'en-GB', timezoneId: 'Europe/London' });
+      const session = good(await runtime.identity.createPresenterSession('f561-node-public-main'), 'Node presenter session');
+      const cookies = Array.isArray(session.setCookie) ? session.setCookie : [session.setCookie];
+      await context.addCookies(cookies.map((cookie) => {
+        const pair = cookie.split(';', 1)[0]; const at = pair.indexOf('=');
+        return { name: pair.slice(0, at), value: pair.slice(at + 1), url: origin,
+          httpOnly: true, secure: true, sameSite: 'Lax' };
+      }));
+      const page = await context.newPage();
+      receipt.imageResponses = [];
+      imageObserver = observeImageResponses(page, { origins: [origin], records: receipt.imageResponses, label: 'frozen-node-presenter' });
+      receipt.consoleErrors = [];
+      page.on('pageerror', (error) => receipt.consoleErrors.push(error.message.slice(0, 300)));
+      await page.goto(`${origin}/gcsp-presenter.html`, { waitUntil: 'domcontentloaded' });
+      await page.getByRole('button', { name: 'Start again', exact: true }).click();
+      const resetResponse = page.waitForResponse((response) => new URL(response.url()).pathname === '/api/gcsp/presenter/scenarios/reset'
+        && response.request().method() === 'POST');
+      await page.getByRole('group', { name: 'Start again?', exact: true }).getByRole('button', { name: 'Confirm', exact: true }).click();
+      const reset = await resetResponse;
+      assert.equal(reset.status(), 200);
+      const resetBody = await reset.json();
+      assert.equal(resetBody.status, 'ok');
+      assert.equal(resetBody.value.startState.status, 'ok', 'The real public frozen Main reset completes preparation');
+      control = good(await runtime.identity.createPresenterSession('f561-node-current-main'), 'Node prepared presenter').context;
+      const current = good(await runtime.scenarios.readState(control), 'Node prepared Main state');
+      assert.equal(current.currentScenario.scenarioId, actual.scenario.scenarioId);
+      const employee = good(await runtime.identity.resolveEmployeeContext(control, 'employee-paula'), 'Node prepared employee');
+      assert.equal(employee.employeeId, actual.context.employeeId);
+      const brief = good(await runtime.brief.readCurrent(employee), 'Node public Main brief').brief;
+      const canonicalTimes = (value) => {
+        if (Array.isArray(value)) return value.map(canonicalTimes);
+        if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, canonicalTimes(item)]));
+        return typeof value === 'string' && /^\d{4}-\d\d-\d\dT/.test(value) && Number.isFinite(Date.parse(value))
+          ? new Date(value).toISOString() : value;
+      };
+      const briefKeys = ['schemaVersion', 'preferences', 'essentials', 'buddy', 'briefVersion', 'status', 'policyVersion', 'confirmedBy'];
+      const semanticBrief = (value) => canonicalTimes(Object.fromEntries(briefKeys.map((key) => [key, value[key]])));
+      assert.deepEqual(semanticBrief(brief), semanticBrief(actual.brief), 'Publicly prepared Main brief values, consent and versions agree');
+      const initialClock = good(await runtime.clock.now(control), 'Node public Main clock');
+      const run = good(await repository.read(control, { table: 'runs', key: { runId: control.runId } }), 'Node prepared clock configuration');
+      assert.equal(Date.parse(initialClock.now), Date.parse(actual.initialClock.now));
+      assert.equal(String(initialClock.clockVersion), String(actual.initialClock.clockVersion));
+      assert.equal(Date.parse(run.versions.scenarioClock.startsAt), Date.parse(actual.initialClock.startsAt));
+      assert.deepEqual(canonicalTimes(run.versions.scenarioClock.namedTimes), canonicalTimes(actual.initialClock.namedTimes));
+      assert.equal(control.policyVersion, actual.context.policyVersion);
+      const primary = page.getByRole('button', { name: /^Release (?:tomorrow|Monday|Tuesday|Wednesday|Thursday|Friday)'s cars$/ });
+      await primary.waitFor({ state: 'visible' });
+      const tickResponse = page.waitForResponse((response) => new URL(response.url()).pathname === '/api/gcsp/presenter/controls/tick'
+        && response.request().method() === 'POST');
+      await primary.click();
+      const tick = await tickResponse;
+      assert.equal(tick.status(), 200);
+      const tickBody = await tick.json();
+      assert.equal(tickBody.status, 'ok');
+      const finalClock = good(await runtime.clock.now(control), 'Node actual Basic release clock');
+      assert.equal(Date.parse(finalClock.now), Date.parse(actual.finalClock.now), 'Both actual Basic buttons reach the same instant');
+      assert.equal(String(finalClock.clockVersion), String(actual.finalClock.clockVersion));
+      const latest = await page.evaluate(async () => (await fetch('/api/gcsp/presenter/releases/latest',
+        { credentials: 'include', cache: 'no-store' })).json());
+      assert.equal(latest.status, 'ok');
+      assert.ok(latest.value.release && latest.value.cars.length > 0);
+      Object.assign(receipt, { state: 'matched', comparison: 'actual public Main resets and Basic releases; engine-local IDs retained',
+        setupDifferences: ['Node uses the actual Java Main reset London date as its controlled wall date.',
+          'Each engine generates and retains its own run ID; presenter parity compares actual scenario, brief, clock and released stock.',
+          'The immutable identical stock plan enters both existing provider seams; all release/allocation/mail state is created by the real services.'],
+        engineRunIds: { node: control.runId, java: actual.context.runId },
+        actualMainReadbacks: { scenario: current, brief, initialClock, finalClock, latest: latest.value },
+        publicMainReset: { status: resetBody.status, startState: resetBody.value.startState },
+        humanAcceptance: 'pending human verdict; engineering semantic checks do not accept parity' });
+      Object.assign(receipt, await visit({ page, context, origin, runtime, employee, control, repository,
+        receipt, images: imageObserver, presenterRelease: latest.value }));
+      assert.deepEqual(receipt.consoleErrors, [], 'No frozen presenter runtime errors');
+      return receipt;
+    }
     const reset = good(await runtime.scenarios.reset(control, { commandId: NODE_REPLAY_IDENTITY.resetCommandId, expectedRunId: state.runId,
       expectedRunVersion: state.runVersion, scenarioId: selected.scenarioId, scenarioVersion: selected.scenarioVersion,
       fixtureVersion: selected.fixtureVersion, policyVersion: selected.policyVersion }), 'Node Main reset');

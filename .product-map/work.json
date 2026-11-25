@@ -12648,6 +12648,34 @@
       ],
       "native_observed_at": "2026-11-24T02:45:43.439Z",
       "evidence": "_dev/in-progress/DEV-2026-11-25-sorrel-001.md Result; .claude/poller/sorrel-f583-20261125/result.json; source a5ab249c865947677245c8d9f33aec8a45928bed"
+    },
+    {
+      "id": "FUCQ-561",
+      "title": "Angular presenter shows internals and lost the basic console, release grid...",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "usget",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-561",
+      "evidence": "Native In Progress/assignee readback by Rapunzel on 25 November 2026; local claim DEV-2026-11-22-vesper-033. All seven original acceptance criteria retained.",
+      "observed_at": "2026-11-25T02:44:37Z",
+      "slices": [
+        {
+          "id": "console-panels",
+          "status": "in-progress",
+          "title": "Basic console, release, suitability and captured mail (AC1–5)",
+          "observed_at": "2026-11-25T02:44:37Z",
+          "evidence": "Sam owns UI/kit/mail extraction; source in progress, no passing execution yet. Release aggregate projection awaits explicit Java file-scope decision; AC2 remains open."
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Connected Main, actual hosted cue and human pair (AC6–7)",
+          "observed_at": "2026-11-25T02:44:37Z",
+          "evidence": "Existing runner f561 coverage drafted; no browser run yet. Actual hosted cue and human same-scenario 1280 pair remain unverified."
+        }
+      ],
+      "unsliced": false
     }
   ]
 }

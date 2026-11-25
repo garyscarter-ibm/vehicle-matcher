@@ -1,3 +1,4 @@
+import { parseRelease, parseSuitability } from './presenter.projections';
 import { inject, Injectable } from '@angular/core';
 import { AuthPort } from '../auth/auth.port';
 import type { ApplicationContext, SessionState } from '../auth/auth.port';
@@ -140,6 +141,32 @@ export class PresenterClient {
   private readonly fetcher = inject(PORTAL_FETCH);
   private readonly intents = new WeakMap<PresenterCommand, Intent>();
 
+  async readOrderCount(options: PresenterRequestOptions = {}): Promise<PresenterResult<{ readonly count: number }>> {
+    const scope = this.capture(); if ('state' in scope) return scope;
+    const ids = new Set<string>(); const cursors = new Set<string>(); let after: string | null = null;
+    do {
+      if (!this.same(scope)) return { state: 'scope-mismatch', value: null };
+      const query = new URLSearchParams({ limit: '100' }); if (after) query.set('after', after);
+      const result = await this.request(`/orders/progress/all?${query}`, (value) => {
+        if (!object(value) || !Array.isArray(value['orders']) || value['failedCount'] !== 0 || !Array.isArray(value['failed']) || value['failed'].length
+          || !(value['nextAfter'] === null || id(value['nextAfter'], 200))) return null;
+        const orders: string[] = [];
+        for (const order of value['orders']) { if (!object(order) || !id(order['orderUuid'], 200) || order['runId'] !== scope.runId) return null; orders.push(order['orderUuid']); }
+        return { orders, nextAfter: value['nextAfter'] as string | null };
+      }, options);
+      if (result.state !== 'ready') return result;
+      if (!this.same(scope)) return { state: 'scope-mismatch', value: null };
+      for (const id of result.value.orders) { if (ids.has(id)) return invalid(); ids.add(id); }
+      after = result.value.nextAfter;
+      if (after && cursors.has(after)) return invalid(); if (after) cursors.add(after);
+    } while (after);
+    return { state: 'ready', value: { count: ids.size } };
+  }
+  readLatestRelease(options: PresenterRequestOptions = {}) { return this.request('/presenter/releases/latest', parseRelease, options); }
+  readSuitability(page = 1, buddyPage = 1, release: 'all' | 'latest' = 'all', options: PresenterRequestOptions = {}) {
+    if (![page, buddyPage].every(whole) || !['all', 'latest'].includes(release)) return Promise.resolve(failed('invalid-selector'));
+    return this.request(`/presenter/suitability?${new URLSearchParams({ page: String(page), buddyPage: String(buddyPage), release })}`, parseSuitability, options);
+  }
   readClock(options: PresenterRequestOptions = {}) { return this.request('/presenter/clock', clock, options); }
   readControls(options: PresenterRequestOptions = {}) { return this.request('/presenter/controls', controls, options); }
   readCatalogue(options: PresenterRequestOptions = {}) { return this.request('/presenter/scenarios', catalogue, options); }

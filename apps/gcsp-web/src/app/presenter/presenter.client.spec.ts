@@ -243,4 +243,27 @@ describe('PresenterClient Java routes, pinned commands and private lifecycle', (
     state.set({ status: 'ready', context: context({ environmentId: 'other' }) }); gate.resolve(config);
     expect(await pending).toMatchObject({ problem: 'context-changed', writeOutcome: 'not-sent' }); expect(getAccessToken).not.toHaveBeenCalled(); expect(fetcher).not.toHaveBeenCalled();
   });
+  it('reads the complete presenter order count and refuses partial or mixed-run pages', async () => {
+    fetcher.mockResolvedValueOnce(ok({ orders: [{ orderUuid: 'car-1', runId: 'run-1' }], failed: [], failedCount: 0, nextAfter: 'car-1' }));
+    fetcher.mockResolvedValueOnce(ok({ orders: [{ orderUuid: 'car-2', runId: 'run-1' }], failed: [], failedCount: 0, nextAfter: null }));
+    expect(await client.readOrderCount()).toEqual({ state: 'ready', value: { count: 2 } });
+    expect(String(fetcher.mock.calls[1][0])).toContain('/orders/progress/all?limit=100&after=car-1');
+    fetcher.mockResolvedValueOnce(ok({ orders: [], failed: [{ orderUuid: 'bad' }], failedCount: 1, nextAfter: null }));
+    expect((await client.readOrderCount()).state).toBe('invalid-response');
+    fetcher.mockResolvedValueOnce(ok({ orders: [{ orderUuid: 'car-2', runId: 'another-run' }], failed: [], failedCount: 0, nextAfter: null }));
+    expect((await client.readOrderCount()).state).toBe('invalid-response');
+  });
+  it('does not accept the old receipt-only release projection as fabricated zero totals', async () => {
+    fetcher.mockResolvedValueOnce(ok({ runId: 'run-1', release: null }));
+    expect((await client.readLatestRelease()).state).toBe('invalid-response');
+    const value = { runId: 'run-1', release: null, cars: [], modelLines: [], charts: { colours: [], points: [], fuel: [] }, counts: { released: 0, totalReleased: 0, onScheme: 0, buddyAllocated: 0, manuallyAllocated: 0 }, allocation: { pending: 0, declined: 0, accepted: 0 } };
+    fetcher.mockResolvedValueOnce(ok(value)); expect((await client.readLatestRelease()).state).toBe('ready');
+    fetcher.mockResolvedValueOnce(ok({ ...value, runId: 'another-run' })); expect((await client.readLatestRelease()).state).toBe('scope-mismatch');
+  });
+  it('only sends bounded positive suitability selectors and preserves release/page identity', async () => {
+    expect((await client.readSuitability(0)).state).toBe('failed'); expect(fetcher).not.toHaveBeenCalled();
+    fetcher.mockResolvedValueOnce(ok({ runId: 'run-1', asOf: at, release: 'latest', policy: { version: 'one', minimumFit: null, allocationRule: null }, paging: { cars: {page: 1,pages: 1,total: 0,size: 8}, buddies: {page: 1,pages: 1,total: 0,size: 4} }, cars: [], buddies: [], people: [] }));
+    expect((await client.readSuitability(1, 1, 'latest')).state).toBe('ready'); expect(String(fetcher.mock.calls[0][0])).toContain('/presenter/suitability?page=1&buddyPage=1&release=latest');
+  });
+
 });
