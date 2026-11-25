@@ -53,6 +53,7 @@ test('FUCQ-559: intentional planning and role-separated Production responses use
     assert.equal(good(firstTick, 'Actual first public supply tick').state, 'completed');
     const greg = await suite.newPage('greg', 'demo-greg', 'greg/plan');
     const states = {}; const screenshots = {}; const commands = [];
+    let removeQueueFault;
     suite.receipt.gregPlanning = { states, screenshots, commands, initialClock, firstTick,
       humanReview: 'Pending actual collaborator verdict; automated rendering and source comparisons do not satisfy AC4.' };
     const readOrders = async () => {
@@ -106,6 +107,8 @@ test('FUCQ-559: intentional planning and role-separated Production responses use
       await controls.getByLabel('Request', { exact: true }).selectOption(confirmed.requestId);
       await controls.getByLabel('Production response', { exact: true }).selectOption('confirm');
       await controls.getByLabel('Quantity to confirm', { exact: true }).fill('1');
+      removeQueueFault = suite.failProductionQueueWrites(confirmed.requestId);
+      t.after(() => removeQueueFault?.());
       const confirm = await waitPost(presenter, '/presenter/production', () => controls.getByRole('button', { name: 'Save production response', exact: true }).click());
       commands.push({ operation: 'confirm', response: confirm }); good(confirm, 'Presenter real confirmation');
       states.confirmed = await refresh(suite, greg);
@@ -127,12 +130,17 @@ test('FUCQ-559: intentional planning and role-separated Production responses use
       screenshots.presenter = await capture(suite, presenter, 'presenter-production-controls');
     });
 
-    await t.test('AC3: a lost acknowledgement is recovered by the real release-queue retry', async () => {
+    await t.test('AC3: real queue failure and a lost acknowledgement recover through deliberate retry', async () => {
       const confirmed = states.confirmed.requests.find(row => row.quantity === 1);
-      suite.loseProductionQueueAcknowledgement(confirmed.requestId);
       states.queueLost = await refresh(suite, greg);
       assert.equal(states.queueLost.requests.find(row => row.requestId === confirmed.requestId).supplies[0].queued, false);
+      const refused = await waitPost(greg, '/greg/orders/queue', () => greg.getByRole('button', { name: 'Retry release queue', exact: true }).click());
+      assert.equal(refused.status, 503); assert.equal(refused.body.status, 'unavailable');
+      assert.equal(refused.body.code, 'supply-queue-unavailable');
+      await greg.getByText(refused.body.reason, { exact: true }).waitFor();
+      commands.push({ operation: 'queue-write-unavailable', response: refused });
       screenshots.queueLost = await capture(suite, greg, 'production-release-queue-retry');
+      removeQueueFault();
       let receiveCommitted;
       const committed = new Promise(resolve => { receiveCommitted = resolve; });
       await greg.route('**/greg/orders/queue', async route => {

@@ -370,7 +370,12 @@ export async function withNodeReplay({ browser, input, plan, cert, key, output, 
         await production.getByLabel('Request', { exact: true }).selectOption(confirmed.requestId);
         await production.getByLabel('Production response', { exact: true }).selectOption('confirm');
         await production.getByLabel('Quantity to confirm', { exact: true }).fill('1');
+        let blockedInitialQueueWrites = 0;
+        await page.route('**/api/gcsp/greg/orders/queue', async route => {
+          blockedInitialQueueWrites++; await route.abort('failed');
+        }, { times: 1 });
         await command('/presenter/production', () => production.getByRole('button', { name: 'Save production response', exact: true }).click());
+        assert.equal(blockedInitialQueueWrites, 1, 'The actual automatic queue attempt was blocked before its write');
         states.confirmed = await read(); assert.deepEqual(semantic(states.confirmed), semantic(actual.states.confirmed));
         screenshots.confirmed = await capture('production-confirmed');
         await production.getByLabel('Request', { exact: true }).selectOption(delayed.requestId);
@@ -382,13 +387,6 @@ export async function withNodeReplay({ browser, input, plan, cert, key, output, 
         const delayedRow = states.delayed.requests.find(row => row.requestId === delayed.requestId);
         assert.equal(delayedRow.delay.until.slice(0, 10), actual.delayDate); assert.equal(delayedRow.delay.reason, 'Demonstration production delay');
         screenshots.delayed = await capture('production-delayed');
-        const supplyId = states.delayed.requests.find(row => row.requestId === confirmed.requestId).supplies[0].supplyId;
-        const lost = store.state.tables.event_receipts.filter(row => row.runId === control.runId && row.consumerId === 'stock-supply-queue' && row.eventId === supplyId);
-        assert.equal(lost.length, 1, 'Only the actual confirmation acknowledgement is selected');
-        // Test-only state fault: the frozen repository has no delete operation. The smaller new
-        // receipt array invalidates its lookup cache; all other actual state/queue facts survive.
-        store.state = { ...store.state, tables: { ...store.state.tables,
-          event_receipts: store.state.tables.event_receipts.filter(row => row !== lost[0]) } };
         states.queueLost = await refresh(); assert.equal(states.queueLost.requests.find(row => row.requestId === confirmed.requestId).supplies[0].queued, false);
         screenshots.queueLost = await capture('production-release-queue-retry');
         await command('/greg/orders/queue', () => page.getByRole('button', { name: 'Retry release queue', exact: true }).click());
@@ -396,9 +394,8 @@ export async function withNodeReplay({ browser, input, plan, cert, key, output, 
         assert.equal(states.retried.requests.length, 2); assert.equal(states.retried.requests.find(row => row.requestId === confirmed.requestId).supplies[0].queued, true);
         screenshots.retried = await capture('production-release-queue-recovered');
         return { state: 'matched', comparison: 'Real role-separated source request/confirm/delay/queue commands and semantic tracking; engine-local IDs retained.',
-          gregPlanning: { states, screenshots, angularScreenshots: actual.screenshots, queueFault: { kind: 'lost-queue-acknowledgement',
-            removed: { consumerId: lost[0].consumerId, eventId: lost[0].eventId },
-            limitation: 'Case-owned fault after successful real confirmation, not natural post-confirm state.' },
+          gregPlanning: { states, screenshots, angularScreenshots: actual.screenshots, queueFault: { kind: 'initial-queue-transport-blocked-before-write', blockedInitialQueueWrites,
+            limitation: 'Actual queue transport aborted after real confirmation; no successful response substituted and no history removed.' },
           humanReview: 'Pending actual collaborator verdict.' } };
       }
       async function visitGregPresentation() {

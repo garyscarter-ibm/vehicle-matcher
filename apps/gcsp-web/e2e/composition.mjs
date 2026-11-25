@@ -664,27 +664,38 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
         expected: { ...expected, runId } }, visit);
       return receipt.nodeReplay;
     }
-    function loseProductionQueueAcknowledgement(requestId) {
-      assert.equal(caseId, 'f559', 'Only F559 models one lost release-queue acknowledgement');
+    function failProductionQueueWrites(requestId) {
+      assert.equal(caseId, 'f559', 'Only the owned F559 scenario installs this queue fault');
       assert.equal(typeof requestId, 'string'); assert.ok(requestId.length > 0 && requestId.length <= 200);
       const predicate = `environment_id=${literal(envId)} AND run_id=${literal(runId)} AND request_id=${literal(requestId)}`;
       const read = () => JSON.parse(sql(`SELECT coalesce(json_agg(json_build_object('supplyId',supply_id,'quantity',quantity,
         'confirmedAt',confirmed_at,'queuedAt',queued_at,'eligibleFrom',eligible_from) ORDER BY supply_id),'[]'::json)::text
         FROM production_confirmations WHERE ${predicate};`).split('\n').at(-1));
-      const before = read();
-      assert.equal(before.length, 1, 'The fixture selects only the confirmation created by the actual UI command');
-      assert.ok(before[0].queuedAt && before[0].eligibleFrom, 'The actual confirmation queued normally before the fault');
-      sql(`UPDATE production_confirmations SET queued_at=NULL WHERE ${predicate};`);
-      const after = read();
-      assert.deepEqual(after.map(row => ({ ...row, queuedAt: before[0].queuedAt })), before);
-      receipt.productionQueueFault = { kind: 'lost-queue-acknowledgement', before, after,
-        authority: 'GregOrdersHttpTest.queueingReturnsTheSupplyIdsOnceAndNeverSubmitsOrAsksProduction; root-approved25Nov',
-        limitation: 'A case-owned fault after real confirmation, not the natural successful-confirm state. The existing queue entry is preserved.' };
-      return { before, after };
+      const before = read(); assert.deepEqual(before, [], 'Install only before this actual request is confirmed');
+      sql(`CREATE FUNCTION f559_fail_queue_write() RETURNS trigger LANGUAGE plpgsql AS $f559$
+        BEGIN
+          IF NEW.environment_id=${literal(envId)} AND NEW.run_id=${literal(runId)} THEN
+            RAISE EXCEPTION 'F559 controlled release queue unavailable' USING ERRCODE='55000';
+          END IF;
+          RETURN NEW;
+        END $f559$;
+        CREATE TRIGGER f559_fail_queue_write BEFORE INSERT ON confirmed_supply_queue
+          FOR EACH ROW EXECUTE FUNCTION f559_fail_queue_write();`);
+      const fault = receipt.productionQueueFault = { kind: 'queue-write-unavailable-before-insert', before,
+        binding: { database: database[3], schema, environmentId: envId, runId, requestId }, removed: false,
+        authority: 'Root-approved owned local fault25Nov; ProductionService commits confirmation before independent queue transaction.',
+        limitation: 'Controlled failure of a real queue write; no production row or immutable queue history is deleted or fabricated.' };
+      return () => {
+        if (fault.removed) return;
+        sql(`DROP TRIGGER f559_fail_queue_write ON confirmed_supply_queue; DROP FUNCTION f559_fail_queue_write();`);
+        fault.removed = true; fault.confirmationsAfterFault = read();
+        assert.equal(fault.confirmationsAfterFault.length, 1, 'The real confirmed supply survived the queue failure');
+        assert.equal(fault.confirmationsAfterFault[0].queuedAt, null);
+      };
     }
     return { context, receipt, origins, apiBase, input, plan, newPage, call, prepareInitialBrief, releaseMainOffer,
       readImage: (page, locator) => imageObservers.get(page).read(locator),
-      readActualHold, readOfferPersistence, restartApi, screenshot, compareFrozenNode, visitFrozenNode, loseProductionQueueAcknowledgement,
+      readActualHold, readOfferPersistence, restartApi, screenshot, compareFrozenNode, visitFrozenNode, failProductionQueueWrites,
       ordering: { requests: orderingRequests, rejectPending() { assert.equal(ordering, 'unknown-then-rejected'); rejectPending = true; } }, close };
   } catch (error) {
     receipt.failure = { name: error.name, message: error.message.slice(0, 1000) };
