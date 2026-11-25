@@ -12920,9 +12920,9 @@
         {
           "id": "integration",
           "title": "Focused signed OIDC/native PostgreSQL and strict F561 comparison",
-          "status": "complete",
-          "observed_at": "2026-11-25T21:14:09Z",
-          "evidence": "Original AC3 complete: real signed-OIDC/native PostgreSQL reset/readbacks, root31/31; unchanged strict F561 policy/consent/version assertions executed, final registered12e6e9486 comparison7/7. Evidence .claude/poller/velko-f561-20261125/browser-12e6e9486-chromium159; shared java batch still pending acceptance."
+          "status": "in-progress",
+          "observed_at": "2026-11-25T21:19:15Z",
+          "evidence": "Original AC3 native reset/readbacks and strict F561 comparison proved (child142/root31, final registered7/7). Delivery waits for due shared web-e2e covering batch:10 matching merges at59a46fc49; actual F5493.11GiB exceeds3GiB daytimecap, retain overnight/CI. Native InProgress; no acceptance/Done claim."
         }
       ],
       "workers": [
@@ -12935,7 +12935,7 @@
           "source": "Root observed native F594 owner chunk launch; requested/selected Sol medium."
         }
       ],
-      "observed_at": "2026-11-25T21:14:09Z"
+      "observed_at": "2026-11-25T21:19:15Z"
     },
     {
       "id": "FUCQ-561",
