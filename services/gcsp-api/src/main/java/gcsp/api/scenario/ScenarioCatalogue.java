@@ -6,8 +6,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
-/** The catalogue as the presenter sees it. A journey is available only with a reviewed start loader; none exists yet. */
+/** The catalogue as the presenter sees it, with selected service capabilities and reviewed journey loaders. */
 public final class ScenarioCatalogue {
 
     private static final JsonNodeFactory F = JsonNodeFactory.instance;
@@ -40,11 +41,19 @@ public final class ScenarioCatalogue {
     /** Mechanics takes its versions from the clock policy; a journey keeps the file's. */
     public static ScenarioCatalogue build(DemoPreparationFile file, String policyVersion, String clockScenarioVersion,
             String clockFixtureVersion, String clockStart, JsonNode namedTimes) {
+        return build(file, policyVersion, clockScenarioVersion, clockFixtureVersion, clockStart, namedTimes, Set.of());
+    }
+
+    public static ScenarioCatalogue build(DemoPreparationFile file, String policyVersion, String clockScenarioVersion,
+            String clockFixtureVersion, String clockStart, JsonNode namedTimes, Set<String> capabilities) {
         List<Entry> out = new ArrayList<>();
         for (JsonNode s : file.scenarios()) {
             boolean mechanics = "mechanics".equals(s.get("kind").textValue());
             List<String> missing = new ArrayList<>();
-            if (!mechanics) s.get("requiredCapabilities").forEach(c -> missing.add(c.textValue()));
+            boolean reviewed = MainJourneyStart.SCENARIO_ID.equals(s.path("scenarioId").asText());
+            if (!mechanics) s.get("requiredCapabilities").forEach(c -> {
+                if (!reviewed || !capabilities.contains(c.textValue())) missing.add(c.textValue());
+            });
             String scenarioVersion = mechanics ? clockScenarioVersion : s.path("scenarioVersion").asText();
             String fixtureVersion = mechanics ? clockFixtureVersion : s.path("fixtureVersion").asText();
             ObjectNode view = F.objectNode();

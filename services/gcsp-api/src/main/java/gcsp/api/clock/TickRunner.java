@@ -97,6 +97,8 @@ final class TickRunner {
         }
         ClockConfiguration plan = config;
         Outcome outcome = runner.execute(scope, new Command("clock.tick.start", "clock:tick:start:" + tickId, input), tx -> {
+            WorkResult preparation = RunClock.scenarioPreparationRefusal(tx, scope);
+            if (preparation != null) return preparation;
             Optional<ClockRows.Clock> current = tx.first(ClockRows.CLOCK_SQL, ClockRows::mapClock,
                     scope.environmentId(), scope.runId());
             if (current.isEmpty()) {

@@ -66,7 +66,7 @@ public final class ScenarioService {
         value.put("catalogueVersion", file.catalogueVersion());
         try (Connection c = dataSource.getConnection();
                 PreparedStatement ps = c.prepareStatement("SELECT scenario_id, scenario_version, fixture_version, "
-                        + "policy_version FROM scenario_runs WHERE environment_id = ? AND run_id = ?")) {
+                        + "policy_version FROM scenario_runs WHERE environment_id = ? AND run_id = ? AND state = 'prepared'")) {
             ps.setString(1, scope.environmentId());
             ps.setString(2, scope.runId());
             try (ResultSet rs = ps.executeQuery()) {
@@ -86,9 +86,9 @@ public final class ScenarioService {
         return ClockResult.ok(value);
     }
 
-    /** Startup for demo: prepares the active run with the mechanics scenario only when it has no scenario row. */
+    /** Startup resumes its selected preparation; only an ordinary fresh run defaults to mechanics. */
     public ClockResult startup(String environmentId, String runId) {
-        return preparation.prepare(new RunContext(environmentId, runId, DemoPreparation.ACTOR), MECHANICS_ID);
+        return preparation.startup(new RunContext(environmentId, runId, DemoPreparation.ACTOR));
     }
 
     /** The newest run id a command derives, so a replay of the same command always names the same run. */
