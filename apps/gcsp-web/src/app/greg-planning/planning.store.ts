@@ -1,5 +1,6 @@
 import { computed, DestroyRef, effect, inject, Injectable, signal, untracked } from '@angular/core';
 import { AuthPort } from '../auth/auth.port';
+import { GregOrderCommand, GregOrders, parseGregOrders } from './greg-orders.model';
 import { PlanningClient } from './planning.client';
 import { projectPlan, projectProduction, validSubmission } from './planning.projection';
 import { ConstraintEditor, PlanChange, PlanningFailure, PlanningResult, PlanView, ProductionCommand, ProductionSubmissionDto, ProductionView } from './planning.types';
@@ -17,6 +18,7 @@ export class PlanningStore {
   private readonly planResult = signal<PlanningResult<PlanView> | null>(null);
   private readonly productionResult = signal<PlanningResult<ProductionView> | null>(null);
   private readonly commandResult = signal<PlanningResult<ProductionSubmissionDto> | null>(null);
+  private readonly activeEditors = signal<readonly ConstraintEditor[] | null>(null);
   private readonly edits = signal<Readonly<Record<string, string>>>({});
   private readonly retainedCommand = signal<ProductionCommand | null>(null);
   private readonly staleValue = signal(false);
@@ -33,6 +35,53 @@ export class PlanningStore {
   readonly planFailure = computed(() => this.owned() ? failureOf(this.planResult()) : null);
   readonly productionFailure = computed(() => this.owned() ? failureOf(this.productionResult()) : null);
   readonly submission = computed(() => this.owned() ? this.commandResult() : null);
+  private readonly ordersValue = signal<GregOrders | null>(null);
+  private readonly retainedOrder = signal<GregOrderCommand | null>(null);
+  readonly orders = computed(() => this.owned() ? this.ordersValue() : null);
+  private readonly orderSuccess = signal('');
+  readonly orderMessage = computed(() => { const result = this.orderOutcome(); return result?.status === 'ok' ? this.orderSuccess() : this.failureMessage(failureOf(result)); });
+  private readonly orderResult = signal<PlanningResult<unknown> | null>(null);
+  readonly orderOutcome = computed(() => this.owned() ? this.orderResult() : null);
+  readonly orderRetryKind = computed(() => this.owned() ? this.retainedOrder()?.kind ?? null : null);
+  readonly canRetryOrder = computed(() => this.owned() && !!this.retainedOrder() && !this.submitting() && !this.needsAuthentication());
+  readonly canRequestCars = computed(() => this.owned() && this.orders()?.providerStatus === 'available'
+    && this.orders()?.versions?.['policy'] === this.contextVersion && !this.submitting() && !this.productionBusy()
+    && !this.retainedOrder() && !this.retainedCommand() && !this.needsAuthentication());
+  async requestCars(model: string, derivative: string, quantity: string): Promise<void> {
+    const count = integer(quantity); const orders = this.orders();
+    if (!this.canRequestCars() || !orders?.versions || count === null || count < 1 || count > 1000
+      || !orders.choices.some(c => c.model === model && c.derivative === derivative)) return;
+    const command: GregOrderCommand = { kind: 'manual', input: { commandId: globalThis.crypto.randomUUID(), model, derivative, quantity: count,
+      expectedPolicyVersion: orders.versions['policy'], expectedStockVersion: orders.versions['stock'] } };
+    this.retainedOrder.set(command); await this.sendOrder(command);
+  }
+  queueBlocked(requestId: string): boolean {
+    const retained = this.retainedOrder();
+    return !this.owned() || this.submitting() || !!this.retainedCommand() || this.needsAuthentication()
+      || !!retained && !(retained.kind === 'queue' && retained.input.requestId === requestId);
+  }
+  async retryReleaseQueue(requestId: string): Promise<void> {
+    if (this.queueBlocked(requestId)) return;
+    const retained = this.retainedOrder(); if (retained) { await this.sendOrder(retained); return; }
+    if (!this.orders()?.requests.some(r => r.requestId === requestId && r.supplies.some(s => !s.queued))) return;
+    const command: GregOrderCommand = { kind: 'queue', input: { commandId: globalThis.crypto.randomUUID(), requestId } };
+    this.retainedOrder.set(command); await this.sendOrder(command);
+  }
+  async retryOrder(): Promise<void> { const command = this.retainedOrder(); if (command && this.canRetryOrder()) await this.sendOrder(command); }
+  private async sendOrder(command: GregOrderCommand): Promise<void> {
+    const scope = this.scope(); const epoch = ++this.commandEpoch; this.sending.set(true); this.staleValue.set(true);
+    this.refreshEpoch++; this.planEpoch++; this.planAbort.abort(); this.readingPlan.set(false);
+    let result: PlanningResult<unknown>;
+    try { result = command.kind === 'manual' ? await this.client.submitManual(command.input, { signal: this.commandAbort.signal })
+      : await this.client.queue(command.input, { signal: this.commandAbort.signal }); }
+    catch { result = { status: 'uncertain', reason: 'The result is not known. Retry the same command to continue.' }; }
+    if (this.disposed || scope !== this.scope() || epoch !== this.commandEpoch) return;
+    this.sending.set(false); this.orderResult.set(result);
+    if (result.status === 'ok') this.orderSuccess.set(command.kind === 'queue' ? 'Confirmed supply queued.'
+      : validSubmission(result.value) ? result.value.message : 'Request submitted. Awaiting production response.');
+    if (result.status === 'ok' || !['uncertain', 'pending', 'unavailable', 'authentication-required', 'unauthenticated', 'context-changed', 'aborted'].includes(result.status)) this.retainedOrder.set(null);
+    if (result.status === 'ok' || result.status === 'pending') await this.refreshProduction();
+  }
   readonly pendingValue = computed(() => {
     const result = this.submission(); const value = result?.status === 'ok' ? result.value : result?.value;
     return validSubmission(value) ? value : null;
@@ -42,14 +91,14 @@ export class PlanningStore {
   readonly submitting = computed(() => this.owned() && this.sending());
   readonly stale = computed(() => this.owned() && this.staleValue());
   readonly hasEdits = computed(() => this.owned() && Object.keys(this.edits()).length > 0);
-  readonly editorSource = computed(() => this.plan()?.editors ?? []);
+  readonly editorSource = computed(() => this.owned() ? this.activeEditors() ?? this.plan()?.editors ?? [] : []);
   readonly editorErrors = computed(() => this.changes().errors);
   readonly canPreview = computed(() => this.owned() && !!this.plan() && this.hasEdits() && !this.planBusy() && !this.submitting() && !this.editorErrors().length);
   readonly canSubmit = computed(() => this.owned() && !!this.plan()?.canSubmit && !this.stale() && !this.hasEdits()
-    && !this.planBusy() && !this.submitting() && !this.retainedCommand() && !this.needsAuthentication());
+    && !this.planBusy() && !this.submitting() && !this.retainedCommand() && !this.retainedOrder() && !this.needsAuthentication());
   readonly canRetrySubmission = computed(() => this.owned() && !!this.retainedCommand() && !this.submitting() && !this.needsAuthentication());
   readonly needsAuthentication = computed(() => authFailure(this.planFailure()) || authFailure(this.productionFailure())
-    || authFailure(failureOf(this.submission())));
+    || authFailure(failureOf(this.submission())) || authFailure(failureOf(this.orderOutcome())));
   readonly access = computed(() => {
     const state = this.auth.state();
     if (state.status === 'denied' || state.status === 'ready' && !this.scope()) return 'denied';
@@ -79,6 +128,7 @@ export class PlanningStore {
           this.abortReads(); this.staleValue.set(true); this.contextVersion = null;
           if (this.sending()) {
             this.commandEpoch++; this.commandAbort.abort(); this.commandAbort = new AbortController(); this.sending.set(false);
+            if (this.retainedOrder()) this.orderResult.set({ status: 'authentication-required', reason: 'Sign in again, then deliberately retry the same command.' });
             this.commandResult.set({ status: 'authentication-required', reason: 'Sign in again, then deliberately retry the same request.' });
           }
           return;
@@ -88,7 +138,7 @@ export class PlanningStore {
         else if (policy !== this.contextVersion) {
           this.contextVersion = policy; this.staleValue.set(true);
           // Renew reads only. Safe same-account edits/intent stay in memory; commands require another click.
-          this.commandResult.set(null); void this.refresh();
+          this.commandResult.set(null); this.orderResult.set(null); void this.refresh();
         }
       });
     });
@@ -99,8 +149,9 @@ export class PlanningStore {
   }
   private clear(): void {
     this.abortReads(); this.commandEpoch++; this.commandAbort.abort(); this.commandAbort = new AbortController();
+    this.ordersValue.set(null); this.retainedOrder.set(null); this.orderResult.set(null); this.orderSuccess.set('');
     this.owner.set(null); this.planResult.set(null); this.productionResult.set(null); this.commandResult.set(null);
-    this.edits.set({}); this.retainedCommand.set(null); this.staleValue.set(false); this.sending.set(false); this.contextVersion = null;
+    this.activeEditors.set(null); this.edits.set({}); this.retainedCommand.set(null); this.staleValue.set(false); this.sending.set(false); this.contextVersion = null;
   }
   async refresh(): Promise<void> {
     if (!this.owned()) return;
@@ -123,6 +174,7 @@ export class PlanningStore {
     if (result.status === 'ok' && !result.value.preview && result.value.versions['policy'] !== this.contextVersion) {
       result = { status: 'context-changed', code: 'planning-context-changed', reason: 'The plan belongs to an earlier policy. Refresh your account and plan.' };
     }
+    if (result.status === 'ok' && !result.value.preview) this.activeEditors.set(result.value.editors);
     this.planResult.set(result); this.readingPlan.set(false);
     this.staleValue.set(result.status !== 'ok' || !preview && this.hasEdits());
   }
@@ -131,15 +183,16 @@ export class PlanningStore {
     if (!this.owned() || this.submitting()) return;
     const scope = this.scope(); const epoch = ++this.productionEpoch;
     this.productionAbort.abort(); this.productionAbort = new AbortController(); this.readingProduction.set(true);
-    let result: PlanningResult<ProductionView>;
-    try { result = projectProduction(await this.client.readProduction({ signal: this.productionAbort.signal })); }
+    let result: PlanningResult<ProductionView>; let orders: GregOrders | null = null;
+    try { const read = await this.client.readProduction({ signal: this.productionAbort.signal });
+      orders = read.status === 'ok' ? parseGregOrders(read.value, true) : null; result = projectProduction(read); }
     catch { result = { status: 'unavailable', reason: 'Production status could not be loaded. Try again.', retryable: true }; }
     if (this.disposed || epoch !== this.productionEpoch || scope !== this.scope()) return;
     const previous = this.production();
     if (previous && (result.status !== 'ok' || previous.fingerprint !== result.value.fingerprint)) {
       this.staleValue.set(true); this.planEpoch++; this.planAbort.abort(); this.readingPlan.set(false);
     }
-    this.productionResult.set(result); this.readingProduction.set(false);
+    this.ordersValue.set(orders); this.productionResult.set(result); this.readingProduction.set(false);
   }
   value(editor: ConstraintEditor, id = '', edge = ''): string {
     if (!this.owned()) return '';

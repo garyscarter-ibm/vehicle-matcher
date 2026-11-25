@@ -67,10 +67,16 @@ export interface PresenterResetInput {
   readonly scenarioVersion: string; readonly fixtureVersion: string; readonly policyVersion: string;
 }
 export interface PresenterFaultInput { readonly commandId: string; readonly adapter: string; readonly mode: string }
-export type PresenterCommand = { readonly kind: 'advance'; readonly input: PresenterAdvanceInput }
+export type PresenterProductionInput = { readonly commandId: string; readonly requestId: string; readonly expectedVersion: number }
+  & ({ readonly action: 'confirm'; readonly quantity: number } | { readonly action: 'delay'; readonly delayUntil: string; readonly reason: string });
+export interface PresenterProductionResult { readonly reconciled: number; readonly applied: number; readonly queued: number;
+  readonly requests: readonly { readonly requestId: string; readonly outcome: string }[];
+  readonly scripted: { readonly requestId: string; readonly action: string; readonly seq: number } }
+export type PresenterCommand = { readonly kind: 'production'; readonly input: PresenterProductionInput }
+  | { readonly kind: 'advance'; readonly input: PresenterAdvanceInput }
   | { readonly kind: 'tick'; readonly input: PresenterTickInput }
   | { readonly kind: 'control-tick'; readonly input: PresenterControlTickInput }
   | { readonly kind: 'reset'; readonly input: PresenterResetInput }
   | { readonly kind: 'fault'; readonly input: PresenterFaultInput };
-export type PresenterCommandValue = PresenterAdvance | PresenterTick | { readonly advance: PresenterAdvance; readonly tick: PresenterTick }
+export type PresenterCommandValue = PresenterProductionResult | PresenterAdvance | PresenterTick | { readonly advance: PresenterAdvance; readonly tick: PresenterTick }
   | PresenterReset | PresenterFaults;

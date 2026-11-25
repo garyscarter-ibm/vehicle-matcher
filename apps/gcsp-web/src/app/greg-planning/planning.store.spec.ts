@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ApplicationContext, AuthPort, SessionState } from '../auth/auth.port';
 import { PlanningClient } from './planning.client';
+import { ordersFixture } from './greg-orders.fixtures';
 import { PlanningStore } from './planning.store';
 import { PlanningResult, PlanValueDto, ProductionSubmissionDto, ProductionValueDto } from './planning.types';
 
@@ -23,14 +24,50 @@ describe('route-scoped planning state', () => {
   const state = signal<SessionState>({ status: 'ready', context });
   const readPlan = vi.fn<PlanningClient['readPlan']>(); const previewPlan = vi.fn<PlanningClient['previewPlan']>();
   const readProduction = vi.fn<PlanningClient['readProduction']>(); const submit = vi.fn<PlanningClient['submit']>();
+  const submitManual = vi.fn<PlanningClient['submitManual']>(); const queue = vi.fn<PlanningClient['queue']>();
   const signIn = vi.fn(); const retry = vi.fn(); let store: PlanningStore;
   beforeEach(async () => {
+    submitManual.mockReset().mockResolvedValue(accepted()); queue.mockReset().mockResolvedValue({ status: 'ok', value: { requestId: 'request-1' } });
     state.set({ status: 'ready', context }); readPlan.mockReset().mockResolvedValue({ status: 'ok', value: planValue() });
     previewPlan.mockReset().mockResolvedValue({ status: 'ok', value: { ...planValue('preview-1'), mode: 'preview', preview: true, activePlan: planValue().plan } });
     readProduction.mockReset().mockResolvedValue({ status: 'ok', value: production() }); submit.mockReset().mockResolvedValue(accepted()); signIn.mockReset(); retry.mockReset();
     TestBed.configureTestingModule({ providers: [PlanningStore, { provide: AuthPort, useValue: { state, signIn, retry } },
-      { provide: PlanningClient, useValue: { readPlan, previewPlan, readProduction, submit } }] });
+      { provide: PlanningClient, useValue: { readPlan, previewPlan, readProduction, submit, submitManual, queue } }] });
     store = TestBed.inject(PlanningStore); TestBed.tick(); await vi.waitFor(() => expect(store.plan()?.planId).toBe('order-plan-1'));
+  });
+  it('pins manual requests to the actual tracking versions and retains uncertain input through refresh', async () => {
+    readProduction.mockResolvedValue({ status: 'ok', value: ordersFixture() }); await store.refreshProduction();
+    expect(store.orders()?.choices[0].model).toBe('3 Series Saloon');
+    submitManual.mockResolvedValueOnce({ status: 'uncertain', reason: 'Result unknown.' });
+    await store.requestCars('3 Series Saloon', '320i', '3');
+    expect(submitManual).toHaveBeenCalledOnce();
+    const original = submitManual.mock.calls[0][0];
+    expect(original).toEqual({ commandId: expect.any(String), model: '3 Series Saloon', derivative: '320i', quantity: 3, expectedPolicyVersion: 'p1', expectedStockVersion: 's1' });
+    expect(store.canRetryOrder()).toBe(true); await store.refreshProduction(); expect(submitManual).toHaveBeenCalledOnce();
+    await store.retryOrder(); expect(submitManual.mock.calls[1][0]).toEqual(original); expect(store.canRetryOrder()).toBe(false);
+  });
+  it('retries only saved unqueued confirmation without a new Production request', async () => {
+    const value = ordersFixture(); readProduction.mockResolvedValue({ status: 'ok', value: { ...value,
+      requests: [{ ...value.requests[0], queuedQuantity: 0, supplies: [{ ...(value.requests[0]['supplies'] as Record<string, unknown>[])[0], queued: false }] }] } });
+    await store.refreshProduction(); queue.mockResolvedValueOnce({ status: 'unavailable', reason: 'Queue unavailable.' });
+    await store.retryReleaseQueue('request-1'); expect(queue).toHaveBeenCalledOnce(); const original = queue.mock.calls[0][0];
+    await store.retryReleaseQueue('request-1'); expect(queue).toHaveBeenCalledTimes(2); expect(queue.mock.calls[1][0]).toEqual(original); expect(submitManual).not.toHaveBeenCalled(); expect(submit).not.toHaveBeenCalled();
+  });
+  it('clears manual intent and private order projections after another account signs in', async () => {
+    readProduction.mockResolvedValue({ status: 'ok', value: ordersFixture() }); await store.refreshProduction();
+    submitManual.mockResolvedValueOnce({ status: 'pending', reason: 'Pending.', operationId: 'operation-1' });
+    await store.requestCars('3 Series Saloon', '320i', '1'); expect(store.canRetryOrder()).toBe(true);
+    state.set({ status: 'ready', context: { ...context, subject: 'other' } }); TestBed.tick();
+    expect(store.canRetryOrder()).toBe(false); expect(store.orderOutcome()).toBeNull();
+    await store.retryOrder(); expect(submitManual).toHaveBeenCalledOnce();
+  });
+  it('ignores a late manual acknowledgement after the signed-in account changes', async () => {
+    readProduction.mockResolvedValue({ status: 'ok', value: ordersFixture() }); await store.refreshProduction();
+    const gate = deferred<PlanningResult<ProductionSubmissionDto>>(); submitManual.mockReturnValueOnce(gate.promise);
+    const pending = store.requestCars('3 Series Saloon', '320i', '1');
+    state.set({ status: 'ready', context: { ...context, subject: 'other' } }); TestBed.tick();
+    gate.resolve(accepted()); await pending; expect(store.orderOutcome()).toBeNull(); expect(store.canRetryOrder()).toBe(false);
+    expect(submitManual).toHaveBeenCalledOnce();
   });
   it('loads current inputs and Production without sending a command', () => {
     expect(store.canSubmit()).toBe(true); expect(store.production()?.requests).toEqual([]); expect(submit).not.toHaveBeenCalled();
@@ -44,6 +81,14 @@ describe('route-scoped planning state', () => {
     store.edit('orderPlan.modelBounds', '4', 'm1', 'min'); expect(store.editorErrors().length).toBe(1); await store.preview(); expect(previewPlan).not.toHaveBeenCalled();
     store.edit('orderPlan.modelBounds', '5', 'm1', 'max'); await store.preview();
     expect(previewPlan.mock.calls[0][0]).toEqual([{ key: 'orderPlan.modelBounds', value: [{ modelId: 'm1', min: 4, max: 5 }] }]);
+  });
+  it('keeps the active slider baseline while previewing an edited upper limit', async () => {
+    const current = planValue(); const preview = { ...current, mode: 'preview' as const, preview: true, activePlan: current.plan,
+      plan: { ...current.plan, policyProvenance: [{ key: 'orderPlan.modelBounds', value: [{ modelId: 'm1', min: 0, max: 8 }] }] } };
+    previewPlan.mockResolvedValueOnce({ status: 'ok', value: preview });
+    store.edit('orderPlan.modelBounds', '8', 'm1', 'max'); await store.preview();
+    const editor = store.editorSource().find(e => e.key === 'orderPlan.modelBounds')!;
+    expect(editor.rows[0].max).toBe(3); expect(store.value(editor, 'm1', 'max')).toBe('8');
   });
   it('returns to the current server plan and clears edited preview state explicitly', async () => {
     store.edit('orderPlan.budgetMinor', '0'); await store.preview(); await store.backToCurrent();
