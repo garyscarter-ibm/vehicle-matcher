@@ -670,7 +670,7 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       const predicate = `environment_id=${literal(envId)} AND run_id=${literal(runId)} AND request_id=${literal(requestId)}`;
       const read = () => JSON.parse(sql(`SELECT coalesce(json_agg(json_build_object('supplyId',supply_id,'quantity',quantity,
         'confirmedAt',confirmed_at,'queuedAt',queued_at,'eligibleFrom',eligible_from) ORDER BY supply_id),'[]'::json)::text
-        FROM production_confirmations WHERE ${predicate};`));
+        FROM production_confirmations WHERE ${predicate};`).split('\n').at(-1));
       const before = read();
       assert.equal(before.length, 1, 'The fixture selects only the confirmation created by the actual UI command');
       assert.ok(before[0].queuedAt && before[0].eligibleFrom, 'The actual confirmation queued normally before the fault');
