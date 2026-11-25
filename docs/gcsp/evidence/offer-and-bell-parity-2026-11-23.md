@@ -130,8 +130,8 @@ Status: **human review pending; combined review resumed on 25 November.** One re
 
 | Screen / original criterion | State and viewport | Pair | Verdict | Human reviewer | Date | Source |
 | --- | --- | --- | --- | --- | --- | --- |
-| Offer — F555 AC8 | Pending held Main X2, 1280 | Top and lower table pairs above | | | | |
-| Employee bell — F548 AC6 | Open with one active Main X2, 1280 | Bell pair above | | | | |
+| Offer — F555 AC8 | Pending held Main X2, 1280 | Top and lower table pairs above | matches (Gary: "otherwise they all match") | Gary Carter | 2026-11-25 | Gary Carter, reviewing the committed pairs with the Claude poller; quoted verbatim in reply on `MSG-2026-11-25-sorrel-001` |
+| Employee bell — F548 AC6 | Open with one active Main X2, 1280 | Bell pair above | matches (Gary: "otherwise they all match") | Gary Carter | 2026-11-25 | Gary Carter, reviewing the committed pairs with the Claude poller; quoted verbatim in reply on `MSG-2026-11-25-sorrel-001` |
 | F549 — AC4 | Greg navigation, same no-new-order outcome, 1280×800 | Greg pair in F549 evidence section | | | | |
 | F549 — AC4 | Employee navigation before preference changes, 1280×800 | Employee pair in F549 evidence section | | | | |
 | F550 — AC5 | Open Your cars tab across public release, 1280-wide full page | Angular before/after plus frozen Node same-release captures in F550 evidence section; outbox pair is supporting chip evidence only | | | | |
@@ -196,8 +196,8 @@ Use one response for the combined batch, with `matches`, `differs: <description 
 
 | Screen / original criterion | State and viewport | Pair | Verdict | Human reviewer | Date | Source |
 | --- | --- | --- | --- | --- | --- | --- |
-| Preferences — F552 AC7 | Account Sportiness open,1280×800 | Account pair above | | | | |
-| Preferences — F552 AC7 | Editor categories/axes,1280×800 | Editor pair above | | | | |
-| Preferences — F552 AC7 | Editor practical questions,1280×800 | Practical pair above | | | | |
-| Preferences — F552 AC7 | Editor first preview card,1280×800 | Preview pair above | | | | |
+| Preferences — F552 AC7 | Account Sportiness open,1280×800 | Account pair above | matches (Gary: "otherwise they all match") | Gary Carter | 2026-11-25 | Gary Carter, reviewing the committed pairs with the Claude poller; quoted verbatim in reply on `MSG-2026-11-25-sorrel-001` |
+| Preferences — F552 AC7 | Editor categories/axes,1280×800 | Editor pair above | differs: "Preferences 3b differs slightly with an extra "update preview" button" (Gary) | Gary Carter | 2026-11-25 | Gary Carter, reviewing the committed pairs with the Claude poller; quoted verbatim in reply on `MSG-2026-11-25-sorrel-001` |
+| Preferences — F552 AC7 | Editor practical questions,1280×800 | Practical pair above | matches (Gary: "otherwise they all match") | Gary Carter | 2026-11-25 | Gary Carter, reviewing the committed pairs with the Claude poller; quoted verbatim in reply on `MSG-2026-11-25-sorrel-001` |
+| Preferences — F552 AC7 | Editor first preview card,1280×800 | Preview pair above | matches (Gary: "otherwise they all match") | Gary Carter | 2026-11-25 | Gary Carter, reviewing the committed pairs with the Claude poller; quoted verbatim in reply on `MSG-2026-11-25-sorrel-001` |
 | Orders / order progress — F556 AC6 | Same Main sent-to-ordering order, 1280×800 | Frozen Node attachment `1647115`; Angular attachment `1647116`; FUCQ-556 comment `5067335` | | | | |
