@@ -3875,3 +3875,10 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 - **Cause/uncertainty:** as in the prior observation, evidence does not establish how Jira interpreted the unqualified date literal or why the stale candidate recurred.
 - **Action/outcome:** excluded FUCQ-334 by its returned timestamp, then ran the ordinary pull with the five retained issues. It imported/updated zero and reported one claimed-story change/notification for FUCQ-595 (acceptance and decided among eight changed Jira-owned fields); its local Result remains partial with AC4 unchecked. No reconciliation query, Jira write or product-map edit ran.
 - **Framework follow-up:** preserve the literal, returned timestamp and UTC cutoff in receipts, and investigate interpretation before changing the query or parser. No helper/query change or new gate was applied.
+
+### 2026-11-25 23:25 UTC · usget-codex · DL-20261125-CODEX-01 · Corrected the pull cursor to Jira wall time
+
+- **Evidence/impact:** the first pull was given `--now 2026-11-25T23:11:23Z`, but `jira_sync.now_wall()` deliberately preserves wall-clock fields and ignores the offset because JQL uses the Jira user's timezone. This temporarily stored `23:11` as Jira wall time, six hours ahead of the 23:11Z as-of point. No later pass ran with that cursor.
+- **Cause:** the caller assumed the offset would be converted; the helper's time contract instead expects the Jira user's wall time.
+- **Action/outcome:** replayed the same saved five-issue input with `--now 2026-11-25T17:11:23-06:00`. The final cursor is `2026-11-25 17:11`; the saved `told` digest suppressed duplicate FUCQ-595 notification/marker changes. The replay changed no card or Jira content and reported zero imports, updates, changes, comments or notifications. Query receipts preserve both inputs.
+- **Framework follow-up:** when a UTC as-of instant is supplied, convert it to Jira-user wall time before passing `--now`, and retain both values in the receipt. No helper change was made.
