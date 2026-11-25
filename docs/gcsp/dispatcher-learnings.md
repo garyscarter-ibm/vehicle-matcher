@@ -3883,6 +3883,13 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 - **Action/outcome:** replayed the same saved five-issue input with `--now 2026-11-25T17:11:23-06:00`. The final cursor is `2026-11-25 17:11`; the saved `told` digest suppressed duplicate FUCQ-595 notification/marker changes. The replay changed no card or Jira content and reported zero imports, updates, changes, comments or notifications. Query receipts preserve both inputs.
 - **Framework follow-up:** when a UTC as-of instant is supplied, convert it to Jira-user wall time before passing `--now`, and retain both values in the receipt. No helper change was made.
 
+### 2026-11-25 23:26 UTC · usget-codex · DL-20261125-CODEX-02 · One helper push rejection succeeded on retry
+
+- **Evidence/impact:** the first helper push of log commit `530e93388` reported `Block Secrets: push scanned, no secrets found` followed by a remote rejection. The commit remained local and the fetched remote ref had not advanced.
+- **Cause/uncertainty:** the rejection gave no cause; a fresh helper pull was up to date and the same helper push then succeeded.
+- **Action/outcome:** preserved the commit, used `scaffold_git.py pull` to confirm the remote state, retried only with `scaffold_git.py push`, and verified publication at `530e93388`. No direct or force push was used.
+- **Framework follow-up:** retain the rejection output and verify fetched refs before retrying; no helper change is proposed after this single transient failure.
+
 
 ### 2026-11-25 23:26 UTC · usget-velko · DL-20261125-VELKO-07 · F559 visual review found theme and stale-state faults
 
