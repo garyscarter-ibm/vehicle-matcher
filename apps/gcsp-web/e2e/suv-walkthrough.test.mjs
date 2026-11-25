@@ -29,7 +29,7 @@ async function resetMain(suite, presenter, runIds, name) {
   assert.equal(main?.availability.available, true, 'Main must actually be available for reset');
   assert.equal(main.fixtureVersion, input.reset.fixtureVersion);
   const before = good(await suite.call(presenter, 'GET', '/presenter/controls'), 'Before reset');
-  await presenter.getByLabel('Scenario', { exact: true }).selectOption(main.scenarioId);
+  await presenter.getByRole('combobox', { name: 'Scenario', exact: true }).selectOption(main.scenarioId);
   const reset = presenter.getByRole('button', { name: 'Reset scenario', exact: true });
   await reset.focus(); await presenter.keyboard.press('Enter');
   await presenter.getByRole('heading', { name: 'Confirm scenario reset', exact: true }).waitFor();
