@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import path from 'node:path';
+import { readFileSync, readdirSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { startComposition } from './composition.mjs';
 import { assertImageParity } from './node-replay.mjs';
 
@@ -86,6 +89,21 @@ test('FUCQ-561: presenter console follows the actual signed-in release, inspecti
       assert.equal(catalogue.status, 200);
       const scenario = catalogue.body.value.scenarios.find((item) => item.scenarioId === 'main-successful-journey');
       assert.equal(scenario.availability.available, true);
+      const resource = 'gcsp/scenario/demo-preparation-v1.json';
+      const canonical = readFileSync(new URL(`../../../services/gcsp-api/src/main/resources/${resource}`, import.meta.url));
+      const apiJar = process.env.PROOF_API_JAR;
+      assert.ok(apiJar, 'The composition supplies its actual API artifact');
+      const appDirectory = path.join(path.dirname(apiJar), 'app');
+      const appName = readdirSync(appDirectory).find((name) => /^gcsp-api-.*\.jar$/.test(name));
+      assert.ok(appName, 'The actual API application artifact must be present');
+      const appJar = path.join(appDirectory, appName);
+      const packaged = execFileSync('/usr/bin/unzip', ['-p', appJar, resource], { maxBuffer: 2 * 1024 * 1024 });
+      assert.ok(packaged.equals(canonical), 'The running API artifact must contain the canonical preparation inputs');
+      const preparation = JSON.parse(packaged);
+      assert.equal(preparation.catalogue.catalogueVersion, catalogue.body.value.catalogueVersion);
+      const definition = preparation.catalogue.scenarios.find((item) => item.scenarioId === scenario.scenarioId);
+      assert.equal(definition.scenarioVersion, scenario.scenarioVersion);
+      assert.equal(definition.fixtureVersion, scenario.fixtureVersion);
       assert.equal(initialClock.controls.nextRelease.status, 'available', 'The actual local Main reset supplies its release cue');
       assert.ok(Date.parse(initialClock.controls.nextRelease.at) > Date.parse(initialClock.now));
       employee = await suite.newPage('employee', 'demo-paula', 'account');
@@ -93,7 +111,10 @@ test('FUCQ-561: presenter console follows the actual signed-in release, inspecti
       assert.equal(brief.status, 200); assert.equal(context.status, 200);
       assert.equal(brief.body.value.brief.status, 'confirmed');
       assert.equal(context.body.value.runId, initialClock.runId);
-      main = { initialClock, scenario, brief: brief.body.value.brief, context: context.body.value };
+      main = { initialClock, scenario: { ...scenario, inputs: definition.inputs },
+        inputProvenance: { apiJar, appJar, resource, bytes: packaged.length,
+          sha256: createHash('sha256').update(packaged).digest('hex') },
+        brief: brief.body.value.brief, context: context.body.value };
       suite.receipt.presenterMain = main;
       suite.receipt.checks.basic = { confirmation: true, cancelPreservesRun: true, keyboardFocus: true,
         actualPublicMainReset: true, legacyReplayFixtureRetired: true, hosted: 'unrun; this is the owned local composition' };
@@ -107,8 +128,9 @@ test('FUCQ-561: presenter console follows the actual signed-in release, inspecti
       await until(async () => {
         const read = await suite.call(presenter, 'GET', '/presenter/controls');
         finalClock = read.body.value;
-        return read.status === 200 && Number(finalClock.clockVersion) > Number(main.initialClock.clockVersion);
-      }, 'The actual Basic release button advances and ticks Java');
+        return read.status === 200 && Number(finalClock.clockVersion) > Number(main.initialClock.clockVersion)
+          && finalClock.lastTick?.state === 'completed';
+      }, 'The actual Basic release button completes its Java tick handlers');
       assert.ok(Date.parse(finalClock.now) > Date.parse(main.initialClock.now));
       released = { clock: { now: finalClock.now, clockVersion: finalClock.clockVersion } };
       const read = await suite.call(presenter, 'GET', '/presenter/releases/latest');
@@ -163,12 +185,14 @@ test('FUCQ-561: presenter console follows the actual signed-in release, inspecti
       assert.equal(read.status, 200);
       assert.ok(read.body.value.cars.length && read.body.value.buddies.length);
       await noInternals(presenter);
+      await presenter.locator('.gcsp-suitability-details h3').scrollIntoViewIfNeeded();
       await suite.screenshot(presenter, 'presenter-suitability-1280');
       await presenter.setViewportSize({ width: 375, height: 812 });
       await presenter.locator('.gcsp-suitability-details h3').waitFor({ state: 'visible' });
       assert.equal(await cell.getAttribute('aria-pressed'), 'true');
       await fits(presenter);
       await noInternals(presenter);
+      await presenter.locator('.gcsp-suitability-details h3').scrollIntoViewIfNeeded();
       await suite.screenshot(presenter, 'presenter-suitability-375');
       await presenter.setViewportSize({ width: 1280, height: 800 });
       await presenter.getByText('Car suitability', { exact: true }).click();
@@ -239,8 +263,9 @@ test('FUCQ-561: presenter console follows the actual signed-in release, inspecti
       await primary.click();
       await until(async () => {
         const read = await suite.call(presenter, 'GET', '/presenter/controls');
-        return read.status === 200 && Number(read.body.value.clockVersion) > Number(after.clockVersion);
-      }, 'The Basic primary action must advance and tick the real Java run');
+        return read.status === 200 && Number(read.body.value.clockVersion) > Number(after.clockVersion)
+          && read.body.value.lastTick?.state === 'completed';
+      }, 'The Basic primary action must complete the real Java tick handlers');
       await noInternals(presenter);
       suite.receipt.checks.mainReset = { actualLocalMain: true, newRun: true, carsCleared: true, primaryTick: true,
         hostedReleaseCue: 'unrun; local composition cannot establish actual hosted-dev configuration' };
