@@ -12967,6 +12967,42 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "id": "FUCQ-559",
+      "title": "Greg's Angular planning lost the request-cars form, plan-limit slider and production actions",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "usget",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-559",
+      "branch": "dev/DEV-2026-11-22-vesper-035",
+      "evidence": "Formal claim feecd6993; original4AC/horse13. FrozenF449/F434 and Gary20Nov restore ruling; exact Greg request/queue versus Presenter production role split retained.",
+      "observed_at": "2026-11-25T21:37:41Z",
+      "slices": [
+        {
+          "id": "planning-controls",
+          "status": "in-progress",
+          "title": "Planning controls (5 points; AC1–2)",
+          "observed_at": "2026-11-25T21:37:41Z",
+          "evidence": "Claimed; first verify actual producer facts, then port source slider/reuse table/forms; no acceptance claimed."
+        },
+        {
+          "id": "production-actions",
+          "status": "in-progress",
+          "title": "Production actions (5 points; AC3)",
+          "observed_at": "2026-11-25T21:37:41Z",
+          "evidence": "Claimed; restore role-correct Presenter response to Greg tracking/queue, with versioned existing APIs."
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Real composition, focused validation and human pair (3 points; AC4)",
+          "observed_at": "2026-11-25T21:37:41Z",
+          "evidence": "Final native/focused specs, registered actual composition1280/375 and same-scenario pair; humanAC4 and covering batch remain required."
+        }
+      ],
+      "unsliced": false
     }
   ]
 }
