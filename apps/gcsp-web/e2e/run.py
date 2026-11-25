@@ -19,6 +19,7 @@ import scaffold_git
 import test_resources as resources
 
 CASES = {
+    'f340': 'apps/gcsp-web/e2e/suv-walkthrough.test.mjs',
     'f548': 'apps/gcsp-web/e2e/notification-bell.test.mjs',
     'f552': 'apps/gcsp-web/e2e/preferences-parity.test.mjs',
     'f555': 'apps/gcsp-web/e2e/offer-parity.test.mjs',
