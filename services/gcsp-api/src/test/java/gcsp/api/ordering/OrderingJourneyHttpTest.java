@@ -1,5 +1,6 @@
 package gcsp.api.ordering;
 
+import static gcsp.api.appointments.ReturnJourneySteps.prepareCollectionWindows;
 import static gcsp.api.appointments.ReturnJourneySteps.withCollectionDate;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,7 +45,7 @@ import org.postgresql.ds.PGSimpleDataSource;
 
 /**
  * The employee's cart ordering handoff over HTTP on the started dev composition: real RS256 tokens, a private schema,
- * demo-prepared people and synthetic ordering, with no test alternative. Only released stock (upstream supply) is seeded.
+ * demo-prepared people and synthetic ordering, with no test alternative. Paula's collection window is prepared per run.
  */
 @QuarkusTest
 @TestProfile(OrderingJourneyProfile.class)
@@ -154,12 +155,14 @@ class OrderingJourneyHttpTest {
         return r;
     }
 
-    /** Released stock is upstream supply (the supply release is not part of this story), so it is the one thing seeded. */
+    /** Released stock is upstream supply; prepare Paula's active-run inputs before business state starts. */
     private void seedStock() throws Exception {
         var run = persistence.guard().currentRun();
         try (Connection c = dataSource.get().getConnection()) {
             StockDbFixture.insertStock(c, run.environmentId(), run.runId(), StockDbFixture.rows());
         }
+        JsonNode actualAccount = body(paula().get(BASE + "/manual/account")).get("value");
+        prepareCollectionWindows(dataSource.get(), persistence, actualAccount);
     }
 
     private static ObjectNode submitBody(String commandId, JsonNode claim, long detailsVersion, String digest) {
