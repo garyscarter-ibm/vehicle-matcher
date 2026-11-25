@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.18.0"
+VERSION = "1.19.0"
 """dev_mail.py: the dev mailbox between Cowork and Claude Code, and between the pollers of a team, for this project, and the
 guard that stops it looping (the rules for Cowork are in the managed `dev-inbox` skill).
 
@@ -151,6 +151,7 @@ Commands (exit 0 done, 1 error, 2 refused by a limit or by who may do it):
         off); --me writes .claude/member.json to say which member this machine is and keeps it out of git
         (the git tool's ensure_ignored, else a line in .git/info/exclude)
   poller start|stop|status NAME                   take, release or read the poller lease of NAME (see Poller names); TAKEN exits 2
+  poller list                                     list live peers on this remote; --poller NAME omits our own lease; NOTHING when none
   version                                         print the version of this tool
 
 waits_on (backlog header): `; `-separated entries, each `action:<id>` (a model action object), `MSG-...` (a thread), `DEV-...` (a
@@ -1883,9 +1884,27 @@ class Mail:
         return bool(self.team) or self._has_remote()
 
     def poller_cmd(self, action, name):
-        """`poller start|stop|status NAME`: set the name for this process, then claim, release or read the poller lease through
+        """`poller list` lists live peers; `poller start|stop|status NAME` sets the name, then claims, releases or reads its lease through
         the git tool (team mode, or a project with a remote). Returns the line to print. TAKEN is a TeamRefused (exit 2): the
         poller picks another name. A git tool without poller_claim leaves a NOTE and succeeds."""
+        if action == "list":
+            if name is not None:
+                raise MailError("poller list takes no name; use --poller NAME to omit your own lease")
+            if self.team:
+                self._need_me()
+            mod = self._tool_with("poller_list", "active pollers not listed")
+            if mod is None:
+                return "NOTHING"
+            try:
+                rc, msg, peers = mod.poller_list(self.root, self.poller)
+            except Exception as e:
+                raise MailError(f"could not list active pollers: {e}")
+            if rc != 0:
+                raise MailError(f"could not list active pollers: {msg}")
+            if msg:
+                self.notes.append(f"NOTE active pollers not listed: {msg}")
+            return "\n".join(f"POLLER {h['login']}-{h['poller']} host={h.get('host', '?')} "
+                             f"harness={h.get('harness', '?')} until={h['expires']}" for h in peers) or "NOTHING"
         if not isinstance(name, str) or not POLLER_NAME.match(name):
             raise MailError(f"{name!r} is not a poller name: a lowercase letter, then 1 to 15 lowercase letters or digits (e.g. imhotep)")
         if self.team:
@@ -2786,8 +2805,7 @@ class Mail:
                 if silent and age >= hours:
                     names = ", ".join(silent)
                     out["ALERT"].append(f"ALERT {tid} unacknowledged by {names} for {int(age)}h (ack_alert_hours {hours}) | {h['subject']}")
-        chat = [f"CHAT {n} from={h.get('from')} | {(b.splitlines() or [''])[0][:120]}" for n, h, b in self.chats_unread()] \
-            if self.team else []
+        chat = [f"CHAT {n} from={h.get('from')} | {(b.splitlines() or [''])[0][:120]}" for n, h, b in self.chats_unread()]
         return out["REPLY"] + out["ANSWERED"] + out["COUNTER"] + out["ALERT"] + chat
 
     def waiting(self, side):
@@ -2855,7 +2873,7 @@ def main(argv=None):
     p = sub.add_parser("spawn-story"); p.add_argument("--thread", required=True); p.add_argument("--file", required=True)
     p = sub.add_parser("check-story"); p.add_argument("story")
     p = sub.add_parser("epics"); p.add_argument("--id"); p.add_argument("--sync", action="store_true"); p.add_argument("--json", action="store_true")
-    p = sub.add_parser("poller"); p.add_argument("action", choices=["start", "stop", "status"]); p.add_argument("name")
+    p = sub.add_parser("poller"); p.add_argument("action", choices=["start", "stop", "status", "list"]); p.add_argument("name", nargs="?")
     p = sub.add_parser("team"); p.add_argument("--me")
     p.add_argument("--grant-writer", metavar="LOGIN"); p.add_argument("--revoke-writer", metavar="LOGIN")
     a = ap.parse_args(argv)
