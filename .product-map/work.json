@@ -12967,6 +12967,40 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "id": "FUCQ-516",
+      "title": "Canonical candidate reevaluation prematurely releases pending remote claims",
+      "type": "Bug",
+      "status": "In Progress",
+      "branch": "dev/DEV-2026-11-22-vesper-002",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-516",
+      "note": "Local delivery observation (DEV-2026-11-22-vesper-002); no native Jira transition inferred.",
+      "observed_at": "2026-11-25T21:51:35Z",
+      "slices": [
+        {
+          "id": "reconcile",
+          "status": "complete",
+          "title": "Reconcile existing repair 259eea70f against native PG",
+          "observed_at": "2026-11-25T21:42:20Z",
+          "evidence": "259eea70f on base a3d206aef; CanonicalCandidatesPgTest 2/2, RemoteLifecycleTest 14/14, BuddyTickHandlersPgTest 6/6 native PG; reverting sameClaim fails laterClock case (offered vs release-pending)"
+        },
+        {
+          "id": "regression",
+          "status": "complete",
+          "title": "Canonical-adapter regressions for genuine change and expiry",
+          "observed_at": "2026-11-25T21:51:35Z",
+          "evidence": "75ec8b10f: CanonicalCandidatesPgTest 4/4 native PG; mutants caught (full-terms equality, always-same)"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Story test set and result",
+          "observed_at": "2026-11-25T21:51:35Z",
+          "evidence": "Story test set 141/141 native PG at tree 4bc8c8606; drift 0 hits; Result committed; full suite deferred to batch"
+        }
+      ],
+      "unsliced": false
     }
   ]
 }
