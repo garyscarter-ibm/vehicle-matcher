@@ -46,10 +46,120 @@ describe('native employee order progress screen', () => {
   const text = () => (fixture.nativeElement as HTMLElement).textContent ?? '';
   const button = (label: string) => Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('button')).find((b) => b.textContent?.trim() === label)!;
   it('composes exact vehicle, owner, checks and current relationship using supplied facts', async () => {
-    await render(); expect(text()).toContain('BMW i4 eDrive40'); expect(text()).toContain('BMW-123'); expect(text()).toContain('Waiting for HR');
+    await render(); expect(text()).toContain('BMW i4 eDrive40'); expect(text()).toContain('BMW-123');
+    expect(text()).toContain('Next: Choose a handover time'); expect(text()).not.toContain('Next: Waiting for HR');
     expect(text()).toContain('Not ready for handover'); expect(text()).toContain('Retailer'); expect(text()).toContain('old-contract');
     expect((fixture.nativeElement as HTMLElement).querySelector('img')?.getAttribute('src')).toBe('/actual-car.webp');
     expect((fixture.nativeElement as HTMLElement).querySelectorAll('h1')).toHaveLength(1);
+  });
+  it('maps supplied approval states and puts ownership, Next and blocked reason only on the current stage', async () => {
+    client.readStages.mockResolvedValueOnce(ok({ ...identity, contractVersion: 'lifecycle.stages.v1', schemaVersion: 1,
+      stageList: ['selection', 'sales-manager-approval', 'preparation', 'declined'], stages: [
+        { stage: 'selection received', state: 'approved', at: '2026-11-20T10:00:00Z' },
+        { stage: 'sales manager approval', state: 'pending' }, { stage: 'preparation', state: 'unexpected' }, { stage: 'declined', state: 'declined' },
+      ], currentStage: 'sales manager approval', outcome: 'in-progress', owner: 'scheme-team', nextStep: 'Review the supplier plan',
+      blocked: { reason: 'Waiting for an account check' } }));
+    client.readAppointment.mockResolvedValueOnce(ok({ ...appointment(), eligibility: { eligible: false } }));
+    await render();
+    const rows = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('.gcsp-stage-list > li'));
+    expect((fixture.nativeElement as HTMLElement).querySelector('.gcsp-stage-tracker h3')?.textContent).toBe('Steps');
+    expect(rows.map((row) => row.classList[1])).toEqual(['is-done', 'is-blocked', 'is-upcoming', 'is-declined', 'is-upcoming', 'is-upcoming']);
+    expect(rows[0].querySelector('time')?.getAttribute('datetime')).toBe('2026-11-20T10:00:00Z');
+    expect(rows[0].textContent).not.toContain('With the scheme team'); expect(rows[0].textContent).not.toContain('Next:');
+    expect(rows[1].textContent).toContain('With the scheme team'); expect(rows[1].textContent).toContain('Next: Review the supplier plan');
+    expect(rows[1].textContent).toContain('Waiting for an account check');
+    expect(rows[2].textContent).not.toContain('Waiting for an account check'); expect(rows[3].textContent).not.toContain('With the scheme team');
+  });
+  it('moves Next to an eligible unrequested handover and uses supplied stages when handover is already listed', async () => {
+    client.readStages.mockResolvedValueOnce(ok({ ...identity, contractVersion: 'lifecycle.stages.v1', schemaVersion: 1,
+      stageList: ['selection'], stages: [{ stage: 'selection received', state: 'pending' }], currentStage: 'selection received',
+      outcome: 'in-progress', owner: 'HR', nextStep: 'Waiting for HR' }));
+    await render();
+    const initialRows = (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('.gcsp-stage-list > li');
+    expect(initialRows[0].querySelector('.gcsp-stage-owner')).toBeNull(); expect(initialRows[0].querySelector('.gcsp-stage-next')).toBeNull();
+    expect(initialRows[1].textContent).toContain('With you'); expect(initialRows[1].textContent).toContain('Next: Choose a handover time');
+
+    fixture.destroy();
+    client.readStages.mockResolvedValueOnce(ok({ ...identity, contractVersion: 'lifecycle.stages.v1', schemaVersion: 1,
+      stageList: ['selection'], stages: [{ stage: 'selection received', state: 'approved' }, { stage: 'handover', state: 'pending' }],
+      currentStage: 'handover', outcome: 'in-progress', owner: 'ordering', nextStep: 'Prepare handover' }));
+    client.readAppointment.mockResolvedValueOnce(ok({ ...appointment(), state: 'scheduled', booked: true, slot }));
+    await render();
+    const labels = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.gcsp-stage-list .gcsp-stage-label')).map((row) => row.textContent?.trim());
+    expect(labels).toEqual(['Selection received', 'Handover']);
+    const handover = (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('.gcsp-stage-list > li')[1];
+    expect(handover.textContent).toContain('With ordering'); expect(handover.textContent).toContain('Next: Prepare handover');
+  });
+  it.each([
+    ['booked', { state: 'scheduled', booked: true, slot }, 'is-done', 'Booked for 15 Nov 2026, 09:00', 'Ready for handover', 'Booked for 15 Nov 2026, 09:00'],
+    ['completed', { state: 'completed', outcome: { at: '2026-11-15T09:30:00Z' } }, 'is-done', 'Handover complete: 15 Nov 2026, 09:30', null, 'Handover complete: 15 Nov 2026, 09:30'],
+    ['no-show', { state: 'no-show', slot }, 'is-current', 'Handover missed: 15 Nov 2026, 09:00', 'Handover booked', 'Handover missed: 15 Nov 2026, 09:00'],
+    ['requested', { state: 'requested', requestedSlot: slot }, 'is-current', 'Requested 15 Nov 2026, 09:00. Not booked yet.', 'Handover booked', 'Requested 15 Nov 2026, 09:00. Not booked yet.'],
+    ['scheduled but not booked', { state: 'scheduled', booked: false, requestedSlot: slot }, 'is-current', 'Requested 15 Nov 2026, 09:00. Not booked yet.', 'Handover booked', 'Requested 15 Nov 2026, 09:00. Not booked yet.'],
+    ['change proposed', { state: 'change-proposed', proposedSlot: slot }, 'is-current', 'New time proposed: 15 Nov 2026, 09:00. Not booked yet.', 'Handover booked', 'New time proposed: 15 Nov 2026, 09:00. Not booked yet.'],
+  ] as const)('maps the %s handover into the screen without inventing a timestamp', async (_label, value, stateClass, note, nextLabel, bodyLine) => {
+    client.readAppointment.mockResolvedValueOnce(ok({ ...appointment(), ...value }));
+    await render();
+    const rows = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('.gcsp-stage-list > li'));
+    const handover = rows.find((row) => row.querySelector('.gcsp-stage-label')?.textContent === 'Handover booked')!;
+    expect(handover.classList.contains(stateClass)).toBe(true); expect(handover.textContent).toContain(note);
+    expect(handover.querySelector('.gcsp-stage-time')).toBeNull();
+    const next = rows.filter((row) => row.querySelector('.gcsp-stage-next'));
+    if (nextLabel) expect(next[0].querySelector('.gcsp-stage-label')?.textContent).toBe(nextLabel);
+    else expect(next).toHaveLength(0);
+    expect((fixture.nativeElement as HTMLElement).querySelector('[aria-labelledby="handover-title"]')?.textContent).toContain(bodyLine);
+  });
+  it('keeps missing appointment and document producer states as not started', async () => {
+    client.readAppointment.mockResolvedValueOnce({ status: 'unsupported', code: 'provider-none' });
+    client.readDocuments.mockResolvedValueOnce({ status: 'unsupported', code: 'provider-none' });
+    await render();
+    const rows = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('.gcsp-stage-list > li'));
+    const handover = rows.find((row) => row.textContent?.includes('Handover booked'))!;
+    const ready = rows.find((row) => row.textContent?.includes('Ready for handover'))!;
+    expect(handover.classList.contains('is-upcoming')).toBe(true); expect(handover.textContent).toContain('Not started');
+    expect(ready.classList.contains('is-upcoming')).toBe(true); expect(ready.textContent).toContain('Not started');
+    expect(handover.querySelector('.gcsp-stage-next')).toBeNull(); expect(ready.querySelector('.gcsp-stage-next')).toBeNull();
+  });
+  it('groups documents by ownership and shows source status, due, acknowledgement and only unlisted readiness items', async () => {
+    client.readDocuments.mockResolvedValueOnce(ok({ contractVersion: 'lifecycle.documents.v1', orders: [{ ...identity,
+      contractVersion: 'lifecycle.documents.v1', documentsRevision: 3, acknowledgementSupported: true,
+      items: [
+        { itemId: 'agreement', label: 'Your agreement', kind: 'document', owner: 'employee', status: 'waiting-for-employee', overdue: true,
+          dueAt: '2026-11-15T09:00:00Z', reason: 'Please review this agreement.' },
+        { itemId: 'vehicle-check', label: 'Vehicle preparation', kind: 'check', owner: 'retailer', status: 'failed', overdue: true,
+          dueAt: '2026-11-16T09:00:00Z', reason: 'The vehicle check needs attention.' },
+      ],
+      tasks: [
+        { itemId: 'agreement', label: 'Your agreement', actionable: true, status: 'waiting-for-employee', action: 'Review agreement',
+          dueAt: '2026-11-15T09:00:00Z', overdue: true },
+        { itemId: 'completed-task', label: 'Completed task', actionable: false, status: 'complete', dueAt: '2026-11-17T09:00:00Z',
+          acknowledgement: { label: 'Acknowledgement recorded by the provider' } },
+      ],
+      readiness: { ready: false, state: 'waiting', documentsComplete: false, vehicleReady: false,
+        blocking: ['agreement', 'vehicle-check', 'registration'], failed: ['vehicle-check', 'unlisted-failure'] },
+    }] }));
+    await render();
+    const checklist = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('section[gcspTaskList]')!;
+    expect(checklist.querySelector('h3')?.textContent).toBe('Checklist');
+    expect(Array.from(checklist.querySelectorAll('.gcsp-task-group-heading')).map((heading) => heading.textContent?.trim()))
+      .toEqual(['Your tasks', 'Being handled by others']);
+    const taskRows = Array.from(checklist.querySelectorAll<HTMLElement>('.gcsp-task'));
+    const employeeTask = taskRows.find((row) => row.textContent?.includes('Your agreement'))!;
+    const completedTask = taskRows.find((row) => row.textContent?.includes('Completed task'))!;
+    const otherTask = taskRows.find((row) => row.textContent?.includes('Vehicle preparation'))!;
+    expect(employeeTask.classList.contains('is-overdue')).toBe(true); expect(employeeTask.textContent).toContain('Waiting for you');
+    expect(employeeTask.textContent).toContain('Due '); expect(employeeTask.textContent).toContain('Acknowledgement, not a signature');
+    expect(employeeTask.querySelector('button')?.textContent?.trim()).toBe('Review agreement');
+    expect(completedTask.classList.contains('is-done')).toBe(true); expect(completedTask.textContent).toContain('Acknowledgement recorded by the provider');
+    expect(completedTask.textContent).not.toContain('Due ');
+    expect(otherTask.classList.contains('is-failed')).toBe(true); expect(otherTask.textContent).toContain('Retailer');
+    expect(otherTask.textContent).toContain('The vehicle check needs attention.');
+    expect(fixture.componentInstance.documentChecklist().readiness).toEqual([
+      { heading: 'Needs attention', labels: ['Unlisted failure'] }, { heading: 'Still to do', labels: ['Registration'] },
+    ]);
+    button('Review agreement').click(); fixture.detectChanges();
+    expect(text()).toContain('Acknowledgement, not a signature'); expect(client.execute).not.toHaveBeenCalled();
+    expect(button('Review agreement').disabled).toBe(true);
   });
   it('uses a meaningful fallback after a real image fails', async () => {
     await render(); (fixture.nativeElement as HTMLElement).querySelector('img')?.dispatchEvent(new Event('error')); fixture.detectChanges();
@@ -68,7 +178,8 @@ describe('native employee order progress screen', () => {
     await render();
     const panel = (fixture.nativeElement as HTMLElement).querySelector('[aria-labelledby="handover-title"]')!;
     expect(panel.textContent).toContain('Handover missed'); expect(panel.textContent).not.toContain('Handover booked');
-    const request = panel.querySelector<HTMLButtonElement>('[aria-label^="Request handover"]')!;
+    expect(panel.textContent).toContain('Handover missed: 14 Nov 2026, 09:00'); expect(panel.textContent).toContain('Choose a new handover time.');
+    const request = panel.querySelector<HTMLButtonElement>('[aria-label^="Request "]')!;
     expect(request).not.toBeNull(); expect(client.execute).not.toHaveBeenCalled();
     request.click(); fixture.detectChanges(); await fixture.whenStable();
     expect(text()).toContain('Request this handover time?'); expect(client.execute).not.toHaveBeenCalled();
@@ -76,6 +187,99 @@ describe('native employee order progress screen', () => {
     expect(client.execute).toHaveBeenCalledOnce();
     expect(client.execute.mock.calls[0][0]).toMatchObject({ kind: 'request-appointment', orderUuid: 'order', slotId: 'provider-slot', expectedVersion: 7 });
     expect(text()).toContain('op-123'); expect(panel.textContent).not.toContain('Handover booked');
+  });
+  it('uses the sent-to-ordering copy when a handover is not yet eligible', async () => {
+    client.readAppointment.mockResolvedValueOnce(ok({ ...appointment(), eligibility: { eligible: false } }));
+    await render();
+    const panel = (fixture.nativeElement as HTMLElement).querySelector('[aria-labelledby="handover-title"]')!;
+    expect(panel.textContent).toContain('Handover times open once your order is sent to ordering.');
+    expect(panel.querySelector('[gcspSlotPicker]')).toBeNull();
+  });
+  it('uses the authorized return choice and slot only after explicit review and confirmation', async () => {
+    const second = { slotId: 'second-provider-slot', start: '2026-11-16T10:00:00Z' };
+    client.readReturnPlan.mockResolvedValueOnce(ok({ ...plan(), version: 9,
+      choices: [{ id: 'same-visit', label: 'At handover', available: true }, { id: 'later', label: 'Later', available: true }],
+      offeredSlots: { 'same-visit': [slot], later: [second] } }));
+    await render();
+    const lists = Array.from(returnPanel().querySelectorAll<HTMLUListElement>('[gcspSlotPicker]'));
+    expect(lists).toHaveLength(2);
+    const laterPicker = lists.find((list) => list.closest('.return-choice')?.textContent?.includes('Later'))!;
+    expect(laterPicker.querySelectorAll('button')).toHaveLength(1);
+    laterPicker.querySelector('button')!.click(); fixture.detectChanges(); await fixture.whenStable();
+    expect(text()).toContain('Request this return time?'); expect(client.execute).not.toHaveBeenCalled();
+    button('Confirm').click(); await commandSettled();
+    expect(client.execute).toHaveBeenCalledOnce();
+    expect(client.execute.mock.calls[0][0]).toMatchObject({ kind: 'request-return', orderUuid: 'order', choice: 'later', slotId: 'second-provider-slot', expectedVersion: 9 });
+  });
+  it('filters supplied picker slots to the exact action IDs while preserving provider order and objects', async () => {
+    await render();
+    const second = { slotId: 'second-provider-slot', start: '2026-11-16T10:00:00Z' };
+    const offered = [slot, second];
+    const appointmentSlots = fixture.componentInstance.appointmentSlots({ ...appointment(), offeredSlots: offered }, ['second-provider-slot', 'provider-slot']);
+    expect(appointmentSlots).toEqual(offered); expect(appointmentSlots[0]).toBe(slot); expect(appointmentSlots[1]).toBe(second);
+    const returnValue = { ...plan(), offeredSlots: { 'same-visit': offered } };
+    const returnSlots = fixture.componentInstance.returnSlots(returnValue, 'same-visit', [{ choiceId: 'same-visit', slotIds: ['second-provider-slot', 'provider-slot'] }]);
+    expect(returnSlots).toEqual(offered); expect(returnSlots[0]).toBe(slot); expect(returnSlots[1]).toBe(second);
+    expect(fixture.componentInstance.returnSlots(returnValue, 'later', [{ choiceId: 'same-visit', slotIds: ['provider-slot'] }])).toEqual([]);
+  });
+  it('shows handover help for a proposed time even when acceptance is unavailable', async () => {
+    client.readAppointment.mockResolvedValueOnce(ok({ ...appointment(), state: 'change-proposed', proposedSlot: slot }));
+    await render();
+    const panel = (fixture.nativeElement as HTMLElement).querySelector('[aria-labelledby="handover-title"]')!;
+    expect(panel.textContent).toContain('New time proposed: 15 Nov 2026, 09:00. Not booked yet.');
+    const help = panel.querySelector<HTMLAnchorElement>('a[href="/help"]');
+    expect(help?.textContent).toContain("Can't make it? Get help");
+    expect(button('Accept new handover time')).toBeUndefined();
+  });
+  it('maps supplied appointment and return histories into ordered timelines with missing times retained', async () => {
+    client.readAppointment.mockResolvedValueOnce(ok({ ...appointment(), history: [
+      { state: 'requested', at: '2026-11-14T09:00:00Z' }, { state: 'no-show' }, { state: 'unrecognized', at: '2026-11-16T09:00:00Z' },
+    ] }));
+    client.readReturnPlan.mockResolvedValueOnce(ok({ ...plan(), history: [
+      { appointmentState: 'scheduled', at: '2026-11-14T10:00:00Z' }, { appointmentState: 'return-missed' },
+    ] }));
+    await render();
+    const panels = (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('.order-panel');
+    const handoverTimeline = panels[1].querySelector('gcsp-activity-timeline')!;
+    const handoverLabels = Array.from(handoverTimeline.querySelectorAll('.gcsp-timeline-label')).map((node) => node.textContent?.trim());
+    expect(handoverTimeline.querySelector('h3')?.textContent).toBe('Handover history');
+    expect(handoverLabels).toEqual(['Requested', 'Handover missed', 'Update recorded']);
+    expect(handoverTimeline.querySelectorAll('.gcsp-timeline-event')[1].textContent).toContain('Time not available');
+    const returnTimeline = panels[4].querySelector('gcsp-activity-timeline')!;
+    expect(returnTimeline.querySelector('h3')?.textContent).toBe('Return history');
+    expect(Array.from(returnTimeline.querySelectorAll('.gcsp-timeline-label')).map((node) => node.textContent?.trim()))
+      .toEqual(['Return booked', 'Return missed']);
+  });
+  it('shows the latest actual earlier no-show only after a later handover attempt', async () => {
+    client.readAppointment.mockResolvedValueOnce(ok({ ...appointment(), state: 'scheduled', booked: true, attempt: 3, slot,
+      previousAttempts: [
+        { state: 'no-show', slot: { slotId: 'missed-1', start: '2026-11-12T09:00:00Z' } },
+        { state: 'completed', slot: { slotId: 'completed', start: '2026-11-13T09:00:00Z' } },
+        { state: 'no-show', slot: { slotId: 'missed-2', start: '2026-11-14T10:00:00Z' } },
+      ] }));
+    await render();
+    expect(text()).toContain('Earlier handover missed: 14 Nov 2026, 10:00');
+    expect(text()).not.toContain('Earlier handover missed: 12 Nov 2026, 09:00');
+    fixture.destroy();
+    client.readAppointment.mockResolvedValueOnce(ok({ ...appointment(), attempt: 1,
+      previousAttempts: [{ state: 'no-show', slot: { slotId: 'old-missed', start: '2026-11-14T10:00:00Z' } }] }));
+    await render();
+    expect(text()).not.toContain('Earlier handover missed');
+    fixture.destroy();
+    client.readAppointment.mockResolvedValueOnce(ok({ ...appointment(), attempt: 2,
+      previousAttempts: [{ state: 'completed', slot: { slotId: 'completed', start: '2026-11-14T10:00:00Z' } }] }));
+    await render();
+    expect(text()).not.toContain('Earlier handover missed');
+  });
+  it('shows a missed return from its supplied outcome slot with ownership and no return actions', async () => {
+    client.readReturnPlan.mockResolvedValueOnce(ok({ ...plan(), state: 'return-missed', scheduled: false, owner: 'scheme-team',
+      nextStep: 'Arrange another collection', slot: null,
+      outcome: { state: 'return-missed', appointment: { slot: { slotId: 'missed-return', start: '2026-11-21T11:00:00Z' } } } }));
+    await render();
+    const panel = returnPanel();
+    expect(panel.querySelector('.order-state')?.textContent).toBe('Return missed: 21 Nov 2026, 11:00');
+    expect(panel.textContent).toContain('Scheme team'); expect(panel.textContent).toContain('Arrange another collection');
+    expect(Array.from(panel.querySelectorAll('button')).some((button) => button.textContent?.includes('Request') || button.textContent?.includes('Accept'))).toBe(false);
   });
   it('cancels review with Escape and makes no command call', async () => {
     await render(); const opener = button('Acknowledge'); opener.focus(); opener.click(); fixture.detectChanges(); const review = (fixture.nativeElement as HTMLElement).querySelector('.order-review')!;
@@ -93,8 +297,8 @@ describe('native employee order progress screen', () => {
     client.readAppointment.mockResolvedValueOnce({ status: 'pending', operationId: 'pending-read', value: { ...appointment(), state: 'requested', requestedSlot: slot, pending: { reason: 'Provider checking' } } });
     await render(); expect(text()).toContain('Not booked yet.'); expect(text()).toContain('Waiting for confirmation');
     expect((fixture.nativeElement as HTMLElement).querySelector('[aria-labelledby="handover-title"] .order-state')?.textContent).toBe('Requested');
-    expect(Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.stage-list .is-complete')).some((li) => li.textContent?.includes('Handover booked'))).toBe(false);
-    expect((fixture.nativeElement as HTMLElement).querySelector('[aria-label^="Request handover"]')).toBeNull();
+    expect(Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.gcsp-stage-list .is-done')).some((li) => li.textContent?.includes('Handover booked'))).toBe(false);
+    expect((fixture.nativeElement as HTMLElement).querySelector('[aria-labelledby="handover-title"] [aria-label^="Request "]')).toBeNull();
   });
   it('never presents a return plan old car as current when relationship evidence is absent', async () => {
     client.readReturnPlan.mockResolvedValueOnce(ok({ ...plan(), relationship: null, state: 'return-scheduled', scheduled: true })); await render();
@@ -114,14 +318,14 @@ describe('native employee order progress screen', () => {
     client.readReturnPlan.mockResolvedValueOnce(ok({ ...plan(), state: 'returned', scheduled: false, proposedSlot: proposed, proposalId: 'old-proposal',
       appointment: { state: 'scheduled', owner: 'none' }, outcome: { state: 'returned', at: '2026-11-30T09:30:00Z', providerReference: 'RET-REF-1' } }));
     await render(); const panel = returnPanel().textContent ?? '';
-    expect(returnPanel().querySelector('.order-state')?.textContent).toBe('Returned'); expect(panel).toContain('Return reference: RET-REF-1');
+    expect(returnPanel().querySelector('.order-state')?.textContent).toBe('Returned: 30 Nov 2026, 09:30'); expect(panel).toContain('Return reference: RET-REF-1');
     expect(panel).not.toContain('New time proposed'); expect(panel).not.toContain('Not booked yet'); expect(button('Accept new return time')).toBeUndefined();
   });
   it('still shows an active return proposal as an unbooked proposed time', async () => {
     client.readReturnPlan.mockResolvedValueOnce(ok({ ...plan(), state: 'return-requested', scheduled: false, proposedSlot: proposed, proposalId: 'live-proposal',
       appointment: { state: 'change-proposed', owner: 'employee' } }));
     await render(); const panel = returnPanel().textContent ?? '';
-    expect(panel).toContain('New time proposed:'); expect(panel).toContain('Not booked yet.'); expect(button('Accept new return time')).toBeDefined();
+    expect(panel).toContain('New return time proposed:'); expect(panel).toContain('Not booked yet.'); expect(button('Accept new return time')).toBeDefined();
   });
   it('distinguishes complete empty and exact missing order from unavailable/incomplete reads', async () => {
     client.readOrders.mockResolvedValueOnce(ok({ orders: [], nextAfter: null, failed: [], failedCount: 0, pageEvidence: [] })); await render();
@@ -135,7 +339,7 @@ describe('native employee order progress screen', () => {
     button('Sign in').click(); expect(signIn).toHaveBeenCalledExactlyOnceWith('/gcsp/'); expect(client.execute).not.toHaveBeenCalled();
   });
   it('retains unavailable read status and does not present a command response as a confirmed booking', async () => {
-    await render(); (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('[aria-label^="Request handover"]')!.click(); fixture.detectChanges();
+    await render(); (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('[aria-labelledby="handover-title"] [aria-label^="Request "]')!.click(); fixture.detectChanges();
     button('Confirm').click(); await commandSettled();
     expect((fixture.nativeElement as HTMLElement).querySelector('[aria-labelledby="handover-title"] .order-state')?.textContent).toBe('Not requested');
     expect(text()).toContain('Waiting for confirmation of your update'); expect(client.execute).toHaveBeenCalledOnce();

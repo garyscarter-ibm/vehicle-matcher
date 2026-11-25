@@ -4396,6 +4396,68 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-339"
     },
     {
+      "assignee": "",
+      "id": "FUCQ-340",
+      "observed_at": "2026-11-25T05:21:19Z",
+      "original_status": "To Do",
+      "status": "In Progress",
+      "title": "Prepare a repeatable second walkthrough where Paula requests an SUV",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-340",
+      "branch": "dev/DEV-2026-11-10-GC-021",
+      "workers": [
+        {
+          "name": "Mary-Sue Walton",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-25T05:21:19.241711+00:00",
+          "expires_at": "2026-11-25T05:21:19.241711+00:00",
+          "source": "Lead completion observation from actual worker reports and owned cleanup; no active F340 work remains in this claim."
+        },
+        {
+          "name": "Marvin the Martian",
+          "harness": "codex",
+          "role": "browser-runner",
+          "observed_at": "2026-11-25T05:21:19.241711+00:00",
+          "expires_at": "2026-11-25T05:21:19.241711+00:00",
+          "source": "Lead completion observation from actual worker reports and owned cleanup; no active F340 work remains in this claim."
+        },
+        {
+          "name": "Scooby Doo",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-25T05:21:19.241711+00:00",
+          "expires_at": "2026-11-25T05:21:19.241711+00:00",
+          "source": "Lead completion observation from actual worker reports and owned cleanup; no active F340 work remains in this claim."
+        },
+        {
+          "name": "Barnyard Dawg",
+          "harness": "codex",
+          "role": "visual-reviewer",
+          "observed_at": "2026-11-25T05:21:19.241711+00:00",
+          "expires_at": "2026-11-25T05:21:19.241711+00:00",
+          "source": "Lead completion observation from actual worker reports and owned cleanup; no active F340 work remains in this claim."
+        }
+      ],
+      "slices": [
+        {
+          "id": "preparation",
+          "status": "complete",
+          "title": "Bounded SUV inputs and actual run instructions (AC1-3)",
+          "observed_at": "2026-11-25T05:21:19Z",
+          "evidence": "Lead original AC1-3 checks complete: exact whole-window inputs, Node11/11, actual 17d413999 reset/replay evidence, b9086e0a4 manual startup/stop exit0, runbook and independent critique reconciled in DEV-2026-11-10-GC-021 Result. No human acceptance inferred."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Reset/replay browser proof and independent rendered critique (AC1-4)",
+          "observed_at": "2026-11-25T05:21:19Z",
+          "evidence": "Lead AC1-4 delivery: 17d413999 real journey5/5 and20 captures reused for exact matching case/composition/product inputs; manual-only b9086e0a4 delta6CLI/default tests and actual OIDC readiness/stop exit0; Barnyard critique/lifecycle PASS. Final merged shared-runner check is explicitly pending in Result; no original AC unmet."
+        }
+      ]
+    },
+    {
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-10-GC-023",
       "id": "FUCQ-342",
@@ -10814,34 +10876,34 @@
       "assignee": "usget",
       "branch": "dev/DEV-2026-11-22-vesper-024",
       "id": "FUCQ-549",
-      "observed_at": "2026-11-23T12:14:51Z",
+      "observed_at": "2026-11-25T04:44:53Z",
       "slices": [
         {
-          "evidence": "Component/source boundary reviewed at64271c5ef;183 pinned source/caller tests,124 ratchet checks,4 inline/boundary checks and production build passed. Actual integration remains separate/incomplete; lead-review.md and story Result.",
+          "evidence": "Source65e5f210c: actual dual-role Greg root landed Next order after bounded landingFor repair; composed rail/presenter precedence unchanged.42 covering policy/guard/shell/Greg specs and registered7/7 navigation proof pass. Lead Result25Nov.",
           "id": "shared-navigation",
-          "observed_at": "2026-11-22T22:05:23Z",
+          "observed_at": "2026-11-25T04:44:53Z",
           "status": "complete",
           "title": "Shared navigation, landing and breadcrumbs"
         },
         {
-          "evidence": "Allocated preferences Activity action source/state test reviewed at64271c5ef. F548 bell/F551 Buddy surfaces and actual click-through remain in integration slice; no original AC ticked.",
+          "evidence": "Source65e5f210c registered proof: real public Account choices meet unchanged minimum, saved-draft review/Engage/Save returns200 and visible See your buddy at work reaches /gcsp/activity. Literal original AC1 drawer/timeline/bell wording remains pending in integration.",
           "id": "employee-entry",
-          "observed_at": "2026-11-22T22:05:24Z",
+          "observed_at": "2026-11-25T04:44:53Z",
           "status": "complete",
           "title": "Preferences Activity link"
         },
         {
-          "evidence": "lead-review.md, lead-pinned-source-callers/ratchet/targeted-boundaries/production-build receipts pass; source hashes unchanged.21 Scratch roots absent,21 groups stopped. Scoped source validation only.",
+          "evidence": "42 scoped policy/guard/shell/Greg tests; final registered f5497/7 at65e5f210c with strict live frozen account/clock/input replay, syntax/diff checks. Red evidence retained. Eight scratch roots absent,3 DBs dropped, no owned processes. Full suites deferred to root batch.",
           "id": "validation",
-          "observed_at": "2026-11-22T22:05:24Z",
+          "observed_at": "2026-11-25T04:44:53Z",
           "status": "complete",
           "title": "Focused checks, build and review"
         },
         {
-          "evidence": "F548 CSS/bell/browser harness unmerged; F551 Buddy surface missing; F562/F564 prerequisite authorization unanswered. Persistent navigation cases, actual signed click-through,1280px pairs/attachments and human review unrun.",
+          "evidence": "Original AC2/3 actual journeys and1280 employee/Greg frozen pairs captured/lead-inspected at65e5f210c; registered7/7. AC1 authored wording needs collaborator ruling; human AC4/attachments pending. Employee account recovery banner/body differences disclosed. Old blanket prerequisites superseded; no acceptance inferred.",
           "id": "integration",
-          "observed_at": "2026-11-22T22:05:24Z",
-          "status": "blocked",
+          "observed_at": "2026-11-25T04:44:53Z",
+          "status": "in-progress",
           "title": "Connected navigation and screenshot pairs"
         }
       ],
@@ -10871,48 +10933,48 @@
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-026",
       "id": "FUCQ-551",
-      "observed_at": "2026-11-23T11:56:57Z",
+      "observed_at": "2026-11-25T06:47:11.466505Z",
       "original_status": "To Do",
       "slices": [
         {
-          "evidence": "Source9f668374f; lead reviewed frozen markup/classes, factCSSspecificity, rating scopedqueue/canonicalack/retry, help lifecycle, exactcountdown and photo-base mapping; fresh89/89 in6specs passed lead-current-car-review receipt. Source boundary only; fullAC/pair remain pending.",
+          "evidence": "Final source1eb11b323 real composition passes actual23px title, two-column facts, photo pill/help/countdown and loaded retained photo; frozen title/facts/grid/held-copy match. Lead viewed1280pair/390. Different Node live-image framing and human verdict remain explicit.",
           "id": "current-car",
-          "observed_at": "2026-11-22T23:20:17Z",
+          "observed_at": "2026-11-25T06:47:11.466505Z",
           "status": "complete",
           "title": "Current car source styling and rating (5 points)"
         },
         {
-          "evidence": "Source793b9f51f. Lead compared frozen ports/composition, scoped command authority, adjacent canonical editor sync, journey omission, neutral preference frame and focus. Worker29 distinct focused cases plus lead84 caller cases/final6 HTTP passed;126ratchet/4inline/boundary receipts verified. Source boundary only; rendered/global-style/live/pair acceptance remains open.",
+          "evidence": "Final1eb11b323 real Main/OIDC/Java/PostgreSQL run passes held/lamp/history/drawers, Pause200, public Sameagain autosave then Resume200, accepted offer200 and finished Buddy/Track order. Shared Node boundary checks actual same car/deadline/hold semantics; generated IDs stay independent.",
           "id": "buddy",
-          "observed_at": "2026-11-22T23:37:17.621716+00:00",
+          "observed_at": "2026-11-25T06:47:11.466505Z",
           "status": "complete",
           "title": "Account Buddy composition (5 points)"
         },
         {
-          "evidence": "Source76607f189: lead reviewed frozen DataTable/history and explicit callers;26hashes/6receipts matched,101scoped cases/128ratchet/4inline/boundary passed. Clean pinned build and921compiled/assembled WebP hashes/87265982B pass. Actual authenticated hosted current-image200 remains unproved; all6ACs open.",
+          "evidence": "Shared real history/tag/named records and drawer focus pass; no false warning for no-order, actual aborted-read warning/retry recovers. Public current-derived hosted asset200 image/webp40050bytes matches repo. Local actual image loads; signed-in hosted journey remains unproved.",
           "id": "account-history-media",
-          "observed_at": "2026-11-22T23:54:50.278295+00:00",
+          "observed_at": "2026-11-25T06:47:11.466505Z",
           "status": "in-progress",
           "title": "Shared history, failure regression and hosted image (3 points)"
         },
         {
-          "evidence": "Own source76607f189 clean production build and explicit targeted built boundary passed; code_key6fe81454, tree61d1da70. Supported F548/549/550/552/555 sibling/global/shared-presenter integration remains dispatcher work. No copying/manual stacking or rendered acceptance claimed.",
+          "evidence": "Integrated product0a6fdcc30/final family1eb11b323: lead independently114 account+340 kit+7 boundary checks pass; final bounded targeted static stamp and real six-group f551 pass. No unchanged Java/full-suite rerun; covering dispatcher batch remains separate.",
           "id": "integration-validation",
-          "observed_at": "2026-11-22T23:54:50.278295+00:00",
-          "status": "blocked",
+          "observed_at": "2026-11-25T06:47:11.466505Z",
+          "status": "complete",
           "title": "Supported sibling integration and focused validation"
         },
         {
-          "evidence": "No connected runtime/browser/deploy work performed. F562reset503/F564clock decisions remain unanswered; no equality weakened. Actual hosted src200, real same-state1280Node/Angular pair, attachments, independent visual critique and human-signed ledger remain absent. All6original ACs stay open.",
+          "evidence": "Final six real groups pass at1eb11b323, fullPage1280held pair before mutations and390/paused/failure/finished viewed by lead. Material sanitized envelopes retained. Engineering proof complete within tested scope; signed-in hosted evidence and human pair verdict remain open.",
           "id": "connected-parity",
-          "observed_at": "2026-11-22T23:54:50.278295+00:00",
-          "status": "blocked",
+          "observed_at": "2026-11-25T06:47:11.466505Z",
+          "status": "in-progress",
           "title": "Actual live same-state Node Angular parity"
         },
         {
-          "evidence": "Partial Result/plan1f5b0bbe5 published after lead source/caller review, verified receipts, pinned build/asset proof and targeted boundary.71/71owned roots/groups/reservations absent; own dist/dependency link removed, shared caches preserved, heavy slot released. Source handoff only; all6ACs unticked and Jira In Progress unchanged.",
+          "evidence": "Lead reviewed final diff/receipts/screenshots and independently reran covering tests; retained Pugh Sol/high authority review passes scoped parser repair. Final resource receipt DB/scratch/link/process cleanup clear. Durable25Nov Result preserves all six original ACs and remaining human/hosted/batch limits.",
           "id": "review-handoff",
-          "observed_at": "2026-11-22T23:54:50.278295+00:00",
+          "observed_at": "2026-11-25T06:47:11.466505Z",
           "status": "complete",
           "title": "Lead review, fixed AC evidence and cleanup"
         }
@@ -10931,7 +10993,7 @@
           "observed_at": "2026-11-22T23:54:50.278295+00:00",
           "role": "story-lead",
           "source": "Observed running via collaboration.list_agents; completing final metadata publication and partial source handoff. All6ACs remain unticked; no connected work active. Parent will reconcile final completion.",
-          "status": "active"
+          "status": "stopped"
         },
         {
           "expires_at": "2026-11-22T23:54:50.278295+00:00",
@@ -10942,16 +11004,56 @@
           "role": "implementer",
           "source": "Observed completed via collaboration.list_agents; canonical source reviewed and published76607f189; matching worker receipts/cleanup verified. No descendants.",
           "status": "stopped"
+        },
+        {
+          "id": "01a2113c-19bd-7a01-a6f9-9fb237f12fda",
+          "name": "Spike",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-25T06:47:11.466505Z",
+          "expires_at": "2026-11-25T06:47:11.466505Z",
+          "status": "stopped",
+          "source": "Observed completed scoped review/handoff preparation; source and final real six-group evidence delivered. Root retains refresh/merge/native publication/human and hosted acceptance."
+        },
+        {
+          "id": "/root/spike/melissa_duck",
+          "name": "Melissa Duck",
+          "role": "runner",
+          "harness": "codex",
+          "observed_at": "2026-11-25T06:47:11.466505Z",
+          "expires_at": "2026-11-25T06:47:11.466505Z",
+          "status": "stopped",
+          "source": "Observed final delivery via native collaboration: six-group canonical1eb11b323 PASS, real receipts/screenshots retained, owned DB/scratch/processes/link removed. No active runtime."
+        },
+        {
+          "id": "/root/spike/cecil_turtle",
+          "name": "Cecil Turtle",
+          "role": "mechanic",
+          "harness": "codex",
+          "observed_at": "2026-11-25T06:47:11.466505Z",
+          "expires_at": "2026-11-25T06:47:11.466505Z",
+          "status": "stopped",
+          "source": "Observed completed scoped parser red/green; lead independently reviewed and reran114account tests. No active worker."
+        },
+        {
+          "id": "/root/spike/speedy_gonzales",
+          "name": "Speedy Gonzales",
+          "role": "implementer",
+          "harness": "codex",
+          "observed_at": "2026-11-25T06:47:11.466505Z",
+          "expires_at": "2026-11-25T06:47:11.466505Z",
+          "status": "stopped",
+          "source": "Observed completed source family plus read-only six-probe remaining-precondition audit; public Sameagain-after-Pause prep independently checked in final passing composition. No active worker."
         }
       ]
     },
     {
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-029",
-      "evidence": "Published merge de454757f of918263482 verified; first production build passes. Covering web batch green1499/86files, initial resource-incomplete attempt excluded; all10attempt/chunk roots/groups and batch worktree/ref/link/lease removed. Source composition and actual live pair pending.",
+      "evidence": "Sourcea5d14378d; finalcb18938ba registered family2pass/0fail/1declineskip; lead164/root146focused cases, scoped static checks green; PughSol/high no blocking source findings. Actual1280/390pair reviewed by lead; human pending.",
       "id": "FUCQ-556",
-      "note": "All6AC open; still building. Independent canonical source/no-show increment merged as de454757f; complete covering Angular batch1499passed/86files in9resource-bounded whole-file chunks. Original screen/canonical sibling/runtime/keyboard/live-pair/human proof remains; no review-ready claim.",
-      "observed_at": "2026-11-23T06:51:21Z",
+      "note": "Partial original13point/sixAC build. AC1/2/3/5source+connected evidence; AC4declined/proposed connected and AC6human pair remain. Material full-screen visual differences reported; no Done/InReview claim.",
+      "observed_at": "2026-11-25T07:09:34Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10963,20 +11065,22 @@
         },
         {
           "id": "tracker-documents",
-          "status": "not-started",
-          "title": "Orders tracker and document checklist composition (5 points)"
+          "status": "complete",
+          "title": "Orders tracker and document checklist composition (5 points)",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
+          "evidence": "Canonical source reviewed; lead164and root146focused tests; actual tracker/currentowner/Next/blocked plus grouped task/acknowledgement readback pass in cb18938ba connected run."
         },
         {
-          "evidence": "No-show provider-slot request eligibility restored through unchanged explicit review/confirm/version/no-replay path;111scoped Orders cases plus boundaries/inline4/ratchet124. Canonical SlotPicker/Timeline composition and other original states, supported integration/live proof remain.",
+          "evidence": "Canonical slot/history and actual booking/no-show/rebook/earlier-missed/return-missed pass. Original declined/proposed-handover connected help substates remain unavailable; no criterion waived.",
           "id": "appointment-return",
-          "observed_at": "2026-11-23T06:24:07Z",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
           "status": "in-progress",
           "title": "Appointment return history help and missed-state parity (3 points)"
         },
         {
-          "evidence": "Independent source increment merged de454757f; first production build and covering Angular1499/86file batch green, recovery/cleanup evidenced. Original screen/sibling/runtime/keyboard/live same-state pair/human review remain; all6AC open, still building.",
+          "evidence": "cb18938ba real family2pass/0fail/1declineskip; exact1280/390same-order pair captured and lead-reviewed. Human verdict, observed full-screen differences and covering batch remain; Safari not run.",
           "id": "integration-proof",
-          "observed_at": "2026-11-23T06:51:21Z",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
           "status": "in-progress",
           "title": "Supported sibling integration and actual same-state pair (2 points)"
         }
@@ -10990,69 +11094,71 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-556",
       "workers": [
         {
-          "expires_at": "2026-11-23T00:41:42.562696+00:00",
+          "expires_at": "2026-11-25T07:09:34.292279+00:00",
           "harness": "codex",
           "id": "01a20553-daae-7f10-944e-1d8cb280ed69",
           "name": "Chester",
-          "observed_at": "2026-11-23T00:16:14.987181+00:00",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
           "role": "story-lead",
           "source": "Active F556 allocation observed through parent dispatch; requested/selected/effective gpt-6.1-sol/xhigh explicit StoryLead override, no fallback; actual identity/title independently verified by parent. Claim1f1080595.",
           "status": "stopped; child422; launcher continues"
         },
         {
-          "expires_at": "2026-11-23T01:26:42.562696+00:00",
+          "expires_at": "2026-11-25T07:09:34.292279+00:00",
           "harness": "codex",
           "name": "usget-vesper launcher",
-          "observed_at": "2026-11-23T00:41:42.562696+00:00",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
           "role": "dispatcher carrying source implementation",
           "source": "Direct work observed in root after child422; primary runtime pair not independently exposed. No substitute model/provider.",
           "status": "active; F556 source checkpoint publication"
+        },
+        {
+          "id": "01a21155-84b2-7871-8d53-5731b6ea34fb",
+          "name": "Egghead Jr",
+          "role": "story-lead",
+          "harness": "codex",
+          "status": "complete; partial handoff",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
+          "expires_at": "2026-11-25T07:09:34.292279+00:00",
+          "source": "Published source and two real connected groups; original pending criteria explicit; requested/selected Sol/high, no fallback."
+        },
+        {
+          "id": "01a21158-dabc-7343-a360-c18b1d041fd9",
+          "name": "Henery Hawk",
+          "role": "mechanic",
+          "harness": "codex",
+          "status": "complete; source reviewed",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
+          "expires_at": "2026-11-25T07:09:34.292279+00:00",
+          "source": "Requested/selected Luna/high, no fallback; both source slices reviewed by lead and164settled Orders/kit cases rerun. No runtime claim."
+        },
+        {
+          "id": "01a21159-b611-78b2-a820-ee12d8aca7b3",
+          "name": "Michigan J. Frog",
+          "role": "runner",
+          "harness": "codex",
+          "status": "complete; read-only inventory",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
+          "expires_at": "2026-11-25T07:09:34.292279+00:00",
+          "source": "Title/result observed; requested/selected Luna/high, no fallback; source-only composition/provider inventory, no runtime/test/edit."
+        },
+        {
+          "id": "01a21161-7aae-77f3-8d53-265acabe1d70",
+          "name": "Grub",
+          "role": "implementer",
+          "harness": "codex",
+          "status": "complete; source review",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
+          "expires_at": "2026-11-25T07:09:34.292279+00:00",
+          "source": "Title/result observed; requested/selected Sol/medium, no fallback; original integration family drafted/refined; syntax only, no runtime."
         }
       ]
     },
     {
       "assignee": "Russell Gowers",
-      "branch": "dev/DEV-2026-11-22-vesper-039",
-      "id": "FUCQ-564",
-      "observed_at": "2026-11-23T12:41:56Z",
-      "original_status": "To Do",
-      "slices": [
-        {
-          "evidence": "Lazy persisted RunAccountClock returns actual scoped UTC milliseconds/version, refuses missing/retired/unreadable clocks; TEST fixed/nonpersistent system retained.38 focused tests + independent source/security review passed. Strict connected proof pending.",
-          "id": "clock-adapter",
-          "observed_at": "2026-11-23T12:41:56Z",
-          "status": "complete",
-          "title": "Persisted account clock selection and failure semantics"
-        },
-        {
-          "evidence": "38 selected tests include real PostgreSQL/OIDC exact account clock reset/advance/newrun/isolation and unavailable/recovery; remaining38 account/recommendation/presenter classes167passed. No failures/skips. Mandatory startup and strict frozen proof still pending.",
-          "id": "clock-regression",
-          "observed_at": "2026-11-23T12:41:56Z",
-          "status": "complete",
-          "title": "Scoped unit and real OIDC PostgreSQL regression"
-        },
-        {
-          "id": "integration-proof",
-          "status": "not-started",
-          "title": "Strict frozen Node Java account and offer proof"
-        },
-        {
-          "id": "review-handoff",
-          "status": "not-started",
-          "title": "Independent review and status reconciliation"
-        }
-      ],
-      "status": "In Progress",
-      "title": "Java account reads wall time instead of the presenter run clock",
-      "type": "Bug",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-564"
-    },
-    {
-      "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-025",
       "id": "FUCQ-550",
-      "observed_at": "2026-11-23T12:28:17Z",
+      "observed_at": "2026-11-25T05:51:12Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -11070,24 +11176,24 @@
           "title": "Shared visibility restore and polling with order announcement"
         },
         {
-          "evidence": "F548 owns unmerged subscribePresenterActions(Document) and successful presenter publication/globalCSS; integration withheld. No copy or no-op hook added.",
+          "evidence": "Canonical F548 presenter/actions integration verified by 186 current focused checks and actual public actions across all five readers in matching scoped compositions. Executed proof 4526da931 and reused cb7e5049a boundaries; no product change. See latest connected Result in _dev/in-progress/DEV-2026-11-22-vesper-025.md.",
           "id": "presenter-integration",
-          "observed_at": "2026-11-22T22:43:30Z",
-          "status": "blocked",
+          "observed_at": "2026-11-25T05:32:53Z",
+          "status": "complete",
           "title": "Shared presenter signal integration"
         },
         {
-          "evidence": "No new connected run authorised; pending F562/F564 prerequisite scope decision and F548/549 integration. Native trigger tests are synthetic source handling only; no actual hidden/BFCache/two-tab proof.",
+          "evidence": "Original validate (trigger/store specs plus two-tab release/update) supports technical AC1–4 across recorded 4526da931/cb7e5049a scopes and matching service/spec evidence. All five readers cover four triggers and actual 29,994-30,004 ms polls. Native hide/BFCache and live asOf-only input remain unexecuted coverage limits, not new gates. Combined human-connected slice stays in progress; AC5 review/shared batch remain. Retained sorrel-f550-20261125/connected-summary.json.",
           "id": "connected-validation",
-          "observed_at": "2026-11-22T22:43:30Z",
-          "status": "blocked",
+          "observed_at": "2026-11-25T05:51:12Z",
+          "status": "in-progress",
           "title": "Real composition refresh validation"
         },
         {
-          "evidence": "Same-state1280px live Node/Java Angular release pair, attachment, human ledger review remain absent; no human matches/intended-change acceptance.",
+          "evidence": "Actual 1280px full-page no-input release pair and frozen account/outbox captured; current-offer chip technical AC4 has exact label/icon/style evidence. Technical AC1–4 are recorded separately; AC5 human publication/review stays unchecked. Preserve recovery banner (cause unknown), scroll reset and frozen two rows versus Angular one (extra renewal-case-update); no whole-outbox equality. Retained browser-4526da931/f550/.",
           "id": "parity-review",
-          "observed_at": "2026-11-22T22:43:30Z",
-          "status": "blocked",
+          "observed_at": "2026-11-25T05:51:12Z",
+          "status": "in-progress",
           "title": "Same-state 1280px evidence and human review"
         }
       ],
@@ -12721,66 +12827,80 @@
       "evidence": "_dev/in-progress/DEV-2026-11-24-001.md Result; .claude/poller/sorrel-f592-20261125/result.json; source 66ea3361475d7524e683090342b79c4da055548e"
     },
     {
-      "assignee": "",
-      "id": "FUCQ-340",
-      "observed_at": "2026-11-25T05:21:19Z",
-      "original_status": "To Do",
-      "status": "In Progress",
-      "title": "Prepare a repeatable second walkthrough where Paula requests an SUV",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-340",
-      "branch": "dev/DEV-2026-11-10-GC-021",
-      "workers": [
-        {
-          "name": "Mary-Sue Walton",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-25T05:21:19.241711+00:00",
-          "expires_at": "2026-11-25T05:21:19.241711+00:00",
-          "source": "Lead completion observation from actual worker reports and owned cleanup; no active F340 work remains in this claim."
-        },
-        {
-          "name": "Marvin the Martian",
-          "harness": "codex",
-          "role": "browser-runner",
-          "observed_at": "2026-11-25T05:21:19.241711+00:00",
-          "expires_at": "2026-11-25T05:21:19.241711+00:00",
-          "source": "Lead completion observation from actual worker reports and owned cleanup; no active F340 work remains in this claim."
-        },
-        {
-          "name": "Scooby Doo",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-25T05:21:19.241711+00:00",
-          "expires_at": "2026-11-25T05:21:19.241711+00:00",
-          "source": "Lead completion observation from actual worker reports and owned cleanup; no active F340 work remains in this claim."
-        },
-        {
-          "name": "Barnyard Dawg",
-          "harness": "codex",
-          "role": "visual-reviewer",
-          "observed_at": "2026-11-25T05:21:19.241711+00:00",
-          "expires_at": "2026-11-25T05:21:19.241711+00:00",
-          "source": "Lead completion observation from actual worker reports and owned cleanup; no active F340 work remains in this claim."
-        }
-      ],
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-22-vesper-039",
+      "id": "FUCQ-564",
+      "observed_at": "2026-11-25T04:35:07Z",
+      "original_status": "In Review",
       "slices": [
         {
-          "id": "preparation",
+          "evidence": "Lazy persisted RunAccountClock returns actual scoped UTC milliseconds/version, refuses missing/retired/unreadable clocks; TEST fixed/nonpersistent system retained.38 focused tests + independent source/security review passed. Strict connected proof pending.",
+          "id": "clock-adapter",
+          "observed_at": "2026-11-23T12:41:56Z",
           "status": "complete",
-          "title": "Bounded SUV inputs and actual run instructions (AC1-3)",
-          "observed_at": "2026-11-25T05:21:19Z",
-          "evidence": "Lead original AC1-3 checks complete: exact whole-window inputs, Node11/11, actual 17d413999 reset/replay evidence, b9086e0a4 manual startup/stop exit0, runbook and independent critique reconciled in DEV-2026-11-10-GC-021 Result. No human acceptance inferred."
+          "title": "Persisted account clock selection and failure semantics"
+        },
+        {
+          "evidence": "38 selected tests include real PostgreSQL/OIDC exact account clock reset/advance/newrun/isolation and unavailable/recovery; remaining38 account/recommendation/presenter classes167passed. No failures/skips. Mandatory startup and strict frozen proof still pending.",
+          "id": "clock-regression",
+          "observed_at": "2026-11-23T12:41:56Z",
+          "status": "complete",
+          "title": "Scoped unit and real OIDC PostgreSQL regression"
+        },
+        {
+          "id": "integration-proof",
+          "status": "complete",
+          "title": "Strict frozen Node Java account and offer proof",
+          "observed_at": "2026-11-25T04:29:20Z",
+          "evidence": "Retained lead registered36e3 F564 boundary passes actual account/clock/car/hold equality with identical semantic inputs and saved identities; 25Nov bounded receipt reconciliation in _dev/done/2026-11/DEV-2026-11-22-vesper-039.md. Current green Java6bd0e93ae and browser6037095d7 cover source merge71078c8ee. No new execution claimed."
+        },
+        {
+          "id": "review-handoff",
+          "status": "complete",
+          "title": "Independent review and status reconciliation",
+          "observed_at": "2026-11-25T04:29:21Z",
+          "evidence": "Existing independent Scrappy Doo source/security verdicts and261 scoped cases reused; dispatcher reconciled original four ACs against retained passing clock boundary and current covering batches on25Nov. Human acceptance/Jira Done not inferred; archive records normal In Review synchronization pending."
+        }
+      ],
+      "status": "In Review",
+      "title": "Java account reads wall time instead of the presenter run clock",
+      "type": "Bug",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-564"
+    },
+    {
+      "id": "FUCQ-593",
+      "title": "Angular Orders shows an empty vehicle summary",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "usget",
+      "branch": "dev/DEV-2026-11-24-sorrel-001",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-593",
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "selected-display",
+          "title": "Selected immutable vehicle display",
+          "status": "complete",
+          "observed_at": "2026-11-25T08:29:49Z",
+          "evidence": "Lead inspected projection and identity/allowlist diff; corrected projection/OIDC HTTP 8/8 plus127 unchanged-boundary Java passes, Angular259/259 and ratchets340/340. Product d8a34ca89 unchanged in final3b6dc7d09; card Result DEV-2026-11-24-sorrel-001. Human parity remains pending."
         },
         {
           "id": "integration",
+          "title": "Connected Orders summary regression",
           "status": "complete",
-          "title": "Reset/replay browser proof and independent rendered critique (AC1-4)",
-          "observed_at": "2026-11-25T05:21:19Z",
-          "evidence": "Lead AC1-4 delivery: 17d413999 real journey5/5 and20 captures reused for exact matching case/composition/product inputs; manual-only b9086e0a4 delta6CLI/default tests and actual OIDC readiness/stop exit0; Barnyard critique/lifecycle PASS. Final merged shared-runner check is explicitly pending in Result; no original AC unmet."
+          "observed_at": "2026-11-25T08:29:49Z",
+          "evidence": "Final3b6dc7d09 registered F556 family2pass/0fail/1native skip; actual saved quote/authenticated manual-order/name+loaded-image DOM equality at1280/390. Lead viewed four pairs; human verdict pending existing MSG-2026-11-25-sorrel-001. Evidence sorrel-f593-20261125/browser-3b6dc7d09-chromium159."
+        },
+        {
+          "id": "parity",
+          "title": "Human Orders pair verdict",
+          "status": "not-started"
         }
-      ]
+      ],
+      "workers": [],
+      "observed_at": "2026-11-25T08:29:49Z"
     }
   ]
 }

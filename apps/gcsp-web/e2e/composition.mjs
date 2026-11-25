@@ -63,7 +63,7 @@ function identity(pid) {
 }
 
 export async function startComposition({ caseId = 'f548', ordering = 'synthetic' } = {}) {
-  assert.ok(['f340', 'f548', 'f552', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain'].includes(caseId));
+  assert.ok(['f340', 'f548', 'f549', 'f550', 'f551', 'f552', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked'].includes(caseId));
   assert.ok(['synthetic', 'rejected', 'unknown-then-rejected'].includes(ordering));
   const scratch = local(process.env.SCRATCH ?? '');
   assert.ok(scratch.startsWith('/private/tmp/'), 'The supervisor must own /private/tmp scratch');
@@ -266,6 +266,24 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       '-Djavax.net.ssl.trustStorePassword=local-test-trust', `-Djava.io.tmpdir=${dirs.tmp}`,
       `-Dquarkus.datasource.jdbc.additional-jdbc-properties.currentSchema=${schema}`, `-Dquarkus.flyway.schemas=${schema}`,
       `-Dquarkus.flyway.default-schema=${schema}`, '-jar', jar];
+    // These existing provider/file selections apply only to the Orders case family.
+    const ordersProviders = caseId.startsWith('f556') ? {
+      GCSP_APPROVALS_PROVIDER: caseId === 'f556-blocked' ? 'none' : 'synthetic',
+      GCSP_DOCUMENTS_PROVIDER: 'synthetic', GCSP_APPOINTMENTS_PROVIDER: 'synthetic', GCSP_RETURNS_PROVIDER: 'synthetic',
+    } : {};
+    const casePolicy = (key, edits) => {
+      const source = readFileSync(path.join(ROOT, 'server/gcsp/policy/seed-v1.json'));
+      const policy = JSON.parse(source); const matches = policy.assumptions.filter((row) => row.key === key);
+      assert.equal(matches.length, 1, 'The existing policy fixture has one canonical assumption');
+      const value = matches[0].value; const changes = Object.entries(edits).map(([field, to]) => ({ field, from: value[field], to }));
+      for (const { field, to } of changes) value[field] = to;
+      const content = JSON.stringify(policy); const file = path.join(dirs.tmp, `${caseId}-policy.json`);
+      writeFileSync(file, content);
+      receipt.policyFixture = { source: 'server/gcsp/policy/seed-v1.json', sourceSha256: sha(source), fixtureSha256: sha(content), key, changes,
+        ownership: 'Case-owned temporary input; removed with composition scratch' };
+      return file;
+    };
+    if (caseId === 'f556') ordersProviders.GCSP_RETURNS_POLICY_FILE = casePolicy('lifecycle.return.outcome.v1', { enabled: true, outcome: 'missed' });
     const apiEnv = {
       PATH: process.env.PATH, HOME: process.env.HOME, JAVA_HOME: javaHome, LANG: 'en_GB.UTF-8',
       QUARKUS_HTTP_SSL_PORT: String(ports.api), QUARKUS_HTTP_INSECURE_REQUESTS: 'disabled',
@@ -284,6 +302,7 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
         GCSP_ORDERING_RECONCILE_URL: `${origins.web}/proof-ordering/reconcile`, GCSP_ORDERING_TOKEN: orderingToken, GCSP_ORDERING_TIMEOUT: '5s' }),
       GCSP_SUPPLY_PROVIDER: 'tranche-plan', GCSP_SUPPLY_TRANCHE_PLAN_FILE: planFile,
       GCSP_ALLOCATION_CANDIDATES_PROVIDER: 'recommendation',
+      ...ordersProviders,
       GCSP_CLAIMS_SWEEP_INTERVAL: '10m', GCSP_NOTIFY_DRAIN_INTERVAL: '10m', GCSP_PUBLIC_BASE_URL: 'https://gcsp-proof.example.test',
     };
     const replayApiEnv = { ...apiEnv, GCSP_RUN_ID: runId };
@@ -527,10 +546,10 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
         fixtureAuthority: 'BuddyJourneySeed initial input pattern; explicit FUCQ-548 parent authorization; no derived state seeded' };
       return actual;
     }
-    async function screenshot(page, name) {
+    async function screenshot(page, name, { fullPage = false } = {}) {
       const destination = path.join(output, `${name}.png`);
-      await page.screenshot({ path: destination, fullPage: false });
-      receipt.screenshots.push({ name, path: destination, viewport: page.viewportSize() });
+      await page.screenshot({ path: destination, fullPage });
+      receipt.screenshots.push({ name, path: destination, viewport: page.viewportSize(), fullPage });
       return destination;
     }
     function readActualHold(offer) {

@@ -1,6 +1,6 @@
 import { AccountFailure, AccountProjection, ContractView, EvidenceRecord } from './account.types';
 
-export interface AccountOffer extends EvidenceRecord { readonly offerId: string; readonly runId: string; readonly state?: string }
+export interface AccountOffer extends EvidenceRecord { readonly offerId: string; readonly runId?: string; readonly state?: string }
 export interface AccountOffers extends EvidenceRecord { readonly offers: readonly AccountOffer[] }
 export interface AccountOrder extends EvidenceRecord {
   readonly orderUuid: string; readonly entitlementSlotId: string; readonly outcome?: string; readonly currentStage?: string;
@@ -28,7 +28,9 @@ const object = (value: unknown): value is Record<string, unknown> => value !== n
 const text = (value: unknown): value is string => typeof value === 'string' && !!value.trim() && !/[\u0000-\u001f\u007f]/.test(value);
 const optionalText = (value: unknown): boolean => value == null || typeof value === 'string';
 export function validOffers(value: unknown): value is AccountOffers {
-  return object(value) && Array.isArray(value['offers']) && value['offers'].every((row) => object(row) && text(row['offerId']) && !['.', '..'].includes(row['offerId']) && text(row['runId']) && optionalText(row['state']));
+  return object(value) && Array.isArray(value['offers']) && value['offers'].every((row) => object(row) && text(row['offerId'])
+    && !['.', '..'].includes(row['offerId']) && (!Object.prototype.hasOwnProperty.call(row, 'runId') || text(row['runId']))
+    && optionalText(row['state']));
 }
 export function validOffer(value: unknown): value is EvidenceRecord & { readonly state: string } { return object(value) && text(value['state']); }
 export function validOrders(value: unknown): value is AccountOrders {

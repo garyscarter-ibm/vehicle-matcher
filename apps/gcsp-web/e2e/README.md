@@ -15,6 +15,14 @@ with `npm --prefix apps/gcsp-web run test:e2e -- --case f555`; repeat `--case f5
 Only those allowlisted names are accepted. The heavy-slot re-exec preserves the selection, and the run receipt
 lists the selected files. A selected run is scoped evidence; it does not stamp the full browser batch.
 
+Select the bounded FUCQ-551 account family with `npm --prefix apps/gcsp-web run test:e2e -- --case f551`.
+One real Main composition checks the held Buddy, current-car styling/image, shared history, drawer focus and
+390px keyboard/layout, then actual Pause/Resume, transport-read failure/recovery and acceptance to finished Buddy.
+It retains full redacted material readbacks and a full-page 1280 Node/Angular held pair before commands mutate
+the brief. Supply the frozen reference below. Account parser states are labelled inferred from uniquely gated
+UI states and actual envelopes. Image framing/dimensions remain distinct; the separate hosted asset probe is
+availability evidence. The pair awaits human review; this local run does not prove a hosted sign-in journey.
+
 ## Manual F340 walkthrough
 
 Run `python3 -B apps/gcsp-web/e2e/run.py --case f340 --manual` with the same pinned Node, installed
@@ -149,3 +157,14 @@ is never installed into or modified. The pending same-offer screenshot pairs rem
 Saved follow-up readbacks retain their actual timestamps; a clock discrepancy is reported, never normalized.
 Five-flow duration and peak allocation must be measured on the final run. The 3 GiB/2 GiB/600-second limits still
 apply; a resource stop leaves the exact incomplete cases visible for a separately bounded continuation.
+
+FUCQ-556 selects the synthetic Orders lifecycle and provider-none blocked approval with `--case f556`; the
+declined connected case is explicitly skipped because its existing file seam lacks a supported composed-policy
+input. It uses actual signed public commands and readbacks for ordering,
+grouped document acknowledgement, keyboard handover booking, no-show/rebooking/history and return outcomes.
+Only this family enables its existing lifecycle providers. Its case-owned return policy copy changes only the
+existing missed-return outcome fields, with source/fixture hashes and deltas in the receipt. The supported return
+seam pins its own file policy version; the approvals seam instead requires the accepted order's composed version.
+The ordering state has one actual frozen Node/Angular pair at 1280 and 390. Proposed-handover connected proof is
+unavailable with the bundled `proposeChange=false` policy and remains an explicit original acceptance gap;
+component proof does not close it. Screenshots still need human review and full suites remain in the shared batch.
