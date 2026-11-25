@@ -24,6 +24,7 @@ async function until(check, message, timeout = 12000) {
 export async function showAdvanced(page) {
   const advanced = page.locator('.gcsp-console-mode');
   if (await advanced.getAttribute('aria-pressed') === 'false') await advanced.click();
+  await until(async () => await advanced.getAttribute('aria-pressed') === 'true', 'Presenter Advanced mode settles after the deliberate click');
   assert.equal(await advanced.getAttribute('aria-pressed'), 'true');
 }
 const sha = (value) => createHash('sha256').update(value).digest('hex');
@@ -68,7 +69,7 @@ function identity(pid) {
 }
 
 export async function startComposition({ caseId = 'f548', ordering = 'synthetic' } = {}) {
-  assert.ok(['f340', 'f548', 'f549', 'f550', 'f551', 'f552', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked', 'f561', 'f520'].includes(caseId));
+  assert.ok(['f340', 'f548', 'f549', 'f550', 'f551', 'f552', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked', 'f561', 'f520', 'f595'].includes(caseId));
   assert.ok(['synthetic', 'rejected', 'unknown-then-rejected'].includes(ordering));
   const scratch = local(process.env.SCRATCH ?? '');
   assert.ok(scratch.startsWith('/private/tmp/'), 'The supervisor must own /private/tmp scratch');
