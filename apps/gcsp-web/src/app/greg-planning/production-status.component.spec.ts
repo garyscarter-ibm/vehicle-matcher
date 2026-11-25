@@ -47,6 +47,20 @@ describe('Production request tracking screen', () => {
     expect(button('Retry release queue')).toBeDefined(); button('Retry release queue').click(); await fixture.whenStable();
     expect(retainedRetry).toHaveBeenCalledOnce();
   });
+  it('shows confirmed supply waiting for its queue date and uses the authoritative date once queued', () => {
+    const value = ordersFixture();
+    const request = value.requests[0];
+    const supply = (request['supplies'] as Record<string, unknown>[])[0];
+    orders.set(parseGregOrders({ ...value, requests: [{ ...request, queuedQuantity: 0,
+      supplies: [{ ...supply, queued: false, eligibleFrom: null }] }] }));
+    fixture.detectChanges();
+    const timing = () => fixture.componentInstance.tableRows()[0].cells['timing'];
+    expect(timing()).toContain('Confirmed: 1 awaiting release queue; arrival date pending');
+    expect(timing()).not.toContain('due Date unavailable');
+    orders.set(parseGregOrders(value)); fixture.detectChanges();
+    expect(timing()).toContain('Confirmed: 1 due 6 Nov 2026');
+    expect(timing()).not.toContain('arrival date pending');
+  });
   it('labels all five distinct server quantity stages and displays actual response history', () => {
     const root = fixture.nativeElement as HTMLElement; const labels = Array.from(root.querySelectorAll('dt')).map(e => e.textContent?.trim());
     expect(labels).toEqual(expect.arrayContaining(['Requested', 'Confirmed', 'Queued for release', 'Released to stock', 'Outstanding']));

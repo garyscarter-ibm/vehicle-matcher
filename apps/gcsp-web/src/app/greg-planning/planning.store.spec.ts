@@ -46,6 +46,20 @@ describe('route-scoped planning state', () => {
     expect(store.canRetryOrder()).toBe(true); await store.refreshProduction(); expect(submitManual).toHaveBeenCalledOnce();
     await store.retryOrder(); expect(submitManual.mock.calls[1][0]).toEqual(original); expect(store.canRetryOrder()).toBe(false);
   });
+  it('keeps a fresh request acknowledgement until authoritative Production state changes', async () => {
+    const confirmed = ordersFixture(); const requested = { ...confirmed, requests: [{ ...confirmed.requests[0],
+      state: 'requested', stage: 'requested', confirmedQuantity: 0, queuedQuantity: 0, outstandingQuantity: 3,
+      supplies: [], history: [], reason: null, delayUntil: null, message: 'Requested. Production has not confirmed any of this yet.' }] };
+    readProduction.mockResolvedValue({ status: 'ok', value: requested }); await store.refreshProduction();
+    await store.requestCars('3 Series Saloon', '320i', '3');
+    expect(store.orderMessage()).toBe('Requested. Production has not confirmed any of this yet.');
+    await store.refreshProduction();
+    expect(store.orderMessage()).toBe('Requested. Production has not confirmed any of this yet.');
+    readProduction.mockResolvedValue({ status: 'ok', value: confirmed }); await store.refreshProduction();
+    expect(store.production()?.requests[0].stage).toBe('Delayed');
+    expect(store.orderOutcome()).toBeNull(); expect(store.orderMessage()).toBe('');
+    expect(submitManual).toHaveBeenCalledOnce(); expect(store.canRetryOrder()).toBe(false);
+  });
   it('retries only saved unqueued confirmation without a new Production request', async () => {
     const value = ordersFixture(); readProduction.mockResolvedValue({ status: 'ok', value: { ...value,
       requests: [{ ...value.requests[0], queuedQuantity: 0, supplies: [{ ...(value.requests[0]['supplies'] as Record<string, unknown>[])[0], queued: false }] }] } });

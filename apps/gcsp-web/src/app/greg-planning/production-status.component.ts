@@ -21,7 +21,8 @@ export class ProductionStatusComponent {
   readonly tableRows = computed<readonly DataTableRow[]>(() => this.store.production()?.requests.map(r => {
     const raw = this.store.orders()?.requests.find(o => o.requestId === r.id);
     const quantity = (label: string) => r.facts.find(f => f.label === label)?.value ?? null;
-    const timing = raw ? [raw.supplies.length ? `Confirmed: ${raw.supplies.map(s => `${s.quantity} due ${this.date(s.eligibleFrom)}`).join('; ')}` : '',
+    const timing = raw ? [raw.supplies.length ? `Confirmed: ${raw.supplies.map(s => s.eligibleFrom
+      ? `${s.quantity} due ${this.date(s.eligibleFrom)}` : `${s.quantity} awaiting release queue; arrival date pending`).join('; ')}` : '',
       raw.delayUntil ? `${raw.outstandingQuantity} delayed until ${this.date(raw.delayUntil)}: ${raw.reason ?? ''}` : ''].filter(Boolean).join('. ') : '';
     return { id: r.id, label: `${r.model} ${r.derivative}`, cells: { car: `${r.model} ${r.derivative}`, stage: r.stage,
       requested: quantity('Requested'), confirmed: quantity('Confirmed'), released: quantity('Released to stock'), timing: timing || r.message || 'Awaiting production response' } };

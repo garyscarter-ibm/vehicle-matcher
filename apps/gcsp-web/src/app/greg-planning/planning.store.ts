@@ -39,7 +39,7 @@ export class PlanningStore {
   private readonly retainedOrder = signal<GregOrderCommand | null>(null);
   readonly orders = computed(() => this.owned() ? this.ordersValue() : null);
   private readonly orderSuccess = signal('');
-  readonly orderMessage = computed(() => { const result = this.orderOutcome(); return result?.status === 'ok' ? this.orderSuccess() : this.failureMessage(failureOf(result)); });
+  readonly orderMessage = computed(() => { const result = this.orderOutcome(); return !result ? '' : result.status === 'ok' ? this.orderSuccess() : this.failureMessage(failureOf(result)); });
   private readonly orderResult = signal<PlanningResult<unknown> | null>(null);
   readonly orderOutcome = computed(() => this.owned() ? this.orderResult() : null);
   readonly orderRetryKind = computed(() => this.owned() ? this.retainedOrder()?.kind ?? null : null);
@@ -80,7 +80,7 @@ export class PlanningStore {
     if (result.status === 'ok') this.orderSuccess.set(command.kind === 'queue' ? 'Confirmed supply queued.'
       : validSubmission(result.value) ? result.value.message : 'Request submitted. Awaiting production response.');
     if (result.status === 'ok' || !['uncertain', 'pending', 'unavailable', 'authentication-required', 'unauthenticated', 'context-changed', 'aborted'].includes(result.status)) this.retainedOrder.set(null);
-    if (result.status === 'ok' || result.status === 'pending') await this.refreshProduction();
+    if (result.status === 'ok' || result.status === 'pending') await this.refreshProduction(true);
   }
   readonly pendingValue = computed(() => {
     const result = this.submission(); const value = result?.status === 'ok' ? result.value : result?.value;
@@ -178,8 +178,8 @@ export class PlanningStore {
     this.planResult.set(result); this.readingPlan.set(false);
     this.staleValue.set(result.status !== 'ok' || !preview && this.hasEdits());
   }
-  async refreshProduction(): Promise<void> { this.refreshEpoch++; await this.readProduction(); }
-  private async readProduction(): Promise<void> {
+  async refreshProduction(preserveOrderNotice = false): Promise<void> { this.refreshEpoch++; await this.readProduction(preserveOrderNotice); }
+  private async readProduction(preserveOrderNotice = false): Promise<void> {
     if (!this.owned() || this.submitting()) return;
     const scope = this.scope(); const epoch = ++this.productionEpoch;
     this.productionAbort.abort(); this.productionAbort = new AbortController(); this.readingProduction.set(true);
@@ -191,6 +191,9 @@ export class PlanningStore {
     const previous = this.production();
     if (previous && (result.status !== 'ok' || previous.fingerprint !== result.value.fingerprint)) {
       this.staleValue.set(true); this.planEpoch++; this.planAbort.abort(); this.readingPlan.set(false);
+      if (result.status === 'ok' && !preserveOrderNotice && this.orderResult()?.status === 'ok' && !this.retainedOrder()) {
+        this.orderResult.set(null); this.orderSuccess.set('');
+      }
     }
     this.ordersValue.set(orders); this.productionResult.set(result); this.readingProduction.set(false);
   }

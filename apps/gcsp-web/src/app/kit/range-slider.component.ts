@@ -1,7 +1,7 @@
 import { Component, computed, effect, input, output, signal } from '@angular/core';
 export type SliderUnit = string | { readonly kind: 'points-monthly' | 'percent' | 'purchase-money'; readonly currency?: string };
 export interface SliderQuestion { readonly id: string; readonly label?: string; readonly min: number; readonly max: number; readonly step: number; readonly default?: number; readonly unit?: SliderUnit; readonly format?: string; readonly plusAtMax?: boolean }
-@Component({ selector: 'gcsp-range-slider', host: { style: 'display: contents' }, template: `
+@Component({ selector: 'gcsp-range-slider', host: { class: 'vm', style: 'display: contents' }, template: `
   <span class="vm-slider-value" aria-hidden="true">{{ readout() }}</span>
   <input class="vm-slider-input vm-slider-single" type="range" [min]="question().min" [max]="question().max" [step]="question().step" [value]="position()" [disabled]="disabled()" [attr.aria-label]="ariaLabel() || question().label || question().id" [attr.aria-valuetext]="readout()" (input)="slide($event)" />
   <div class="vm-slider-bounds"><span class="vm-slider-min">{{ format(question().min, 'confirmed') }}</span><span class="vm-slider-max">{{ format(question().max, 'confirmed') }}</span></div>

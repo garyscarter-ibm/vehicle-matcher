@@ -71,8 +71,20 @@ test('FUCQ-559: intentional planning and role-separated Production responses use
       await greg.locator('gcsp-order-plan').waitFor();
       await greg.locator('.plan-limits > summary').click();
       const slider = greg.locator('gcsp-range-slider input[type="range"]').first(); await slider.waitFor();
+      const paint = await slider.evaluate(input => {
+        const style = getComputedStyle(input); const bounds = input.getBoundingClientRect();
+        return { accent: style.getPropertyValue('--vm-accent').trim(), track: style.getPropertyValue('--vm-line').trim(),
+          surface: style.getPropertyValue('--vm-surface').trim(), width: bounds.width, height: bounds.height };
+      });
+      assert.ok(paint.accent && paint.track && paint.surface, 'The actual range track/thumb resolve the incumbent VM paint tokens');
+      assert.ok(paint.width > 40 && paint.height >= 24, 'The painted range retains its visible hit area');
+      suite.receipt.gregPlanning.sliderPaint = paint;
       const before = await slider.inputValue();
       await slider.fill(before === '0' ? '1' : '0'); await slider.dispatchEvent('input');
+      await slider.focus(); const selected = Number(await slider.inputValue());
+      const delta = selected < Number(await slider.getAttribute('max')) ? 1 : -1;
+      await slider.press(delta === 1 ? 'ArrowRight' : 'ArrowLeft');
+      assert.equal(Number(await slider.inputValue()), selected + delta, 'The visible native range supports a deliberate keyboard step');
       assert.equal(suite.receipt.requests.filter(row => row.method === 'POST').length, startingPostCount,
         'Opening and changing a limit does not publish or request vehicles');
       const preview = await waitPost(greg, '/greg/order-plan/preview', () => greg.getByRole('button', { name: 'Preview changed limits', exact: true }).click());
@@ -113,6 +125,11 @@ test('FUCQ-559: intentional planning and role-separated Production responses use
       commands.push({ operation: 'confirm', response: confirm }); good(confirm, 'Presenter real confirmation');
       states.confirmed = await refresh(suite, greg);
       assert.equal(states.confirmed.requests.find(row => row.requestId === confirmed.requestId).stage, 'confirmed');
+      assert.equal(states.confirmed.requests.find(row => row.requestId === confirmed.requestId).supplies[0].eligibleFrom, null);
+      await greg.getByRole('table', { name: 'Requested, confirmed and released cars', exact: true })
+        .getByText('Confirmed: 1 awaiting release queue; arrival date pending', { exact: true }).waitFor();
+      assert.equal(await greg.getByText('Requested. Production has not confirmed any of this yet.', { exact: true }).count(), 0,
+        'A fresh confirmed projection clears the stale manual-request acknowledgement');
       screenshots.confirmed = await capture(suite, greg, 'production-confirmed');
       await until(() => controls.getByLabel('Request', { exact: true }).isEnabled(), 'Confirmation readback settles');
       await controls.getByLabel('Request', { exact: true }).selectOption(delayed.requestId);
