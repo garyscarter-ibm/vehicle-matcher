@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.10.0"      # first, so the update check finds it within its first lines, ahead of the long docstring
+VERSION = "1.10.1"      # first, so the update check finds it within its first lines, ahead of the long docstring
 __doc__ = """scaffold_git.py -- the one place a scaffolded project runs git for its dev inbox and its team. Vendored into a
 project's `_tools/` by project-scaffolding; a generic port of the Account Corpus's corpus_git.py.
 
@@ -311,7 +311,9 @@ starts with CODEX_, else `unknown`.
                read-only; one tab-separated line: ref name, login, host, harness, expires, `live` or `expired`; `none`.
 Without a remote: claim and release exit 0 with `POLLER <name> (no remote: no lease)`, status prints `none`. Library:
 poller_name(), poller_claim(root, name, ttl=43200, now=None), poller_release(root, name, now=None), poller_status(root,
-name) returning (rc, message); poller_ref(login, name). `leases` adds a fifth column, the poller, whenever any listed
+name) returning (rc, message); poller_ref(login, name). poller_list(root, name=None, now=None) returns
+(rc, message, holders) for live peers, excluding our name when given; no remote returns a message and an empty list.
+`leases` adds a fifth column, the poller, whenever any listed
 lease has one.
 
 Why this file exists
@@ -3053,6 +3055,37 @@ def poller_status(root, name, now=None):
         return 0, "none"
     return 0, "\t".join([ctx["label"]] + [str(h.get(k) or "-") for k in ("login", "host", "harness", "expires")]
                         + ["live" if h["exp"] > now else "expired"])
+
+
+def poller_list(root, name=None, now=None):
+    """(rc, message, holders) for live pollers on this remote, omitting our own lease when name is given.
+    Read-only apart from fetching lease objects; no remote is reported explicitly rather than claiming no peers exist."""
+    try:
+        login, bad = _batch_login(root)
+        if bad:
+            return 2, bad, []
+        own = poller_ref(login, name) if name is not None else None
+        if not _batch_has_remote(root):
+            return 0, POLLER_UNUSED, []
+    except (ValueError, SettingsError) as e:
+        return 2, str(e), []
+    rc, msg, holders = lease_list(root, "poller/")
+    if rc != 0:
+        return rc, msg, []
+    now, peers = _now(now), []
+    for h in holders:
+        expiry = parse_iso(h.get("expires"))
+        if h.get("ref") == own or expiry is None or expiry <= now:
+            continue
+        if not isinstance(h.get("login"), str) or not h["login"]:
+            continue
+        try:
+            if h.get("ref") != poller_ref(h["login"], h.get("poller")):
+                continue
+        except ValueError:
+            continue
+        peers.append(h)
+    return 0, "", sorted(peers, key=lambda h: h["ref"])
 
 
 # ---------------------------------------------------------------- the merge check
