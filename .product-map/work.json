@@ -12913,9 +12913,9 @@
         {
           "id": "policy-binding",
           "title": "Required Main policy adoption, brief binding and recovery",
-          "status": "in-progress",
-          "observed_at": "2026-11-25T20:43:26.243753Z",
-          "evidence": "Code independently reviewed; native scoped validation is running, no pass claimed."
+          "status": "complete",
+          "observed_at": "2026-11-25T20:52:27Z",
+          "evidence": "Independent reviewed source, child142/142 and root31/31 native/OIDC/PostgreSQL passed; partial merge3a072cd99; AC3 strict F561 comparison remains open."
         },
         {
           "id": "integration",
@@ -12931,11 +12931,11 @@
           "name": "Doc Hudson",
           "role": "implementer",
           "observed_at": "2026-11-25T20:43:26.243753Z",
-          "expires_at": "2026-11-25T21:43:26.243753Z",
+          "expires_at": "2026-11-25T20:52:27.646400Z",
           "source": "Root observed native F594 owner chunk launch; requested/selected Sol medium."
         }
       ],
-      "observed_at": "2026-11-25T20:43:26Z"
+      "observed_at": "2026-11-25T20:52:27Z"
     }
   ]
 }
