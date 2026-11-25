@@ -13090,12 +13090,12 @@
     },
     {
       "id": "FUCQ-595",
-      "title": "Remove redundant healthy account recovery and Buddy status panels",
+      "title": "Angular Your cars shows a read-failure note, Retry button and Buddy status panel that Node doesn't",
       "branch": "dev/DEV-2026-11-25-004",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-595",
       "source": "local claimed delivery plan; native tracker observation pending",
       "unsliced": false,
-      "observed_at": "2026-11-25T22:54:53Z",
+      "observed_at": "2026-11-25T23:02:45Z",
       "slices": [
         {
           "id": "account-composition",
@@ -13111,7 +13111,11 @@
           "observed_at": "2026-11-25T22:54:53Z",
           "evidence": "Registered real publicrelease/failure/recovery4/4 and independent1280/375visualreview; originalhumanAC4 blank and dueweb-e2ebatch waiting."
         }
-      ]
+      ],
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Bug"
     }
   ]
 }

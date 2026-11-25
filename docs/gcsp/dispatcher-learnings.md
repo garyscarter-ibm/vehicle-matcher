@@ -3863,3 +3863,8 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 - **Cause/uncertainty:** direct evidence does not establish how Jira interpreted the local-wall-time literal or the parser cause.
 - **Action/outcome:** retained only candidates whose returned ISO timestamps met the cutoff. No reconciliation query or Jira write ran; the normal pull found the same seven in-window issues as the comparison query.
 - **Framework follow-up:** preserve the literal, returned timestamp and UTC cutoff in receipts when auditing a date-boundary mismatch; investigate interpretation before changing the query/parser. No helper change or new gate was applied.
+
+
+### 2026-11-25 23:08 UTC · usget-velko · DL-20261125-VELKO-06 · Rendered-toggle synchronization verified in both compositions
+
+- The isolated showAdvanced bounded wait retained its true-attribute assertion. Registered F595 at6f5c7bed9 passed4/4 after the earlier setup failure; final F559 at04a390410 passed6/6 including actual Presenter confirm/delay. This verifies the observed shared-helper race mitigation in these compositions; it is not a framework-wide resolution. Both final runs dropped their owned DBs, removed scratch and recorded no remaining owned process. Other F559 setup/fault-contract failures have separate diagnosis; no product change was inferred from them.

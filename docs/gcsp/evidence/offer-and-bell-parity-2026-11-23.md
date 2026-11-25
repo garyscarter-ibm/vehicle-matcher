@@ -245,3 +245,20 @@ The two PNG attachments, sizes and native description/AC state were read back on
 | Screen / original criterion | State and viewport | Pair | Verdict | Human reviewer | Date | Source |
 | --- | --- | --- | --- | --- | --- | --- |
 | Presenter — F561 AC7 | Main after first Basic release, 1280×800 | Node attachment `1647708`; Angular attachment `1647709` above | | | | |
+
+
+## Your cars healthy public release — FUCQ-595 AC4 — awaiting human verdict
+
+The new same-state1280 full-page pair comes from actual registered source `6f5c7bed9272e4164722b74e7076a36f3a1fe5c8`, integrated through partial merge `0d4503e36`. The original Paula account tab observes the real public Main release; actual offer/current-detail/account/empty-orders/not-found manual-order readbacks are retained. Frozen Node stays at `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`, with engine-local generated identities.
+
+| Frozen Node | Angular / Java |
+| --- | --- |
+| [node-account-release-1280.png](https://ibm-consulting.atlassian.net/secure/attachment/1647740/node-account-release-1280.png) — attachment `1647740`, 194,734 bytes | [angular-account-release-1280.png](https://ibm-consulting.atlassian.net/secure/attachment/1647741/angular-account-release-1280.png) — attachment `1647741`, 347,789 bytes |
+
+Both omit the two healthy-state regions Gary identified: the false offer/order warning and retry, and the separate Saved status/Reload Buddy panel above Edit preferences. The legitimate held-offer Buddy tile remains. The registered4/4 result separately proves a genuine transport failure and Enter-key recovery at desktop/375; independent rendered review found no in-scope priority issue. These engineering observations do not supply the original human verdict. The pair differs elsewhere in image rendering, the no-orders row and account details; no general pixel-parity claim follows.
+
+Native publication was read back at **2026-11-25T23:02:45Z**: exactly one issue attachment per filename, matching size/MIME. SHA-256 in the retained receipt identifies the uploaded local payload, not a downloaded remote-content hash. One first upload-command response per image was not captured; upload was repeated and only the captured media ID attached. Unattached staging-media status is unverified. Receipt: `.claude/poller/velko-f595-20261125/f595-native-publication-readback-2026-11-25.json`. F595 remains partial/In Progress,3points: AC1–3 evidenced, AC4 and covering shared browser batch open.
+
+| Screen / original criterion | State and viewport | Pair | Verdict | Human reviewer | Date | Source |
+| --- | --- | --- | --- | --- | --- | --- |
+| Your cars — F595 AC4 | Same public-release state,1280-wide full page | Node attachment `1647740`; Angular attachment `1647741` above | | | | |
