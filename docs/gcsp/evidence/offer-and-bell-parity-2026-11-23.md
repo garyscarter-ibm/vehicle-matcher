@@ -1,6 +1,6 @@
 # Offer and bell parity evidence — 23 November 2026
 
-**25 November update:** the combined human review includes the retained Offer (FUCQ-555 AC8) and bell (FUCQ-548 AC6) pairs, Preferences (FUCQ-552 AC7), F549 navigation (AC4) and F550 release/update (AC5). Native F549/F550 issue, comment, filename and attachment-ID pointers appear below; no image copies were added. F549 AC1's control/Activity wording decision remains pending; AC2/3 engineering criteria are met. F550's required human decision is its original release/update pair; the outbox chip comparison is supporting context, not another gate. F562 has since delivered Main reset. Earlier stopped-session/setup notes and retained captures keep their original observation times. All human verdicts remain pending. Combined review thread: `MSG-2026-11-25-sorrel-001`.
+**25 November update:** the combined human review includes the retained Offer (FUCQ-555 AC8) and bell (FUCQ-548 AC6) pairs, Preferences (FUCQ-552 AC7), F549 navigation (AC4), F550 release/update (AC5), and the F551 held-account pair (original AC6). Native issue, comment, filename and attachment-ID pointers appear below; no image copies were added. F549 AC1's control/Activity wording decision remains pending; AC2/3 engineering criteria are met. F550's required human decision is its original release/update pair; the outbox chip comparison is supporting context, not another gate. F562 has since delivered Main reset. Earlier stopped-session/setup notes and retained captures keep their original observation times. All human verdicts remain pending; F551's signed-in hosted journey remains unproved. Combined review thread: `MSG-2026-11-25-sorrel-001`.
 
 The previous wind-down note describes that earlier session; the existing combined thread already points to this artifact. No new review question or thread is created here. No human review or acceptance is claimed, and no Bug is accepted.
 
@@ -103,6 +103,27 @@ The actual public release updated the original open Your cars tab without employ
 
 Engineering evidence at `4526da931` is 5/5 reported tests (four selected groups plus parent); unchanged account/Activity/offer matrices are reused from `cb7e5049a`. This does not claim one full-family green run. The account recovery banner is visible. Its cause was unestablished at this capture; `/manual/order` 404 alone did not establish it. The later F551 diagnosis is recorded separately. The frozen Node outbox has two observed rows versus Angular's one, including an extra historical `renewal-case-update` at 22 November 09:30; its exact pre-release creation boundary was not observed. Only the current-offer chip's label/class/SVG/colour match is established, not full outbox inventory or layout parity. F551 retains the image-source/framing difference for human review and any necessary scoped producer proposal; no framing repair is claimed. F550 AC5 human review remains pending; no acceptance is claimed. These are preserved observations, not added F550 gates.
 
+## F551 — account / held offer — original AC6 — 25 November
+
+The final held-account pair is the original AC6 visual evidence. Native publication is on FUCQ-551, comment `5067309`; no image bytes are copied into this artifact.
+
+| State | Frozen Node | Angular |
+| --- | --- | --- |
+| Held account, 1280-wide (original AC6 pair) | `node-account-held-1280.png` — attachment `1647092` | `angular-account-held-1280.png` — attachment `1647093` |
+
+Supporting Angular captures provide narrow and additional account states only; they are not extra AC6 criteria:
+
+| State | Capture | Native attachment |
+| --- | --- | --- |
+| Held account, 390px | `angular-account-held-390.png` | `1647094` |
+| Paused account | `angular-account-paused-1280.png` | `1647095` |
+| Real read failure and retry | `angular-account-real-read-failure-1280.png` | `1647096` |
+| Finished account | `angular-account-finished-1280.png` | `1647097` |
+
+The final capture source is `1eb11b32356f36f7f7a53842bbe21aa65e74a6f0`; its six registered account groups passed in 24.37 seconds with no console errors. The production source is unchanged since `0a6fdcc30`. Actual evidence shows no false warning in the no-orders state; canonical current-offer rows without `runId` lead to pending detail. Pause returned 200; the subsequent public “Same again” autosave returned 200 and preserved both pause and hold; Resume then returned 200. A real aborted read showed the genuine warning and retry recovered; acceptance returned 200, displayed Finished and verified Track order. Runtime states are inferred from unique UI states and envelopes, without private object inspection.
+
+The Node and Angular captures use different image sources and framing (2560×1646 and 1200×675 respectively); photo-source equivalence is not established. Angular's no-orders line is 52px, and preferences, status and details presentation differ. The signed-in hosted journey remains unproved; the separate current-derived asset GET (200, 40,050 bytes) establishes availability only. F551 stays partial / In Progress. AC6 verdict, reviewer, date and source remain blank; no human parity acceptance or framing fix is claimed.
+
 ## Human verdict ledger
 
 Status: **human review pending; combined review resumed on 25 November.** One response can give a separate verdict for each row. The fields below stay blank until a human collaborator gives a cited verdict: `matches`, `differs: <Bug key>` or `intended change: <cited ruling>`. A described difference can be tracked before closure. Any collaborator has equal authority.
@@ -114,6 +135,7 @@ Status: **human review pending; combined review resumed on 25 November.** One re
 | F549 — AC4 | Greg navigation, same no-new-order outcome, 1280×800 | Greg pair in F549 evidence section | | | | |
 | F549 — AC4 | Employee navigation before preference changes, 1280×800 | Employee pair in F549 evidence section | | | | |
 | F550 — AC5 | Open Your cars tab across public release, 1280-wide full page | Angular before/after plus frozen Node same-release captures in F550 evidence section; outbox pair is supporting chip evidence only | | | | |
+| F551 — AC6 | Held account, 1280-wide | Node attachment `1647092` and Angular attachment `1647093`; supporting states in F551 section | | | | |
 
 
 ## Preferences — F552 AC7 — 25 November review addition
