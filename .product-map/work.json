@@ -11023,44 +11023,6 @@
     },
     {
       "assignee": "Russell Gowers",
-      "branch": "dev/DEV-2026-11-22-vesper-039",
-      "id": "FUCQ-564",
-      "observed_at": "2026-11-23T12:41:56Z",
-      "original_status": "To Do",
-      "slices": [
-        {
-          "evidence": "Lazy persisted RunAccountClock returns actual scoped UTC milliseconds/version, refuses missing/retired/unreadable clocks; TEST fixed/nonpersistent system retained.38 focused tests + independent source/security review passed. Strict connected proof pending.",
-          "id": "clock-adapter",
-          "observed_at": "2026-11-23T12:41:56Z",
-          "status": "complete",
-          "title": "Persisted account clock selection and failure semantics"
-        },
-        {
-          "evidence": "38 selected tests include real PostgreSQL/OIDC exact account clock reset/advance/newrun/isolation and unavailable/recovery; remaining38 account/recommendation/presenter classes167passed. No failures/skips. Mandatory startup and strict frozen proof still pending.",
-          "id": "clock-regression",
-          "observed_at": "2026-11-23T12:41:56Z",
-          "status": "complete",
-          "title": "Scoped unit and real OIDC PostgreSQL regression"
-        },
-        {
-          "id": "integration-proof",
-          "status": "not-started",
-          "title": "Strict frozen Node Java account and offer proof"
-        },
-        {
-          "id": "review-handoff",
-          "status": "not-started",
-          "title": "Independent review and status reconciliation"
-        }
-      ],
-      "status": "In Progress",
-      "title": "Java account reads wall time instead of the presenter run clock",
-      "type": "Bug",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-564"
-    },
-    {
-      "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-025",
       "id": "FUCQ-550",
       "observed_at": "2026-11-23T12:28:17Z",
@@ -12730,6 +12692,48 @@
         }
       ],
       "evidence": "_dev/in-progress/DEV-2026-11-24-001.md Result; .claude/poller/sorrel-f592-20261125/result.json; source 66ea3361475d7524e683090342b79c4da055548e"
+    },
+    {
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-22-vesper-039",
+      "id": "FUCQ-564",
+      "observed_at": "2026-11-25T04:35:07Z",
+      "original_status": "In Review",
+      "slices": [
+        {
+          "evidence": "Lazy persisted RunAccountClock returns actual scoped UTC milliseconds/version, refuses missing/retired/unreadable clocks; TEST fixed/nonpersistent system retained.38 focused tests + independent source/security review passed. Strict connected proof pending.",
+          "id": "clock-adapter",
+          "observed_at": "2026-11-23T12:41:56Z",
+          "status": "complete",
+          "title": "Persisted account clock selection and failure semantics"
+        },
+        {
+          "evidence": "38 selected tests include real PostgreSQL/OIDC exact account clock reset/advance/newrun/isolation and unavailable/recovery; remaining38 account/recommendation/presenter classes167passed. No failures/skips. Mandatory startup and strict frozen proof still pending.",
+          "id": "clock-regression",
+          "observed_at": "2026-11-23T12:41:56Z",
+          "status": "complete",
+          "title": "Scoped unit and real OIDC PostgreSQL regression"
+        },
+        {
+          "id": "integration-proof",
+          "status": "complete",
+          "title": "Strict frozen Node Java account and offer proof",
+          "observed_at": "2026-11-25T04:29:20Z",
+          "evidence": "Retained lead registered36e3 F564 boundary passes actual account/clock/car/hold equality with identical semantic inputs and saved identities; 25Nov bounded receipt reconciliation in _dev/done/2026-11/DEV-2026-11-22-vesper-039.md. Current green Java6bd0e93ae and browser6037095d7 cover source merge71078c8ee. No new execution claimed."
+        },
+        {
+          "id": "review-handoff",
+          "status": "complete",
+          "title": "Independent review and status reconciliation",
+          "observed_at": "2026-11-25T04:29:21Z",
+          "evidence": "Existing independent Scrappy Doo source/security verdicts and261 scoped cases reused; dispatcher reconciled original four ACs against retained passing clock boundary and current covering batches on25Nov. Human acceptance/Jira Done not inferred; archive records normal In Review synchronization pending."
+        }
+      ],
+      "status": "In Review",
+      "title": "Java account reads wall time instead of the presenter run clock",
+      "type": "Bug",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-564"
     }
   ]
 }
