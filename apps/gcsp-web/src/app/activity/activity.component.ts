@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, computed, inject, signal } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { LiveRefreshService } from '../live-refresh.service';
 import { ButtonDirective } from '../kit/button.directive';
 import { ScreenIntroComponent } from '../kit/screen-intro.component';
 import { StatusScreenComponent } from '../kit/status-screen.component';
@@ -82,6 +83,12 @@ export class ActivityComponent implements OnDestroy {
   readonly offerStatus = computed(() => this.currentOffer() ? offerStateLabel(this.currentOffer()!.state) : '');
   readonly offerDeadline = computed(() => respondBy(this.currentOffer()));
 
+  private readonly stopLiveRefresh = inject(LiveRefreshService).subscribe(() => {
+    const view = this.view();
+    if (view.pending || view.retryAvailable || !['ready', 'unavailable'].includes(view.phase)) return;
+    return this.store.refresh();
+  });
+
   async refreshActivity(): Promise<void> {
     const focus = this.focusKey();
     this.localAnnouncement.set('');
@@ -133,7 +140,7 @@ export class ActivityComponent implements OnDestroy {
   isValidTime(value: string): boolean { return Number.isFinite(Date.parse(value)); }
   formatTime(value: string): string { return formatActivityTime(value); }
 
-  ngOnDestroy(): void { this.store.dispose(); }
+  ngOnDestroy(): void { this.stopLiveRefresh(); this.store.dispose(); }
 
   private imageState(): { readonly key: string; readonly index: number; readonly failed: boolean } {
     const key = this.offerImageKey();

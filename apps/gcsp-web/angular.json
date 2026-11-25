@@ -27,10 +27,16 @@
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "assets"
+              },
+              {
+                "glob": "*.webp",
+                "input": "vehicle-evidence",
+                "output": "assets/gcsp-vehicle-evidence",
+                "followSymlinks": true
               }
             ],
             "styles": [
-              "../../blocks/gcsp/shell/gcsp-shell.css",
+              "src/styles/node-gcsp.css",
               "src/styles.css"
             ]
           },

@@ -63,7 +63,7 @@ describe('native employee activity view', () => {
     ] });
   });
 
-  afterEach(() => { TestBed.resetTestingModule(); });
+  afterEach(() => { TestBed.resetTestingModule(); vi.restoreAllMocks(); });
 
   async function mount() {
     const fixture = TestBed.createComponent(ActivityComponent);
@@ -345,4 +345,41 @@ describe('native employee activity view', () => {
     expect(client.readActivity).toHaveBeenCalledTimes(2);
     expect(second.componentInstance.view().projection?.employeeId).toBe(employee.employeeId);
   });
+  it('rereads native visibility changes without using the manual focus path or issuing a command', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    const fixture = await mount(); const focus = vi.spyOn(HTMLElement.prototype, 'focus');
+    document.dispatchEvent(new Event('visibilitychange'));
+    await vi.waitFor(() => expect(client.readActivity).toHaveBeenCalledTimes(2));
+    await fixture.whenStable(); expect(client.command).not.toHaveBeenCalled(); expect(focus).not.toHaveBeenCalled();
+  });
+
+  it('does not replace an in-flight activity read, then resumes on the next native trigger', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    const pending = deferred<ActivityResult<ActivityProjection>>(); client.readActivity.mockReturnValueOnce(pending.promise);
+    const fixture = TestBed.createComponent(ActivityComponent); fixture.detectChanges(); TestBed.flushEffects();
+    document.dispatchEvent(new Event('visibilitychange')); await Promise.resolve(); expect(client.readActivity).toHaveBeenCalledOnce();
+    pending.resolve(ok(projection())); await vi.waitFor(() => expect(fixture.componentInstance.view().phase).toBe('ready'));
+    document.dispatchEvent(new Event('visibilitychange')); await vi.waitFor(() => expect(client.readActivity).toHaveBeenCalledTimes(2));
+  });
+  it('retains a pending or uncertain Buddy response until resolved and never replays its command automatically', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    const fixture = await mount(); const pending = deferred<ActivityResult<unknown>>(); client.command.mockReturnValueOnce(pending.promise);
+    const update = fixture.componentInstance.store.updateBuddy('disengage'); await vi.waitFor(() => expect(client.command).toHaveBeenCalledOnce());
+    document.dispatchEvent(new Event('visibilitychange')); await Promise.resolve(); expect(client.readActivity).toHaveBeenCalledOnce();
+    pending.resolve({ status: 'uncertain' }); await update;
+    document.dispatchEvent(new Event('visibilitychange')); await Promise.resolve();
+    expect(fixture.componentInstance.view().phase).toBe('recovery'); expect(fixture.componentInstance.view().retryAvailable).toBe(true);
+    expect(client.command).toHaveBeenCalledOnce(); expect(client.readActivity).toHaveBeenCalledOnce();
+    client.readActivity.mockResolvedValue(ok(projection({ permission: { searchConsent: false, holdConsent: false, paused: false, permissionVersion: 7, canSearch: false, canHold: false } })));
+    await fixture.componentInstance.store.refresh(); expect(fixture.componentInstance.view().phase).toBe('ready');
+    document.dispatchEvent(new Event('visibilitychange')); await vi.waitFor(() => expect(client.readActivity).toHaveBeenCalledTimes(3));
+    expect(client.command).toHaveBeenCalledOnce();
+  });
+  it('ignores native triggers without employee authority and after its owner is destroyed', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    const fixture = await mount(); state.set({ status: 'signed-out' }); fixture.detectChanges(); TestBed.flushEffects();
+    document.dispatchEvent(new Event('visibilitychange')); await Promise.resolve(); expect(client.readActivity).toHaveBeenCalledOnce();
+    fixture.destroy(); window.dispatchEvent(Object.assign(new Event('pageshow'), { persisted: true })); await Promise.resolve(); expect(client.readActivity).toHaveBeenCalledOnce();
+  });
+
 });

@@ -1,0 +1,245 @@
+{
+  "schema": "gcsp-scoped-human-parity-assets/1",
+  "created_at": "2026-11-23T19:49:38.782479+00:00",
+  "reference_commit": "e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38",
+  "target_commit": "3dd949c27d3022b823f8fc7d7853fe4448a89ed9",
+  "target_tree": "685227e005c5d84d97a0c8c4840b5a65a387af8d",
+  "run": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/web-e2e/web-e2e-20261123-193939-a053c6",
+  "suite_exit": 0,
+  "suite_counts": {
+    "reported": 12,
+    "pass": 12,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "duration_ms": 132167.740125
+  },
+  "case_bindings": {
+    "f548": {
+      "environmentId": "e2e-d54d09ec-eeb",
+      "runId": "demo-baff5c90a74a733e08d5f19c8571af62",
+      "offer": {
+        "orderUuid": "76b834a9-269f-4f4b-b1b0-1361ac211f81",
+        "offerId": "buddy-offer:d05189c656a0b66397b5fcdaca0e1a58dd1594f16012fcfd51a0433551386160",
+        "state": "active",
+        "expiresAt": "2026-11-23T13:30:00.000Z"
+      },
+      "clock": {
+        "now": "2026-11-23T11:30:00.000Z",
+        "clockVersion": 4
+      },
+      "nodeOffer": {
+        "orderUuid": "76b834a9-269f-4f4b-b1b0-1361ac211f81",
+        "offerId": "buddy-offer:0fc82545081f6bc4935a7a80c602d072b48594420d7603fc8c64cc33b9a89ef1",
+        "expiresAt": "2026-11-23T13:30:00.000Z",
+        "state": "active"
+      }
+    },
+    "f555-pending": {
+      "environmentId": "e2e-cd433be5-180",
+      "runId": "demo-baff5c90a74a733e08d5f19c8571af62",
+      "offer": {
+        "orderUuid": "76b834a9-269f-4f4b-b1b0-1361ac211f81",
+        "offerId": "buddy-offer:d05189c656a0b66397b5fcdaca0e1a58dd1594f16012fcfd51a0433551386160",
+        "state": "active",
+        "expiresAt": "2026-11-23T13:30:00.000Z"
+      },
+      "clock": {
+        "now": "2026-11-23T11:30:00.000Z",
+        "clockVersion": 4
+      },
+      "nodeOffer": {
+        "orderUuid": "76b834a9-269f-4f4b-b1b0-1361ac211f81",
+        "offerId": "buddy-offer:0fc82545081f6bc4935a7a80c602d072b48594420d7603fc8c64cc33b9a89ef1",
+        "expiresAt": "2026-11-23T13:30:00.000Z",
+        "state": "active"
+      }
+    }
+  },
+  "human_rows": [
+    {
+      "criterion": "F555 AC8",
+      "screen": "Offer",
+      "state": "Pending held Main X2 offer",
+      "viewport": "1280x800; lower table element capture1136x377",
+      "verdict": null,
+      "reviewer": null,
+      "date": null,
+      "source": null
+    },
+    {
+      "criterion": "F548 AC6",
+      "screen": "Employee notification bell",
+      "state": "Open with one active Main X2 offer",
+      "viewport": "1280x800",
+      "verdict": null,
+      "reviewer": null,
+      "date": null,
+      "source": null
+    }
+  ],
+  "source_image_variants": {
+    "angular": [
+      {
+        "page": "employee",
+        "url": "https://gcsp-web.localhost:7548/assets/gcsp-vehicle-evidence/d22f7324c300a4c654ad6b9014d1e6992525fc7f3cb8e76c60d91a0770f74eb8.webp",
+        "status": 200,
+        "mime": "image/webp",
+        "bytes": 46310,
+        "sha256": "d22f7324c300a4c654ad6b9014d1e6992525fc7f3cb8e76c60d91a0770f74eb8"
+      },
+      {
+        "page": "employee",
+        "url": "https://gcsp-web.localhost:7548/assets/gcsp-vehicle-evidence/d22f7324c300a4c654ad6b9014d1e6992525fc7f3cb8e76c60d91a0770f74eb8.webp",
+        "status": 200,
+        "mime": "image/webp",
+        "bytes": 46310,
+        "sha256": "d22f7324c300a4c654ad6b9014d1e6992525fc7f3cb8e76c60d91a0770f74eb8"
+      },
+      {
+        "page": "employee",
+        "url": "https://gcsp-web.localhost:7548/assets/gcsp-vehicle-evidence/d22f7324c300a4c654ad6b9014d1e6992525fc7f3cb8e76c60d91a0770f74eb8.webp",
+        "status": 200,
+        "mime": "image/webp",
+        "bytes": 46310,
+        "sha256": "d22f7324c300a4c654ad6b9014d1e6992525fc7f3cb8e76c60d91a0770f74eb8"
+      }
+    ],
+    "node": [
+      {
+        "page": "frozen-node",
+        "url": "https://127.0.0.1:55019/api/gcsp/vehicle-images/bmw-display-d22f7324c300a4c654ad.webp",
+        "status": 200,
+        "mime": "image/webp",
+        "bytes": 104690,
+        "sha256": "a5c465ca8af301e07625b24f5b992ed1173fb96457a239cae4399f1f38ef5dca"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "name": "offer--pending--1280--angular.png",
+      "source": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/web-e2e/web-e2e-20261123-193939-a053c6/f555-pending/angular-pending-1280.png",
+      "source_relative": "f555-pending/angular-pending-1280.png",
+      "bytes": 222088,
+      "sha256": "d0bece6f347be77b5accc3f0ab34e702dd5e597203b200a49512d0f9e747ebbb",
+      "file": "offer--pending--1280--angular.png"
+    },
+    {
+      "name": "offer--pending--1280--node.png",
+      "source": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/web-e2e/web-e2e-20261123-193939-a053c6/f555-pending/node-pending-1280.png",
+      "source_relative": "f555-pending/node-pending-1280.png",
+      "bytes": 229925,
+      "sha256": "86c1c56a3c698dbe2fdc034ac96c60f9537d9f23a1a349eda76d3f7f40e43070",
+      "file": "offer--pending--1280--node.png"
+    },
+    {
+      "name": "offer-comparison--pending--1280--angular.png",
+      "source": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/web-e2e/web-e2e-20261123-193939-a053c6/f555-pending/angular-comparison-1280.png",
+      "source_relative": "f555-pending/angular-comparison-1280.png",
+      "bytes": 31599,
+      "sha256": "84c22c104e578b88e37daaa0712fe0d0e36ef28879646e6cb421725ede9e9354",
+      "file": "offer-comparison--pending--1280--angular.png"
+    },
+    {
+      "name": "offer-comparison--pending--1280--node.png",
+      "source": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/web-e2e/web-e2e-20261123-193939-a053c6/f555-pending/node-comparison-1280.png",
+      "source_relative": "f555-pending/node-comparison-1280.png",
+      "bytes": 31599,
+      "sha256": "84c22c104e578b88e37daaa0712fe0d0e36ef28879646e6cb421725ede9e9354",
+      "file": "offer-comparison--pending--1280--node.png"
+    },
+    {
+      "name": "offer--pending--390--angular.png",
+      "source": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/web-e2e/web-e2e-20261123-193939-a053c6/f555-pending/angular-pending-390.png",
+      "source_relative": "f555-pending/angular-pending-390.png",
+      "bytes": 57370,
+      "sha256": "8f2df30ad39a05be220f91af077d7e9fe389c704342eac90d2321c46fcb71012",
+      "file": "offer--pending--390--angular.png"
+    },
+    {
+      "name": "offer--pending--390--node.png",
+      "source": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/web-e2e/web-e2e-20261123-193939-a053c6/f555-pending/node-pending-390.png",
+      "source_relative": "f555-pending/node-pending-390.png",
+      "bytes": 61810,
+      "sha256": "5c2cbca46caa08350ab64f9281a99da838c1073a3f746a912dc28f8742e9b63b",
+      "file": "offer--pending--390--node.png"
+    },
+    {
+      "name": "bell--active-open--1280--angular.png",
+      "source": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/web-e2e/web-e2e-20261123-193939-a053c6/active-open-1280.png",
+      "source_relative": "active-open-1280.png",
+      "bytes": 225400,
+      "sha256": "ea6df79c4b18b643c71bf51582eec0b984ab7fd12cd924cefa76391bfd9812a1",
+      "file": "bell--active-open--1280--angular.png"
+    },
+    {
+      "name": "bell--active-open--1280--node.png",
+      "source": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/web-e2e/web-e2e-20261123-193939-a053c6/node-active-open-1280.png",
+      "source_relative": "node-active-open-1280.png",
+      "bytes": 232362,
+      "sha256": "efe40a3f906711fa7ff09f7dc1303958faee86f3b096944e5b5ef36ac34b78fe",
+      "file": "bell--active-open--1280--node.png"
+    },
+    {
+      "name": "documents--selected--1280--angular.png",
+      "source": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/web-e2e/web-e2e-20261123-193939-a053c6/f555-accept/documents-1280.png",
+      "source_relative": "f555-accept/documents-1280.png",
+      "bytes": 199761,
+      "sha256": "24bdceb4e58c77820ecd2442b8b83a000c548bbf6e6f0b4e4fb9822c6c622449",
+      "file": "documents--selected--1280--angular.png"
+    },
+    {
+      "name": "documents--selected--390--angular.png",
+      "source": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/web-e2e/web-e2e-20261123-193939-a053c6/f555-accept/documents-390.png",
+      "source_relative": "f555-accept/documents-390.png",
+      "bytes": 69343,
+      "sha256": "7d1ef591df661cfa04e4f6c34cd6af654f438ffd5efe94dd138405a9667fd58f",
+      "file": "documents--selected--390--angular.png"
+    },
+    {
+      "name": "activity--saved-followup--390--angular.png",
+      "source": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/web-e2e/web-e2e-20261123-193939-a053c6/f555-decline/saved-followup-activity-390.png",
+      "source_relative": "f555-decline/saved-followup-activity-390.png",
+      "bytes": 102790,
+      "sha256": "a91b84aec2b22b143474b75a26729b04656f3b6e0ad95bb78133f3b392caca34",
+      "file": "activity--saved-followup--390--angular.png"
+    }
+  ],
+  "retained_png_bytes": 1464047,
+  "technical_limits": [
+    "Root audit verified suite exit0, all19 owned process identities/groups and owner absent, native database/registry/scratch/reservations absent, shared PostgreSQL retained; lease released.",
+    "Human F555 AC8 and F548 AC6 remain pending; original acceptance boxes unchanged.",
+    "Covering WEB/Node/Java outcomes remain root-owned and pending.",
+    "Main screenshots stop above the highlight card bodies; table crops exclude them. Runtime DOM equality and retained matching component/style evidence cover content/emphasis and empty state; no new final highlight screenshot was visually inspected.",
+    "Actual 57-item equipment text equality, keyboard open/tab/Escape/focus passed; no final equipment-tab screenshot was retained.",
+    "Track-order, refused-support and expired-Activity screenshots are transient route arrivals; no whole destination-screen acceptance. Saved-followup Activity is settled with explicit HTTP200/readback.",
+    "F548 lifecycle evidence includes actual polling and synthetic visible/pageshow handlers; actual hidden-to-visible and BFCache restoration/Safari remain unproved.",
+    "Named Main reset F562 remains unavailable; exact immutable initial-input setup and real derived services used under existing ruling. F563 predecessor metadata exception remains narrow and unrepaired.",
+    "F566 inherited375 off-left bell clipping is a separate Bug; no containment gate added.",
+    "Permitted breadcrumb and approved registered image variants/framing remain explicit for human review."
+  ],
+  "covering_batches": {
+    "WEB": {
+      "state": "GREEN",
+      "tests": 1948,
+      "spec_files": 117,
+      "fresh_disjoint_chunks": 12,
+      "source": "3dd949c27d3022b823f8fc7d7853fe4448a89ed9",
+      "audit": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/f555-completion-20261123/batch-web/root-final-reconciliation-3dd949c27.json",
+      "audit_sha256": "c0de5423d6d606ec6f2f10569f21adf4a5d6d10d058b940c6589c2c9c5444e92",
+      "variant": "Shared linked dependency install; not fresh npm ci",
+      "owned_resources_absent": true
+    },
+    "Node": {
+      "state": "in progress; observed RED in chunks1,2,4; final inventory/classification pending",
+      "observation_source": "Root run status; exact failure-to-disposition audit pending",
+      "boundary": "No repair/reopen/waiver inferred; existing human supersession/retirement decisions retained."
+    },
+    "Java": {
+      "state": "pending root batch"
+    }
+  },
+  "review_receipt_sha256": "1c0661ef00b7df4309709f511e79f7a784ff221ac80cf51ed7becc344880ab6f"
+}

@@ -49,7 +49,7 @@ test('a retained real image augments lookup after restart without changing the p
   const details = await createConfiguredVehicleDetails({ lookup }).resolve({ kind: 'configuration', id: configurationId });
   assert.equal(details.status, 'complete', JSON.stringify(details));
   assert.equal(details.vehicle.images.state, 'representative');
-  assert.equal(details.vehicle.images.items[0].asset, image.asset);
+  assert.equal(details.vehicle.images.items[0].asset, 'assets/gcsp-vehicle-evidence/96de56594ba2a3ae7ba4822bef2298831b27ee9db831c680d163ae0d68422b82.webp');
   assert.equal(details.vehicle.images.items[0].label, 'Representative configuration image');
   assert.equal(details.vehicle.source.productionDate, null);
   const audit = await verifyActiveFleet({ root: store, requiredDistinct: 1, offline: true, ...approved });

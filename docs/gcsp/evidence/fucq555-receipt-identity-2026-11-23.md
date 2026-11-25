@@ -1,0 +1,9 @@
+# F555 command receipt identity repair — 23 November 2026
+
+The first real registered composition at36e3e896 exposed a valid480-character configuration ID accepted by ordinary offer reads but rejected by commandHandoff's separate128-character bound. The accepted command and later real reconciliation therefore displayed an unconfirmed decision. The repair removes only that explicit128 argument, reusing the existing2048 text contract. Exact quote/stock/order identity, authority/version/progress checks, order UUID bound and total receipt-size limit remain.
+
+Six read-to-receipt regressions failed before the one-line repair (28other client cases passed), then all34client cases passed. Six new cases cover480/2048 characters across acknowledged, pending and failed handoffs. Three negative cases retain refusal above2048 and on stock/order identity mismatch, with no replay. Screen122 and InteractionStore35 affected caller cases also pass:191distinct final scoped cases. No full suite, browser or backend change is claimed.
+
+Daffy Duck implemented at requested/selectedSol/medium. Spike independently reviewed the exact two-file delta and relevant client/caller/Java producer contracts atSol/high: source/specification/security passed, no actionable findings; no fallback. Parent verified source/spec hashes and all three scratch roots/groups absent. Peak measured RSS2,225,405,952bytes and scratch12,616,736bytes; shared dependencies retained, no OneDrive access.
+
+Local evidence: .claude/test-runs/f555-completion-20261123/daffy-receipt/{summary.json,root-audit.json}. F555 remains In Progress, all eight original ACs open. Corrected connected composition, remaining backend comparison scope, actual pairs, covering batches and human parity verdict remain outstanding. The first RED browser result is retained in batch-web-e2e-2026-11-23-1357.md.

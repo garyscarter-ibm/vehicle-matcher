@@ -1,5 +1,5 @@
 <section class="planning-page" aria-labelledby="planning-title" [attr.aria-busy]="store.planBusy()">
-  <div class="planning-heading"><gcsp-screen-intro title="Next order" />
+  <div class="planning-heading"><gcsp-screen-intro title="Next order" [level]="headingLevel()" />
     @if (store.access() === 'ready') { <button gcspButton variant="ghost" type="button" [disabled]="store.planBusy() || store.submitting()" (click)="replan()">Replan with the latest inputs</button> }
   </div>
   <span id="planning-title" class="visually-hidden">Order planning</span>

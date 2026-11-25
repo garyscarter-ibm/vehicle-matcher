@@ -222,6 +222,8 @@ public class OfferFollowups {
             String previousNumber;
             String nextNumber;
             String clockVersion;
+            String previousSlot;
+            String nextSlot;
             try (Connection c = sources.get().getConnection()) {
                 Object[] a = quote(c, p, previousView.get().quote().quoteId());
                 Object[] b = quote(c, p, nextView.get().quote().quoteId());
@@ -236,14 +238,17 @@ public class OfferFollowups {
                 previousNumber = (String) a[1];
                 nextQuote = (JsonNode) b[0];
                 nextNumber = (String) b[1];
+                previousSlot = (String) a[3];
+                nextSlot = (String) b[3];
                 clockVersion = Long.toString(clock);
                 Instant quoted = nextView.get().quote().quotedAt();
                 // quotedAt is run time, confirmedAt wall time, so only the pinned brief version ties the quote to the brief.
-                if (!(Boolean) b[2] || quoted == null || quoted.isAfter(s.now())) return no;
+                if (!(Boolean) a[2] || !(Boolean) b[2] || quoted == null || quoted.isAfter(s.now())) return no;
             }
             ObjectNode previous = FollowupComparison.offer(previousView.get(), p.runId(), clockVersion, s.decision().decisionId(),
-                    previousQuote, previousNumber);
-            ObjectNode next = FollowupComparison.offer(nextView.get(), p.runId(), clockVersion, null, nextQuote, nextNumber);
+                    previousQuote, previousNumber, new CurrentCarComparison.Owner(p.environmentId(), p.runId(), p.employeeId(), previousSlot));
+            ObjectNode next = FollowupComparison.offer(nextView.get(), p.runId(), clockVersion, null, nextQuote, nextNumber,
+                    new CurrentCarComparison.Owner(p.environmentId(), p.runId(), p.employeeId(), nextSlot));
             JsonNode config = assumption(p, s.now(), BriefAssumptions.RECOMMENDATION).path("value");
             if (previous == null || next == null) return no;
             ObjectNode comparison = FollowupComparison.build(previous, next, current, config);
@@ -263,12 +268,12 @@ public class OfferFollowups {
 
     /** The pinned quote json and the car's order number, with whether the quote belongs to this employee. */
     private static Object[] quote(Connection c, Principal p, String quoteId) throws SQLException {
-        return OfferDecisions.one(c, "SELECT q.quote::text, k.attributes->>'orderNumber', q.employee_id = ? FROM buddy_quotes q "
+        return OfferDecisions.one(c, "SELECT q.quote::text, k.attributes->>'orderNumber', q.employee_id = ?, q.slot_id FROM buddy_quotes q "
                 + "JOIN stock_cars k ON k.environment_id = q.environment_id AND k.run_id = q.run_id AND k.order_uuid = q.order_uuid "
                 + "WHERE q.environment_id = ? AND q.run_id = ? AND q.quote_id = ?", rs -> {
                     try {
                         return new Object[] {new com.fasterxml.jackson.databind.ObjectMapper().readTree(rs.getString(1)),
-                            rs.getString(2), rs.getBoolean(3)};
+                            rs.getString(2), rs.getBoolean(3), rs.getString(4)};
                     } catch (java.io.IOException e) {
                         throw new SQLException("Stored quote is unreadable");
                     }

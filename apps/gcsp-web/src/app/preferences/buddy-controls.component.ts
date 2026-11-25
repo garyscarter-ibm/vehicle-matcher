@@ -17,13 +17,13 @@ let sequence = 0;
     @if (disabledReason()) { <p class="gcsp-note">{{ disabledReason() }}</p> }
     <p #status class="buddy-status" role="status" aria-live="polite" aria-atomic="true" tabindex="-1" [attr.aria-busy]="pendingAction() ? 'true' : null">{{ message() || defaultMessage() }}</p>
     <div class="gcsp-actions">
-      @if (buddy()?.state === 'engaged') {
+      @if (!buddyControls() && buddy()?.state === 'engaged') {
         <button gcspButton variant="ghost" type="button" [disabled]="!!disabledReason() || !!pendingAction()" (click)="run('pauseSearch')">Pause search</button>
         <button gcspButton variant="ghost" type="button" [disabled]="!!disabledReason() || !!pendingAction()" (click)="run('disengage')">Disengage Buddy</button>
-      } @else if (buddy()?.state === 'disengaged' && buddy()?.reason === 'paused') {
+      } @else if (!buddyControls() && buddy()?.state === 'disengaged' && buddy()?.reason === 'paused') {
         <button gcspButton type="button" [disabled]="!!disabledReason() || !!pendingAction()" (click)="run('resumeSearch')">Resume search</button>
         <button gcspButton variant="ghost" type="button" [disabled]="!!disabledReason() || !!pendingAction()" (click)="run('disengage')">Disengage Buddy</button>
-      } @else if (buddy()?.state === 'disengaged') {
+      } @else if ((!buddyControls() || !disabledReason()) && buddy()?.state === 'disengaged' && buddy()?.reason !== 'paused') {
         <button gcspButton type="button" [disabled]="!!disabledReason() || !!pendingAction()" (click)="run('engage')">Engage Buddy</button>
       }
       @if (canRetry()) { <button gcspButton type="button" [disabled]="!!pendingAction()" (click)="retry()">Retry the same request</button> }
@@ -32,6 +32,7 @@ let sequence = 0;
   </section>
 ` })
 export class BuddyControlsComponent {
+  readonly buddyControls = input(false);
   readonly id = input(`buddy-controls-${++sequence}`);
   readonly buddy = input<BuddyView | null>(null);
   readonly disabledReason = input('');

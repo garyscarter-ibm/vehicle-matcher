@@ -52,7 +52,7 @@ public class ReturnResource {
         Response early = unsupportedQuery(uri, Set.of("orderUuid"));
         if (early != null) return early;
         String orderUuid = uri.getQueryParameters().getFirst("orderUuid");
-        return serve(principal, (plans, scope) -> mapped(plans.read(scope, caller(principal), orderUuid)));
+        return serve(principal, (plans, scope) -> mapped(plans.read(scope, reader(principal), orderUuid)));
     }
 
     @POST
@@ -118,6 +118,11 @@ public class ReturnResource {
     }
 
     // ---- shared steps ----
+
+    private static ReturnPlans.Caller reader(Principal p) {
+        if (p.roles().contains(Role.GREG.wire())) return ReturnPlans.Caller.greg();
+        return caller(p);
+    }
 
     private static ReturnPlans.Caller caller(Principal p) {
         if (p.roles().contains(Role.EMPLOYEE.wire())) return ReturnPlans.Caller.employee(p.employeeId());

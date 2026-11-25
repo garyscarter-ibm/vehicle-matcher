@@ -1,5 +1,6 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthPort, SessionState } from '../auth/auth.port';
 import { PORTAL_FETCH, RuntimeConfigService, RuntimePublicConfig } from '../auth/runtime-config';
@@ -59,7 +60,7 @@ describe('preferences screen over the Java brief goldens', () => {
       if (!next) return new Response(JSON.stringify({ status: 'not-found', code: 'route-not-found' }), { status: 404 });
       return new Response(JSON.stringify(next.body), { status: next.status, headers: { 'Content-Type': 'application/json' } });
     });
-    TestBed.configureTestingModule({ providers: [
+    TestBed.configureTestingModule({ providers: [provideRouter([]),
       { provide: AuthPort, useValue: { state, recovery: signal(null), getAccessToken: async () => (state().status === 'ready' ? TOKEN : null), signIn: vi.fn(), retry: vi.fn() } },
       { provide: RuntimeConfigService, useValue: { load: async () => config } },
       { provide: PORTAL_FETCH, useValue: fetcher }] });
@@ -142,6 +143,8 @@ describe('preferences screen over the Java brief goldens', () => {
     const readback = value('editor-confirmed')['initial'];
     expect(status(fixture)).toBe(`Your preferences were confirmed. Showing saved version ${readback['briefVersion']}.`);
     expect(note(fixture)).toBe(`Your saved preferences · Version ${readback['briefVersion']}`);
+    const activity = Array.from(root(fixture).querySelectorAll<HTMLAnchorElement>('a')).find((link) => link.textContent?.trim() === 'See your buddy at work');
+    expect(activity?.getAttribute('href')).toBe('/activity');
     expect(root(fixture).querySelector<HTMLInputElement>('input[name=buddy-engagement]')!.checked).toBe(true);
     expect(root(fixture).textContent).not.toMatch(/\bEligible\b|Not eligible/);
     ownedRequests();

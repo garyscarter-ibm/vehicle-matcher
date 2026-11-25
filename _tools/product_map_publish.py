@@ -245,22 +245,30 @@ jobs:
 ''' % (json.dumps(branch), json.dumps(base), shlex.quote('+refs/heads/*:refs/remotes/' + remote + '/*'), shlex.quote(site_dir))
 
 
+IBM_GITHUB_HOSTS = ('ibm.ghe.com', 'github.ibm.com')
+
+
 def ibm_repository(remote):
-    """Accept only ordinary IBM remotes with credential-free, safe paths."""
+    """Accept only ordinary IBM remotes with credential-free, safe paths.
+
+    Returns (host, 'owner/repo') so the Pages request goes to the host that serves the remote, or None.
+    """
+    hosts = '(' + '|'.join(re.escape(h) for h in IBM_GITHUB_HOSTS) + ')'
     match = re.fullmatch(
-        r'(?:https://github\.ibm\.com/|git@github\.ibm\.com:|ssh://git@github\.ibm\.com(?::22)?/)'
+        r'(?:https://' + hosts + r'/|git@' + hosts + r':|ssh://git@' + hosts + r'(?::22)?/)'
         r'([A-Za-z0-9][A-Za-z0-9-]*)/([A-Za-z0-9_][A-Za-z0-9_.-]*)/?', remote)
     if not match:
         return None
-    owner, repository = match.groups()
+    host = next(h for h in match.groups()[:3] if h)
+    owner, repository = match.groups()[3:]
     if repository.endswith('.git'):
         repository = repository[:-4]
     if not repository or repository in ('.', '..'):
         return None
-    return owner + '/' + repository
+    return host, owner + '/' + repository
 
 
-def request_pages_build(root, repository):
+def request_pages_build(root, repository, host='ibm.ghe.com'):
     """Best effort after publication; never expose API bodies or credentials."""
     client = shutil.which('gh')
     fallback = Path.home() / '.claude-tools/bin/gh'
@@ -270,7 +278,7 @@ def request_pages_build(root, repository):
         print('WARN Product map: Pages build was not requested; gh is unavailable', file=sys.stderr)
         return
     try:
-        result = subprocess.run([client, 'api', '--hostname', 'github.ibm.com', '--method', 'POST',
+        result = subprocess.run([client, 'api', '--hostname', host, '--method', 'POST',
                                  'repos/' + repository + '/pages/builds'], cwd=str(root),
                                 capture_output=True, timeout=15)
         if result.returncode:
@@ -309,9 +317,9 @@ def reference_transaction(args, data):
                 break
         if not changed:
             return
-        repository = ibm_repository(run(root, ['remote', 'get-url', remote]))
-        if repository:
-            request_pages_build(root, repository)
+        parsed = ibm_repository(run(root, ['remote', 'get-url', remote]))
+        if parsed:
+            request_pages_build(root, parsed[1], parsed[0])
     except (OSError, ValueError, TypeError, subprocess.SubprocessError):
         # The remote operation has already succeeded. Publication must not turn
         # its local tracking-ref notification into an apparent push failure.

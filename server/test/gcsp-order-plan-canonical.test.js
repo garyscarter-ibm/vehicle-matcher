@@ -195,12 +195,14 @@ test('a confirmed inbound row reduces the new-order quantity', async () => {
   assert.equal(quantity(released, TOURING), 1);
 });
 
-test('the untouched seeded demo employee reaches a plan via the slot renewal, gated driver-unconfirmed', async () => {
+test('the untouched seeded employee has a confirmed driver and a lead-time-blocked plan via the slot renewal', async () => {
   const f = await fixture({ seeded: true, stampRenewal: false });
   const plan = await f.planFor();
   assert.equal(plan.status, 'feasible'); assert.equal(plan.orderQuantity, 0);
   assert.deepEqual([plan.expectedAcceptableCoverage.covered, plan.expectedAcceptableCoverage.total], [0, 1]);
   assert.equal(plan.unmetNeeds.length, 1);
-  assert.ok(plan.unmetNeeds[0].gates.includes('driver-unconfirmed'), JSON.stringify(plan.unmetNeeds));
-  assert.ok(plan.unmetNeeds[0].gates.includes('no-permitted-acceptable-choice'));
+  assert.ok(!plan.unmetNeeds[0].gates.includes('driver-unconfirmed'), JSON.stringify(plan.unmetNeeds));
+  assert.ok(!plan.unmetNeeds[0].gates.includes('no-permitted-acceptable-choice'));
+  assert.ok(plan.unmetNeeds[0].gates.includes('acceptable-supply-scarcity'));
+  assert.deepEqual(plan.unmetNeeds[0].constraintIds, [`lead-time-before-renewal:${TOURING}`]);
 });

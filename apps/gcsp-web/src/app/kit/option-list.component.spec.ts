@@ -18,13 +18,14 @@ class Host {
   submits = 0;
 }
 
-async function render(value: string | null = '', options = choices, disabled = false) {
+async function render(value: string | null = '', options = choices, disabled = false, variant: 'default' | 'rows' = 'default') {
   const fixture = TestBed.createComponent(OptionListComponent);
   fixture.componentRef.setInput('groupId', 'series');
   fixture.componentRef.setInput('label', 'Series');
   fixture.componentRef.setInput('options', options);
   fixture.componentRef.setInput('value', value);
   fixture.componentRef.setInput('disabled', disabled);
+  fixture.componentRef.setInput('variant', variant);
   const emitted: string[] = [];
   fixture.componentInstance.valueChange.subscribe(next => emitted.push(next));
   await fixture.whenStable();
@@ -39,6 +40,57 @@ function key(button: HTMLButtonElement, value: string) {
 }
 
 describe('OptionListComponent', () => {
+  it('keeps optional required/invalid semantics absent for existing callers', async () => {
+    const { fixture } = await render(); const group = fixture.nativeElement.querySelector('[role="radiogroup"]') as HTMLElement;
+    expect(group.hasAttribute('aria-required')).toBe(false); expect(group.hasAttribute('aria-invalid')).toBe(false);
+  });
+  it.each(['required', 'invalid'])('exposes caller-owned %s semantics on the actual radio group without changing its value or focus', async name => {
+    const { fixture, emitted, buttons } = await render('estate', choices, false, 'rows');
+    const group = fixture.nativeElement.querySelector('[role="radiogroup"]') as HTMLElement; buttons()[2].focus();
+    fixture.componentRef.setInput(name, true); await fixture.whenStable(); expect(group.getAttribute(`aria-${name}`)).toBe('true');
+    fixture.componentRef.setInput(name, false); await fixture.whenStable(); expect(group.getAttribute(`aria-${name}`)).toBe('false');
+    fixture.componentRef.setInput(name, undefined); await fixture.whenStable(); expect(group.hasAttribute(`aria-${name}`)).toBe(false);
+    expect(document.activeElement).toBe(buttons()[2]); expect(fixture.componentInstance.value()).toBe('estate'); expect(emitted).toEqual([]);
+  });
+  it('ports source single-select rows with supplied labels, zero counts and exact state classes', async () => {
+    const { fixture, emitted, buttons } = await render('old', choices, false, 'rows');
+    const group = fixture.nativeElement.querySelector('[role="radiogroup"]') as HTMLElement;
+    expect(group.className).toBe('vm-options vm-options-rows');
+    expect(group.getAttribute('aria-label')).toBe('Series'); expect(group.id).toBe('series');
+    expect(Array.from(group.querySelectorAll('.vm-option-label'), node => node.textContent)).toEqual(choices.map(option => option.label));
+    expect(Array.from(group.querySelectorAll('.vm-option-sub'), node => node.textContent)).toEqual(['12 cars', '2 cars', '0 cars']);
+    expect(buttons().every(button => button.classList.contains('vm-option') && !button.classList.contains('gcsp-option') && button.type === 'button')).toBe(true);
+    expect(buttons()[3].classList.contains('is-selected')).toBe(true); expect(buttons()[3].getAttribute('aria-checked')).toBe('true');
+    expect(buttons()[1].disabled).toBe(true); expect(emitted).toEqual([]);
+  });
+
+  it('keeps source row intent controlled and skips disabled choices during keyboard navigation', async () => {
+    const { fixture, emitted, buttons } = await render('estate', choices, false, 'rows');
+    buttons()[1].dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    expect(key(buttons()[1], 'ArrowRight').defaultPrevented).toBe(false); expect(emitted).toEqual([]);
+    buttons()[2].focus(); expect(key(buttons()[2], 'End').defaultPrevented).toBe(true);
+    expect(document.activeElement).toBe(buttons()[3]); expect(emitted).toEqual(['old']);
+    expect(buttons()[2].getAttribute('aria-checked')).toBe('true'); expect(buttons()[3].getAttribute('aria-checked')).toBe('false');
+    fixture.componentRef.setInput('value', 'old'); await fixture.whenStable();
+    expect(buttons()[3].getAttribute('aria-checked')).toBe('true'); expect(emitted).toEqual(['old']);
+    fixture.componentRef.setInput('disabled', true); await fixture.whenStable();
+    expect(buttons().every(button => button.disabled && button.tabIndex === -1)).toBe(true);
+    expect(key(buttons()[3], 'Home').defaultPrevented).toBe(false); expect(emitted).toEqual(['old']);
+  });
+
+  it('switches source and default presentation without replacing buttons, focus or controlled selection', async () => {
+    const { fixture, emitted, buttons } = await render('estate'); const touring = buttons()[2]; touring.focus();
+    const group = fixture.nativeElement.querySelector('[role="radiogroup"]') as HTMLElement;
+    expect(group.className).toBe('gcsp-options');
+    fixture.componentRef.setInput('variant', 'rows'); await fixture.whenStable();
+    expect(group.className).toBe('vm-options vm-options-rows'); expect(buttons()[2]).toBe(touring); expect(document.activeElement).toBe(touring);
+    expect(touring.querySelector('.vm-option-label')?.textContent).toBe('Touring'); expect(touring.getAttribute('aria-checked')).toBe('true');
+    fixture.componentRef.setInput('variant', 'default'); await fixture.whenStable();
+    expect(group.className).toBe('gcsp-options'); expect(buttons()[2]).toBe(touring); expect(document.activeElement).toBe(touring);
+    expect(touring.classList.contains('gcsp-option')).toBe(true); expect(touring.classList.contains('vm-option')).toBe(false);
+    expect(touring.querySelector('.gcsp-option-sub')?.textContent).toBe('2 cars'); expect(emitted).toEqual([]);
+  });
+
   it('names its group, renders count labels and native button radios', async () => {
     const { fixture, emitted, buttons } = await render('old');
     const group = fixture.nativeElement.querySelector('[role="radiogroup"]');

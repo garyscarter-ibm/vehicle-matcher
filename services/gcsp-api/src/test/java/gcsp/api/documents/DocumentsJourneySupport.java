@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import gcsp.api.account.StockDbFixture;
+import gcsp.api.appointments.ReturnJourneySteps;
 import gcsp.api.persistence.Persistence;
 import io.agroal.api.AgroalDataSource;
 import io.restassured.response.Response;
@@ -125,8 +126,9 @@ final class DocumentsJourneySupport {
     String placeOrder(String who, String taken) throws Exception {
         JsonNode account = body(as(who).get(BASE + "/manual/account")).get("value");
         assertEquals("ready", account.get("state").asText());
-        String draft = StockDbFixture.complete().toString().replace("paula", who).replace("Paula Mason", who)
-                .replace("2026-11-12", "2026-11-30");
+        ObjectNode choices = (ObjectNode) JSON.readTree(StockDbFixture.complete().toString()
+                .replace("paula", who).replace("Paula Mason", who));
+        String draft = ReturnJourneySteps.withCollectionDate(account, choices).toString();
         Response saved = as(who).body("{\"commandId\":\"draft-" + id() + "\",\"expectedDraftVersion\":0,"
                 + "\"expectedContextVersion\":\"" + account.get("contextVersion").asText() + "\",\"choices\":" + draft + "}")
                 .post(BASE + "/manual/draft");

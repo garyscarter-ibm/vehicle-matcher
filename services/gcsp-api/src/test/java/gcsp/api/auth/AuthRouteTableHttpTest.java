@@ -3,6 +3,7 @@ package gcsp.api.auth;
 import static gcsp.api.auth.AuthSupport.API;
 import static gcsp.api.auth.AuthSupport.call;
 import static gcsp.api.auth.AuthSupport.code;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -32,7 +33,7 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/** FUCQ-455 AC1: every registered JAX-RS route refuses no bearer with 401 and a wrong role with 403, over real RS256 JWTs. */
+/** FUCQ-455 protects the API over real RS256 JWTs; FUCQ-532 adds the optional public demo issuer entry routes. */
 @QuarkusTest
 @TestProfile(AuthRouteTableProfile.class)
 class AuthRouteTableHttpTest {
@@ -44,6 +45,16 @@ class AuthRouteTableHttpTest {
 
     /** Route (METHOD plus full path template) to the roles allowed, taken from each resource's requireAnyRole calls. */
     private static final Map<String, Set<String>> TABLE = new TreeMap<>();
+
+    /** Entry points used before bearer acquisition; the issuer remains off unless explicitly enabled. */
+    private static final Set<String> PUBLIC_ISSUER = Set.of(
+            "GET /demo-idp/.well-known/openid-configuration",
+            "GET /demo-idp/jwks",
+            "GET /demo-idp/demo-idp.css",
+            "GET /demo-idp/authorize",
+            "POST /demo-idp/authorize",
+            "POST /demo-idp/token",
+            "GET /demo-idp/end-session");
 
     private static void allow(String methodAndPaths, String... roles) {
         String[] parts = methodAndPaths.split(" ", 2);
@@ -173,13 +184,25 @@ class AuthRouteTableHttpTest {
     @Test
     void theTableMatchesTheRegisteredRoutesExactly() throws IOException {
         Set<String> found = discover();
+        Set<String> protectedRoutes = new TreeSet<>();
+        Set<String> publicRoutes = new TreeSet<>();
+        for (String route : found) {
+            String path = route.split(" ", 2)[1];
+            (path.equals(API) || path.startsWith(API + "/") ? protectedRoutes : publicRoutes).add(route);
+        }
+        Set<String> expected = new TreeSet<>(TABLE.keySet());
+        expected.addAll(PUBLIC_ISSUER);
         Set<String> unlisted = new TreeSet<>(found);
-        unlisted.removeAll(TABLE.keySet());
-        Set<String> gone = new TreeSet<>(TABLE.keySet());
+        unlisted.removeAll(expected);
+        Set<String> gone = new TreeSet<>(expected);
         gone.removeAll(found);
-        assertTrue(unlisted.isEmpty() && gone.isEmpty(),
-                "routes without a table entry: " + unlisted + "; table entries with no route: " + gone);
-        System.out.println("AUTH-ROUTES registered=" + found.size() + " table=" + TABLE.size());
+        assertAll(
+                () -> assertEquals(TABLE.keySet(), protectedRoutes, "exact protected API inventory"),
+                () -> assertEquals(PUBLIC_ISSUER, publicRoutes, "exact public issuer inventory"),
+                () -> assertTrue(unlisted.isEmpty() && gone.isEmpty(),
+                        "routes without a table entry: " + unlisted + "; table entries with no route: " + gone),
+                () -> assertEquals(expected, found, "complete registered route union"));
+        System.out.println("AUTH-ROUTES registered=" + found.size() + " table=" + TABLE.size() + " public=" + PUBLIC_ISSUER.size());
     }
 
     @Test

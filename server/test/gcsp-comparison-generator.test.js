@@ -1,10 +1,25 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { createPolicyService, PolicyService } from '../gcsp/policy/index.js';
 import { validateBrief } from '../scenarios/employee/index.js';
 import { COMPARISON_GENERATOR_VERSION, COMPARISON_KEYS, ComparisonInputError,
   generateComparisonInputs, loadComparisonPolicy } from '../gcsp/comparison/generator.js';
+
+// FUCQ-576: current central policy selected on 2026-11-23; complete causal ledger:
+// docs/gcsp/evidence/fucq-576/field-causality.md (source lineage 94a9eaf0/ac6bccdc).
+const fixturePolicyPin = Object.freeze({
+  seedSha256: '23ce0fef1d65e9e54c3b6ddc65361f2abd92e0bb8071c05b4f9797daafad4591',
+  policyVersion: 'gcsp-policy-v1',
+  policyHash: 'c0106882da69259021845df1a26128b218ac7dc7b79d5b528fe3806af7dff994',
+});
+async function assertFixturePolicyPin(manifest) {
+  const bytes = await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url));
+  assert.equal(createHash('sha256').update(bytes).digest('hex'), fixturePolicyPin.seedSha256);
+  assert.equal(manifest.policyVersion, fixturePolicyPin.policyVersion);
+  assert.equal(manifest.policyHash, fixturePolicyPin.policyHash);
+}
 
 const read = { runId: 'comparison-policy-read', asOf: '2026-11-05T09:00:00.000Z', policyVersion: 'gcsp-policy-v1' };
 const source = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
@@ -293,6 +308,8 @@ test('backend shape fixture supplies the harness and panel contract', async () =
 test('representative complete output and manifest fixture reproduces its explicit synthetic overlay', async () => {
   const fixture = JSON.parse(await readFile(new URL('./fixtures/gcsp-comparison-representative.json', import.meta.url), 'utf8'));
   const output = generateComparisonInputs(fixture.manifest.seed, prepared, { overlay: fixture.manifest.overlay });
+  await assertFixturePolicyPin(output.manifest);
+  await assertFixturePolicyPin(fixture.manifest);
   assert.deepEqual(output, fixture);
   assert.equal(output.employees.length, 3, 'small presentation fixture, explicitly recorded in its overlay');
   assert.equal(output.manifest.assumptions.length, Object.keys(prepared.assumptions).length);

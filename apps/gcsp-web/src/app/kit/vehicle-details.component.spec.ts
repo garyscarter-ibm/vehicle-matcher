@@ -1,22 +1,25 @@
 import { Component, OnInit, TemplateRef, ViewChild, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { SideDrawerComponent } from './side-drawer.component';
 import { TabsComponent } from './tabs.component';
 import { VehicleDetailRow, VehicleDetailsComponent } from './vehicle-details.component';
+import { FactRow } from './fact-list.component';
 
 @Component({
   imports: [VehicleDetailsComponent],
-  template: '<gcsp-vehicle-details [name]="name()" [finishes]="finishes()" [facts]="facts()" [equipment]="equipment()" [additionalDetails]="additionalDetails()" /><ng-template #additional>Source-supplied specification detail</ng-template>',
+  template: '<gcsp-vehicle-details [name]="name()" [finishes]="finishes()" [facts]="facts()" [factsPresentation]="factsPresentation()" [equipment]="equipment()" [additionalDetails]="additionalDetails()" /><ng-template #additional>Source-supplied specification detail</ng-template><ng-template #revised>Revised supplied decision detail</ng-template>',
 })
 class VehicleDetailsHost implements OnInit {
   @ViewChild('additional', { static: true }) additional!: TemplateRef<unknown>;
+  @ViewChild('revised', { static: true }) revised!: TemplateRef<unknown>;
   readonly name = signal('BMW X2 M35i in Black Sapphire with a long supplied upholstery and model description');
   readonly finishes = signal<readonly VehicleDetailRow[]>([
     { label: 'Paint', value: 'Black Sapphire' },
     { label: 'Upholstery', value: 'M Alcantara Veganza combination Black contrast stitching with extended long text' },
   ]);
-  readonly facts = signal<readonly VehicleDetailRow[]>([
+  readonly factsPresentation = signal<'default' | 'source-card'>('default');
+  readonly facts = signal<readonly FactRow[]>([
     { label: 'Body style', value: 'SUV' },
     { label: 'Fuel', value: 'Petrol' },
     { label: 'Transmission', value: 'Automatic' },
@@ -28,43 +31,93 @@ class VehicleDetailsHost implements OnInit {
   ngOnInit(): void { this.additionalDetails.set(this.additional); }
 }
 
-function stubDialog(dialog: HTMLDialogElement): void {
-  Object.defineProperty(dialog, 'showModal', { configurable: true, value: () => dialog.setAttribute('open', '') });
-  Object.defineProperty(dialog, 'close', { configurable: true, value: () => dialog.removeAttribute('open') });
-}
+afterEach(() => {
+  TestBed.resetTestingModule();
+  document.querySelectorAll('[data-vehicle-details-fixture]').forEach(node => node.remove());
+  document.body.style.overflow = '';
+});
 
 describe('VehicleDetailsComponent', () => {
+  it('composes source card facts with raw zero/false/units and one missing note through FactList', async () => {
+    const fixture = TestBed.createComponent(VehicleDetailsHost); const host = fixture.componentInstance;
+    host.factsPresentation.set('source-card'); host.finishes.set([]);
+    const rows = Object.freeze([{ label: 'Boot', value: 410, unit: 'litres' }, { label: 'Count', value: 0 },
+      { label: 'Option', value: false }, { label: 'Unknown', value: null }, { label: 'Empty', value: '' }]);
+    host.facts.set(rows); await fixture.whenStable();
+    const root = fixture.nativeElement as HTMLElement; const facts = root.querySelector('.gcsp-vehicle-specification > .vm-card-facts');
+    expect(facts?.querySelectorAll('.vm-facts-wrap > dl.vm-facts.vm-facts-pair')).toHaveLength(1);
+    expect(Array.from(facts?.querySelectorAll('dt') ?? [], row => row.textContent)).toEqual(['Boot', 'Count', 'Option']);
+    expect(Array.from(facts?.querySelectorAll('dd') ?? [], row => row.textContent)).toEqual(['410 litres', '0', 'false']);
+    expect(Array.from(facts?.querySelectorAll('.vm-facts-more') ?? [], row => row.textContent)).toEqual(['More details not supplied']);
+    expect(host.facts()).toBe(rows);
+  });
+  it('shows one source missing note when all supplied card facts are unknown', async () => {
+    const fixture = TestBed.createComponent(VehicleDetailsHost); const host = fixture.componentInstance;
+    host.factsPresentation.set('source-card'); host.finishes.set([]); host.facts.set([{ label: 'Unknown', value: null }]);
+    await fixture.whenStable(); const root = fixture.nativeElement as HTMLElement;
+    expect(root.querySelectorAll('.vm-card-facts dl')).toHaveLength(0);
+    expect(root.querySelector('.vm-card-facts .vm-facts-wrap > .vm-facts-more')?.textContent).toBe('More details not supplied');
+  });
+  it('closes source details when a hidden raw missing value changes with the same rendered facts', async () => {
+    const fixture = TestBed.createComponent(VehicleDetailsHost); const host = fixture.componentInstance;
+    host.factsPresentation.set('source-card'); host.facts.set([{ label: 'Unknown', value: null }]);
+    await fixture.whenStable(); const root = fixture.nativeElement as HTMLElement;
+    root.querySelector<HTMLButtonElement>('.gcsp-vehicle-details-entry')!.click(); fixture.detectChanges();
+    root.querySelectorAll<HTMLButtonElement>('[role="tab"]')[1].click(); fixture.detectChanges();
+    host.facts.set([{ label: 'Unknown', value: '' }]); fixture.detectChanges(); await fixture.whenStable(); fixture.detectChanges();
+    expect(root.querySelector<HTMLElement>('.gcsp-side-drawer')?.hidden).toBe(true);
+    expect(root.querySelector('[role="tab"][aria-selected="true"]')?.textContent).toBe('Specification');
+    expect(root.querySelector('.vm-card-facts .vm-facts-more')?.textContent).toBe('More details not supplied');
+  });
+  it('closes and resets when presentation changes while supplied raw facts stay equivalent', async () => {
+    const fixture = TestBed.createComponent(VehicleDetailsHost); const host = fixture.componentInstance;
+    await fixture.whenStable(); const root = fixture.nativeElement as HTMLElement;
+    root.querySelector<HTMLButtonElement>('.gcsp-vehicle-details-entry')!.click(); fixture.detectChanges();
+    root.querySelectorAll<HTMLButtonElement>('[role="tab"]')[1].click(); fixture.detectChanges();
+    host.factsPresentation.set('source-card'); fixture.detectChanges(); await fixture.whenStable(); fixture.detectChanges();
+    expect(root.querySelector<HTMLElement>('.gcsp-side-drawer')?.hidden).toBe(true);
+    expect(root.querySelector('[role="tab"][aria-selected="true"]')?.textContent).toBe('Specification');
+  });
   it('retains long supplied facts and all 57 equipment items behind a truthful, focus-wired drawer', async () => {
     const fixture = TestBed.createComponent(VehicleDetailsHost);
     await fixture.whenStable();
     fixture.detectChanges();
     const root = fixture.nativeElement as HTMLElement;
+    root.dataset['vehicleDetailsFixture'] = '';
     document.body.append(root);
     const entry = root.querySelector<HTMLButtonElement>('.gcsp-vehicle-details-entry')!;
-    const dialog = root.querySelector('dialog')!;
-    stubDialog(dialog);
+    const dialog = root.querySelector<HTMLElement>('[role="dialog"]')!;
 
+    expect(root.querySelector('.gcsp-vehicle-details-control > .gcsp-vehicle-details-entry')).toBe(entry);
+    expect(entry.classList.contains('vm-btn')).toBe(true);
+    const content = dialog.querySelector<HTMLElement>('.gcsp-vehicle-drawer-content')!;
+    expect(content?.hidden).toBe(true);
     expect(entry.getAttribute('aria-haspopup')).toBe('dialog');
     expect(entry.getAttribute('aria-expanded')).toBe('false');
     expect(entry.textContent).toContain('Full specification · 57 selected equipment items');
     entry.click();
     fixture.detectChanges();
 
-    expect(dialog.open).toBe(true);
+    expect(dialog.closest<HTMLElement>('.gcsp-side-drawer')!.hidden).toBe(false);
+    expect(content.hidden).toBe(false);
+    expect(dialog.querySelector('.gcsp-vehicle-specification')?.tagName).toBe('DIV');
+    expect(dialog.querySelectorAll('.gcsp-vehicle-specification h4')).toHaveLength(0);
+    expect(dialog.querySelectorAll('.vm-facts')).toHaveLength(2);
+    expect(dialog.querySelectorAll('.gcsp-vehicle-equipment > ul')).toHaveLength(1);
     expect(entry.getAttribute('aria-expanded')).toBe('true');
     expect(dialog.querySelector('.gcsp-side-drawer-context')?.textContent).toBe('Your offer');
-    expect(dialog.querySelector('.gcsp-side-drawer-header h2')?.textContent).toBe('Car details');
-    const bodyHeadings = dialog.querySelectorAll('.gcsp-vehicle-details-body h3');
+    expect(dialog.querySelector('.gcsp-side-drawer-head h2')?.textContent).toBe('Car details');
+    const bodyHeadings = dialog.querySelectorAll('.gcsp-vehicle-drawer-content > h3.gcsp-h2');
     expect(bodyHeadings).toHaveLength(1);
     expect(bodyHeadings[0].textContent).toBe(fixture.componentInstance.name());
     expect(dialog.textContent?.match(/BMW X2 M35i/g)).toHaveLength(1);
     expect(dialog.textContent).toContain('Source-supplied specification detail');
-    expect(dialog.querySelectorAll('.gcsp-vehicle-detail-row')).toHaveLength(6);
+    expect(dialog.querySelectorAll('.vm-fact')).toHaveLength(6);
     expect(dialog.textContent).toContain('Not supplied');
     expect(dialog.textContent).toContain('M Alcantara Veganza combination Black contrast stitching with extended long text');
     expect(dialog.querySelectorAll('.gcsp-vehicle-equipment li')).toHaveLength(57);
     expect(dialog.textContent).toContain('Selected equipment item 57 with retained source wording');
-    expect(document.activeElement).toBe(dialog.querySelector('.gcsp-side-drawer-header h2'));
+    expect(document.activeElement).toBe(dialog.querySelector('.gcsp-side-drawer-head h2'));
 
     const tabs = dialog.querySelectorAll<HTMLButtonElement>('[role="tab"]');
     expect(tabs[1].textContent).toContain('Selected equipment (57)');
@@ -74,10 +127,11 @@ describe('VehicleDetailsComponent', () => {
     expect(dialog.querySelector<HTMLElement>('[role="tabpanel"]')?.hidden).toBe(true);
     expect(entry.getAttribute('aria-expanded')).toBe('true');
 
-    dialog.querySelector<HTMLButtonElement>('.gcsp-side-drawer-header button')!.click();
+    dialog.querySelector<HTMLButtonElement>('.gcsp-side-drawer-head button')!.click();
     fixture.detectChanges();
-    expect(dialog.open).toBe(false);
+    expect(dialog.closest<HTMLElement>('.gcsp-side-drawer')!.hidden).toBe(true);
     expect(entry.getAttribute('aria-expanded')).toBe('false');
+    expect(content.hidden).toBe(true);
     expect(document.activeElement).toBe(entry);
     root.remove();
     fixture.destroy();
@@ -89,11 +143,12 @@ describe('VehicleDetailsComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     const root = fixture.nativeElement as HTMLElement;
-    expect(root.querySelector('.gcsp-vehicle-details-entry')?.textContent).toContain('Equipment not supplied');
-    const dialog = root.querySelector('dialog')!;
+    root.dataset['vehicleDetailsFixture'] = '';
+    expect(root.querySelector('.gcsp-vehicle-details-hint')?.textContent).toBe('Full specification · Equipment not supplied');
+    const dialog = root.querySelector<HTMLElement>('[role="dialog"]')!;
     const tabs = dialog.querySelectorAll('[role="tab"]');
     expect(tabs[1].textContent).toBe('Selected equipment');
-    expect(dialog.textContent).toContain('Equipment not supplied');
+    expect(dialog.querySelector('.gcsp-vehicle-equipment > p.gcsp-note')?.textContent).toBe('Equipment not supplied.');
     expect(dialog.textContent).not.toContain('Selected equipment (0)');
     fixture.destroy();
   });
@@ -103,10 +158,10 @@ describe('VehicleDetailsComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     const root = fixture.nativeElement as HTMLElement;
+    root.dataset['vehicleDetailsFixture'] = '';
     document.body.append(root);
     const entry = root.querySelector<HTMLButtonElement>('.gcsp-vehicle-details-entry')!;
-    const dialog = root.querySelector('dialog')!;
-    stubDialog(dialog);
+    const dialog = root.querySelector<HTMLElement>('[role="dialog"]')!;
     entry.click();
     fixture.detectChanges();
     const tabs = dialog.querySelectorAll<HTMLButtonElement>('[role="tab"]');
@@ -120,10 +175,10 @@ describe('VehicleDetailsComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(dialog.open).toBe(false);
+    expect(dialog.closest<HTMLElement>('.gcsp-side-drawer')!.hidden).toBe(true);
     expect(entry.getAttribute('aria-expanded')).toBe('false');
     expect(document.activeElement).toBe(entry);
-    expect(dialog.querySelector('.gcsp-vehicle-details-body h3')?.textContent).toBe('BMW X2 M35i with updated supplied trim');
+    expect(dialog.querySelector('.gcsp-vehicle-drawer-content > h3.gcsp-h2')?.textContent).toBe('BMW X2 M35i with updated supplied trim');
     expect(dialog.querySelector('[role="tab"][aria-selected="true"]')?.textContent).toBe('Specification');
     root.remove();
     fixture.destroy();
@@ -135,19 +190,86 @@ describe('VehicleDetailsComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     const root = fixture.nativeElement as HTMLElement;
+    root.dataset['vehicleDetailsFixture'] = '';
     document.body.append(root);
     const entry = root.querySelector<HTMLButtonElement>('.gcsp-vehicle-details-entry')!;
-    const dialog = root.querySelector('dialog')!;
-    stubDialog(dialog);
+    const dialog = root.querySelector<HTMLElement>('[role="dialog"]')!;
     const focus = vi.spyOn(entry, 'focus');
     entry.click();
     fixture.detectChanges();
     fixture.destroy();
 
-    expect(dialog.open).toBe(false);
+    expect(dialog.closest<HTMLElement>('.gcsp-side-drawer')!.hidden).toBe(true);
     expect(document.body.style.overflow).toBe('clip');
     expect(focus).not.toHaveBeenCalled();
     root.remove();
     document.body.style.overflow = '';
+  });
+
+  it('omits absent finishes while retaining supplied whitespace and explicit missing facts', async () => {
+    const fixture = TestBed.createComponent(VehicleDetailsHost);
+    const finishes = Object.freeze([
+      Object.freeze({ label: 'Absent paint', value: null }), Object.freeze({ label: 'Empty interior', value: '' }),
+      Object.freeze({ label: 'Supplied whitespace', value: '  ' }), Object.freeze({ label: 'Paint', value: 'Black Sapphire' }),
+    ]);
+    fixture.componentInstance.finishes.set(finishes);
+    fixture.componentInstance.facts.set([{ label: 'Build month', value: null, missingLabel: 'Not confirmed' }]);
+    await fixture.whenStable();
+    const root = fixture.nativeElement as HTMLElement;
+    const rows = root.querySelectorAll('.gcsp-vehicle-specification .vm-fact');
+    expect(Array.from(rows, row => row.querySelector('dt')?.textContent)).toEqual(['Supplied whitespace', 'Paint', 'Build month']);
+    expect(Array.from(rows, row => row.querySelector('dd')?.textContent)).toEqual(['  ', 'Black Sapphire', 'Not confirmed']);
+    expect(fixture.componentInstance.finishes()).toBe(finishes);
+    expect(finishes).toHaveLength(4);
+  });
+
+  it('keeps the open drawer, selected equipment panel and focus across equivalent raw readback', async () => {
+    const fixture = TestBed.createComponent(VehicleDetailsHost);
+    await fixture.whenStable();
+    const root = fixture.nativeElement as HTMLElement;
+    root.dataset['vehicleDetailsFixture'] = '';
+    document.body.append(root);
+    root.querySelector<HTMLButtonElement>('.gcsp-vehicle-details-entry')!.click();
+    fixture.detectChanges();
+    const tab = root.querySelectorAll<HTMLButtonElement>('[role="tab"]')[1];
+    tab.click(); tab.focus(); fixture.detectChanges();
+    fixture.componentInstance.finishes.set(fixture.componentInstance.finishes().map(row => ({ ...row })));
+    fixture.componentInstance.facts.set(fixture.componentInstance.facts().map(row => ({ ...row })));
+    fixture.componentInstance.equipment.set([...fixture.componentInstance.equipment()]);
+    fixture.detectChanges(); await fixture.whenStable(); fixture.detectChanges();
+    expect(root.querySelector<HTMLElement>('.gcsp-side-drawer')?.hidden).toBe(false);
+    expect(root.querySelector<HTMLElement>('.gcsp-vehicle-drawer-content')?.hidden).toBe(false);
+    expect(tab.getAttribute('aria-selected')).toBe('true');
+    expect(document.activeElement).toBe(tab);
+  });
+
+  it('closes and resets when the supplied decision template changes with unchanged raw details', async () => {
+    const fixture = TestBed.createComponent(VehicleDetailsHost);
+    await fixture.whenStable();
+    const root = fixture.nativeElement as HTMLElement;
+    root.dataset['vehicleDetailsFixture'] = '';
+    document.body.append(root);
+    const entry = root.querySelector<HTMLButtonElement>('.gcsp-vehicle-details-entry')!;
+    entry.click(); fixture.detectChanges();
+    root.querySelectorAll<HTMLButtonElement>('[role="tab"]')[1].click(); fixture.detectChanges();
+    fixture.componentInstance.additionalDetails.set(fixture.componentInstance.revised);
+    fixture.detectChanges(); await fixture.whenStable(); fixture.detectChanges();
+    expect(root.querySelector<HTMLElement>('.gcsp-side-drawer')?.hidden).toBe(true);
+    expect(root.querySelector<HTMLElement>('.gcsp-vehicle-drawer-content')?.hidden).toBe(true);
+    expect(root.querySelector('[role="tab"][aria-selected="true"]')?.textContent).toBe('Specification');
+    expect(root.querySelector('.gcsp-vehicle-specification')?.textContent).toContain('Revised supplied decision detail');
+    expect(document.activeElement).toBe(entry);
+  });
+
+  it('uses the source singular count without inventing an empty finish group', async () => {
+    const fixture = TestBed.createComponent(VehicleDetailsHost);
+    fixture.componentInstance.finishes.set([{ label: 'Paint', value: null }, { label: 'Interior', value: '' }]);
+    fixture.componentInstance.equipment.set(['Only supplied item']);
+    await fixture.whenStable();
+    const root = fixture.nativeElement as HTMLElement;
+    expect(root.querySelector('.gcsp-vehicle-details-hint')?.textContent).toBe('Full specification · 1 selected equipment item');
+    expect(root.querySelectorAll('.gcsp-vehicle-specification .vm-facts')).toHaveLength(1);
+    expect(root.querySelectorAll('[role="tab"]')[1].textContent).toBe('Selected equipment (1)');
+    expect(root.querySelector('.gcsp-vehicle-equipment > ul > li')?.textContent).toBe('Only supplied item');
   });
 });

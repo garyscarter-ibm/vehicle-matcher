@@ -4,7 +4,7 @@ import { ManualReviewComponent, ManualReviewDetailsComponent, manualVehicle } fr
 import type { ManualClaim, ManualEditableDetails, ManualHandoff, ManualProjection, ManualQuote, ManualReviewDetails } from './manual.types';
 
 const claim = { state: 'quoted', hold: { mode: 'replacement', expiresAt: '2026-11-16T18:00:00Z' }, quote: {
-  orderUuid: 'exact-car', facts: { display: { name: 'Pinned BMW', photo: '/pinned.webp' }, facts: { model: { status: 'known', value: 'i4', unit: null } } },
+  orderUuid: 'exact-car', facts: { display: { name: 'Pinned BMW', photo: '/assets/gcsp-vehicle-evidence/000cfa6bd4d71e51611f32283003aacf383c9c9d12f1a29f25b600a98d496490.webp' }, facts: { model: { status: 'known', value: 'i4', unit: null } } },
   terms: { points: { value: 0, unit: 'points' }, allowanceInputs: { allowance: { value: 100, unit: 'points' } }, contribution: { amount: 0, currency: 'GBP', period: 'month' } },
   validUntil: '2026-11-16T18:00:00Z',
 } } as unknown as ManualClaim;
@@ -21,7 +21,7 @@ describe('manual selected-car review composition', () => {
   it('renders pinned exact-car facts and zero terms without substituting the navigation snapshot', () => {
     fixture.componentRef.setInput('selection', { orderUuid: 'other', snapshot: { display: { name: 'Wrong gallery car', photo: '/wrong.webp' } } } as unknown as ManualHandoff);
     fixture.detectChanges(); expect(text()).toContain('Pinned BMW'); expect(text()).toContain('Car ID exact-car'); expect(text()).not.toContain('Wrong gallery car');
-    expect(text()).toContain('0 GBP / month'); expect((fixture.nativeElement as HTMLElement).querySelector('img')?.getAttribute('src')).toBe('/pinned.webp');
+    expect(text()).toContain('0 GBP / month'); expect((fixture.nativeElement as HTMLElement).querySelector('img')?.getAttribute('src')).toBe('/assets/gcsp-vehicle-evidence/000cfa6bd4d71e51611f32283003aacf383c9c9d12f1a29f25b600a98d496490.webp');
     expect((fixture.nativeElement as HTMLElement).querySelectorAll('h1')).toHaveLength(1);
   });
   it('reads name, photo and facts from the Java quote envelope (FUCQ-520)', () => {

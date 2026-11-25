@@ -1,19 +1,41 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { Router, provideRouter } from '@angular/router';
+import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthPort, Role, SessionState } from '../auth/auth.port';
 import { sessionGuard } from '../auth/route.guards';
 import { StatePageComponent } from '../pages/state-page.component';
+import { GregNavigationComponent, GregView } from '../kit/greg-navigation.component';
 import { ShellComponent } from './shell.component';
-@Component({ template: '<p>Private saved car for Alice</p>' })
+import { NotificationSource } from '../activity/notification.source';
+import { NotificationModel } from '../kit/notification-bell.types';
+@Component({ template: '<h1 tabindex="-1">Private saved car for Alice</h1><button role="tab" aria-selected="true">Selected ordering tab</button>' })
 class PrivateBody {}
+@Component({ imports: [GregNavigationComponent], template: '<h1 tabindex="-1">Ordering</h1><gcsp-greg-navigation [page]="page" [panels]="{}" />' })
+class GregTabsBody { readonly page = inject(ActivatedRoute).snapshot.data['page'] as GregView; }
 describe('native portal shell', () => {
   const state = signal<SessionState>({ status: 'signed-out' });
   const signOut = vi.fn(async () => {}); const retry = vi.fn(async () => {});
-  beforeEach(() => { signOut.mockClear(); retry.mockReset(); state.set({ status: 'signed-out' }); TestBed.configureTestingModule({ providers: [provideRouter([{ path: 'private', component: PrivateBody, canActivate: [sessionGuard], data: { roles: ['employee'] } }, { path: 'account', component: PrivateBody, canActivate: [sessionGuard], data: { roles: ['employee'] } }, { path: 'access-denied', component: StatePageComponent, data: { kind: 'denied' } }, { path: 'unavailable', component: StatePageComponent, data: { kind: 'unavailable' } }]), { provide: AuthPort, useValue: { state, recovery: signal(null), signOut, initialize: async () => {}, retry, signIn: async () => {} } }] }); });
+  beforeEach(() => { signOut.mockClear(); retry.mockReset(); state.set({ status: 'signed-out' }); TestBed.configureTestingModule({ providers: [provideRouter([{ path: 'private', component: PrivateBody, canActivate: [sessionGuard], data: { roles: ['employee'] } }, { path: 'account', component: PrivateBody, canActivate: [sessionGuard], data: { roles: ['employee'] } }, ...['preferences', 'activity', 'offers/:offerId', 'greg', 'greg/plan', 'greg/cases', 'comparison', 'presenter', 'presenter/outbox'].map(path => ({ path, component: PrivateBody })), { path: 'access-denied', component: StatePageComponent, data: { kind: 'denied' } }, { path: 'unavailable', component: StatePageComponent, data: { kind: 'unavailable' } }]), { provide: AuthPort, useValue: { state, recovery: signal(null), signOut, initialize: async () => {}, retry, signIn: async () => {} } }] }); });
   const ready = (roles: readonly Role[]): SessionState => ({ status: 'ready', context: { subject: 'own', roles, environmentId: 'isolated', runId: 'run', policyVersion: 'v1', capabilities: [] } });
   const settle = async (fixture: { whenStable(): Promise<unknown> }) => { await fixture.whenStable(); await TestBed.inject(Router).navigated; await new Promise((done) => setTimeout(done)); await fixture.whenStable(); };
+  it('shows the employee bell before account, coordinates disclosures and clears scoped data immediately', async () => {
+    let update!: (model: NotificationModel, key: string) => void; const stop = vi.fn();
+    TestBed.overrideProvider(NotificationSource, { useValue: { connect: (next: typeof update) => { update = next; return stop; } } });
+    const first = ready(['employee']); if (first.status !== 'ready') throw new Error('test setup');
+    state.set({ ...first, context: { ...first.context, employeeId: 'paula' } });
+    const fixture = TestBed.createComponent(ShellComponent); await fixture.whenStable(); const root: HTMLElement = fixture.nativeElement;
+    update({ status: 'ok', waiting: 1, rows: [], note: null }, JSON.stringify(['own', 'isolated', 'run', 'paula'])); await fixture.whenStable();
+    const bell = root.querySelector<HTMLButtonElement>('.gcsp-bell-btn')!; const account = root.querySelector<HTMLDetailsElement>('details')!;
+    expect(root.querySelector('header')?.children[3].classList.contains('gcsp-bell')).toBe(true);
+    account.open = true; bell.click(); await fixture.whenStable(); expect(account.open).toBe(false);
+    account.open = true; account.dispatchEvent(new Event('toggle')); await fixture.whenStable(); expect(bell.getAttribute('aria-expanded')).toBe('false');
+    expect(root.querySelector('.gcsp-bell-badge')?.textContent).toBe('1');
+    state.set({ ...first, context: { ...first.context, employeeId: 'other' } }); fixture.detectChanges();
+    expect(root.querySelector<HTMLElement>('.gcsp-bell-badge')?.hidden).toBe(true);
+    state.set({ status: 'signed-out' }); await fixture.whenStable(); expect(root.querySelector('.gcsp-bell')).toBeNull();
+    fixture.destroy(); expect(stop).toHaveBeenCalledOnce();
+  });
   it('reauthorizes the retained route when unavailable context recovers to a Greg-only principal', async () => {
     state.set({ status: 'unavailable', message: 'No connection', retryable: true }); retry.mockImplementation(async () => { state.set(ready(['greg'])); });
     const fixture = TestBed.createComponent(ShellComponent); const router = TestBed.inject(Router); await router.navigateByUrl('/account'); await settle(fixture); const root: HTMLElement = fixture.nativeElement;
@@ -55,10 +77,65 @@ describe('native portal shell', () => {
   it('composes the real roles, discloses account actions and clears when context changes', async () => {
     state.set({ status: 'ready', context: { subject: 'own', roles: ['employee', 'greg'], environmentId: 'isolated', runId: 'run', policyVersion: 'v1', capabilities: [], displayName: 'A person' } });
     const fixture = TestBed.createComponent(ShellComponent); await fixture.whenStable(); const root: HTMLElement = fixture.nativeElement;
-    expect(Array.from(root.querySelectorAll('.gcsp-nav-label')).map((el) => el.textContent?.trim())).toEqual(['Your cars', 'Order progress', 'Employee car ordering', 'Process comparisons', 'Show labels']);
+    expect(Array.from(root.querySelectorAll('.gcsp-nav-label')).map((el) => el.textContent?.trim())).toEqual(['Your cars', 'Order progress', 'Employee car ordering', 'Show labels']);
     const toggle = root.querySelector<HTMLButtonElement>('.gcsp-menu-toggle')!; toggle.click(); await fixture.whenStable(); expect(toggle.getAttribute('aria-expanded')).toBe('true');
     root.querySelector<HTMLButtonElement>('.gcsp-account-signout')!.click(); await fixture.whenStable(); expect(signOut).toHaveBeenCalledOnce();
     state.set({ status: 'signed-out' }); await fixture.whenStable(); expect(root.textContent).not.toContain('A person'); expect(root.querySelector('nav')).toBeNull();
+  });
+  it.each(['/greg/plan', '/greg?view=policy', '/greg/cases', '/comparison'])('keeps the common ordering rail selected at %s', async (url) => {
+    state.set(ready(['greg'])); const fixture = TestBed.createComponent(ShellComponent);
+    await TestBed.inject(Router).navigateByUrl(url); await settle(fixture);
+    const links = fixture.nativeElement.querySelectorAll('.gcsp-nav-list a') as NodeListOf<HTMLAnchorElement>;
+    expect(links).toHaveLength(1); expect(links[0].getAttribute('href')).toBe('/greg/plan');
+    expect(links[0].getAttribute('aria-current')).toBe('page');
+  });
+  it.each([
+    ['offers/offer-7', ['employee'], ['Your cars', 'Your offer']],
+    ['activity', ['employee'], ['Your cars', 'Buddy activity']],
+    ['preferences', ['employee'], ['Your cars', 'Your preferences']],
+    ['presenter/outbox', ['presenter'], ['Presenter controls', 'Captured emails']],
+    ['comparison', ['presenter'], ['Presenter controls', 'Route comparison']],
+  ] as const)('shows the supported breadcrumb shape for %s and clears it on a rail destination', async (url, roles, labels) => {
+    state.set(ready(roles)); const fixture = TestBed.createComponent(ShellComponent);
+    await TestBed.inject(Router).navigateByUrl('/' + url); await settle(fixture);
+    const root = fixture.nativeElement as HTMLElement;
+    expect(Array.from(root.querySelectorAll('.gcsp-crumb'), item => item.textContent)).toEqual(labels);
+    expect(root.querySelector('.gcsp-crumbs')?.getAttribute('aria-label')).toBe('Breadcrumb');
+    expect(root.querySelector('.gcsp-crumb:last-child')?.getAttribute('aria-current')).toBe('page');
+    await TestBed.inject(Router).navigateByUrl(roles.some(role => role === 'presenter') ? '/presenter' : '/account'); await settle(fixture);
+    expect(root.querySelector('.gcsp-crumbs')).toBeNull();
+  });
+  it('keeps keyboard focus on actual Greg tabs for arrows, Home and End across lazy-view boundaries', async () => {
+    state.set(ready(['greg'])); const router = TestBed.inject(Router);
+    router.resetConfig([
+      { path: 'greg', component: GregTabsBody, data: { page: 'dashboard' } }, { path: 'greg/plan', component: GregTabsBody, data: { page: 'next-order' } },
+      { path: 'comparison', component: GregTabsBody, data: { page: 'comparison' } }, { path: 'greg/cases', component: GregTabsBody, data: { page: 'cases' } },
+    ]);
+    const fixture = TestBed.createComponent(ShellComponent); await router.navigateByUrl('/greg'); await settle(fixture);
+    const root = fixture.nativeElement as HTMLElement; document.body.append(root);
+    try {
+      for (const [key, label] of [['ArrowRight', 'Policy'], ['Home', 'Next order'], ['End', 'Renewal cases'], ['ArrowLeft', 'Route comparison']]) {
+        const current = root.querySelector<HTMLButtonElement>('[role=tab][aria-selected=true]')!;
+        current.focus(); current.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
+        await settle(fixture); await new Promise(requestAnimationFrame);
+        const selected = root.querySelector('[role=tab][aria-selected=true]');
+        expect(selected?.textContent).toBe(label); expect(document.activeElement).toBe(selected);
+      }
+    } finally { root.remove(); }
+  });
+  it('retains Greg tab focus across local and route changes and ordinary arrival focus', async () => {
+    state.set(ready(['greg'])); const fixture = TestBed.createComponent(ShellComponent); const router = TestBed.inject(Router);
+    await router.navigateByUrl('/greg'); await settle(fixture); await new Promise(requestAnimationFrame);
+    const root = fixture.nativeElement as HTMLElement; document.body.append(root);
+    try {
+      const tab = root.querySelector<HTMLButtonElement>('[role=tab]')!; tab.focus();
+      await router.navigateByUrl('/greg#policy', { info: { gcspGregNavigation: true, focusTab: true } }); await settle(fixture); await new Promise(requestAnimationFrame);
+      expect(document.activeElement).toBe(tab);
+      await router.navigateByUrl('/greg/plan', { info: { gcspGregNavigation: true, focusTab: true } }); await settle(fixture); await new Promise(requestAnimationFrame);
+      expect(document.activeElement).toBe(root.querySelector('[role=tab][aria-selected=true]'));
+      await router.navigateByUrl('/greg'); await settle(fixture); await new Promise(requestAnimationFrame);
+      expect(document.activeElement).toBe(root.querySelector('main h1'));
+    } finally { root.remove(); }
   });
   it('focuses main without following the base-relative skip fragment from a direct route', async () => {
     const previousUrl = window.location.href;

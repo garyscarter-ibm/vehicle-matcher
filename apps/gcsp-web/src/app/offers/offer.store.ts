@@ -12,7 +12,7 @@ export type OfferStoreState =
 type SelectedState = Exclude<OfferStoreState, { readonly status: 'idle' }>;
 interface Authority { readonly scope: string | null }
 interface ResourceSnapshot { readonly authority: Authority; readonly state: SelectedState }
-interface ActiveRead { readonly offerId: string; readonly scope: string; readonly authority: Authority; readonly controller: AbortController; readonly epoch: number }
+interface ActiveRead { readonly offerId: string; readonly scope: string; readonly authority: Authority; readonly controller: AbortController; readonly epoch: number; readonly expiryReread: boolean }
 
 const AUTH_REQUIRED: OfferFailure = { status: 'unauthenticated', code: 'authentication-required', retryable: false };
 const EMPLOYEE_REQUIRED: OfferFailure = { status: 'denied', code: 'employee-role-required', retryable: false };
@@ -44,6 +44,10 @@ export class OfferStore {
   private activeRead: ActiveRead | null = null;
   private epoch = 0;
   private destroyed = false;
+  private readonly readPending = signal(false);
+  // Presentation can await the bounded expiry reread without changing read/command semantics.
+  readonly reading = this.readPending.asReadonly();
+  readonly readAuthority = computed<object>(() => this.authority());
 
   readonly state = computed<OfferStoreState>(() => {
     const offerId = this.selectedOfferId();
@@ -111,10 +115,12 @@ export class OfferStore {
     this.startRead(offerId, scope, authority);
   }
 
-  private startRead(offerId: string, scope: string, authority: Authority): void {
-    this.invalidate();
-    const request: ActiveRead = { offerId, scope, authority, controller: new AbortController(), epoch: ++this.epoch };
+  private startRead(offerId: string, scope: string, authority: Authority, expiryReread = false): void {
+    // Keep the pending-at-zero view mounted while its one authoritative check runs.
+    this.invalidate(!expiryReread);
+    const request: ActiveRead = { offerId, scope, authority, controller: new AbortController(), epoch: ++this.epoch, expiryReread };
     this.activeRead = request;
+    this.readPending.set(true);
     try {
       void this.client.readOffer(offerId, { signal: request.controller.signal, expectedContextKey: scope })
         .then((result) => this.complete(request, result), () => this.complete(request, OFFER_UNAVAILABLE));
@@ -127,17 +133,23 @@ export class OfferStore {
     if (this.destroyed || this.activeRead !== request || request.epoch !== this.epoch || request.controller.signal.aborted
       || this.selectedOfferId() !== request.offerId || this.authority() !== request.authority) return;
     this.activeRead = null;
+    this.readPending.set(false);
     const state: SelectedState = result.status === 'ok'
       ? { status: 'ready', offerId: request.offerId, offer: result.value }
       : { status: 'failed', offerId: request.offerId, failure: result };
     this.snapshot.set({ authority: request.authority, state });
+    if (!request.expiryReread && state.status === 'ready' && state.offer.state === 'pending'
+      && Date.parse(state.offer.expiresAt) <= Date.parse(state.offer.serverNow)) {
+      this.startRead(request.offerId, request.scope, request.authority, true);
+    }
   }
 
-  private invalidate(): void {
+  private invalidate(clearSnapshot = true): void {
     this.epoch++;
     this.activeRead?.controller.abort();
     this.activeRead = null;
-    this.snapshot.set(null);
+    this.readPending.set(false);
+    if (clearSnapshot) this.snapshot.set(null);
   }
 }
 

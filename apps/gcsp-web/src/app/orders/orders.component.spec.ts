@@ -39,7 +39,7 @@ describe('native employee order progress screen', () => {
     await TestBed.configureTestingModule({ imports: [OrdersComponent], providers: [provideRouter([]), { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: params.value }, queryParamMap: params } },
       { provide: OrdersClient, useValue: client }, { provide: AuthPort, useValue: { state, signIn } }] }).compileComponents();
   });
-  afterEach(() => { fixture?.destroy(); TestBed.resetTestingModule(); });
+  afterEach(() => { fixture?.destroy(); TestBed.resetTestingModule(); vi.restoreAllMocks(); });
   async function settled() { await vi.waitFor(() => expect(fixture.componentInstance.state()?.phase).toBe('settled')); await fixture.whenStable(); fixture.detectChanges(); }
   async function commandSettled() { await vi.waitFor(() => { expect(fixture.componentInstance.action().result).not.toBeNull(); expect(fixture.componentInstance.action().busy).toBe(false); }); await settled(); }
   async function render() { fixture = TestBed.createComponent(OrdersComponent); fixture.detectChanges(); await settled(); }
@@ -61,6 +61,21 @@ describe('native employee order progress screen', () => {
     button('Confirm').click(); await commandSettled();
     expect(client.execute).toHaveBeenCalledOnce(); expect(client.execute.mock.calls[0][0]).toMatchObject({ kind: 'acknowledge', itemId: 'agreement', expectedDocumentsRevision: 3 });
     expect(text()).toContain('op-123'); expect(button('Acknowledge').disabled).toBe(true);
+  });
+  it('lets the employee review a new offered time after a missed handover without claiming it is booked', async () => {
+    client.readAppointment.mockResolvedValue(ok({ ...appointment(), state: 'no-show', version: 7,
+      slot: { slotId: 'missed-slot', start: '2026-11-14T09:00:00Z' } }));
+    await render();
+    const panel = (fixture.nativeElement as HTMLElement).querySelector('[aria-labelledby="handover-title"]')!;
+    expect(panel.textContent).toContain('Handover missed'); expect(panel.textContent).not.toContain('Handover booked');
+    const request = panel.querySelector<HTMLButtonElement>('[aria-label^="Request handover"]')!;
+    expect(request).not.toBeNull(); expect(client.execute).not.toHaveBeenCalled();
+    request.click(); fixture.detectChanges(); await fixture.whenStable();
+    expect(text()).toContain('Request this handover time?'); expect(client.execute).not.toHaveBeenCalled();
+    button('Confirm').click(); await commandSettled();
+    expect(client.execute).toHaveBeenCalledOnce();
+    expect(client.execute.mock.calls[0][0]).toMatchObject({ kind: 'request-appointment', orderUuid: 'order', slotId: 'provider-slot', expectedVersion: 7 });
+    expect(text()).toContain('op-123'); expect(panel.textContent).not.toContain('Handover booked');
   });
   it('cancels review with Escape and makes no command call', async () => {
     await render(); const opener = button('Acknowledge'); opener.focus(); opener.click(); fixture.detectChanges(); const review = (fixture.nativeElement as HTMLElement).querySelector('.order-review')!;
@@ -125,4 +140,94 @@ describe('native employee order progress screen', () => {
     expect((fixture.nativeElement as HTMLElement).querySelector('[aria-labelledby="handover-title"] .order-state')?.textContent).toBe('Not requested');
     expect(text()).toContain('Waiting for confirmation of your update'); expect(client.execute).toHaveBeenCalledOnce();
   });
+  it('rereads native visibility changes without an order command or focus change', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    await render(); const focus = vi.spyOn(HTMLElement.prototype, 'focus');
+    document.dispatchEvent(new Event('visibilitychange')); await settled();
+    expect(client.readOrders).toHaveBeenCalledTimes(2); expect(client.execute).not.toHaveBeenCalled(); expect(focus).not.toHaveBeenCalled();
+  });
+
+  it.each(['stages', 'documents', 'appointment', 'returnPlan'] as const)('announces the exact message in the existing region only after changed ready %s settles', async (resource) => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    await render(); expect(text()).not.toContain('Order progress updated.');
+    const read = ({ stages: client.readStages, documents: client.readDocuments, appointment: client.readAppointment, returnPlan: client.readReturnPlan })[resource];
+    const before = await read.mock.results[0].value;
+    const value = resource === 'documents' ? { ...before.value, orders: before.value.orders.map((order: Record<string, unknown>) => ({ ...order, documentsRevision: 4 })) }
+      : { ...before.value, ...(resource === 'stages' ? { currentStage: 'Ordering', nextStep: 'Ordering your car' } : { version: 10 }) };
+    read.mockResolvedValueOnce(ok(value));
+    document.dispatchEvent(new Event('visibilitychange')); await settled();
+    expect(fixture.componentInstance.refreshMessage()).toBe('Order progress updated.');
+    expect((fixture.nativeElement as HTMLElement).querySelector('.order-feedback')?.textContent).toContain('Order progress updated.');
+    expect((fixture.nativeElement as HTMLElement).querySelectorAll('[aria-live="polite"]')).toHaveLength(1); expect(client.execute).not.toHaveBeenCalled();
+  });
+  it('keeps unchanged and nested asOf-only rereads silent', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    await render(); const result = await client.readStages.mock.results[0].value; let asOf = '2026-11-22T12:00:00Z';
+    client.readStages.mockImplementation(async () => ok({ ...result.value, asOf,
+      stages: result.value.stages.map((stage: Record<string, unknown>) => ({ ...stage, asOf })) }));
+    document.dispatchEvent(new Event('visibilitychange')); await settled(); expect(fixture.componentInstance.refreshMessage()).toBe('');
+    asOf = '2026-11-22T12:01:00Z'; document.dispatchEvent(new Event('visibilitychange')); await settled();
+    expect(client.readStages).toHaveBeenCalledTimes(3); expect(fixture.componentInstance.refreshMessage()).toBe(''); expect(text()).not.toContain('Order progress updated.');
+  });
+  it.each(['unavailable', 'identity-mismatch'] as const)('keeps a failed or stale %s refresh silent', async (failure) => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible'); await render();
+    const original = await client.readStages.mock.results[0].value;
+    client.readStages.mockResolvedValueOnce(failure === 'unavailable' ? { status: 'unavailable', code: 'provider-read-failed' }
+      : ok({ ...original.value, employeeId: 'someone-else', currentStage: 'Ordering' }));
+    document.dispatchEvent(new Event('visibilitychange')); await settled(); expect(fixture.componentInstance.refreshMessage()).toBe('');
+    expect(text()).not.toContain('Order progress updated.');
+  });
+  it('keeps an open command review intact, then reads on the next trigger after cancellation', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible'); await render();
+    fixture.componentInstance.prepare({ kind: 'acknowledge', itemId: 'agreement' }); const review = fixture.componentInstance.action().review;
+    document.dispatchEvent(new Event('visibilitychange')); await Promise.resolve();
+    expect(client.readOrders).toHaveBeenCalledOnce(); expect(fixture.componentInstance.action().review).toBe(review);
+    fixture.componentInstance.cancel(); document.dispatchEvent(new Event('visibilitychange')); await settled();
+    expect(client.readOrders).toHaveBeenCalledTimes(2); expect(client.execute).not.toHaveBeenCalled();
+  });
+  it('skips a busy command and preserves its pending response during subsequent automatic reads without replay', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible'); await render();
+    let complete!: (result: unknown) => void; client.execute.mockImplementationOnce(() => new Promise(resolve => { complete = resolve; }));
+    fixture.componentInstance.prepare({ kind: 'acknowledge', itemId: 'agreement' }); const command = fixture.componentInstance.confirm();
+    document.dispatchEvent(new Event('visibilitychange')); await Promise.resolve(); expect(client.readOrders).toHaveBeenCalledOnce();
+    complete({ status: 'pending', operationId: 'owned-update', retryable: false }); await command; await settled();
+    const response = fixture.componentInstance.action().result; expect(response).toMatchObject({ status: 'pending', operationId: 'owned-update' });
+    document.dispatchEvent(new Event('visibilitychange')); await settled();
+    expect(client.readOrders).toHaveBeenCalledTimes(3); expect(fixture.componentInstance.action().result).toBe(response);
+    expect(text()).toContain('Waiting for confirmation of your update.'); expect(text()).toContain('owned-update'); expect(client.execute).toHaveBeenCalledOnce();
+  });
+  it('does not cancel an active automatic read and resumes on a later trigger once it settles', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible'); await render();
+    const original = await client.readStages.mock.results[0].value;
+    let complete!: (result: unknown) => void; client.readStages.mockImplementationOnce(() => new Promise(resolve => { complete = resolve; }));
+    document.dispatchEvent(new Event('visibilitychange')); await vi.waitFor(() => expect(client.readStages).toHaveBeenCalledTimes(2));
+    document.dispatchEvent(new Event('visibilitychange')); await Promise.resolve(); expect(client.readOrders).toHaveBeenCalledTimes(2);
+    complete(original); await settled(); document.dispatchEvent(new Event('visibilitychange')); await settled(); expect(client.readOrders).toHaveBeenCalledTimes(3);
+  });
+  it.each(['identity', 'destroy'] as const)('does not announce a late read after %s changes', async (change) => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible'); await render();
+    const component = fixture.componentInstance; const original = await client.readStages.mock.results[0].value;
+    let complete!: (result: unknown) => void; client.readStages.mockImplementationOnce(() => new Promise(resolve => { complete = resolve; }));
+    document.dispatchEvent(new Event('visibilitychange')); await vi.waitFor(() => expect(client.readStages).toHaveBeenCalledTimes(2));
+    if (change === 'identity') { state.set({ status: 'signed-out' }); fixture.detectChanges(); } else fixture.destroy();
+    complete(ok({ ...original.value, currentStage: 'Ordering' })); await Promise.resolve(); await Promise.resolve(); await Promise.resolve();
+    expect(component.refreshMessage()).toBe(''); document.dispatchEvent(new Event('visibilitychange')); await Promise.resolve(); expect(client.readOrders).toHaveBeenCalledTimes(2);
+  });
+
+  it.each(['authentication-required', 'unauthenticated', 'stale-run', 'account-changed'] as const)('keeps a non-stage %s boundary silent', async (status) => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible'); await render();
+    client.readAppointment.mockResolvedValueOnce({ status, code: 'lifecycle-authority-changed', retryable: false });
+    document.dispatchEvent(new Event('visibilitychange')); await settled();
+    expect(fixture.componentInstance.refreshMessage()).toBe('');
+    expect(text()).not.toContain('Order progress updated.');
+  });
+
+  it('announces a changed partial producer envelope when order stages remain ready, as the source does', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible'); await render();
+    client.readAppointment.mockResolvedValueOnce({ status: 'unavailable', code: 'appointment-unavailable', retryable: true });
+    document.dispatchEvent(new Event('visibilitychange')); await settled();
+    expect(fixture.componentInstance.model()?.stages.state).toBe('ok'); expect(fixture.componentInstance.model()?.appointment.state).toBe('unavailable');
+    expect(fixture.componentInstance.refreshMessage()).toBe('Order progress updated.');
+  });
+
 });

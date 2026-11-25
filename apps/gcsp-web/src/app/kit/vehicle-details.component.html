@@ -1,42 +1,38 @@
-<button gcspButton type="button" variant="ghost" class="gcsp-vehicle-details-entry" aria-haspopup="dialog" [attr.aria-expanded]="isOpen()" (click)="openDrawerFromEvent($event)">
-  <span class="gcsp-vehicle-details-copy">
-    <strong>View car details</strong>
-    <span class="gcsp-vehicle-details-hint">{{ equipment().length ? 'Full specification · ' + equipment().length + ' selected equipment ' + (equipment().length === 1 ? 'item' : 'items') : 'Equipment not supplied' }}</span>
-  </span>
-  <span class="gcsp-vehicle-details-arrow" aria-hidden="true">→</span>
-</button>
+<div class="gcsp-vehicle-details-control">
+  <button gcspButton type="button" variant="ghost" class="vm-btn vm-btn-ghost gcsp-vehicle-details-entry" aria-haspopup="dialog" [attr.aria-expanded]="isOpen()" (click)="openDrawerFromEvent($event)">
+    <span>
+      <strong>View car details</strong>
+      <span class="gcsp-vehicle-details-hint">Full specification · {{ equipment().length ? equipment().length + ' selected equipment ' + (equipment().length === 1 ? 'item' : 'items') : 'Equipment not supplied' }}</span>
+    </span>
+    <span class="gcsp-vehicle-details-arrow" aria-hidden="true">→</span>
+  </button>
 
-<gcsp-side-drawer title="Car details" context="Your offer" (closed)="onDrawerClosed()">
-  <div class="gcsp-vehicle-details-body">
-    <h3>{{ name() }}</h3>
-    <gcsp-tabs label="Car details" [items]="tabItems()" initialSelectedId="specification" />
-  </div>
-</gcsp-side-drawer>
+  <gcsp-side-drawer title="Car details" context="Your offer" (closed)="onDrawerClosed()">
+    <div class="gcsp-vehicle-drawer-content" [hidden]="!isOpen()">
+      <h3 class="gcsp-h2">{{ name() }}</h3>
+      <gcsp-tabs label="Car details" [items]="tabItems()" initialSelectedId="specification" />
+    </div>
+  </gcsp-side-drawer>
+</div>
 
 <ng-template #specificationTemplate>
-  <section class="gcsp-vehicle-specification" aria-label="Specification">
-    @if (finishes().length) {
-      <h4>Finishes</h4>
-      <dl>
-        @for (row of finishes(); track $index) { <div class="gcsp-vehicle-detail-row"><dt>{{ row.label }}</dt><dd>{{ displayValue(row) }}</dd></div> }
-      </dl>
-    }
-    @if (facts().length) {
-      <h4>Vehicle facts</h4>
-      <dl>
-        @for (row of facts(); track $index) { <div class="gcsp-vehicle-detail-row"><dt>{{ row.label }}</dt><dd>{{ displayValue(row) }}</dd></div> }
-      </dl>
-    }
+  <div class="gcsp-vehicle-specification">
+    @if (suppliedFinishes().length) { <gcsp-fact-list presentation="source" [rows]="suppliedFinishes()" /> }
+    @if (factsPresentation() === 'source-card') {
+      <div class="vm-card-facts"><gcsp-fact-list presentation="source" className="vm-facts-pair" hideMissing="More details not supplied" [rows]="facts()" /></div>
+    } @else if (facts().length) { <gcsp-fact-list presentation="source" [rows]="facts()" /> }
     @if (additionalDetails(); as details) { <ng-container [ngTemplateOutlet]="details" /> }
-  </section>
+  </div>
 </ng-template>
 
 <ng-template #equipmentTemplate>
-  @if (equipment().length) {
-    <ul class="gcsp-vehicle-equipment">
-      @for (item of equipment(); track $index) { <li>{{ item }}</li> }
-    </ul>
-  } @else {
-    <p class="gcsp-vehicle-equipment-empty">Equipment not supplied</p>
-  }
+  <div class="gcsp-vehicle-equipment">
+    @if (equipment().length) {
+      <ul>
+        @for (item of equipment(); track $index) { <li>{{ item }}</li> }
+      </ul>
+    } @else {
+      <p class="gcsp-note">Equipment not supplied.</p>
+    }
+  </div>
 </ng-template>

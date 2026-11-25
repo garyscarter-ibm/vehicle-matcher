@@ -29,7 +29,7 @@ export function offerScreenFixture(state: OfferProjection['state'] = 'pending'):
       facts: { contractVersion: 'vehicle-snapshot-v1', identityKind: 'exact-stock', candidateKey: 'source:stock-1', sourceNamespace: 'fixture:employee',
         snapshotVersion: 'snapshot-v1', observedAt, sourceKeys: { stockId: 'stock-1' },
         display: { name: 'BMW 330e M Sport Touring', photo: null, images: [], manufacturer: 'BMW', model: '3 Series', derivative: 'M Sport Pro package' },
-        facts: { body: screenFact('Touring'), fuel: screenFact('Plug-in hybrid'), boot: screenFact(410, 'litres'), seats: screenFact(5),
+        facts: { body: screenFact('Touring'), fuel: screenFact('Plug-in hybrid'), boot: screenFact(410, 'L'), seats: screenFact(5),
           colour: screenFact('Alpine White'), interior: screenFact('Black Veganza'), availableFrom: screenFact('1 December 2026'),
           options: screenFact(['Heated seats', 'Parking assistance']), gearbox: screenFact('Automatic'), mileage: screenFact(null, 'mi'),
           frontIsofix: screenFact(false), rearIsofix: screenFact(true), tags: screenFact([]) },

@@ -46,7 +46,7 @@
               <span class="gcsp-mail-to">{{ recipient(message) }}</span>
               <span>{{ subject(message) }}</span>
               <span class="gcsp-mail-meta">Demo clock: {{ time(message.time) }}</span>
-              <span class="gcsp-mail-status" [class.is-failed]="message.state === 'failed'">{{ status(message) }}</span>
+              <span gcspMailStatusChip [state]="message.state" [transport]="message.transport" [label]="status(message)"></span>
               @if (message.state === 'retrying' || message.state === 'failed') { <span class="gcsp-mail-hint">{{ message.attempts }} {{ message.attempts === 1 ? 'attempt' : 'attempts' }}. {{ error(message) }}</span> }
             </button></li>
           }

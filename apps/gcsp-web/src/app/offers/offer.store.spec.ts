@@ -15,7 +15,7 @@ const vehicle: OfferVehicleSnapshot = {
   facts: { mileage: { status: 'unknown', value: null, unit: 'mi', provenance } },
 };
 
-function projection(state: OfferProjection['state'], expiresAt = '2026-11-14T11:00:00.000Z'): OfferProjection {
+function projection(state: OfferProjection['state'], expiresAt = '2026-11-14T14:00:00.000Z'): OfferProjection {
   const accepted = state === 'accepted';
   const declined = state === 'declined';
   return {
@@ -156,6 +156,64 @@ describe('Angular offer read state', () => {
     expect(store.state()).toEqual({ status: 'loading', offerId: 'offer-1' });
     reads[2].result.resolve(result(projection('pending'))); await settle();
     expect(store.state().status).toBe('ready');
+  });
+
+  it('rereads a pending offer at zero once, retaining the authoritative snapshot without inventing expiry', async () => {
+    store.open('offer-1');
+    const atZero = projection('pending', '2026-11-14T12:00:00.000Z');
+    reads[0].result.resolve(result(atZero)); await settle();
+    expect(store.state()).toEqual({ status: 'ready', offerId: 'offer-1', offer: atZero });
+    expect(reads).toHaveLength(2);
+    expect(reads[1].options.expectedContextKey).toBe(key());
+    store.open('offer-1'); store.refresh(); flushEffects();
+    expect(reads).toHaveLength(2);
+    reads[1].result.resolve(result(atZero)); await settle(); flushEffects();
+    expect(store.state()).toEqual({ status: 'ready', offerId: 'offer-1', offer: atZero });
+    expect(reads).toHaveLength(2);
+    expect(client.decide).not.toHaveBeenCalled();
+    store.refresh();
+    expect(reads).toHaveLength(3);
+    reads[2].result.resolve(result(atZero)); await settle();
+    expect(reads).toHaveLength(4);
+    reads[3].result.resolve(result(atZero)); await settle(); flushEffects();
+    expect(reads).toHaveLength(4);
+  });
+
+  it('uses only the extra authoritative read to establish that an offer expired', async () => {
+    store.open('offer-1');
+    reads[0].result.resolve(result(projection('pending', '2026-11-14T11:59:59.999Z'))); await settle();
+    expect(store.state()).toMatchObject({ status: 'ready', offer: { state: 'pending' } });
+    expect(reads).toHaveLength(2);
+    const expired = projection('expired', '2026-11-14T11:59:59.999Z');
+    reads[1].result.resolve(result(expired)); await settle(); flushEffects();
+    expect(store.state()).toEqual({ status: 'ready', offerId: 'offer-1', offer: expired });
+    expect(reads).toHaveLength(2);
+  });
+
+  it('keeps a failed expiry reread as a retryable read failure instead of claiming expiry', async () => {
+    store.open('offer-1');
+    reads[0].result.resolve(result(projection('pending', '2026-11-14T12:00:00.000Z'))); await settle();
+    expect(reads).toHaveLength(2);
+    reads[1].result.reject(new Error('private transport detail')); await settle(); flushEffects();
+    expect(store.state()).toEqual({ status: 'failed', offerId: 'offer-1', failure: {
+      status: 'unavailable', code: 'offer-unavailable', retryable: true,
+    } });
+    expect(reads).toHaveLength(2);
+  });
+
+  it.each(['authority', 'selector', 'clear', 'destroy'] as const)('invalidates the expiry reread after %s changes', async interruption => {
+    store.open('offer-1');
+    reads[0].result.resolve(result(projection('pending', '2026-11-14T12:00:00.000Z'))); await settle();
+    expect(reads).toHaveLength(2);
+    const checking = reads[1];
+    if (interruption === 'authority') { authState.set(ready({ ...employee, runId: 'other-run' })); store.state(); flushEffects(); }
+    else if (interruption === 'selector') store.open('offer-2');
+    else if (interruption === 'clear') store.clear();
+    else TestBed.resetTestingModule();
+    const after = store.state();
+    expect(checking.options.signal?.aborted).toBe(true);
+    checking.result.resolve(result(projection('expired'))); await settle();
+    expect(store.state()).toEqual(after);
   });
 
   it('turns an unexpected rejected read into a safe unavailable failure', async () => {

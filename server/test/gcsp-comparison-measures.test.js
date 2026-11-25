@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { PolicyService, FilePolicyProvider } from '../gcsp/policy/index.js';
 import { COMPARISON_GENERATOR_VERSION } from '../gcsp/comparison/generator.js';
 import { ComparisonRunError } from '../gcsp/comparison/harness.js';
@@ -9,6 +10,20 @@ import { runComparison, validateExperiment, outcomeRecordDigest, PROCESS_COMPARI
 import { storeComparisonResult, readLatestComparisonResult, readLatestComparisonResults, COMPARISON_RESULTS_ENVIRONMENT, COMPARISON_RESULTS_RUN } from '../gcsp/comparison/results.js';
 import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/memory.js';
 import { inputDigest } from '../gcsp/repository/core.js';
+
+// FUCQ-576: current central policy selected on 2026-11-23; complete causal ledger:
+// docs/gcsp/evidence/fucq-576/field-causality.md (source lineage 94a9eaf0/ac6bccdc).
+const fixturePolicyPin = Object.freeze({
+  seedSha256: '23ce0fef1d65e9e54c3b6ddc65361f2abd92e0bb8071c05b4f9797daafad4591',
+  policyVersion: 'gcsp-policy-v1',
+  policyHash: 'c0106882da69259021845df1a26128b218ac7dc7b79d5b528fe3806af7dff994',
+});
+async function assertFixturePolicyPin(manifest) {
+  const bytes = await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url));
+  assert.equal(createHash('sha256').update(bytes).digest('hex'), fixturePolicyPin.seedSha256);
+  assert.equal(manifest.policyVersion, fixturePolicyPin.policyVersion);
+  assert.equal(manifest.policyHash, fixturePolicyPin.policyHash);
+}
 
 const load = async (name) => JSON.parse(await readFile(new URL(`./fixtures/${name}`, import.meta.url), 'utf8'));
 const currentFixture = await load('gcsp-comparison-current-outcomes.json');
@@ -297,6 +312,8 @@ test('the published process-result shape is what a fresh run stores and reads', 
   const repository = await openRepository();
   await storeComparisonResult(repository, context, first);
   const read = await readLatestComparisonResult(repository, context, policy, { asOf: NOW });
+  await assertFixturePolicyPin(read.value.result.manifest);
+  await assertFixturePolicyPin(stored.storedResult.result.manifest);
   assert.deepEqual(JSON.parse(JSON.stringify(read.value)), stored.storedResult);
   await repository.close();
 });
@@ -499,14 +516,19 @@ test('an experiment only reads policy; it never publishes or writes it', async (
   await runComparison(holdExperiment, { ...options, policy: proxy, now: () => NOW });
   await runComparison(pointsExperiment, { ...options, policy: proxy, now: () => NOW });
   const reads = ['getActiveVersion', 'getAssumption', 'getAllowance', 'getEligibility', 'getPointsCost'];
-  assert.ok(called.size > 0 && [...called].every((name) => reads.includes(name)), [...called].join(','));
+  const readOnly = [...reads, 'withReadScope'];
+  assert.ok([...called].some((name) => reads.includes(name)), 'real policy reads occurred beyond the scope wrapper');
+  assert.ok([...called].every((name) => readOnly.includes(name)), [...called].join(','));
   const failing = new Proxy(policy, { get(target, name) {
     const member = target[name];
-    if (typeof member !== 'function' || ['getActiveVersion', 'getAssumption', 'getAllowance', 'getEligibility', 'getPointsCost'].includes(name)) {
+    if (typeof member !== 'function' || readOnly.includes(name)) {
       return typeof member === 'function' ? member.bind(target) : member;
     }
     return () => assert.fail(`policy method ${String(name)} must not be called`);
   } });
+  for (const method of ['publishPolicyVersion', 'adoptReviewedAssumptions', 'refreshEmployeeExperience']) {
+    assert.throws(() => failing[method](), /must not be called/, `${method} remains forbidden`);
+  }
   await runComparison(mixExperiment, { ...options, policy: failing, now: () => NOW });
 });
 
@@ -617,6 +639,8 @@ test('the published experiment-result shape is what a fresh run stores and reads
   const repository = await openRepository();
   await storeComparisonResult(repository, context, hold);
   const read = await readLatestComparisonResult(repository, context, policy, { asOf: NOW, experimentId: 'hold-sweep' });
+  await assertFixturePolicyPin(read.value.result.manifest);
+  await assertFixturePolicyPin(experimentFixture.storedResult.result.manifest);
   assert.deepEqual(JSON.parse(JSON.stringify(read.value)), experimentFixture.storedResult);
   await repository.close();
 });

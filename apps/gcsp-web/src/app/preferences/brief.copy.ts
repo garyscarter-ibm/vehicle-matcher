@@ -6,20 +6,38 @@ const title = (v: string): string => v.replace(/^./, (c) => c.toUpperCase());
 const finite = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
 const enumLabels: Readonly<Record<string, string>> = { ev: 'Electric', phev: 'Plug-in hybrid', petrol: 'Petrol', diesel: 'Diesel', suv: 'SUV', coupe: 'Coupé', saloon: 'Saloon', estate: 'Estate', hatchback: 'Hatchback', convertible: 'Convertible', mpv: 'Family carrier' };
 export const choiceLabel = (v: unknown): string => enumLabels[String(v)] ?? title(words(v));
+export const bodyStyleLabel = (v: unknown): string | null => {
+  if (typeof v !== 'string' || !v.trim()) return null;
+  const key = v.trim();
+  return ['hatchback', 'saloon', 'estate', 'suv', 'coupe', 'convertible', 'mpv'].includes(key) ? enumLabels[key]
+    : key.replace(/[-_]+/g, ' ').toLowerCase().replace(/(^|\s)\S/g, (c) => c.toUpperCase());
+};
+export const fuelSpecLabel = (v: unknown): string | null => typeof v === 'string' && ['petrol', 'diesel', 'phev', 'ev'].includes(v) ? enumLabels[v] : null;
+const dateOnly = /^(\d{4})-(\d\d)-(\d\d)$/;
+const instant = /^\d{4}-\d\d-\d\dT\d\d:\d\d(:\d\d(\.\d+)?)?(Z|[+-]\d\d:\d\d)$/;
 const date = (v: unknown): string | null => {
-  if (typeof v !== 'string' || !/^\d{4}-\d\d-\d\d(?:T.*)?$/.test(v) || !Number.isFinite(Date.parse(v))) return null;
-  if (!v.includes('T') && new Date(v).toISOString().slice(0, 10) !== v) return null;
-  return new Date(v).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: v.includes('T') ? 'Europe/London' : 'UTC' });
+  if (typeof v !== 'string') return null;
+  const day = dateOnly.exec(v);
+  if (day) {
+    const [, y, m, d] = day.map(Number); const check = new Date(Date.UTC(y, m - 1, d));
+    if (check.getUTCFullYear() !== y || check.getUTCMonth() !== m - 1 || check.getUTCDate() !== d) return null;
+  } else if (!instant.test(v)) return null;
+  const ms = Date.parse(v); if (!Number.isFinite(ms)) return null;
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+    timeZone: day ? 'UTC' : 'Europe/London' }).formatToParts(ms).map((part) => [part.type, part.value]));
+  return `${parts['weekday']} ${parts['day']} ${parts['month']} ${parts['year']}`;
 };
 const preferenceFit = (e: Reason): string => {
   const key = String(e['field']); const matched = finite(e['score']) && e['score'] >= 100;
   if (['body', 'fuel'].includes(key)) {
-    const desired = e['desired']; const wanted = typeof desired === 'string' && desired ? choiceLabel(desired) : null;
+    const label = key === 'body' ? bodyStyleLabel : (v: unknown) => typeof v === 'string' && v ? fuelSpecLabel(v) ?? title(words(v).trim()) : null;
+    const wanted = label(e['desired']) || null;
     const facts = e['facts']; const fact = facts && typeof facts === 'object' ? (facts as Reason)[key] : null;
     const observed = fact && typeof fact === 'object' ? (fact as Reason)['value'] : null;
     if (matched) return wanted ? `${wanted}, the ${field(key)} you prefer.` : `This car matches your ${field(key)} preference.`;
     if (!wanted) return `This car differs from your ${field(key)} preference.`;
-    return observed ? `${choiceLabel(observed)}, not the ${/^[A-Z]{2,}$/.test(wanted) ? wanted : wanted.toLowerCase()} you prefer.` : `Not the ${/^[A-Z]{2,}$/.test(wanted) ? wanted : wanted.toLowerCase()} you prefer.`;
+    const actual = label(observed);
+    return actual ? `${actual}, not the ${/^[A-Z]{2,}$/.test(wanted) ? wanted : wanted.toLowerCase()} you prefer.` : `Not the ${/^[A-Z]{2,}$/.test(wanted) ? wanted : wanted.toLowerCase()} you prefer.`;
   }
   if (matched) return `${title(field(key))} matches your preference.`;
   const scales: Record<string, readonly [string, string]> = { sportiness: ['Less sporty than you prefer.', 'Sportier than you prefer.'], comfort: ['Less comfortable than you prefer.', 'More comfortable than you prefer.'], economy: ['Less economical than you prefer.', 'More economical than you prefer.'], size: ['Smaller than you prefer.', 'Larger than you prefer.'] };

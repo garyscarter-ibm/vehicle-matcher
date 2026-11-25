@@ -1,5 +1,10 @@
 import { OfferExplanation, OfferFact, OfferFailure, OfferProjection, OfferSimpleValue } from './offer.types';
 import { VehicleDetailRow } from '../kit/vehicle-details.component';
+import { orderIdentityRows } from '../kit/order-identity';
+import type { DecisionHighlight } from '../kit/decision-highlights.component';
+import { bodyStyleLabel, fuelSpecLabel, reasonText } from '../preferences/brief.copy';
+import type { DataTableColumn, DataTableRow, DataTableValue } from '../kit/data-table.component';
+import type { FactRow } from '../kit/fact-list.component';
 
 const labels: Readonly<Record<string, string>> = {
   eligibilityModelKey: 'Scheme model', body: 'Body style', fuel: 'Fuel', seats: 'Seats', doors: 'Doors', boot: 'Boot',
@@ -7,7 +12,7 @@ const labels: Readonly<Record<string, string>> = {
   cc: 'Engine capacity', year: 'Year', sizeClass: 'Size', tags: 'Features', frontIsofix: 'Front ISOFIX', rearIsofix: 'Rear ISOFIX',
   gearbox: 'Gearbox', transmission: 'Transmission', colour: 'Paint', interior: 'Upholstery', co2: 'CO₂', power: 'Power',
   torque: 'Torque', equipment: 'Equipment', options: 'Selected equipment', availableFrom: 'Available by',
-  configuration: 'Configuration', points: 'Points a month',
+  configuration: 'Configuration', points: 'Points a month', collectionFrom: 'Collection from',
 };
 export const offerFieldLabel = (key: string): string => labels[key] ?? key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[-_]/g, ' ').replace(/^./, (letter) => letter.toUpperCase());
 
@@ -85,10 +90,71 @@ const blockerCopy: Readonly<Record<string, string>> = {
   'ordering-terms-unavailable': 'The ordering terms are unavailable right now.',
 };
 
+const comparedKeys = ['body', 'fuel', 'seats', 'boot', 'zeroTo62', 'mpg', 'points'];
+const comparisonLabel = (key: string) => key === 'zeroTo62' ? '0 to 62 mph' : offerFieldLabel(key);
+const checkCodes = new Set(['driver-eligible', 'policy-include', 'allowance-sufficient', 'essential-met']);
+type SourceReason = Exclude<OfferExplanation, string> & { readonly text: string };
+const sourceReasons = (entries: readonly OfferExplanation[], kind: string): SourceReason[] => entries.map((entry) => typeof entry === 'string'
+  ? { text: entry } : { ...entry, text: reasonText(entry, kind) });
+
+// Current-car units are defined by the recorded field, not the optional DTO unit metadata.
+function currentValue(key: string, value: string | number | undefined): string | null {
+  if (['body', 'fuel'].includes(key)) return typeof value === 'string' && value.trim() ? value.charAt(0).toUpperCase() + value.slice(1) : null;
+  if (typeof value !== 'number' || !Number.isFinite(value) || value <= 0) return null;
+  const n = value.toLocaleString('en-GB');
+  return ({ boot: `${n} litres`, mpg: `${n} mpg`, zeroTo62: `${n} s`, points: `${n} points`, seats: n } as Record<string, string>)[key] ?? null;
+}
+
+// Match decisionView's supplied fact labels and its bounded unit map before comparison.
+function offeredFact(key: string, fact: OfferFact | undefined): FactRow {
+  const raw = fact?.status !== 'known' ? null : key === 'body' ? bodyStyleLabel(fact.value) : key === 'fuel'
+    ? fuelSpecLabel(fact.value) ?? String(fact.value).replaceAll('-', ' ').replaceAll('_', ' ') : fact.value;
+  const value = raw !== null && typeof raw === 'object' ? String(raw) : raw;
+  const unit = ({ L: 'litres', s: 's', 'mpg-imperial': 'mpg' } as Readonly<Record<string, string>>)[fact?.unit ?? ''];
+  return { label: comparisonLabel(key), value, unit };
+}
+
+function offeredValue(key: string, fact: OfferFact | undefined): string | null {
+  const { value, unit } = offeredFact(key, fact);
+  if (value == null || value === '') return null;
+  return `${typeof value === 'number' ? value.toLocaleString('en-GB') : value}${unit ? ` ${unit}` : ''}`;
+}
+
+function detailFact(label: string, fact: OfferFact | undefined, missingLabel = 'Not supplied'): FactRow {
+  const raw = fact?.status === 'known' ? fact.value : null;
+  const value = raw !== null && typeof raw === 'object' ? raw.length ? raw.map((entry) => entry === null ? 'Not supplied' : String(entry)).join(', ') : 'None listed' : raw;
+  return { label, value, unit: fact?.unit ?? undefined, missingLabel };
+}
+
+function comparableNumber(value: string | null): number | null {
+  const match = value?.match(/^([\d,]+(?:\.\d+)?) (?:points|litres)$/);
+  return match ? Number(match[1].replaceAll(',', '')) : null;
+}
+
+// The source read adapter presents these pending receipts as an uncertain outcome.
+export function offerPresentationState(offer: Pick<OfferProjection, 'state' | 'reason'>): OfferProjection['state'] | 'uncertain' {
+  return offer.state === 'pending' && ['decision-pending', 'release-pending'].includes(offer.reason) ? 'uncertain' : offer.state;
+}
+
+// Frozen offer-view compares the card's retained evidence and current-car projection,
+// not active read clocks/versions, actions, or unprojected contribution metadata.
+export function offerCheckStructure(offer: OfferProjection): string {
+  const q = offer.quote; const terms = q.terms; const car = offer.comparison.currentCar;
+  return JSON.stringify([offerPresentationState(offer), {
+    quoteId: q.quoteId, configurationId: q.configurationId, orderUuid: q.orderUuid, orderNumber: q.orderNumber,
+    briefVersion: q.briefVersion, policyVersion: q.policyVersion, quotedAt: q.quotedAt,
+    revisions: q.revisions, facts: q.facts, decision: q.decision,
+    terms: { kind: terms.kind, termsVersion: terms.termsVersion, validFrom: terms.validFrom, validUntil: terms.validUntil,
+      points: terms.points, allowanceInputs: terms.allowanceInputs, provenance: terms.provenance },
+  }, car && { status: offer.comparison.status, model: car.model, configuration: car.facts?.['configuration']?.value ?? null,
+    facts: comparedKeys.map(key => currentValue(key, car.facts?.[key]?.value)), source: car.source }, offer.handoff, offer.selection]);
+}
+
 export function offerViewModel(offer: OfferProjection) {
   const { quote } = offer;
   const { display, facts } = quote.facts;
-  const uncertain = offer.state === 'pending' && ['decision-pending', 'release-pending'].includes(offer.reason);
+  const presentationState = offerPresentationState(offer);
+  const isPending = presentationState === 'pending'; const uncertain = presentationState === 'uncertain';
   const refused = offer.state === 'accepted' && offer.selection?.selectionState === 'handoff-failed';
   const title = refused ? 'Your selection was not sent to ordering' : uncertain ? 'Checking your decision'
     : ({ pending: 'Your offer', accepted: 'Offer accepted', declined: 'Offer declined', expired: 'Offer expired', superseded: 'Offer superseded' })[offer.state];
@@ -99,56 +165,124 @@ export function offerViewModel(offer: OfferProjection) {
   if (offer.state === 'accepted' && offer.selection) {
     const selection = offer.selection;
     message = selection.selectionState === 'handoff-pending' ? 'Sending your selection to ordering. Ordering owns the next step. You do not need to do anything.'
-      : selection.selectionState === 'handoff-failed' ? `The car stays reserved for you. Nothing has been ordered. Contact scheme support${selection.orderReference ? ` and quote order reference ${selection.orderReference}` : ''}.`
-        : `Selection received. Waiting for ${selection.stages.find((stage) => stage.state === 'waiting')?.name ?? selection.current}. Ordering and approval are separate steps.`;
+      : selection.selectionState === 'handoff-failed' ? `The car stays reserved for you. Nothing has been ordered.${selection.orderReference ? ` Quote order reference ${selection.orderReference} when you contact scheme support.` : ''}`
+        : `Selection received. Waiting for ${selection.stages.find((stage) => stage.state === 'waiting')?.name ?? selection.current}.`;
   }
-  const finishes: readonly VehicleDetailRow[] = [
-    { label: 'Paint', value: facts['colour'] ? offerFactValue(facts['colour']) : display.colour ?? null },
-    { label: 'Upholstery', value: facts['interior'] ? offerFactValue(facts['interior']) : null },
-  ];
+  const finishFacts = [facts['colour'] ? detailFact('Paint', facts['colour']) : { label: 'Paint', value: display.colour ?? null }, detailFact('Upholstery', facts['interior'])];
+  const finishes: readonly VehicleDetailRow[] = finishFacts.map(({ label, value }) => ({ label, value: value == null ? null : String(value) }));
   const rows: VehicleDetailRow[] = [
     ...(['manufacturer', 'model', 'derivative'] as const).filter((key) => display[key] !== undefined).map((key) => ({ label: offerFieldLabel(key), value: display[key]! })),
     ...Object.entries(facts).filter(([key]) => !['colour', 'interior'].includes(key)).map(([key, fact]) => ({ label: offerFieldLabel(key), value: offerFactValue(fact) })),
   ];
   const equipmentFact = facts['options'] ?? facts['equipment'];
-  const equipment = equipmentFact?.status === 'known' && equipmentFact.value !== null
-    ? (Array.isArray(equipmentFact.value) ? equipmentFact.value : [equipmentFact.value]).map((value) => offerValue(value)) : [];
-  const overview = ['body', 'fuel', 'boot', 'availableFrom'].filter((key) => facts[key]?.status === 'known')
-    .map((key) => ({ label: offerFieldLabel(key), value: offerFactValue(facts[key]) }));
-  const remainingMinutes = Math.max(0, Math.floor((Date.parse(offer.expiresAt) - Date.parse(offer.serverNow)) / 60000));
+  const equipment = equipmentFact?.status === 'known' && Array.isArray(equipmentFact.value)
+    ? equipmentFact.value.map((value) => value === null ? 'Not supplied' : String(value)) : [];
+  const detailRows: readonly FactRow[] = [
+    { label: 'Model', value: display.model ?? null }, { label: 'Derivative', value: display.derivative ?? null },
+    ...(equipment.length ? [] : [detailFact('Options', equipmentFact, 'Fitted equipment unknown')]),
+    ...['body', 'fuel', 'seats', 'boot', 'zeroTo62', 'mpg'].map((key) => offeredFact(key, facts[key])),
+    detailFact('Gearbox', facts['gearbox'] ?? facts['transmission']),
+  ];
+  const genericFacts: readonly FactRow[] = [
+    { label: 'Model', value: display.model ?? null }, { label: 'Derivative', value: display.derivative ?? null },
+    facts['colour'] ? detailFact('Colour', facts['colour']) : { label: 'Colour', value: display.colour ?? null },
+    detailFact('Options', equipmentFact, 'Fitted equipment unknown'),
+    ...['body', 'fuel', 'seats', 'boot', 'zeroTo62', 'mpg'].map((key) => offeredFact(key, facts[key])),
+    detailFact('Interior', facts['interior']), detailFact('Gearbox', facts['gearbox'] ?? facts['transmission']),
+  ];
+  const primaryImage = display.images.find(image => image.src === display.photo);
+  const genericImage = display.photo ? { ...primaryImage, src: display.photo, alt: primaryImage?.alt || display.name } : null;
+  const genericLine = quote.orderNumber === null ? 'Order number not supplied' : `Order no. ${quote.orderNumber}`;
+  const genericTerm = `${quote.terms.points.value.toLocaleString('en-GB')} points a month · ${quote.terms.allowanceInputs.allowance
+    ? quote.terms.allowanceInputs.allowance.value.toLocaleString('en-GB') + ' points a month allowance' : 'monthly points allowance not supplied'}`;
+  const overview = ['body', 'fuel', 'boot', 'seats'].map((key) => ({ label: comparisonLabel(key), value: offeredValue(key, facts[key]) }))
+    .filter((row) => row.value !== null);
+  const expiresAt = Date.parse(offer.expiresAt); const serverNow = Date.parse(offer.serverNow);
+  const remainingSeconds = Number.isFinite(expiresAt) && Number.isFinite(serverNow)
+    ? Math.max(0, Math.ceil((expiresAt - serverNow) / 1000)) : null;
+  const remainingMinutes = remainingSeconds === null ? null : Math.ceil(remainingSeconds / 60);
   const contribution = quote.terms.contribution;
-  const comparison = ['body', 'fuel', 'seats', 'boot', 'zeroTo62', 'mpg', 'points'].map((key) => {
-    const current = offer.comparison.currentCar?.facts?.[key];
-    return { label: offerFieldLabel(key), current: current ? offerValue(current.value, current.unit) : 'Unknown',
-      offered: key === 'points' ? `${offerValue(quote.terms.points.value)} points` : offerFactValue(facts[key]) };
+  const sourceComparison = comparedKeys.map((key) => ({ key,
+    current: currentValue(key, offer.comparison.currentCar?.facts?.[key]?.value),
+    offered: key === 'points' ? `${quote.terms.points.value.toLocaleString('en-GB')} points` : offeredValue(key, facts[key]),
+  }));
+  const currentName = offer.comparison.currentCar ? [offer.comparison.currentCar.model, offer.comparison.currentCar.facts?.['configuration']?.value].filter((value) => value !== undefined).join(', ') : 'Current car not supplied';
+  const comparisonColumns: readonly DataTableColumn[] = [
+    { key: 'label', label: '' }, { key: 'current', label: 'Your current car', detail: currentName },
+    { key: 'offer', label: 'This offer', detail: display.name },
+  ];
+  const comparison: readonly DataTableRow[] = sourceComparison.map(({ key, current, offered }) => {
+    const one = comparableNumber(offered); const two = comparableNumber(current);
+    const direction = key === 'points' ? -1 : key === 'boot' ? 1 : 0;
+    const winner = direction && one !== null && two !== null && one !== two
+      ? (one - two) * direction > 0 ? 'offer' : 'current' : null;
+    const cell = (value: string | null, side: 'current' | 'offer'): DataTableValue => winner === side ? { label: value, winner: true } : value;
+    const label = comparisonLabel(key);
+    return { id: key, label, cells: { label, current: cell(current, 'current'), offer: cell(offered, 'offer') } };
   });
+  const normalizedDecision = {
+    reasons: sourceReasons(quote.decision.reasons, 'reasons').filter((entry) => !checkCodes.has(String(entry['code']))),
+    tradeOffs: sourceReasons(quote.decision.tradeOffs, 'tradeOffs'),
+    blockers: sourceReasons(quote.decision.blockers, 'blockers'), unknowns: sourceReasons(quote.decision.unknowns, 'unknowns'),
+  };
   const measuredBenefits: ReturnType<typeof offerExplanation>[] = [];
   const measuredTradeOffs: ReturnType<typeof offerExplanation>[] = [];
+  const benefits: DecisionHighlight[] = []; const tradeoffs: DecisionHighlight[] = [];
+  const measuredFields = new Set<string>(); let pointsDifference: string | null = null;
   for (const key of ['points', 'boot']) {
-    const current = offer.comparison.currentCar?.facts?.[key];
-    const offered = key === 'points' ? quote.terms.points.value : facts[key]?.status === 'known' ? facts[key].value : null;
-    const unit = (value: string | null | undefined) => value === 'L' ? 'litres' : value === 'points-per-month' ? 'points' : value;
-    const offeredUnit = key === 'points' ? 'points' : facts[key]?.unit;
-    if (typeof current?.value !== 'number' || typeof offered !== 'number' || unit(current.unit) !== unit(offeredUnit) || current.value === offered) continue;
-    const better = key === 'points' ? offered < current.value : offered > current.value;
-    (better ? measuredBenefits : measuredTradeOffs).push({ title: `${Math.abs(offered - current.value).toLocaleString('en-GB')} ${key === 'points' ? `${better ? 'fewer' : 'more'} points` : `litres ${better ? 'more' : 'less'}`}`,
+    const row = sourceComparison.find((entry) => entry.key === key)!;
+    const current = comparableNumber(row.current); const offered = comparableNumber(row.offered);
+    if (current === null || offered === null || current === offered) continue;
+    const better = key === 'points' ? offered < current : offered > current;
+    const delta = Math.abs(offered - current).toLocaleString('en-GB');
+    measuredFields.add(key);
+    (better ? benefits : tradeoffs).push({ number: delta,
+      title: key === 'points' ? `${better ? 'fewer' : 'more'} points` : `litres ${better ? 'more' : 'less'}`,
+      detail: key === 'points' ? 'Every month, compared with your current car' : 'Boot space compared with your current car' });
+    if (key === 'points' && better) pointsDifference = `${delta} fewer than your current car`;
+    (better ? measuredBenefits : measuredTradeOffs).push({ title: `${delta} ${key === 'points' ? `${better ? 'fewer' : 'more'} points` : `litres ${better ? 'more' : 'less'}`}`,
       details: [key === 'points' ? 'Every month, compared with your current car' : 'Boot space compared with your current car'] });
   }
-  return { title, message, name: display.name, finishes, rows, equipment, overview, comparison,
+  for (const [entries, target] of [[normalizedDecision.reasons, benefits], [normalizedDecision.tradeOffs, tradeoffs]] as const) {
+    for (const entry of entries) {
+      if (checkCodes.has(String(entry['code'])) || typeof entry['field'] === 'string' && measuredFields.has(entry['field'])) continue;
+      if (entry.text) target.push({ title: entry.text });
+    }
+  }
+  const decisionDetails = [
+    { label: quote.decision.gateStatus === 'eligible' ? 'Why it suits you' : 'Checks passed', entries: isPending ? [] : normalizedDecision.reasons.map((entry) => entry.text) },
+    { label: 'Why it is not eligible', entries: normalizedDecision.blockers.map((entry) => entry.text) },
+    { label: 'Needs confirmation', entries: normalizedDecision.unknowns.map((entry) => entry.text) },
+    { label: 'Trade-offs', entries: isPending ? [] : normalizedDecision.tradeOffs.map((entry) => entry.text) },
+  ].filter(group => group.entries.length);
+  const orderNumber = offer.selection?.orderNumber ?? quote.orderNumber;
+  const acceptedIdentityRows = [...(display.name ? [{ label: 'Your new car', value: display.name }] : []),
+    ...(orderNumber ? orderIdentityRows(null, orderNumber) : [])];
+  const selectionIdentityRows = refused && (offer.selection?.orderReference || offer.selection?.orderNumber)
+    ? orderIdentityRows(offer.selection.orderReference, offer.selection.orderNumber) : [];
+  return { title, message, name: display.name, memberId: quote.orderUuid, gateStatus: quote.decision.gateStatus, genericFacts, genericImage, genericLine, genericTerm, finishes, rows, detailRows, equipment, overview, comparison, comparisonColumns,
     images: display.images.length ? display.images : display.photo ? [{ src: display.photo, alt: display.name }] : [],
     showVehicle: offer.state === 'pending' || offer.state === 'superseded' || refused,
     showAcceptedIdentity: offer.state === 'accepted' && !refused,
-    orderNumber: offer.selection?.orderNumber ?? quote.orderNumber,
+    orderNumber, acceptedIdentityRows, selectionIdentityRows, showSelection: refused && offer.selection !== null,
+    isPending, isExpired: offer.state === 'expired', isRefused: refused,
+    monthlyPoints: quote.terms.points.value, monthlyAllowance: quote.terms.allowanceInputs.allowance?.value ?? null,
+    pointsDifference, benefits, tradeoffs, hasCurrentCar: offer.comparison.currentCar !== null, decisionDetails,
+    decisionGate: isPending && quote.decision.gateStatus === 'eligible' ? null
+      : ({ eligible: 'Eligible', ineligible: 'Not eligible', 'needs-confirmation': 'Needs confirmation' })[quote.decision.gateStatus],
     points: offerValue(quote.terms.points.value), allowance: quote.terms.allowanceInputs.allowance ? offerValue(quote.terms.allowanceInputs.allowance.value) : null,
     contribution: contribution ? `${new Intl.NumberFormat('en-GB', { style: 'currency', currency: contribution.currency }).format(contribution.amount)} ${contribution.period === 'one-off' ? 'one-off' : `a ${contribution.period}`}` : null,
-    deadline: offerDate(offer.expiresAt), remaining: `${Math.floor(remainingMinutes / 60)}h ${String(remainingMinutes % 60).padStart(2, '0')}m`,
+    deadline: offerDate(offer.expiresAt),
+    deadlineTime: Number.isFinite(expiresAt) ? new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/London' }).format(expiresAt) : null,
+    deadlineDate: Number.isFinite(expiresAt) ? new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/London' }).format(expiresAt) : null,
+    remainingSeconds, remaining: remainingMinutes === null ? 'Time remaining unavailable' : `${Math.floor(remainingMinutes / 60)}h ${String(remainingMinutes % 60).padStart(2, '0')}m`,
     reasons: [...measuredBenefits, ...quote.decision.reasons.map(offerExplanation)], tradeOffs: [...measuredTradeOffs, ...quote.decision.tradeOffs.map(offerExplanation)],
     blockers: quote.decision.blockers.map(offerExplanation), unknowns: quote.decision.unknowns.map(offerExplanation),
     handoffBlocker: offer.handoff?.blocker ? blockerCopy[offer.handoff.blocker] : null,
     selectionStages: refused ? offer.selection?.stages ?? [] : [],
-    currentName: offer.comparison.currentCar ? [offer.comparison.currentCar.model, offer.comparison.currentCar.facts?.['configuration']?.value].filter((value) => value !== undefined).join(', ') : 'Current car not supplied',
-    comparisonNote: offer.comparison.status === 'available' ? '' : offer.comparison.comparisonAvailable
-      ? 'Partial comparison. Some current-car facts are unknown.' : 'Current-car specifications and points are unknown.',
+    currentName,
+    comparisonNote: !offer.comparison.currentCar ? 'Current-car details not supplied. Equipment is unknown.' : offer.comparison.status === 'available' ? '' : sourceComparison.some((row) => row.current !== null)
+      ? 'Partial comparison. Some current-car facts are unknown.' : 'Partial comparison. Current-car specifications and points are unknown.',
     comparisonUnknowns: offer.comparison.unknowns.map(offerFieldLabel),
     termsDates: `${offerDate(quote.terms.validFrom)} to ${offerDate(quote.terms.validUntil)}`,
     termsWording: offer.handoff?.wording ?? 'Scheme wording not supplied.',
@@ -158,7 +292,7 @@ export function offerViewModel(offer: OfferProjection) {
 export function offerFailureView(failure: OfferFailure): { title: string; message: string; retry: boolean } {
   const copy: Readonly<Record<OfferFailure['status'], readonly [string, string]>> = {
     invalid: ['Offer link incomplete', 'Open the offer from your account or use its original email link.'],
-    unavailable: ['Your offer could not be loaded', 'Please try again in a moment.'],
+    unavailable: ['Your offer could not be loaded', 'The current offer could not be loaded.'],
     'stale-version': ['Offer details changed', 'Check the current offer again before continuing.'],
     conflict: ['Offer details changed', 'Check the current offer again before continuing.'],
     forbidden: ['Offer unavailable', 'This offer is not available for your account.'],
