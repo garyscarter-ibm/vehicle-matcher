@@ -55,6 +55,8 @@ describe('route-scoped planning state', () => {
     expect(store.orderMessage()).toBe('Requested. Production has not confirmed any of this yet.');
     await store.refreshProduction();
     expect(store.orderMessage()).toBe('Requested. Production has not confirmed any of this yet.');
+    readProduction.mockResolvedValue({ status: 'unavailable', reason: 'Temporary read failure.' }); await store.refreshProduction();
+    expect(store.orderMessage()).toBe('Requested. Production has not confirmed any of this yet.');
     readProduction.mockResolvedValue({ status: 'ok', value: confirmed }); await store.refreshProduction();
     expect(store.production()?.requests[0].stage).toBe('Delayed');
     expect(store.orderOutcome()).toBeNull(); expect(store.orderMessage()).toBe('');

@@ -17,6 +17,7 @@ export class PlanningStore {
   private readonly owner = signal<string | null>(null);
   private readonly planResult = signal<PlanningResult<PlanView> | null>(null);
   private readonly productionResult = signal<PlanningResult<ProductionView> | null>(null);
+  private lastProductionFingerprint: string | null = null;
   private readonly commandResult = signal<PlanningResult<ProductionSubmissionDto> | null>(null);
   private readonly activeEditors = signal<readonly ConstraintEditor[] | null>(null);
   private readonly edits = signal<Readonly<Record<string, string>>>({});
@@ -151,6 +152,7 @@ export class PlanningStore {
     this.abortReads(); this.commandEpoch++; this.commandAbort.abort(); this.commandAbort = new AbortController();
     this.ordersValue.set(null); this.retainedOrder.set(null); this.orderResult.set(null); this.orderSuccess.set('');
     this.owner.set(null); this.planResult.set(null); this.productionResult.set(null); this.commandResult.set(null);
+    this.lastProductionFingerprint = null;
     this.activeEditors.set(null); this.edits.set({}); this.retainedCommand.set(null); this.staleValue.set(false); this.sending.set(false); this.contextVersion = null;
   }
   async refresh(): Promise<void> {
@@ -188,13 +190,14 @@ export class PlanningStore {
       orders = read.status === 'ok' ? parseGregOrders(read.value, true) : null; result = projectProduction(read); }
     catch { result = { status: 'unavailable', reason: 'Production status could not be loaded. Try again.', retryable: true }; }
     if (this.disposed || epoch !== this.productionEpoch || scope !== this.scope()) return;
-    const previous = this.production();
-    if (previous && (result.status !== 'ok' || previous.fingerprint !== result.value.fingerprint)) {
+    const previous = this.lastProductionFingerprint;
+    if (previous !== null && (result.status !== 'ok' || previous !== result.value.fingerprint)) {
       this.staleValue.set(true); this.planEpoch++; this.planAbort.abort(); this.readingPlan.set(false);
       if (result.status === 'ok' && !preserveOrderNotice && this.orderResult()?.status === 'ok' && !this.retainedOrder()) {
         this.orderResult.set(null); this.orderSuccess.set('');
       }
     }
+    if (result.status === 'ok') this.lastProductionFingerprint = result.value.fingerprint;
     this.ordersValue.set(orders); this.productionResult.set(result); this.readingProduction.set(false);
   }
   value(editor: ConstraintEditor, id = '', edge = ''): string {
