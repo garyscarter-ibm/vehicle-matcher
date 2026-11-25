@@ -68,7 +68,7 @@ function identity(pid) {
 }
 
 export async function startComposition({ caseId = 'f548', ordering = 'synthetic' } = {}) {
-  assert.ok(['f340', 'f548', 'f549', 'f550', 'f551', 'f552', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked', 'f561'].includes(caseId));
+  assert.ok(['f340', 'f548', 'f549', 'f550', 'f551', 'f552', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked', 'f559', 'f559-learned', 'f561'].includes(caseId));
   assert.ok(['synthetic', 'rejected', 'unknown-then-rejected'].includes(ordering));
   const scratch = local(process.env.SCRATCH ?? '');
   assert.ok(scratch.startsWith('/private/tmp/'), 'The supervisor must own /private/tmp scratch');
@@ -303,6 +303,11 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       GCSP_DEMO_IDP_ENABLED: 'true', GCSP_DEMO_IDP_REDIRECT_URIS: `${origins.web}/gcsp/auth/callback`,
       GCSP_DEMO_IDP_POST_LOGOUT_REDIRECT_URIS: `${origins.web}/gcsp/`, GCSP_DEMO_IDP_ACCESS_TOKEN_LIFETIME: '1h',
       GCSP_ENVIRONMENT_ID: envId, GCSP_RUN_ID: bootstrapRunId, GCSP_POLICY_VERSION: input.clock.policyVersion,
+      ...(['f559', 'f559-learned'].includes(caseId) ? { GCSP_PRODUCTION_PROVIDER: 'synthetic' } : {}),
+      ...(caseId === 'f559-learned' ? {
+        GCSP_POLICY_VERSION: 'gcsp-policy-v1+learned-model-v1',
+        GCSP_LEARNING_ACTIVE_MODEL: 'sha256:2ce1109d986c7709bf9505f8e388e9c1479ff3c36e7cae86f656ff29bb973c7d',
+      } : {}),
       GCSP_SCENARIO_PROVIDER: 'demo', GCSP_ACCOUNT_PROVIDER: 'repository', GCSP_ORDERING_PROVIDER: ordering === 'synthetic' ? 'synthetic' : 'remote', GCSP_RESET_ALLOWED: 'true',
       ...(ordering === 'synthetic' ? {} : { GCSP_ORDERING_EXECUTE_URL: `${origins.web}/proof-ordering/execute`,
         GCSP_ORDERING_RECONCILE_URL: `${origins.web}/proof-ordering/reconcile`, GCSP_ORDERING_TOKEN: orderingToken, GCSP_ORDERING_TIMEOUT: '5s' }),
@@ -654,9 +659,27 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
         expected: { ...expected, runId } }, visit);
       return receipt.nodeReplay;
     }
+    function loseProductionQueueAcknowledgement(requestId) {
+      assert.equal(caseId, 'f559', 'Only F559 models one lost release-queue acknowledgement');
+      assert.equal(typeof requestId, 'string'); assert.ok(requestId.length > 0 && requestId.length <= 200);
+      const predicate = `environment_id=${literal(envId)} AND run_id=${literal(runId)} AND request_id=${literal(requestId)}`;
+      const read = () => JSON.parse(sql(`SELECT coalesce(json_agg(json_build_object('supplyId',supply_id,'quantity',quantity,
+        'confirmedAt',confirmed_at,'queuedAt',queued_at,'eligibleFrom',eligible_from) ORDER BY supply_id),'[]'::json)::text
+        FROM production_confirmations WHERE ${predicate};`));
+      const before = read();
+      assert.equal(before.length, 1, 'The fixture selects only the confirmation created by the actual UI command');
+      assert.ok(before[0].queuedAt && before[0].eligibleFrom, 'The actual confirmation queued normally before the fault');
+      sql(`UPDATE production_confirmations SET queued_at=NULL,eligible_from=NULL WHERE ${predicate};`);
+      const after = read();
+      assert.deepEqual(after.map(row => ({ ...row, queuedAt: before[0].queuedAt, eligibleFrom: before[0].eligibleFrom })), before);
+      receipt.productionQueueFault = { kind: 'lost-queue-acknowledgement', before, after,
+        authority: 'GregOrdersHttpTest.queueingReturnsTheSupplyIdsOnceAndNeverSubmitsOrAsksProduction; root-approved25Nov',
+        limitation: 'A case-owned fault after real confirmation, not the natural successful-confirm state. The existing queue entry is preserved.' };
+      return { before, after };
+    }
     return { context, receipt, origins, apiBase, input, plan, newPage, call, prepareInitialBrief, releaseMainOffer,
       readImage: (page, locator) => imageObservers.get(page).read(locator),
-      readActualHold, readOfferPersistence, restartApi, screenshot, compareFrozenNode, visitFrozenNode,
+      readActualHold, readOfferPersistence, restartApi, screenshot, compareFrozenNode, visitFrozenNode, loseProductionQueueAcknowledgement,
       ordering: { requests: orderingRequests, rejectPending() { assert.equal(ordering, 'unknown-then-rejected'); rejectPending = true; } }, close };
   } catch (error) {
     receipt.failure = { name: error.name, message: error.message.slice(0, 1000) };

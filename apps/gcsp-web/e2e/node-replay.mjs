@@ -274,6 +274,140 @@ export async function withNodeReplay({ browser, input, plan, cert, key, output, 
     assert.equal(initialClock.now, input.clock.now);
     assert.equal(initialClock.clockVersion, input.clock.clockVersion);
     assert.equal(control.policyVersion, input.clock.policyVersion);
+    if (expected.gregPlanning || expected.gregPresentation) {
+      // Use the frozen login service and its configured Greg, with the separate real Presenter
+      // cookie for source Production controls. Credentials never leave this in-memory closure.
+      const [{ loadDemoPrincipalSeed }, { demoLoginProfile }] = await Promise.all([
+        load('server/gcsp/fixtures/principals.js'), load('server/gcsp/identity/login-adapter.js')]);
+      const seed = good(await loadDemoPrincipalSeed(runtime.policy, { runId: control.runId,
+        asOf: initialClock.now, policyVersion: control.policyVersion }), 'Frozen principal configuration');
+      const principal = seed.principals.find(row => row.roles.includes('greg')); assert.ok(principal);
+      const stored = good(await repository.read(control, { table: 'employees', key: {
+        runId: control.runId, employeeId: principal.employeeId } }), 'Frozen Greg employee');
+      const profile = demoLoginProfile(principal, stored);
+      const adapterSource = readFileSync(path.join(reference, 'server/gcsp/identity/login-adapter.js'), 'utf8');
+      const password = /digest\('([^']+)'\)/.exec(adapterSource)?.[1]; assert.ok(password, 'Retained demo verifier is available in memory');
+      const signed = good(await runtime.identity.signIn({ email: profile.email, password }, 'f559-real-greg'), 'Frozen real Greg login');
+      assert.ok(signed.context.roles.includes('greg')); assert.ok(!signed.context.roles.includes('presenter'));
+      context = await browser.newContext({ ignoreHTTPSErrors: true, viewport: { width: 1280, height: 800 },
+        reducedMotion: 'reduce', locale: 'en-GB', timezoneId: 'Europe/London' });
+      const presenterSession = good(await runtime.identity.createPresenterSession('f559-separate-presenter'), 'Frozen separate presenter');
+      const cookies = [...(Array.isArray(signed.setCookie) ? signed.setCookie : [signed.setCookie]), presenterSession.setCookie[1]]
+        .filter(cookie => cookie && !/Max-Age=0(?:;|$)/i.test(cookie));
+      await context.addCookies(cookies.map(cookie => {
+        const pair = cookie.split(';', 1)[0]; const at = pair.indexOf('=');
+        return { name: pair.slice(0, at), value: pair.slice(at + 1), url: origin, httpOnly: true, secure: true, sameSite: 'Lax' };
+      }));
+      const page = await context.newPage(); receipt.consoleErrors = [];
+      page.on('pageerror', error => receipt.consoleErrors.push(error.message.slice(0, 300)));
+      await page.goto(`${origin}/gcsp-greg.html`, { waitUntil: 'networkidle' });
+      const settle = async (check, label) => {
+        const end = Date.now() + 15000;
+        while (Date.now() < end) { if (await check()) return; await new Promise(resolve => setTimeout(resolve, 100)); }
+        assert.fail(label);
+      };
+      const capture = async name => {
+        await page.setViewportSize({ width: 1280, height: 800 });
+        const destination = path.join(output, `node-${name}-1280.png`);
+        await page.screenshot({ path: destination, fullPage: true }); return destination;
+      };
+      const mount = async ({ presentation } = {}) => page.evaluate(async ({ presentation }) => {
+        const main = document.querySelector('main') ?? document.body.appendChild(document.createElement('main'));
+        main.replaceChildren();
+        const root = document.createElement('section'); main.append(root);
+        if (presentation) {
+          const { mountGregOrderPlan } = await import('/blocks/gcsp/greg/plan/panel.js');
+          mountGregOrderPlan(root, { adapter: { readPlan: async () => ({ status: 'ready', value: presentation }) } });
+        } else {
+          const [{ mountGregOrders }, { createGregOrdersHttpAdapter }] = await Promise.all([
+            import('/blocks/gcsp/greg-orders/greg-orders.js'), import('/blocks/gcsp/greg-orders/http-adapter.js')]);
+          mountGregOrders(root, { adapter: createGregOrdersHttpAdapter(), productionControls: true });
+        }
+      }, { presentation });
+      const read = async () => {
+        const response = await page.evaluate(async () => {
+          const actual = await fetch('/api/gcsp/greg/orders', { credentials: 'include', cache: 'no-store' });
+          return { http: actual.status, body: await actual.json() };
+        });
+        assert.equal(response.http, 200); return good(response.body, 'Frozen actual orders HTTP');
+      };
+      const semantic = value => value.requests.map(row => ({ model: row.model, derivative: row.derivative, quantity: row.quantity,
+        stage: row.stage, confirmedQuantity: row.confirmedQuantity, releasedQuantity: row.releasedQuantity,
+        outstandingQuantity: row.outstandingQuantity })).sort((a, b) => a.quantity - b.quantity);
+      const command = async (suffix, action) => {
+        const waiting = page.waitForResponse(response => response.request().method() === 'POST' && new URL(response.url()).pathname.endsWith(suffix));
+        await action(); const actual = await waiting; assert.equal(actual.status(), 200);
+        const body = await actual.json(); good(body, 'Frozen real UI command');
+        await settle(() => page.getByRole('button', { name: 'Refresh orders', exact: true }).isEnabled(), 'Frozen command readback settles');
+        return body;
+      };
+      const refresh = async () => {
+        const waiting = page.waitForResponse(response => response.request().method() === 'GET' && new URL(response.url()).pathname.endsWith('/greg/orders'));
+        await page.getByRole('button', { name: 'Refresh orders', exact: true }).click(); await waiting;
+        await page.getByRole('table', { name: 'Requested, confirmed and released cars', exact: true }).waitFor();
+        return read();
+      };
+      async function visitGregPlanning() {
+        const actual = expected.gregPlanning; const states = {}; const screenshots = {};
+        await mount(); await page.getByRole('table', { name: 'Requested, confirmed and released cars', exact: true }).waitFor();
+        await page.locator('.gcsp-orders-production > summary').click();
+        const forms = page.locator('.gcsp-orders-production form'); const manual = forms.nth(0); const production = forms.nth(1);
+        for (const quantity of [1, 2]) {
+          await manual.getByLabel('Model', { exact: true }).selectOption(actual.choice.model);
+          await manual.getByLabel('Derivative', { exact: true }).selectOption(actual.choice.derivative);
+          await manual.getByLabel('Quantity', { exact: true }).fill(String(quantity));
+          await command('/greg/orders', () => manual.getByRole('button', { name: 'Submit request', exact: true }).click());
+        }
+        states.requested = await read(); assert.deepEqual(semantic(states.requested), semantic(actual.states.requested));
+        const confirmed = states.requested.requests.find(row => row.quantity === 1); const delayed = states.requested.requests.find(row => row.quantity === 2);
+        await production.getByLabel('Request', { exact: true }).selectOption(confirmed.requestId);
+        await production.getByLabel('Production response', { exact: true }).selectOption('confirm');
+        await production.getByLabel('Quantity to confirm', { exact: true }).fill('1');
+        await command('/presenter/production', () => production.getByRole('button', { name: 'Save production response', exact: true }).click());
+        states.confirmed = await read(); assert.deepEqual(semantic(states.confirmed), semantic(actual.states.confirmed));
+        screenshots.confirmed = await capture('production-confirmed');
+        await production.getByLabel('Request', { exact: true }).selectOption(delayed.requestId);
+        await production.getByLabel('Production response', { exact: true }).selectOption('delay');
+        await production.getByLabel('Delay until', { exact: true }).fill(actual.delayDate);
+        await production.getByLabel('Delay reason', { exact: true }).fill('Demonstration production delay');
+        await command('/presenter/production', () => production.getByRole('button', { name: 'Save production response', exact: true }).click());
+        states.delayed = await read(); assert.deepEqual(semantic(states.delayed), semantic(actual.states.delayed));
+        const delayedRow = states.delayed.requests.find(row => row.requestId === delayed.requestId);
+        assert.equal(delayedRow.delay.until.slice(0, 10), actual.delayDate); assert.equal(delayedRow.delay.reason, 'Demonstration production delay');
+        screenshots.delayed = await capture('production-delayed');
+        const supplyId = states.delayed.requests.find(row => row.requestId === confirmed.requestId).supplies[0].supplyId;
+        const lost = store.state.tables.event_receipts.filter(row => row.runId === control.runId && row.consumerId === 'stock-supply-queue' && row.eventId === supplyId);
+        assert.equal(lost.length, 1, 'Only the actual confirmation acknowledgement is selected');
+        // Test-only state fault: the frozen repository has no delete operation. The smaller new
+        // receipt array invalidates its lookup cache; all other actual state/queue facts survive.
+        store.state = { ...store.state, tables: { ...store.state.tables,
+          event_receipts: store.state.tables.event_receipts.filter(row => row !== lost[0]) } };
+        states.queueLost = await refresh(); assert.equal(states.queueLost.requests.find(row => row.requestId === confirmed.requestId).supplies[0].queued, false);
+        screenshots.queueLost = await capture('production-release-queue-retry');
+        await command('/greg/orders/queue', () => page.getByRole('button', { name: 'Retry release queue', exact: true }).click());
+        states.retried = await read(); assert.deepEqual(semantic(states.retried), semantic(actual.states.retried));
+        assert.equal(states.retried.requests.length, 2); assert.equal(states.retried.requests.find(row => row.requestId === confirmed.requestId).supplies[0].queued, true);
+        screenshots.retried = await capture('production-release-queue-recovered');
+        return { state: 'matched', comparison: 'Real role-separated source request/confirm/delay/queue commands and semantic tracking; engine-local IDs retained.',
+          gregPlanning: { states, screenshots, angularScreenshots: actual.screenshots, queueFault: { kind: 'lost-queue-acknowledgement',
+            removed: { consumerId: lost[0].consumerId, eventId: lost[0].eventId },
+            limitation: 'Case-owned fault after successful real confirmation, not natural post-confirm state.' },
+          humanReview: 'Pending actual collaborator verdict.' } };
+      }
+      async function visitGregPresentation() {
+        const actual = expected.gregPresentation; await mount({ presentation: actual.value });
+        const table = page.locator('table').filter({ has: page.getByRole('columnheader', { name: 'Difference', exact: true }) });
+        await settle(async () => await table.count() === 1, 'Frozen source learned comparison renders the real Java envelope');
+        const emphasis = await table.locator('tbody tr').evaluateAll(rows => rows.map(row => Array.from(row.querySelectorAll('th,td')).map(cell => !!cell.querySelector('strong'))));
+        assert.deepEqual(emphasis, actual.angularEmphasis, 'Frozen and Angular source cells use identical conditional emphasis');
+        return { state: 'presentation-matched', comparison: 'Frozen source widget rendered the actual Java learned response; no Node forecast/scenario equivalence is claimed.',
+          gregPresentation: { emphasis, screenshot: await capture('planning-learned-source-presentation'),
+            input: 'Actual configured Java producer envelope, unchanged', humanReview: 'Pending actual collaborator verdict.' } };
+      }
+      Object.assign(receipt, await visit({ page, context, origin, runtime, employee, control, repository, receipt,
+        visitGregPlanning, visitGregPresentation }));
+      assert.deepEqual(receipt.consoleErrors, []); return receipt;
+    }
     const run = good(await repository.read(control, { table: 'runs', key: { runId: control.runId } }), 'Node actual clock configuration');
     assert.equal(run.versions.scenarioClock.startsAt, input.clock.startsAt);
     assert.deepEqual(run.versions.scenarioClock.namedTimes, input.clock.namedTimes);
