@@ -1,6 +1,6 @@
 # Offer and bell parity evidence — 23 November 2026
 
-**25 November update:** one combined human review now includes the Preferences pairs below, alongside the retained Offer and bell pairs. Earlier stopped-session and setup notes describe their original observation times. F562 has since delivered Main reset; the 23 November capture provenance is preserved. All human verdicts remain pending.
+**25 November update:** one combined human review now includes the Preferences pairs below, alongside the retained Offer and bell pairs. Earlier stopped-session and setup notes describe their original observation times. F562 has since delivered Main reset; the 23 November capture provenance is preserved. All human verdicts remain pending. Combined review thread: `MSG-2026-11-25-sorrel-001`.
 
 Two original human decisions remain pending: **Offer (FUCQ-555 AC8)** and **Employee notification bell (FUCQ-548 AC6)**. Each can receive its own verdict. No human verdict has been recorded, and neither Bug is accepted. The session is stopped after the requested wind-down; the prepared evidence remains available for human review. No new review chat was started during wind-down.
 
