@@ -33,6 +33,8 @@ async function arrived(page, pathname, hash = '') {
 }
 async function screenshot(suite, page, name) {
   await page.setViewportSize({ width: 1280, height: 800 });
+  await until(async () => await page.locator('[aria-busy="true"]:visible').count() === 0,
+    'Navigation capture waits for the visible application read to settle');
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
   await page.waitForFunction(() => [...document.images].filter((image) => {
     const box = image.getBoundingClientRect();
@@ -233,7 +235,7 @@ test('FUCQ-549: live employee and Greg navigation and original off-rail context'
     assert.equal(response.status(), 200, 'Actual confirmation succeeds after the existing minimum is met');
     await employee.getByRole('link', { name: 'See your buddy at work', exact: true }).click();
     await arrived(employee, '/gcsp/activity');
-    await employee.getByRole('heading', { name: 'Buddy activity', exact: true, level: 1 }).waitFor();
+    await employee.getByRole('heading', { name: 'Your buddy', exact: true, level: 1 }).waitFor();
     evidence.journeys.angularPreferences = { actions: ['Your cars', 'Comfort', 'Sportiness', 'Edit your preferences', 'Refresh and review', 'Replace draft with saved preferences', 'Engage Buddy', 'Save your preferences', 'See your buddy at work'], destination: locationOf(employee) };
   });
 });
