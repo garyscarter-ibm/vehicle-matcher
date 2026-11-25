@@ -11,6 +11,9 @@ import { choiceLabel, reasonText } from './brief.copy';
 import { BriefEditorStore } from './brief-editor.store';
 import { BuddyControlsComponent } from './buddy-controls.component';
 import { BriefDecision, BriefPreview, BriefValue, PracticalQuestion } from './brief.types';
+// Frozen e44ed08a editor registry/question display order (seed-v1.json); JSON member order is not a UI contract.
+const PREFERENCE_DISPLAY_ORDER = ['body', 'fuel', 'sportiness', 'comfort', 'economy', 'size'];
+const PRACTICAL_DISPLAY_ORDER = ['seats', 'boot', 'equipment', 'charging'];
 @Component({ selector: 'gcsp-preferences', imports: [RouterLink, NgTemplateOutlet, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, FactListComponent, BriefPreviewCardComponent, ErrorSummaryComponent, BuddyControlsComponent], host: { class: 'vm gcsp-brief' }, templateUrl: './preferences.component.html', styleUrl: './preferences.component.css' })
 export class PreferencesComponent {
   readonly store = inject(BriefEditorStore); readonly replace = signal(false); readonly chargingOpen = signal(false);
@@ -22,8 +25,12 @@ export class PreferencesComponent {
       cleanup(() => clearTimeout(timer));
     });
   }
-  entries<T>(value: Readonly<Record<string, T>>): readonly [string, T][] { return Object.entries(value); }
-  preferenceEntries(sliders: boolean) { return this.entries(this.store.editor()!.context.preferences).filter((entry) => (entry[1].type === 'slider') === sliders); }
+  private sourceEntries<T>(value: Readonly<Record<string, T>>, order: readonly string[]): readonly [string, T][] {
+    const keys = [...order.filter(key => Object.hasOwn(value, key)), ...Object.keys(value).filter(key => !order.includes(key))];
+    return keys.map(key => [key, value[key]]);
+  }
+  preferenceEntries(sliders: boolean) { return this.sourceEntries(this.store.editor()!.context.preferences, PREFERENCE_DISPLAY_ORDER).filter((entry) => (entry[1].type === 'slider') === sliders); }
+  practicalEntries() { return this.sourceEntries(this.store.editor()!.context.practicalQuestions, PRACTICAL_DISPLAY_ORDER); }
   knownFacts(): readonly { label: string; value: string }[] {
     const facts = this.store.editor()!.context.knownFacts;
     const asRecord = (value: unknown): Readonly<Record<string, unknown>> => value && typeof value === 'object' && !Array.isArray(value) ? value as Readonly<Record<string, unknown>> : {};
@@ -133,14 +140,14 @@ export class PreferencesComponent {
   acceptedPreferenceRows(): readonly FactRow[] {
     const context = this.store.editor()!.context;
     const level = (value: unknown): string => typeof value === 'number' && Number.isFinite(value) ? `${value} out of ${context.slider.maximum}` : 'Not set';
-    return Object.entries(context.preferences).filter(([key]) => this.store.brief().preferences[key]).map(([key, definition]) => {
+    return this.sourceEntries(context.preferences, PREFERENCE_DISPLAY_ORDER).filter(([key]) => this.store.brief().preferences[key]).map(([key, definition]) => {
       const p = this.store.brief().preferences[key];
       const value = definition.type === 'slider' ? level(p.value) : Array.isArray(p.value) ? p.value.map(choiceLabel).join(', ') : choiceLabel(p.value);
       return { label: definition.label, value: `${value}, importance ${p.importance === context.slider.minimum ? "I don't mind" : level(p.importance)}` };
     });
   }
   acceptedNeedRows(): readonly FactRow[] {
-    return Object.entries(this.store.editor()!.context.practicalQuestions).filter(([key]) => this.store.brief().essentials[key]).map(([key, question]) => {
+    return this.practicalEntries().filter(([key]) => this.store.brief().essentials[key]).map(([key, question]) => {
       const value = this.store.brief().essentials[key].value;
       const answer = value == null ? this.store.editor()!.context.unconfirmedLabel : JSON.stringify(value) === JSON.stringify(question.no) ? 'No'
         : Array.isArray(question.yes) && question.yes.includes(value) ? `Yes, ${value === 'either' ? 'home or work' : value}` : 'Yes';

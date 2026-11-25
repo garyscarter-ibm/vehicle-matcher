@@ -39,7 +39,7 @@
       </fieldset>
     </ng-template></section>
     <section class="gcsp-brief-section"><h2>What your car needs to do</h2><p class="gcsp-note">Not sure yet leaves that need unconfirmed.</p>
-    @for (entry of entries(editor.context.practicalQuestions); track entry[0]) {
+    @for (entry of practicalEntries(); track entry[0]) {
       <fieldset class="practical-question gcsp-brief-question" [disabled]="store.locked() || store.queuePending() || store.buddyResolutionRequired() || !editor.context.essentials[entry[0]]?.editable"><legend>{{ entry[1].label }}</legend>
         <div class="vm-options" [id]="'practical-' + entry[0]" role="radiogroup" [attr.aria-label]="entry[1].label" [attr.aria-describedby]="'practical-' + entry[0] + '-answer'">@for (option of practicalAnswers; track option.value) {
           <button class="vm-option" type="button" role="radio" [class.is-selected]="answer(entry[0], entry[1]) === option.value" [attr.aria-checked]="answer(entry[0], entry[1]) === option.value" [tabIndex]="answer(entry[0], entry[1]) === option.value || answer(entry[0], entry[1]) === 'review' && option.value === 'yes' ? 0 : -1" (click)="practical(entry[0], entry[1], option.value)" (keydown)="navigateOptions($event)"><span class="vm-option-label">{{ option.label }}</span></button>

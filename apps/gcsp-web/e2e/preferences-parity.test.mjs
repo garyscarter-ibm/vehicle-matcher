@@ -122,6 +122,32 @@ async function editorSurface(page) {
   }));
 }
 
+function boundPreviewCards(surface, response, label) {
+  assert.equal(response.status, 'ok', `${label} preview succeeded`);
+  const decisions = response.value.decisions;
+  assert.ok(Array.isArray(decisions) && decisions.length > 0, `${label} retains all actual decisions`);
+  const byId = new Map(decisions.map((decision) => [decision.orderUuid, decision]));
+  assert.equal(byId.size, decisions.length, `${label} response UUIDs are unique`);
+  assert.equal(new Set(surface.cards.map((card) => card.member)).size, surface.cards.length, `${label} DOM UUIDs are unique`);
+  assert.equal(surface.cards.length, decisions.length, `${label} renders every actual decision exactly once`);
+  const expected = decisions.map((decision) => {
+    assert.equal(typeof decision.configurationId, 'string', `${label} response binds an exact configuration`);
+    assert.ok(decision.configurationId.length > 0);
+    return { member: decision.orderUuid, configurationId: decision.configurationId, gate: decision.gateStatus,
+      title: decision.snapshot?.display?.name ?? 'Car name not supplied' };
+  });
+  // Neither source DOM prints configurationId. Its unique member UUID binds each visible card to
+  // that engine's actual response configuration; configuration is never inferred from the title.
+  const actual = surface.cards.map((card) => {
+    const decision = byId.get(card.member); assert.ok(decision, `${label} DOM member belongs to its actual response`);
+    return { ...card, configurationId: decision.configurationId };
+  });
+  assert.deepEqual(actual, expected, `${label} DOM preserves its own full response order, UUIDs, gates and titles`);
+  return actual;
+}
+
+const byMember = (cards) => [...cards].sort((a, b) => a.member.localeCompare(b.member));
+
 async function openEditor(page, url) {
   await page.goto(url, { waitUntil: 'domcontentloaded' });
   await page.getByRole('heading', { name: 'Your preferences', exact: true, level: 1 }).waitFor();
@@ -192,6 +218,7 @@ test('FUCQ-552: source preferences, real preview, keyboard and accepted exits', 
       await capture(suite, employee, 'angular-editor-1280', employee.locator('.gcsp-brief').first());
       await capture(suite, employee, 'angular-editor-practical-1280', employee.locator('.gcsp-brief-question').first());
       await capture(suite, employee, 'angular-editor-preview-1280', employee.locator('.gcsp-brief-cards article.vm-card').first());
+      suite.receipt.preferences.boundCards = boundPreviewCards(angularEditor, suite.receipt.preferences.preview, 'Angular');
       completed++;
     });
 
@@ -204,13 +231,31 @@ test('FUCQ-552: source preferences, real preview, keyboard and accepted exits', 
         });
         const sourceBrief = await runtime.brief.readCurrent(sourceEmployee);
         assert.equal(sourceBrief.status, 'ok');
-        sourceReceipt.preferences = { actualBrief: sourceBrief.value,
+        sourceReceipt.preferences = { actualBrief: sourceBrief.value, account: sourceAccount, screenshots: [],
           timestampComparison: 'Only confirmedAt, disengagedAt, ratedAt, setAt, asOf and observedAt compare as valid UTC instants; raw readbacks are retained.' };
+        const sourceAccountRead = await runtime.account.readAccount(sourceEmployee); assert.equal(sourceAccountRead.status, 'ok');
+        sourceReceipt.preferences.actualAccount = sourceAccountRead.value;
+        const sourceEditorRead = await runtime.editor.readEditor(sourceEmployee); assert.equal(sourceEditorRead.status, 'ok');
+        sourceReceipt.preferences.actualEditor = sourceEditorRead.value;
+        sourceReceipt.preferences.screenshots.push(await capture(suite, page, 'node-account-sportiness-1280', page.locator('.gcsp-prefs').first()));
+        const previewResponse = page.waitForResponse((response) => response.request().method() === 'POST'
+          && new URL(response.url()).pathname.endsWith('/brief/preview'));
+        await openEditor(page, `${origin}/gcsp-brief-live.html`);
+        const actualPreview = await previewResponse;
+        sourceReceipt.preferences.previewHttpStatus = actualPreview.status();
+        sourceReceipt.preferences.preview = await actualPreview.json();
+        assert.equal(actualPreview.status(), 200, 'Frozen preview HTTP read succeeded');
+        await until(async () => await page.locator('.gcsp-brief-cards article.vm-card').count() > 0, 'Frozen real preview produces decision cards');
+        const sourceEditor = await editorSurface(page);
+        sourceReceipt.preferences.editor = sourceEditor;
+        sourceReceipt.preferences.screenshots.push(await capture(suite, page, 'node-editor-1280', page.locator('.gcsp-brief').first()));
+        sourceReceipt.preferences.screenshots.push(await capture(suite, page, 'node-editor-practical-1280', page.locator('.gcsp-brief-question').first()));
+        sourceReceipt.preferences.screenshots.push(await capture(suite, page, 'node-editor-preview-1280', page.locator('.gcsp-brief-cards article.vm-card').first()));
+
+        // Retain the full source responses, surface and four captures before cross-engine comparisons.
         assert.deepEqual(timestampInstants(project(sourceBrief.value.brief, briefKeys)), timestampInstants(project(before['/brief'].brief, briefKeys)), 'Actual saved brief inputs match across engines');
         assert.deepEqual(project(sourceEmployee, ['runId', 'employeeId', 'policyVersion']),
           project(before['/context'], ['runId', 'employeeId', 'policyVersion']), 'Actual contexts map only the isolated environment');
-        const sourceAccountRead = await runtime.account.readAccount(sourceEmployee); assert.equal(sourceAccountRead.status, 'ok');
-        sourceReceipt.preferences.actualAccount = sourceAccountRead.value;
         assert.deepEqual(timestampInstants(project(sourceAccountRead.value, ['state', 'asOf', 'account', 'drivers', 'contracts', 'currentContract', 'contractState', 'choices', 'allowance'])),
           timestampInstants(project(before['/manual/account'], ['state', 'asOf', 'account', 'drivers', 'contracts', 'currentContract', 'contractState', 'choices', 'allowance'])), 'Actual account business inputs and clocks match');
         // shared-contracts.md:13 requires local monotonic versions, not equal row-write counts.
@@ -227,23 +272,29 @@ test('FUCQ-552: source preferences, real preview, keyboard and accepted exits', 
         assert.deepEqual(timestampInstants(versionMetadata(nodeVersions)), timestampInstants(versionMetadata(javaVersions)), 'Policy, record set and source metadata match');
         assert.deepEqual(nodeVersions, sourceReceipt.finalClockComparison.actualFinalAccount.versions, 'Node preference actions preserve actual release versions');
         assert.deepEqual(javaVersions, state.account.versions, 'Java preference actions preserve actual release versions');
-        const sourceEditorRead = await runtime.editor.readEditor(sourceEmployee); assert.equal(sourceEditorRead.status, 'ok');
-        sourceReceipt.preferences.actualEditor = sourceEditorRead.value;
         for (const key of ['preferences', 'essentials', 'practicalQuestions', 'slider', 'accountPreferences']) {
           assert.deepEqual(timestampInstants(sourceEditorRead.value.context[key]), timestampInstants(before['/brief/editor'].context[key]), `Actual editor context ${key}`);
         }
         assert.deepEqual(sourceAccount, suite.receipt.preferences.account, 'Same actual categories, mode, importance and completeness');
-        const accountCapture = await capture(suite, page, 'node-account-sportiness-1280', page.locator('.gcsp-prefs').first());
-        await openEditor(page, `${origin}/gcsp-brief-live.html`);
-        await until(async () => await page.locator('.gcsp-brief-cards article.vm-card').count() > 0, 'Frozen real preview produces decision cards');
-        const sourceEditor = await editorSurface(page);
-        assert.deepEqual(sourceEditor, angularEditor, 'Both actual editors render the same schema and preview decisions');
-        const editorCapture = await capture(suite, page, 'node-editor-1280', page.locator('.gcsp-brief').first());
-        const practicalCapture = await capture(suite, page, 'node-editor-practical-1280', page.locator('.gcsp-brief-question').first());
-        const previewCapture = await capture(suite, page, 'node-editor-preview-1280', page.locator('.gcsp-brief-cards article.vm-card').first());
-        return { preferences: { ...sourceReceipt.preferences,
-          account: sourceAccount, editor: sourceEditor,
-          screenshots: [accountCapture, editorCapture, practicalCapture, previewCapture], humanReview: 'pending' } };
+        assert.deepEqual(project(sourceEditor, ['preferences', 'questions']), project(angularEditor, ['preferences', 'questions']),
+          'Both actual editors preserve ordered fields, axes, scale ends and chips');
+        const nodeCards = boundPreviewCards(sourceEditor, sourceReceipt.preferences.preview, 'Node');
+        const angularCards = boundPreviewCards(angularEditor, suite.receipt.preferences.preview, 'Angular');
+        sourceReceipt.preferences.boundCards = nodeCards;
+        sourceReceipt.preferences.cardComparison = {
+          configurationBinding: 'Each unique DOM member UUID binds to configurationId in its own actual preview response; neither DOM independently prints configurationId.',
+          nodeEligible: nodeCards.filter((card) => card.gate === 'eligible'),
+          angularEligible: angularCards.filter((card) => card.gate === 'eligible'),
+          nodeUnrankedTail: nodeCards.filter((card) => card.gate !== 'eligible'),
+          angularUnrankedTail: angularCards.filter((card) => card.gate !== 'eligible'),
+          orderBasis: 'employee-recommendation.md ranks suitable cars only. Node recommendation/index.js:252 and Java Evaluation:214–215 append noneligible decisions in provider order; frozen memory insertion order differs from Java UUID-paged stock. Both original tail orders are retained.',
+        };
+        const comparison = sourceReceipt.preferences.cardComparison;
+        assert.deepEqual(byMember(nodeCards), byMember(angularCards), 'Every exact candidate, configuration, gate and title matches across engines');
+        assert.deepEqual(comparison.nodeEligible, comparison.angularEligible, 'Eligible cards preserve the same strict preference/points/UUID ranking');
+        assert.deepEqual(byMember(comparison.nodeUnrankedTail), byMember(comparison.angularUnrankedTail), 'All unranked candidates retain their exact membership, configurations, gates and titles');
+        sourceReceipt.preferences.humanReview = 'pending';
+        return { preferences: sourceReceipt.preferences };
       });
       assert.equal(replay.state, 'matched', 'A missing frozen reference cannot establish the required pair');
       completed++;

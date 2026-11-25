@@ -95,6 +95,24 @@ describe('native preference controls', () => {
     expect(Array.from((f.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('.vm-card-explicit'), card => card.dataset['memberId'])).toEqual([second.orderUuid, first.orderUuid]);
     expect(original.decisions[0]).not.toHaveProperty('computedScore');
   });
+  it('keeps the frozen editor order when Java object properties arrive reordered and retains additive definitions', async () => {
+    const editor = briefEditorFixture(); const slider = editor.context.preferences['economy']; const body = editor.context.preferences['body'];
+    const preferences = { size: { ...slider, label: 'Size' }, comfort: { ...slider, label: 'Comfort' }, economy: slider, sportiness: { ...slider, label: 'Sportiness' }, fuel: { ...body, label: 'Fuel' }, body, extraSlider: { ...slider, label: 'Extra slider' }, extraChoice: { ...body, label: 'Extra choice' } };
+    const q = editor.context.practicalQuestions['seats'];
+    const practicalQuestions = { boot: { ...q, label: 'Boot question' }, seats: q, charging: editor.context.practicalQuestions['charging'], equipment: { ...q, label: 'Equipment question' }, extraQuestion: { ...q, label: 'Extra question' } };
+    client.readEditor.mockResolvedValueOnce({ status: 'ok', value: { ...editor, context: { ...editor.context, preferences, practicalQuestions } } });
+    const f = TestBed.createComponent(PreferencesComponent); await f.whenStable(); const root = f.nativeElement as HTMLElement;
+    const legends = (selector: string) => Array.from(root.querySelectorAll(selector), legend => legend.textContent?.trim());
+    expect(legends('.gcsp-brief-preference > legend')).toEqual(['Body style', 'Fuel', 'Extra choice', 'Sportiness', 'Comfort', 'Economy', 'Size', 'Extra slider']);
+    expect(legends('.gcsp-brief-question > legend')).toEqual(['Do you need at least five seats?', 'Boot question', 'Equipment question', 'Can you charge?', 'Extra question']);
+    expect(f.componentInstance.preferenceEntries(true).map(([key]) => key)).toEqual(['sportiness', 'comfort', 'economy', 'size', 'extraSlider']);
+    expect(f.componentInstance.preferenceEntries(true).find(([key]) => key === 'extraSlider')?.[1]).toBe(f.componentInstance.store.editor()!.context.preferences['extraSlider']);
+    expect(f.componentInstance.acceptedPreferenceRows().map(row => row.label)).toEqual(['Body style', 'Economy']);
+    expect(f.componentInstance.acceptedNeedRows().map(row => row.label)).toEqual(['Do you need at least five seats?', 'Can you charge?']);
+    expect(Object.keys(preferences)).toEqual(['size', 'comfort', 'economy', 'sportiness', 'fuel', 'body', 'extraSlider', 'extraChoice']);
+    expect(Object.keys(practicalQuestions)).toEqual(['boot', 'seats', 'charging', 'equipment', 'extraQuestion']);
+    expect(f.componentInstance.store.fullDirty()).toBe(false); expect(client.saveDraft).not.toHaveBeenCalled(); expect(client.savePreferences).not.toHaveBeenCalled();
+  });
   it('offers accepted order progress only from the supplied accepted state', async () => {
     const f = TestBed.createComponent(PreferencesComponent); await f.whenStable(); const root = f.nativeElement as HTMLElement;
     expect(root.querySelector('a[href="/orders"]')).toBeNull();
