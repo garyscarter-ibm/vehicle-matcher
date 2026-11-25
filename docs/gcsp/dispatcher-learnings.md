@@ -3755,3 +3755,33 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 ### 2026-11-25 17:57 UTC · usget-velko · DL-20261125-SORREL-16 · Optional enrichment incorrectly made required
 
 - F561's new read projection initially passed27 native cases but the lead's119-case covering run exposed two original presenter callers returning503 instead of200 when optional policy was unavailable. Root rejected adding Main seed solely to satisfy the enrichment. Frozen Node tolerates unavailable names/pricing, so the new projection was corrected to preserve complete recorded cars/counts, fallback names and empty points; actual required stock/custody contradictions still fail503. Both original caller fixtures were restored unchanged and the unnecessary Supply policy seed removed. Lead's corrected86-case focused run passed with no failures/errors/skips; independent delta review passed. Earlier strict-policy evidence remains superseded. Normal integration refresh has now aborted cleanly on four shared metadata/runner files; no unapproved reconciliation, final browser pass or acceptance is claimed. Proposed improvement: check optional-versus-required producer contracts against existing real callers before enriching the view.
+
+
+### 2026-11-25 19:55 UTC · usget-velko · DL-20261125-SORREL-16 · Approved F340 integration and cleanup verified
+
+- Russell explicitly approved the prepared integration and waived further approval requests for this run, preserving Gary’s decisions and original acceptance. F340 source c021fccdf passed Node11/11, CLI6/6 and registered5/5 across four Estate/SUV1280/390 resets; root independently reran CLI6/6. Final refresh changed metadata only. Normal mergead4d43d26, archive dd78beb64 and cleanup874469db0 are published; owned worktree/ref/lease removed. Native In Review is read back. Shared covering batches remain open; no Done or human acceptance is inferred.
+
+
+### 2026-11-25 19:55 UTC · usget-velko · DL-20261125-SORREL-16 · F552 duplicate preview action repaired
+
+- The always-visible Update preview duplicated the existing180ms automatic request. The minimal template change offers Retry preview only for typed unavailable results; TS/store/CSS behavior is unchanged. Two meaningful regressions were first RED;67 focused and142 static checks passed. Registered f552 passed6/6 entries/five groups, peak2720481280B, scratch130657120B, with owned cleanup verified. Root independently67/67; final refreshed product/test blobs are identical. Merge9788987e0 and corrected-pair ledger b85393f1d are published. Gary’s old differs verdict remains; new attachment1647676/1647677 row is blank and originalAC7 open.
+
+
+### 2026-11-25 19:55 UTC · usget-velko · DL-20261124-F555-08 · Attribution mitigation missed an actual CLI module
+
+- F548 published merge8a41e94e3 received the legacy Claude trailer because the worker invoked the CLI rather than the imported sg module carrying the explicit process-local Codex override. Published history was preserved. F555 refresh/merge and named close/cleanup commits subsequently used the actual imported module and Codex trailers. The earlier actual-module Jira import622a45008 also has the trailer. This is a bounded caller mitigation with a verified recurrence, not a framework repair or proof that arbitrary CLI invocations are corrected.
+
+
+### 2026-11-25 19:55 UTC · usget-velko · DL-20261117-GCC-012 · Typed endpoints do not change link semantics
+
+- The six corrected Bug parents525/527/528/530/545/534 are verified under432. Their native typed Story endpoints use Blocks, while the configured canonical relation is Relates; therefore helper origin_unknown remains honest. A typed Story endpoint alone did not prove a canonical Related origin. No links/descriptions/labels or archived claims were changed to hide that limitation. A later complete delta returned25 local issues; nine evidence files verified ready, including two reused local mobile images. The next empty delta processed all39 pending attachments across13 records as ready.
+
+
+### 2026-11-25 19:55 UTC · usget-velko · DL-20261125-VELKO-02 · Shared FETCH_HEAD is not branch truth
+
+- A lease fetch replaced shared FETCH_HEAD with a lease commit, briefly suggesting the integration remote had moved to unrelated JSON. Direct advertised origin/gcsp-poc-dev, tracking ref and HEAD agreed, and normal helper pull correctly used the named tracking branch. No reset or branch repair was needed. Use the named advertised branch when diagnosing this condition; no new merge gate or helper change was added.
+
+
+### 2026-11-25 19:55 UTC · usget-velko · DL-20261125-SORREL-16 · F561 real reset response and preparation ordering
+
+- The reset client rejected a legitimate200 response by equating independent preparation and clock version namespaces. The minimal parser correction preserves exact selected preparation pins, activated-run identity and complete nested clock validation; a real-shape regression was RED first, then91 presenter tests passed and independent review passed. Later registered checks pass local Basic/release/suitability/mail-action/reset behavior, but the frozen comparison exposed a genuine Main brief policy binding difference: Node adopts reviewed policy before its loader, Java afterwards. BugF594 records the independently confirmed ordering problem and verified StoryF479 origin underF433; no policy ordering implementation or parity pass is yet claimed. AC4 mail image rendering and hosted/human evidence remain distinct open checks.
