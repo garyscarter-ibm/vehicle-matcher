@@ -26,7 +26,7 @@
           <div class="gcsp-brief-scale">@for (end of scaleEnds(entry[0]); track $index) { <span>{{ end }}</span> }</div>
         } @else {
           <div class="vm-options" [id]="'preference-' + entry[0]" [attr.role]="entry[1].multiple ? 'group' : 'radiogroup'" [attr.aria-label]="entry[1].label + ': what you prefer'" tabindex="-1">@for (option of entry[1].values ?? []; track $index) {
-            <button type="button" class="vm-option" [class.is-selected]="selected(entry[0], option)" [attr.role]="entry[1].multiple ? 'checkbox' : 'radio'" [attr.aria-checked]="selected(entry[0], option)" [tabIndex]="entry[1].multiple || optionTabStop(entry[0], option) ? 0 : -1" (click)="choose(entry[0], option)" (keydown)="!entry[1].multiple && navigateOptions($event)"><span class="vm-option-label">{{ choice(option) }}</span></button>
+            <button type="button" class="vm-option" [class.is-selected]="selected(entry[0], option)" [attr.role]="entry[1].multiple ? 'checkbox' : 'radio'" [attr.aria-checked]="selected(entry[0], option)" [tabIndex]="entry[1].multiple || optionTabStop(entry[0], option) ? 0 : -1" (click)="choose(entry[0], option)" (keydown)="entry[1].multiple ? null : navigateOptions($event)"><span class="vm-option-label">{{ choice(option) }}</span></button>
           }</div>
         }
         </div><div class="gcsp-brief-axis" [hidden]="!hasPreference(entry[0])"><p class="gcsp-brief-axis-label">Importance</p>
