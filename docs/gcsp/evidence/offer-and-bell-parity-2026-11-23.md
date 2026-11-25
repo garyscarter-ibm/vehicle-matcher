@@ -1,8 +1,8 @@
 # Offer and bell parity evidence — 23 November 2026
 
-**25 November update:** one combined human review now includes the Preferences pairs below, alongside the retained Offer and bell pairs. Earlier stopped-session and setup notes describe their original observation times. F562 has since delivered Main reset; the 23 November capture provenance is preserved. All human verdicts remain pending. Combined review thread: `MSG-2026-11-25-sorrel-001`.
+**25 November update:** the combined human review includes the retained Offer (FUCQ-555 AC8) and bell (FUCQ-548 AC6) pairs, Preferences (FUCQ-552 AC7), F549 navigation (AC4) and F550 release/update (AC5). Native F549/F550 issue, comment, filename and attachment-ID pointers appear below; no image copies were added. F549 AC1's control/Activity wording decision remains pending; AC2/3 engineering criteria are met. F550's required human decision is its original release/update pair; the outbox chip comparison is supporting context, not another gate. F562 has since delivered Main reset. Earlier stopped-session/setup notes and retained captures keep their original observation times. All human verdicts remain pending. Combined review thread: `MSG-2026-11-25-sorrel-001`.
 
-Two original human decisions remain pending: **Offer (FUCQ-555 AC8)** and **Employee notification bell (FUCQ-548 AC6)**. Each can receive its own verdict. No human verdict has been recorded, and neither Bug is accepted. The session is stopped after the requested wind-down; the prepared evidence remains available for human review. No new review chat was started during wind-down.
+The previous wind-down note describes that earlier session; the existing combined thread already points to this artifact. No new review question or thread is created here. No human review or acceptance is claimed, and no Bug is accepted.
 
 The latest registered Chromium suite at `c13e604bc4bf3578c1fcf76e9c948fe72e95d09b` passed **12/12 reported tests** across all six F548/F555 compositions, with all seven stage exits zero. Root independently reconciled all 1834 tracked inputs, actual checks/counts, complete dependency identities and current cleanup: `.claude/test-runs/f555-overnight-20261123/final-consolidated-chromium-20261124/root-independent-audit.json` (SHA `2447118a488f7383a8b6cf181c22c9562d18bb1a06719e9b481ca48be51bd6e1`). The test-only correction waits for specification visibility before the unchanged full-text comparison; no product, assertion, normalizer or frozen reference changed. The final WEB shared-cache variant separately passed **1955 cases / 117 specs / 12 serial chunks**; no npm ci is claimed. Root audit SHA `7db8afe706597fde734faa3c6feeb7552318a3e7d5bff614bed45ed09dd78f93` records exact inputs/raw reports and cleanup.
 
@@ -74,6 +74,35 @@ Root independently verified all 19 browser-owned process identities and groups, 
 
 F556's already-published compatible Button and supported Orders route are consumed. Whole Orders, TaskList, SlotPicker and associated screen acceptance remain outside this delivery's prerequisite gate. F562, F563 and F566 remain separately recorded, with the existing narrow rulings above.
 
+## F549 and F550 — native review evidence added 25 November
+
+These attachment pointers resolve through the existing Jira issues and comments across clones. The screenshots remain attached in Jira; this artifact does not duplicate their image bytes. Frozen Node reference for both comparisons: `e44ed08a9`.
+
+### F549 — navigation — source `65e5f210c` — AC4
+
+Actual connected Node/Angular pairs were captured on 25 November at 1280×800, before deliberate preference changes. Greg is settled at the same no-new-order outcome. Native publication is on FUCQ-549, comment `5067204`:
+
+| Role / state | Angular | Frozen Node |
+| --- | --- | --- |
+| Greg navigation, same no-new-order outcome | `angular-greg-navigation-1280.png` — attachment `1647050` | `node-greg-navigation-1280.png` — attachment `1647051` |
+| Employee navigation, before deliberate preference changes | `angular-employee-navigation-1280.png` — attachment `1647052` | `node-employee-navigation-1280.png` — attachment `1647053` |
+
+The pairs evidence role/account headers, rails, the selected Greg tab and breadcrumbs; body presentation differs. Angular's employee view shows an offers/orders recovery banner absent in Node alongside a `/manual/order` 404; the banner cause remains unknown, and F551 AC3 owns the no-false-error boundary. AC2/3 engineering criteria are met. AC1's control/Activity wording decision remains unresolved, and AC4 human review remains unchecked. No account/body repair or parity acceptance is inferred.
+
+### F550 — live release/update — source `4526da931` — AC5
+
+The actual public release updated the original open Your cars tab without employee input, navigation or reload. The 25 November 1280-wide full-page captures show Angular before and after that release and frozen Node in the same-release state. Native publication is on FUCQ-550, comment `5067240`:
+
+| Capture | Native attachment |
+| --- | --- |
+| Angular account before release; full page anchored at the pre-release fixed-header position | `account-before-public-release-1280.png` — `1647059` |
+| Angular account after release; same open tab, with the observed scroll reset | `account-after-public-release-1280.png` — `1647060` |
+| Frozen Node, same release | `node-account-same-release-1280.png` — `1647061` |
+| Angular outbox after release; supporting current-chip comparison only | `outbox-after-public-release-1280.png` — `1647062` |
+| Frozen Node outbox, same release; supporting current-chip comparison only | `node-outbox-same-release-1280.png` — `1647063` |
+
+Engineering evidence at `4526da931` is 5/5 reported selected groups; unchanged account/Activity/offer matrices are reused from `cb7e5049a`. This does not claim one full-family green run. The account recovery banner is visible but its cause is unknown; `/manual/order` 404 alone does not establish it. The frozen Node outbox has two observed rows versus Angular's one, including an extra historical `renewal-case-update` at 22 November 09:30; its exact pre-release creation boundary was not observed. Only the current-offer chip's label/class/SVG/colour match is established, not full outbox inventory or layout parity. The image-framing difference remains under F551's existing repair scope. F550 AC5 human review remains pending; no acceptance is claimed. These are preserved observations, not added F550 gates.
+
 ## Human verdict ledger
 
 Status: **human review pending; combined review resumed on 25 November.** One response can give a separate verdict for each row. The fields below stay blank until a human collaborator gives a cited verdict: `matches`, `differs: <Bug key>` or `intended change: <cited ruling>`. A described difference can be tracked before closure. Any collaborator has equal authority.
@@ -82,6 +111,10 @@ Status: **human review pending; combined review resumed on 25 November.** One re
 | --- | --- | --- | --- | --- | --- | --- |
 | Offer — F555 AC8 | Pending held Main X2, 1280 | Top and lower table pairs above | | | | |
 | Employee bell — F548 AC6 | Open with one active Main X2, 1280 | Bell pair above | | | | |
+| F549 — AC1 | Control/Activity wording decision, original state remains unresolved | Current control/Activity evidence and pending ruling described in F549 section | | | | FUCQ-549; comment 5067204; source 65e5f210c |
+| F549 — AC4 | Greg navigation, same no-new-order outcome, 1280×800 | Greg pair in F549 evidence section | | | | FUCQ-549; comment 5067204; source 65e5f210c |
+| F549 — AC4 | Employee navigation before preference changes, 1280×800 | Employee pair in F549 evidence section | | | | FUCQ-549; comment 5067204; source 65e5f210c |
+| F550 — AC5 | Open Your cars tab across public release, 1280-wide full page | Angular before/after plus frozen Node same-release captures in F550 evidence section; outbox pair is supporting chip evidence only | | | | FUCQ-550; comment 5067240; source 4526da931 |
 
 
 ## Preferences — F552 AC7 — 25 November review addition
