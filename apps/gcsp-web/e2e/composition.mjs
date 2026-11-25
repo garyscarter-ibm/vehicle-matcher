@@ -83,7 +83,8 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
   const runId = NODE_REPLAY_IDENTITY.runId;
   const ports = { web: Number(process.env.PROOF_WEB_PORT ?? 7548), api: Number(process.env.PROOF_API_PORT ?? 8548) };
   assert.ok(Object.values(ports).every((port) => Number.isInteger(port) && port > 1023 && port < 65536) && ports.web !== ports.api);
-  const origins = { web: `https://gcsp-web.localhost:${ports.web}`, api: `https://gcsp-api.localhost:${ports.api}` };
+  const webHost = caseId === 'f561' ? 'gcsp-web.example.test' : 'gcsp-web.localhost';
+  const origins = { web: `https://${webHost}:${ports.web}`, api: `https://gcsp-api.localhost:${ports.api}` };
   const issuer = `${origins.api}/demo-idp`;
   const apiBase = `${origins.api}/api/gcsp/v1`;
   const database = /^jdbc:postgresql:\/\/(127\.0\.0\.1|localhost)(?::(\d+))?\/([a-zA-Z0-9_]+)(?:\?.*)?$/.exec(process.env.GCSP_TEST_DATABASE_URL ?? '');
@@ -222,7 +223,7 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
     const cert = (name) => path.join(dirs.certs, name);
     const ssl = (args) => execFileSync('openssl', args, { env: nodeEnv, stdio: ['ignore', 'pipe', 'pipe'], timeout: 30000 });
     ssl(['req', '-x509', '-newkey', 'rsa:2048', '-nodes', '-keyout', cert('leaf.key'), '-out', cert('leaf.pem'), '-days', '2',
-      '-subj', '/CN=gcsp-web.localhost', '-addext', 'subjectAltName=DNS:gcsp-web.localhost,DNS:gcsp-api.localhost,DNS:localhost,IP:127.0.0.1']);
+      '-subj', `/CN=${webHost}`, '-addext', `subjectAltName=DNS:${webHost},DNS:gcsp-api.localhost,DNS:localhost,IP:127.0.0.1`]);
     execFileSync(path.join(javaHome, 'bin/keytool'), ['-importcert', '-alias', 'local-browser-suite', '-file', cert('leaf.pem'),
       '-keystore', cert('trust.p12'), '-storetype', 'PKCS12', '-storepass', 'local-test-trust', '-noprompt'], { env: nodeEnv, stdio: 'pipe', timeout: 30000 });
     const config = runtimeConfigFromEnv({ GCSP_PUBLIC_ENVIRONMENT_ID: envId, GCSP_PUBLIC_API_BASE_URL: apiBase,
@@ -400,7 +401,10 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
     const type = process.env.GCSP_E2E_BROWSER === 'webkit' ? webkit : chromium;
     receipt.browsers.requested = type.name();
     const executablePath = process.env.GCSP_E2E_BROWSER_PATH;
+    const hostRules = caseId === 'f561' && type === chromium ? [`--host-resolver-rules=MAP ${webHost} 127.0.0.1`] : [];
+    if (hostRules.length) receipt.browsers.hostResolution = { hostname: webHost, address: '127.0.0.1', scope: 'owned Chromium process' };
     browserServer = await type.launchServer({ headless: true, ...(executablePath ? { executablePath: local(executablePath) } : {}),
+      ...(hostRules.length ? { args: hostRules } : {}),
       downloadsPath: path.join(dirs.tmp, 'downloads'), timeout: 30000 });
     recordProcess('browser', browserServer.process());
     browser = await type.connect(browserServer.wsEndpoint());
