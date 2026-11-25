@@ -172,6 +172,24 @@ The frozen reference is `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`; tested Angul
 
 Safari/private browsing and hosted BMW integration were not checked here. The earlier Offer/bell limitations and their original sources remain above. Source response/order, valid clock instants, actual candidate identities and local version semantics are retained in the linked provenance; no derived outcome was manufactured.
 
+## F556 — order progress — original AC6 — 25 November publication
+
+The same-order Main sent-to-ordering 1280px pair is now attached to FUCQ-556. Native comment `5067335` carries marker `F556-NATIVE-EVIDENCE-2026-11-25-CB18938BA`; readback confirmed the marker and each filename once. No image bytes are copied into this artifact.
+
+| Capture | Role | Jira attachment |
+| --- | --- | ---: |
+| `node-ordering-1280.png` | Frozen Node reference; original AC6 pair | `1647115` |
+| `angular-ordering-1280.png` | Angular; original AC6 pair | `1647116` |
+| `node-ordering-390.png` | Supporting narrow capture | `1647117` |
+| `angular-ordering-390.png` | Supporting narrow capture | `1647118` |
+| `angular-rebooked-1280.png` | Supporting rebooked state | `1647119` |
+| `angular-return-missed-1280.png` | Supporting missed-return state | `1647120` |
+| `angular-blocked-1280.png` | Supporting genuine blocked-note state | `1647121` |
+
+The final connected family `cb18938baf7597ba7cb93ad47f3d98a8c4110630` passed both supported groups, had no failures and explicitly skipped the unsupported declined-input group (37.5227 seconds). Actual acknowledgement, keyboard slot review/booking/readback, history, no-show/rebooking with earlier-missed copy, scheduled and missed return, and the genuine blocked note are covered by the retained run evidence. Root's 146/146 and lead's 164/164 covering checks are green; Pugh's Sol/high source review passed. FUCQ-556 remains partial / In Progress with its original 13 points and six criteria: AC1/2/3/5 are evidenced; AC4's decline/proposed-handover connected-help states remain unsupported. AC6 is now available for human review, not accepted.
+
+The human verdict row below remains blank. The Node 1280 photo is dark, so its image readiness is not certified; the `/manual/order` 200 response body was not retained, so the blank Angular vehicle summary's cause remains unknown. The vehicle-summary defect is tracked separately as FUCQ-593. Extra generic rows and return-model/location differences remain observations, not new F556 acceptance criteria. Safari/WebKit, the covering batch and the signed-in hosted journey remain unrun or unproved.
+
 ### Additional blank human ledger rows
 
 Use one response for the combined batch, with `matches`, `differs: <description or Bug>` or `intended change: <ruling>` for each pair. An agent may copy only an explicit human verdict into these blank rows and the original Offer/bell rows above.
@@ -182,3 +200,4 @@ Use one response for the combined batch, with `matches`, `differs: <description 
 | Preferences — F552 AC7 | Editor categories/axes,1280×800 | Editor pair above | | | | |
 | Preferences — F552 AC7 | Editor practical questions,1280×800 | Practical pair above | | | | |
 | Preferences — F552 AC7 | Editor first preview card,1280×800 | Preview pair above | | | | |
+| Orders / order progress — F556 AC6 | Same Main sent-to-ordering order, 1280×800 | Frozen Node attachment `1647115`; Angular attachment `1647116`; FUCQ-556 comment `5067335` | | | | |
