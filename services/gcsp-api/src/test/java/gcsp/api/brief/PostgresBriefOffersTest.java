@@ -1,8 +1,12 @@
 package gcsp.api.brief;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -84,6 +88,90 @@ class PostgresBriefOffersTest {
         h.refused(real.savePreferences(f.scope, Harness.envelope("p2", 0, 1).set("changes", Harness.obj()
                 .set("size", Harness.obj().put("value", 50)))), 409, "brief-read-only");
         assertEquals(before, f.snapshot());
+    }
+
+    @Test
+    void nullablePreviousVersionSurvivesRepositoryAndServiceReloads() throws Exception {
+        h.saveOk(h.three());
+        var confirm = h.at("confirm-first");
+        confirm.set("consent", Harness.obj().put("search", true).put("hold", true));
+        JsonNode firstWrite = h.ok(f.service.confirm(f.scope, confirm)).get("brief");
+        assertEquals(1L, firstWrite.get("briefVersion").longValue());
+        assertTrue(firstWrite.get("previousBriefVersion").isNull());
+
+        JsonNode pause = h.ok(f.service.pauseSearch(f.scope, h.at("pause-after-confirm")));
+        assertEquals(2L, pause.get("briefVersion").longValue());
+        JsonNode secondWrite = h.ok(f.service.current(f.scope)).get("brief");
+        assertEquals(2L, secondWrite.get("briefVersion").longValue());
+        assertEquals(1L, secondWrite.get("previousBriefVersion").longValue());
+
+        List<Long> beforeReads = f.snapshot();
+        try (Connection c = f.pool().getConnection(); PreparedStatement ps = c.prepareStatement(
+                "SELECT brief_version, previous_brief_version FROM briefs WHERE environment_id = ? AND run_id = ? "
+                        + "AND employee_id = ? ORDER BY brief_version")) {
+            ps.setString(1, f.scope.environmentId());
+            ps.setString(2, f.scope.runId());
+            ps.setString(3, f.scope.employeeId());
+            try (var rs = ps.executeQuery()) {
+                assertTrue(rs.next());
+                assertEquals(1L, rs.getLong(1));
+                rs.getLong(2);
+                boolean firstPreviousIsNull = rs.wasNull();
+                assertTrue(firstPreviousIsNull);
+                assertTrue(rs.next());
+                assertEquals(2L, rs.getLong(1));
+                assertEquals(1L, rs.getLong(2));
+                assertFalse(rs.wasNull());
+                assertFalse(rs.next());
+            }
+        }
+
+        try (Connection c = f.pool().getConnection()) {
+            BriefStore.BriefRow first = BriefStore.brief(c, f.scope, 1L);
+            BriefStore.BriefRow second = BriefStore.brief(c, f.scope, 2L);
+            List<BriefStore.BriefRow> historyRows = BriefStore.history(c, f.scope);
+
+            assertEquals(2, historyRows.size());
+            assertEquals(first, historyRows.get(0));
+            assertEquals(second, historyRows.get(1));
+            assertEquals(1L, first.version());
+            assertNull(first.previousVersion());
+            assertEquals(2L, second.version());
+            assertEquals(1L, second.previousVersion());
+            assertEquals(content(firstWrite), first.content());
+            assertEquals(content(secondWrite), second.content());
+            assertEquals(BriefContent.semanticDigest(first.content()), first.digest());
+            assertEquals(first.digest(), second.digest());
+            assertEquals(firstWrite.get("buddy"), first.buddy());
+            assertEquals(secondWrite.get("buddy"), second.buddy());
+            assertEquals(firstWrite.get("policyVersion").textValue(), first.policyVersion());
+            assertEquals(secondWrite.get("policyVersion").textValue(), second.policyVersion());
+            assertEquals(firstWrite.get("accountFactsVersion").textValue(), first.accountFactsVersion());
+            assertEquals(secondWrite.get("accountFactsVersion").textValue(), second.accountFactsVersion());
+        }
+
+        BriefService reloaded = f.newService(f.pool());
+        JsonNode current = h.ok(reloaded.current(f.scope)).get("brief");
+        JsonNode history = h.ok(reloaded.history(f.scope)).get("versions");
+        assertEquals(2L, current.get("briefVersion").longValue());
+        assertEquals(1L, current.get("previousBriefVersion").longValue());
+        assertEquals(2, history.size());
+        assertTrue(history.get(0).get("previousBriefVersion").isNull());
+        assertEquals(1L, history.get(1).get("previousBriefVersion").longValue());
+        // Commands reparse their JSON receipts, so compare the same wire number representation.
+        assertEquals(firstWrite, Json.M.readTree(history.get(0).toString()));
+        assertEquals(secondWrite, history.get(1));
+        assertEquals(history.get(1), current);
+        assertEquals(beforeReads, f.snapshot());
+    }
+
+    private static ObjectNode content(JsonNode brief) {
+        ObjectNode content = ((ObjectNode) brief).deepCopy();
+        for (String projection : List.of("briefVersion", "previousBriefVersion", "status", "operation", "buddy",
+                "policyVersion", "confirmedBy", "confirmedAt", "accountFactsVersion", "postDeclineChange")) {
+            content.remove(projection);
+        }
+        return content;
     }
 
     @Test

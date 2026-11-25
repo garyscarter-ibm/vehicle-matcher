@@ -160,7 +160,8 @@ final class BriefStore {
 
     private static BriefRow briefRow(ResultSet rs) throws SQLException {
         long prev = rs.getLong(2);
-        return new BriefRow(rs.getLong(1), rs.wasNull() ? null : prev, rs.getString(3), object(rs.getString(4)),
+        Long previousVersion = rs.wasNull() ? null : prev;
+        return new BriefRow(rs.getLong(1), previousVersion, rs.getString(3), object(rs.getString(4)),
                 object(rs.getString(5)), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9),
                 rs.getObject(10, OffsetDateTime.class).toInstant(), rs.getString(11) == null ? null : object(rs.getString(11)));
     }

@@ -172,6 +172,35 @@ class BriefJourneyPhase1HttpTest {
         }
     }
 
+    private static void assertSqlPredecessors(JsonNode versions) throws Exception {
+        try (Connection c = BriefJourneySupport.connect(); PreparedStatement ps = c.prepareStatement(
+                "SELECT brief_version, previous_brief_version FROM briefs WHERE environment_id = ? AND run_id = ? "
+                        + "AND employee_id = ? ORDER BY brief_version")) {
+            ps.setString(1, BriefJourneyProfiles.ENV);
+            ps.setString(2, BriefJourneyProfiles.RUN);
+            ps.setString(3, PAULA);
+            try (var rs = ps.executeQuery()) {
+                int index = 0;
+                while (rs.next()) {
+                    JsonNode httpVersion = versions.get(index);
+                    assertEquals(index + 1L, rs.getLong(1));
+                    long sqlPrevious = rs.getLong(2);
+                    boolean sqlPreviousIsNull = rs.wasNull();
+                    assertTrue(httpVersion.has("previousBriefVersion"));
+                    assertEquals(sqlPreviousIsNull, httpVersion.get("previousBriefVersion").isNull());
+                    if (sqlPreviousIsNull) {
+                        assertEquals(0, index);
+                    } else {
+                        assertEquals(index, sqlPrevious);
+                        assertEquals(sqlPrevious, httpVersion.get("previousBriefVersion").longValue());
+                    }
+                    index++;
+                }
+                assertEquals(versions.size(), index);
+            }
+        }
+    }
+
     /** Test-only seeding in replica mode (skips the offer, hold and stock rows these checks never read). */
     private static void seed(String sql, String... args) throws Exception {
         try (Connection c = BriefJourneySupport.connect()) {
@@ -260,6 +289,11 @@ class BriefJourneyPhase1HttpTest {
         JsonNode confirmed = save(paula, "bj-c1", "/confirm", "\"consent\":{\"search\":true,\"hold\":true}");
         assertEquals(1, confirmed.get("brief").get("briefVersion").intValue());
         assertTrue(confirmed.get("activity").get("canSearch").booleanValue());
+        JsonNode firstReload = read(paula, "").get("brief");
+        assertEquals(confirmed.get("brief"), firstReload);
+        assertTrue(firstReload.has("previousBriefVersion"));
+        assertTrue(firstReload.get("previousBriefVersion").isNull());
+        assertSqlPredecessors(read(paula, "/history").get("versions"));
         editor = agree(paula, PAULA);
         assertEquals("engaged", editor.get("initial").get("buddy").get("state").textValue());
         assertEquals("approved-brief", editor.get("provenance").get("initial").textValue());
@@ -325,9 +359,20 @@ class BriefJourneyPhase1HttpTest {
         assertEquals(brief + 1, out.get("brief").get("briefVersion").longValue());
         assertEquals(decision, out.get("brief").get("postDeclineChange").get("decisionId").textValue());
         agree(paula, PAULA);
-        JsonNode last = read(paula, "/history").get("versions").get((int) brief);
+        JsonNode versions = read(paula, "/history").get("versions");
+        JsonNode first = versions.get(0);
+        JsonNode last = versions.get((int) brief);
+        JsonNode current = read(paula, "").get("brief");
+        assertEquals(brief + 1, versions.size());
+        assertTrue(first.has("previousBriefVersion"));
+        assertTrue(first.get("previousBriefVersion").isNull());
+        assertTrue(last.has("previousBriefVersion"));
+        assertEquals(brief, last.get("previousBriefVersion").longValue());
+        assertEquals(brief + 1, last.get("briefVersion").longValue());
+        assertEquals(last, current);
         assertEquals(decision, last.get("postDeclineChange").get("decisionId").textValue());
         assertEquals("suv", last.get("preferences").get("body").get("value").textValue());
+        assertSqlPredecessors(versions);
         assertEquals(1, count("SELECT count(*) FROM briefs WHERE employee_id = ? AND operation = 'changed-after-decline'", PAULA));
     }
 
