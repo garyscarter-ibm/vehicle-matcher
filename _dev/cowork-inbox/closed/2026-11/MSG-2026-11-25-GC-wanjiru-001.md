@@ -6,12 +6,13 @@ topic: technical
 story: none
 chain: MSG-2026-11-25-GC-wanjiru-001
 depth: 0
-status: answered
+status: closed
 opened: 2026-11-25
 counter_questions_used: 0
 acks: usget-velko 2026-11-25T17:19
 spawned: none
 subject: Complete required Jira headings so queued stories pass check-story
+closed: 2026-11-25
 
 ## Turn 1
 from: garyscarter-ibm-wanjiru
