@@ -122,9 +122,11 @@ test('FUCQ-553: source stock, choices and gallery reservation handover', { timeo
     const rival = await suite.newPage('other-employee', 'demo-jordan', 'account');
     await saveActualDraft(suite, rival);
     const stock = good(await suite.call(rival, 'GET', '/manual/stock'), 'Other employee actual stock');
+    assert.equal(stock.payloadShape, 'manual-stock-compact-v1');
     const button = employee.locator('.vm-card [data-review-id]:enabled').first(); await button.waitFor();
-    const id = await button.getAttribute('data-review-id'); const target = stock.cars.find(car => car.orderUuid === id);
-    assert.ok(target?.claimInput, 'Both actual employees are eligible for this same exact car');
+    const id = await button.getAttribute('data-review-id'); const target = stock.decisions.find(car => car.orderUuid === id);
+    assert.ok(stock.carIds.includes(id) && target?.gateStatus === 'eligible' && target.claimInput,
+      'Both actual employees are eligible for this same exact car');
     suite.claims.confirm();
     const rivalClaim = good(await suite.call(rival, 'POST', '/manual/claim', { commandId: randomUUID(), ...target.claimInput }), 'Other employee actual reservation');
     assert.equal(rivalClaim.state, 'quoted');
