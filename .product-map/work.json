@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-25T21:27:09Z",
+  "observed_at": "2026-11-25T23:50:05Z",
   "version": 1,
   "stories": [
     {
@@ -11332,7 +11332,7 @@
     {
       "branch": "dev/DEV-2026-11-23-vesper-002",
       "id": "FUCQ-568",
-      "observed_at": "2026-11-23T16:27:44Z",
+      "observed_at": "2026-11-25T23:50:02Z",
       "slices": [
         {
           "evidence": "Complete final account14 passes with canonical roots/exact golden IDs/counts/titles/facts/images and source-backed history restrictions; only allocated spec changed; source35873d68c.",
@@ -11357,20 +11357,26 @@
         },
         {
           "id": "covering-web",
-          "status": "not-started",
-          "title": "Shared-WEB-batch-covers-merge"
+          "status": "complete",
+          "title": "Shared-WEB-batch-covers-merge",
+          "evidence": "Covered: F568 merge is in green WEB1996 base 54e746a (122 specs, 1,996 passed, 0 failed/skipped); registered web-e2e base 92c3936a3 is green/reused 18/18 from actual run base 6037095d7 on matching runtime inputs; final account spec blob matches. Node37 base 9788987 remains red (4,182 passed, 37 failed, 66 skipped); 37 known F555-backlog failures have no exact changed-path/story-set intersection.",
+          "observed_at": "2026-11-25T23:50:02Z"
         }
       ],
-      "status": "In Progress",
-      "title": "Account Java-golden checks still require markup and image URLs replaced by...",
+      "status": "In Review",
+      "title": "Account Java-golden checks still require markup and image URLs replaced by the canonical port",
       "type": "Bug",
       "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-568"
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-568",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "native_status_observed_at": "2026-11-25T23:50:02Z",
+      "native_updated_at": "2026-11-25T17:49:49.918-0600"
     },
     {
       "branch": "dev/DEV-2026-11-23-vesper-003",
       "id": "FUCQ-569",
-      "observed_at": "2026-11-23T16:37:38Z",
+      "observed_at": "2026-11-25T23:50:03Z",
       "slices": [
         {
           "evidence": "Real provideRouter([]) and exact labelled saved Activity href; source9f230fc96. All prior request/golden/state assertions retained; complete6cases passed exit0.",
@@ -11395,15 +11401,21 @@
         },
         {
           "id": "covering-web",
-          "status": "not-started",
-          "title": "Shared-WEB-batch-covers-merge"
+          "status": "complete",
+          "title": "Shared-WEB-batch-covers-merge",
+          "evidence": "Covered: F569 merge is in green WEB1996 base 54e746a (122 specs, 1,996 passed, 0 failed/skipped); registered web-e2e base 92c3936a3 is green/reused 18/18 from actual run base 6037095d7 on matching runtime inputs; real router and saved /activity assertion remain in base. Node37 base 9788987 remains red (4,182 passed, 37 failed, 66 skipped); 37 known F555-backlog failures have no exact changed-path/story-set intersection.",
+          "observed_at": "2026-11-25T23:50:03Z"
         }
       ],
-      "status": "In Progress",
+      "status": "In Review",
       "title": "Preferences Java-golden test omits router providers after saved Activity action",
       "type": "Bug",
       "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-569"
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-569",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "native_status_observed_at": "2026-11-25T23:50:03Z",
+      "native_updated_at": "2026-11-25T17:49:50.512-0600"
     },
     {
       "assignee": "Russell Gowers",
@@ -11557,11 +11569,11 @@
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-23-vesper-006",
       "id": "FUCQ-573",
-      "native_status_observed_at": "2026-11-23T21:32:21.487Z",
-      "native_updated_at": "2026-11-23T15:32:09.438-0600",
+      "native_status_observed_at": "2026-11-25T23:50:03Z",
+      "native_updated_at": "2026-11-25T17:46:52.129-0600",
       "note": "Merged/pushed70e11d85e after final integrated2/2PASS; exact eleven-path source closure only, all six CLI offline guards preserved. Root integrated audit independently verifies cleanup and20protected input hashes. Covering Node batch pending.",
-      "observed_at": "2026-11-23T22:04:50.814262+00:00",
-      "original_status": "In Progress",
+      "observed_at": "2026-11-25T23:50:03Z",
+      "original_status": "In Review",
       "slices": [
         {
           "evidence": "Eleven current source allowlist additions only; Dibble implementation and independent Pluto source/spec/security review PASS. Local07c65de51; no runtime/reference edits.",
@@ -11576,14 +11588,14 @@
           "title": "Meaningful CLI positive, refusal and offline checks"
         },
         {
-          "evidence": "Integrated final owning module2/2PASS after refresh26c32d898; root exact resource/input audit PASS; merged/pushed70e11d85e. Covering Node still pending.",
+          "evidence": "Covered: merge is in recorded Java31, WEB1996 and Node37 bases; owning CLI module 2/2 and all six blocked/zero-egress assertions passed. Node37 base 9788987 remains red (4,182 passed, 37 failed, 66 skipped); 37 known F555-backlog failures have no exact changed-path/story-set intersection. No Node-suite green claim.",
           "id": "integration",
-          "observed_at": "2026-11-23T22:04:26Z",
-          "status": "in-progress",
+          "observed_at": "2026-11-25T23:50:03Z",
+          "status": "complete",
           "title": "Integrated regression and covering Node batch"
         }
       ],
-      "status": "In Progress",
+      "status": "In Review",
       "title": "Restore image CLI test checkout source dependency closure",
       "type": "Bug",
       "unsliced": false,
@@ -11628,11 +11640,11 @@
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-23-vesper-008",
       "id": "FUCQ-575",
-      "native_status_observed_at": "2026-11-23T21:32:21.487Z",
-      "native_updated_at": "2026-11-23T15:32:11.728-0600",
+      "native_status_observed_at": "2026-11-25T23:50:04Z",
+      "native_updated_at": "2026-11-25T17:46:52.960-0600",
       "note": "Coherent implementation and both Results merged/pushed at4e3d132e3. Final owning2modules50tests/42pass/0fail/8native-skips. Lead source/spec/security review and root exact8processidentity/2group/scratch/link/token cleanup audit passed. Covering Node batch and native acceptance remain pending.",
-      "observed_at": "2026-11-23T21:50:17Z",
-      "original_status": "In Progress",
+      "observed_at": "2026-11-25T23:50:04Z",
+      "original_status": "In Review",
       "slices": [
         {
           "evidence": "Lead independently reviewed exact field changes and final50/42pass/0fail/8skip composed run. Original partialRED retained; root integration/source identity and cleanup audits passed.",
@@ -11653,13 +11665,14 @@
           "title": "Two owning modules and independent lead review"
         },
         {
-          "evidence": "Normal source integration4e3d132e3 pushed; root covering Node batch and human37-case ruling pending. No full/Done claim.",
+          "evidence": "Covered: merge is in recorded Java31, WEB1996 and Node37 bases; composed F575/F580 run 50 tests, 42 passed, 0 failed, 8 native-PostgreSQL-gated skips (exit 0); no live-PostgreSQL proof. Node37 base 9788987 remains red (4,182 passed, 37 failed, 66 skipped); 37 known F555-backlog failures have no exact changed-path/story-set intersection. No Node-suite green claim; RED/skips retained.",
           "id": "integration",
-          "status": "in-progress",
-          "title": "Covering Node batch and native disposition"
+          "status": "complete",
+          "title": "Covering Node batch and native disposition",
+          "observed_at": "2026-11-25T23:50:04Z"
         }
       ],
-      "status": "In Progress",
+      "status": "In Review",
       "title": "Reconcile retained brief and manual-claim fixtures with authoritative employee revisions",
       "type": "Bug",
       "unsliced": false,
@@ -11669,11 +11682,11 @@
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-23-vesper-008",
       "id": "FUCQ-580",
-      "native_status_observed_at": "2026-11-23T21:42:02.277Z",
-      "native_updated_at": "2026-11-23T15:42:01.467-0600",
+      "native_status_observed_at": "2026-11-25T23:50:05Z",
+      "native_updated_at": "2026-11-25T17:46:56.331-0600",
       "note": "Coherent implementation and both Results merged/pushed at4e3d132e3. Final owning2modules50tests/42pass/0fail/8native-skips. Lead source/spec/security review and root exact8processidentity/2group/scratch/link/token cleanup audit passed. Covering Node batch and native acceptance remain pending.",
-      "observed_at": "2026-11-23T21:50:17Z",
-      "original_status": "In Progress",
+      "observed_at": "2026-11-25T23:50:05Z",
+      "original_status": "In Review",
       "slices": [
         {
           "evidence": "Lead independently reviewed exact field changes and final50/42pass/0fail/8skip composed run. Original partialRED retained; root integration/source identity and cleanup audits passed.",
@@ -11688,13 +11701,14 @@
           "title": "Two-module composed regression and source review"
         },
         {
-          "evidence": "Normal source integration4e3d132e3 pushed; root covering Node batch and human37-case ruling pending. No full/Done claim.",
+          "evidence": "Covered: merge is in recorded Java31, WEB1996 and Node37 bases; composed F575/F580 run 50 tests, 42 passed, 0 failed, 8 native-PostgreSQL-gated skips (exit 0); no live-PostgreSQL proof. Node37 base 9788987 remains red (4,182 passed, 37 failed, 66 skipped); 37 known F555-backlog failures have no exact changed-path/story-set intersection. No Node-suite green claim; RED/skips retained.",
           "id": "integration",
-          "status": "in-progress",
-          "title": "Normal integration and covering Node batch"
+          "status": "complete",
+          "title": "Normal integration and covering Node batch",
+          "observed_at": "2026-11-25T23:50:05Z"
         }
       ],
-      "status": "In Progress",
+      "status": "In Review",
       "title": "Reconcile retained brief pause fixture with explicit engagement consent",
       "type": "Bug",
       "unsliced": false,
@@ -11704,11 +11718,11 @@
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-23-vesper-012",
       "id": "FUCQ-579",
-      "native_status_observed_at": "2026-11-23T21:45:49.586Z",
-      "native_updated_at": "2026-11-23T15:45:48.758-0600",
+      "native_status_observed_at": "2026-11-25T23:50:04Z",
+      "native_updated_at": "2026-11-25T17:46:55.398-0600",
       "note": "Merged/pushedcd5a23c2c after final integrated24/24PASS. Independent source/spec/security and root8identity/2group/scratch/link/token audits PASS; final metadata-only refresh reused exact code/input/environment evidence. Covering Node/native acceptance pending.",
-      "observed_at": "2026-11-23T22:20:29Z",
-      "original_status": "In Progress",
+      "observed_at": "2026-11-25T23:50:04Z",
+      "original_status": "In Review",
       "slices": [
         {
           "evidence": "Barney independently reviewed confirmed-driver/choice/scarcity/lead-time assertions and all negative driver variants; final integrated24/24PASS atb2275399c, source hashes unchanged.",
@@ -11723,13 +11737,14 @@
           "title": "Canonical and future-choice negative boundaries"
         },
         {
-          "evidence": "Final integrated24/24PASS; root audit PASS and merge/pushcd5a23c2c verified. Full Node covering remains pending.",
+          "evidence": "Covered: merge is in recorded Java31, WEB1996 and Node37 bases; canonical/future-choice modules 24/24 passed. Node37 base 9788987 remains red (4,182 passed, 37 failed, 66 skipped); 37 known F555-backlog failures have no exact changed-path/story-set intersection. No Node-suite green claim.",
           "id": "integration",
-          "status": "in-progress",
-          "title": "Review, merge and covering Node batch"
+          "status": "complete",
+          "title": "Review, merge and covering Node batch",
+          "observed_at": "2026-11-25T23:50:04Z"
         }
       ],
-      "status": "In Progress",
+      "status": "In Review",
       "title": "Reconcile the canonical planner test with the fixed employee-driver read contract",
       "type": "Bug",
       "unsliced": false,
