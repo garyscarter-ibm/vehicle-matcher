@@ -13,6 +13,37 @@ describe('source account preferences composition', () => {
     client.savePreferences.mockReset().mockResolvedValue({ status: 'ok', value: preferenceSaveFixture() });
     TestBed.configureTestingModule({ providers: [{ provide: BriefClient, useValue: client }, { provide: AuthPort, useValue: { state: signal({ status: 'ready', context: { subject: 's', environmentId: 'dev', runId: 'r', employeeId: 'e', roles: ['employee'] } }) } }] });
   });
+  it.each([
+    { compact: true, paused: false }, { compact: true, paused: true },
+    { compact: false, paused: false }, { compact: false, paused: true },
+  ])('keeps healthy Buddy status with its owning controls (compact=$compact, paused=$paused)', async ({ compact, paused }) => {
+    const editor = briefEditorFixture();
+    client.readEditor.mockResolvedValueOnce({ status: 'ok', value: { ...editor, initial: { ...editor.initial,
+      buddy: { ...editor.initial.buddy!, state: paused ? 'disengaged' : 'engaged', reason: paused ? 'paused' : null },
+    } } });
+    const fixture = TestBed.createComponent(AccountPreferencesComponent); fixture.componentRef.setInput('buddyControls', compact); await fixture.whenStable();
+    const root: HTMLElement = fixture.nativeElement;
+    expect(root.querySelector('gcsp-buddy-controls') === null).toBe(compact);
+    expect(root.querySelector('.gcsp-prefs-tiles')).not.toBeNull();
+  });
+  it('retains compact Buddy recovery and pending feedback while omitting the healthy duplicate', async () => {
+    const editor = briefEditorFixture();
+    client.readEditor.mockResolvedValueOnce({ status: 'ok', value: { ...editor, initial: { ...editor.initial,
+      buddy: { ...editor.initial.buddy!, state: 'engaged', reason: null },
+    } } });
+    const fixture = TestBed.createComponent(AccountPreferencesComponent); fixture.componentRef.setInput('buddyControls', true); await fixture.whenStable();
+    const root: HTMLElement = fixture.nativeElement; const store = fixture.componentInstance.store;
+    expect(root.querySelector('gcsp-buddy-controls')).toBeNull();
+    store.buddyFailure.set({ status: 'unavailable', retryable: true }); store.buddyMessage.set('Buddy status could not be read.'); await fixture.whenStable();
+    expect(root.textContent).toContain('Buddy status could not be read.');
+    expect(Array.from(root.querySelectorAll('button')).some(button => button.textContent?.trim() === 'Reload Buddy status')).toBe(true);
+    store.buddyFailure.set(null); store.buddyPendingAction.set('pauseSearch'); await fixture.whenStable();
+    expect(root.querySelector('gcsp-buddy-controls')).not.toBeNull();
+    store.buddyPendingAction.set(null); store.buddyRefreshing.set(true); await fixture.whenStable();
+    expect(root.querySelector('gcsp-buddy-controls')).not.toBeNull();
+    store.buddyRefreshing.set(false); await fixture.whenStable();
+    expect(root.querySelector('gcsp-buddy-controls')).toBeNull();
+  });
   it('composes the source mode, completeness segments and a shared panel after the tile grid', async () => {
     const fixture = TestBed.createComponent(AccountPreferencesComponent); await fixture.whenStable(); const root: HTMLElement = fixture.nativeElement;
     expect(root.querySelector('.gcsp-prefs.gcsp-prefs-choice')).not.toBeNull();
