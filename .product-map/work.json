@@ -12587,12 +12587,12 @@
       "id": "FUCQ-583",
       "title": "Lifecycle HTTP tests age out their fixed collection dates at midnight",
       "type": "Bug",
-      "status": "In Progress",
+      "status": "In Review",
       "original_status": "In Review",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-583",
       "branch": "dev/DEV-2026-11-25-sorrel-001",
       "unsliced": false,
-      "note": "25 November continuation: lead reviewed five-file source and executed exact six-class/eleven-case signed-OIDC/native-PG17 proof, all passed. Preparing committed delivery; original archive and earlier evidence remain unchanged.",
+      "note": "25 November continuation development built: all three original ACs proved by lead-reviewed source a5ab249c8 and real six-class/eleven-case proof. Original 23-to-24 archive remains unchanged. Dispatcher covering batch and collaborator acceptance remain separate.",
       "workers": [
         {
           "name": "Lord Business",
@@ -12607,10 +12607,10 @@
           "name": "The Brain",
           "role": "story-lead",
           "harness": "codex",
-          "observed_at": "2026-11-25T01:54:44.919038+00:00",
-          "expires_at": "2026-11-25T03:54:44.919038+00:00",
+          "observed_at": "2026-11-25T02:08:15.174914+00:00",
+          "expires_at": "2026-11-25T02:08:15.174914+00:00",
           "source": "Native task /root/the_brain, claimed continuation e50edf678",
-          "status": "Planning and source delivery; no JVM until root heavy release"
+          "status": "Scoped delivery complete; lead reviewed diff, ran 11/11 green and verified owned cleanup. No active worker claimed after handoff."
         },
         {
           "name": "Porky Pig",
@@ -12622,7 +12622,7 @@
           "status": "Source slice returned; lead reviewed actual diff and independently ran all eleven cases green."
         }
       ],
-      "observed_at": "2026-11-25T02:05:52Z",
+      "observed_at": "2026-11-25T02:08:15Z",
       "slices": [
         {
           "id": "fixture-inputs",
@@ -12640,14 +12640,14 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Lead review and scoped delivery; covering acceptance remains separate",
-          "observed_at": "2026-11-25T02:05:52Z",
-          "evidence": "Runtime proof and owned cleanup passed; preparing committed Result and branch publication. Dispatcher owns subsequent merge/covering batch/acceptance."
+          "observed_at": "2026-11-25T02:08:15Z",
+          "evidence": "Lead reviewed exact five-file diff and all three original ACs; actual six-class signed-OIDC/native-PG17 proof 11/11 with zero failures/errors/skips and verified cleanup. Source a5ab249c8; continuation card Result. Dispatcher owns later merge/covering acceptance."
         }
       ],
       "native_observed_at": "2026-11-24T02:45:43.439Z",
-      "evidence": "_dev/in-progress/DEV-2026-11-25-sorrel-001.md; retained sorrel-batch-java-20261125 failure logs"
+      "evidence": "_dev/in-progress/DEV-2026-11-25-sorrel-001.md Result; .claude/poller/sorrel-f583-20261125/result.json; source a5ab249c865947677245c8d9f33aec8a45928bed"
     }
   ]
 }
