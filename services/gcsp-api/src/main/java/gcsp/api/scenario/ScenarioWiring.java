@@ -40,7 +40,7 @@ import org.jboss.logging.Logger;
 public class ScenarioWiring {
 
     /** After Persistence's claim, before the clock's startup pass, so its handlers see the prepared people. */
-    static final int BEFORE_CLOCK_PASS = jakarta.interceptor.Interceptor.Priority.APPLICATION + 750;
+    public static final int BEFORE_CLOCK_PASS = jakarta.interceptor.Interceptor.Priority.APPLICATION + 750;
     private static final Logger LOG = Logger.getLogger(ScenarioWiring.class);
 
     @ConfigProperty(name = "gcsp.scenario.provider", defaultValue = ScenarioProvider.NONE)

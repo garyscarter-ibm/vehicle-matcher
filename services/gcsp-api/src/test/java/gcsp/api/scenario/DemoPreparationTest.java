@@ -26,6 +26,7 @@ import gcsp.api.policy.RetainedFilePolicySource;
 import gcsp.api.scenario.ScenarioService.ResetRequest;
 import java.sql.SQLException;
 import java.time.InstantSource;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
@@ -355,6 +356,70 @@ class DemoPreparationTest {
                 (scope, input) -> BriefPreviewPort.unconfigured(), clock::now);
         MainJourneyStart start = new MainJourneyStart(briefs, policy, clock, fx.file);
         return journeyService(start::load);
+    }
+
+    @Test
+    void preparationCompositionPrecedesMainButOrdinaryResetListenersStayAfterIt() throws Exception {
+        List<String> order = new ArrayList<>();
+        ScenarioService s = journeyService((scope, scenario) -> {
+            order.add("load");
+            return ClockResult.ok(com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.objectNode());
+        });
+        var clock = fx.clock();
+        s.onBeforePrepare((scope, scenario) -> {
+            assertTrue(clock.now(scope.environmentId(), scope.runId()).isPresent());
+            order.add("compose");
+            return ClockResult.ok(com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.objectNode());
+        });
+        s.onReset(scope -> order.add("after"));
+        assertTrue(s.startup(ScenarioFixture.ENV, RUN).ok());
+        assertEquals(List.of("compose", "load"), order);
+        order.clear();
+        ResetRequest req = reset("composition-order", RUN, MainJourneyStart.SCENARIO_ID, s, fx.presenter(RUN));
+        assertTrue(s.reset(fx.presenter(RUN), req).ok());
+        String next = ScenarioService.newRunId(ScenarioFixture.ENV, RUN, req.commandId());
+        assertEquals(List.of("compose", "load", "after"), order);
+        order.clear();
+        assertTrue(s.startup(ScenarioFixture.ENV, next).ok());
+        assertTrue(s.reset(fx.presenter(next), req).ok());
+        assertEquals(List.of("after"), order, "prepared replay keeps only the existing post-reset callback");
+        ResetRequest second = reset("composition-next", next, ScenarioService.MECHANICS_ID, s, fx.presenter(next));
+        assertTrue(s.reset(fx.presenter(next), second).ok());
+        String third = ScenarioService.newRunId(ScenarioFixture.ENV, next, second.commandId());
+        order.clear();
+        assertTrue(s.reset(fx.presenter(third), req).ok());
+        assertTrue(order.isEmpty(), "historical replay never composes or loads the retired run");
+    }
+
+    @Test
+    void interruptedStartupReappliesCompositionBeforeRetryingOnlyTheOriginalLoader() throws Exception {
+        AtomicBoolean available = new AtomicBoolean();
+        List<String> order = new ArrayList<>();
+        ScenarioService s = journeyService((scope, scenario) -> {
+            if (scenario.mechanics()) return ClockResult.ok(com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.objectNode());
+            order.add("load");
+            return available.get() ? ClockResult.ok(com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.objectNode())
+                    : ClockResult.unavailable("test-loader-unavailable", "Unavailable", true);
+        });
+        assertTrue(s.startup(ScenarioFixture.ENV, RUN).ok());
+        s.onBeforePrepare((scope, scenario) -> {
+            order.add("compose");
+            return ClockResult.ok(com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.objectNode());
+        });
+        s.onReset(scope -> order.add("after"));
+        ResetRequest req = reset("composition-recovery", RUN, MainJourneyStart.SCENARIO_ID, s, fx.presenter(RUN));
+        assertFalse(s.reset(fx.presenter(RUN), req).ok());
+        String next = ScenarioService.newRunId(ScenarioFixture.ENV, RUN, req.commandId());
+        assertEquals(List.of("compose", "load"), order);
+        assertEquals("preparing", fx.text("SELECT state FROM scenario_runs WHERE run_id = ?", next));
+        available.set(true);
+        order.clear();
+        assertTrue(s.startup(ScenarioFixture.ENV, next).ok());
+        assertEquals(List.of("compose", "load"), order);
+        assertEquals("prepared", fx.text("SELECT state FROM scenario_runs WHERE run_id = ?", next));
+        order.clear();
+        assertTrue(s.reset(fx.presenter(next), req).ok());
+        assertEquals(List.of("after"), order);
     }
 
     @Test

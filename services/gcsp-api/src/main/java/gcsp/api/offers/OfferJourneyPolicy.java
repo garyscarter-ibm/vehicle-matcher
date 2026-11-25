@@ -13,6 +13,7 @@ import gcsp.api.policy.PolicyResult;
 import gcsp.api.policy.PolicyService;
 import gcsp.api.policy.ReviewedDefinitions;
 import gcsp.api.scenario.ScenarioWiring;
+import gcsp.api.scenario.ScenarioCatalogue;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.annotation.Priority;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -65,12 +66,33 @@ public class OfferJourneyPolicy {
 
     private volatile String summary = "not-run";
 
-    void onStart(@Observes @Priority(AFTER_CLOCK) StartupEvent event) {
-        ensure();
-        if (!"not-configured".equals(summary) && scenarios.available()) scenarios.service().onReset(this::afterReset);
+    /** Register before scenario startup can resume Main's policy-dependent starting commands. */
+    void beforeScenarios(@Observes @Priority(ScenarioWiring.BEFORE_CLOCK_PASS - 1) StartupEvent event) {
+        if (scenarios.available()) scenarios.service().onBeforePrepare(this::beforePreparation);
     }
 
-    /** Policy is per run, so each presenter reset re-adopts on the new run (Node's afterReset); a failure only logs. */
+    void onStart(@Observes @Priority(AFTER_CLOCK) StartupEvent event) {
+        ensure();
+    }
+
+    /** Mechanics keeps optional reset adoption; the supported Main loader requires it before confirming a brief. */
+    ClockResult beforePreparation(RunContext next, ScenarioCatalogue.Entry scenario) {
+        if (scenario.mechanics()) {
+            afterReset(next);
+        } else {
+            try {
+                ensure(next.runId());
+            } catch (RuntimeException e) {
+                LOG.warnf("GCSP offer journey policy: preparation for run %s awaits adoption (%s)", next.runId(),
+                        e.getClass().getSimpleName());
+                return ClockResult.unavailable("scenario-policy-adoption-incomplete",
+                        "The scenario's policy could not be adopted. Retry its preparation.", true);
+            }
+        }
+        return ClockResult.ok(com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.objectNode());
+    }
+
+    /** Optional mechanics adoption retains the existing logged failure behavior. */
     void afterReset(RunContext next) {
         try {
             ensure(next.runId());

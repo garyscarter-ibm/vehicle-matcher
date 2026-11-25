@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
+import java.util.function.BiFunction;
 import javax.sql.DataSource;
 
 /** The presenter's scenario controls over the demo preparation: catalogue, current scenario and run reset. */
@@ -47,6 +48,11 @@ public final class ScenarioService {
     /** Runs after each reset that prepared its new run, so per-run startup composition re-applies (Node's afterReset). */
     public void onReset(Consumer<RunContext> listener) {
         afterReset.add(listener);
+    }
+
+    /** Run composition that Main's starting commands need, including when an interrupted preparation resumes. */
+    public void onBeforePrepare(BiFunction<RunContext, ScenarioCatalogue.Entry, ClockResult> listener) {
+        preparation.onBeforeStart(listener);
     }
 
     /** The versions a reset command must carry, as the presenter last saw them. */

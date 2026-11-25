@@ -35,13 +35,16 @@ final class MainJourneyStart {
         if (!SCENARIO_ID.equals(scenario.scenarioId())) return unavailable("scenario-loader-unavailable");
         var time = clock.now(run.environmentId(), run.runId());
         if (time.isEmpty()) return unavailable("scenario-clock-unavailable");
-        PolicyRead read = new PolicyRead(run.runId(), time.get().now().toString(), scenario.policyVersion());
+        PolicyRead current = new PolicyRead(run.runId(), time.get().now().toString(), null);
+        PolicyResult active = policy.getActiveVersion(current);
+        if (!active.ok()) return unavailable("scenario-brief-policy-unavailable");
+        PolicyRead read = new PolicyRead(run.runId(), current.asOf(), active.policyVersion());
         JsonNode input = file.scenario(SCENARIO_ID).orElseThrow().path("inputs").path("briefs").get(0);
         String employee = file.person(input.path("principalId").asText()).orElseThrow().path("employeeId").asText();
         ObjectNode content = content(policy, read, input, "scenario:" + SCENARIO_ID);
         if (content == null) return unavailable("scenario-brief-policy-unavailable");
         BriefScope scope = new BriefScope(run.environmentId(), run.runId(), employee,
-                input.path("principalId").asText(), scenario.policyVersion());
+                input.path("principalId").asText(), active.policyVersion());
         ObjectNode draft = F.objectNode().put("commandId", "scenario-start:main:draft")
                 .put("expectedBriefVersion", 0).put("expectedDraftVersion", 0);
         draft.set("brief", content);

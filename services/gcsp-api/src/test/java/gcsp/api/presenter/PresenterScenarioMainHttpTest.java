@@ -13,6 +13,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gcsp.api.clock.ClockResult;
 import gcsp.api.persistence.Persistence;
 import gcsp.api.scenario.ScenarioWiring;
+import gcsp.api.policy.PolicyRead;
+import gcsp.api.policy.PolicyService;
 import gcsp.api.supply.SupplyDevCompositionProfile;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
@@ -37,6 +39,7 @@ class PresenterScenarioMainHttpTest {
 
     private static final ObjectMapper JSON = new ObjectMapper();
     private static final String SCENARIO = "main-successful-journey";
+    private static final String POLICY = "gcsp-policy-v1+offer-journey-v1";
     private static String ownedSchema;
 
     public static class Main extends SupplyDevCompositionProfile {
@@ -45,6 +48,7 @@ class PresenterScenarioMainHttpTest {
         @Override
         public Map<String, String> getConfigOverrides() {
             Map<String, String> c = super.getConfigOverrides();
+            c.put("gcsp.environment.policy-version", POLICY);
             c.put("gcsp.allocation.candidates.provider", "recommendation");
             c.put("gcsp.mail.transport", "");
             c.put("gcsp.notify.drain-interval", "10m");
@@ -68,6 +72,9 @@ class PresenterScenarioMainHttpTest {
 
     @Inject
     ScenarioWiring scenarios;
+
+    @Inject
+    PolicyService policy;
 
     String presenter;
 
@@ -253,6 +260,40 @@ class PresenterScenarioMainHttpTest {
         assertEquals(1, count(pending, "SELECT count(*) FROM buddy_offers WHERE run_id = ? AND employee_id = 'employee-paula' AND state = 'active'"));
     }
 
+    @Test
+    void failedRequiredAdoptionLeavesMainUnpreparedAndTheSameResetRecoversIt() throws Exception {
+        String retired = current().getString("value.runId");
+        String body = resetBody(id(), retired);
+        try (Connection c = connection()) {
+            c.createStatement().execute("CREATE FUNCTION f594_reject_reviewed_policy() RETURNS trigger LANGUAGE plpgsql AS $$ "
+                    + "BEGIN IF NEW.policy_version = '" + POLICY + "' THEN RAISE EXCEPTION 'f594 adoption unavailable'; "
+                    + "END IF; RETURN NEW; END $$");
+            c.createStatement().execute("CREATE TRIGGER f594_reject_reviewed_policy BEFORE INSERT ON policy_versions "
+                    + "FOR EACH ROW EXECUTE FUNCTION f594_reject_reviewed_policy()");
+            try {
+                post(presenter, "/scenarios/reset", body).then().statusCode(503)
+                        .body("code", equalTo("scenario-preparation-incomplete")).body("retryable", equalTo(true));
+                String pending = current().getString("value.runId");
+                assertNotEquals(retired, pending);
+                String now = get(presenter, "/clock").then().statusCode(200).extract().jsonPath().getString("value.now");
+                var active = policy.getActiveVersion(new PolicyRead(pending, now, null));
+                assertTrue(active.ok(), "base policy reads remain available during the adoption fault");
+                assertEquals("gcsp-policy-v1", active.policyVersion());
+                assertEquals(0, count(pending, "SELECT count(*) FROM briefs WHERE run_id = ?"));
+                assertEquals(0, count(pending, "SELECT count(*) FROM scenario_runs WHERE run_id = ?"));
+            } finally {
+                c.createStatement().execute("DROP TRIGGER f594_reject_reviewed_policy ON policy_versions");
+                c.createStatement().execute("DROP FUNCTION f594_reject_reviewed_policy()");
+            }
+        }
+        String pending = current().getString("value.runId");
+        post(presenter, "/scenarios/reset", body).then().statusCode(200)
+                .body("value.activatedRunId", equalTo(pending)).body("value.replayed", equalTo(true));
+        assertEquals(1, count(pending, "SELECT count(*) FROM scenario_runs WHERE run_id = ? AND state = 'prepared'"));
+        assertFrozenBrief(pending);
+        assertResetReplay(body, pending);
+    }
+
     private void assertResetReplay(String body, String run) throws Exception {
         long revision = count(run, "SELECT revision FROM runs WHERE run_id = ?");
         long resets = count(run, "SELECT count(*) FROM run_resets WHERE activated_run_id = ?");
@@ -264,9 +305,14 @@ class PresenterScenarioMainHttpTest {
     }
 
     private void assertFrozenBrief(String run) throws Exception {
+        String employee = PresenterClockSupport.token(signingJwk, "sub-paula", "employee");
+        PresenterClockSupport.as(employee).get("/api/gcsp/v1/context").then().statusCode(200)
+                .body("value.runId", equalTo(run)).body("value.policyVersion", equalTo(POLICY));
+        PresenterClockSupport.as(employee).get("/api/gcsp/v1/brief").then().statusCode(200)
+                .body("value.brief.policyVersion", equalTo(POLICY)).body("value.brief.briefVersion", equalTo(1));
         assertEquals(1, count(run, "SELECT count(*) FROM briefs WHERE run_id = ?"));
         try (Connection c = connection(); PreparedStatement ps = c.prepareStatement(
-                "SELECT content::text, buddy::text, brief_version, operation FROM briefs WHERE run_id = ? AND employee_id = 'employee-paula'")) {
+                "SELECT content::text, buddy::text, brief_version, operation, policy_version FROM briefs WHERE run_id = ? AND employee_id = 'employee-paula'")) {
             ps.setString(1, run);
             try (ResultSet rs = ps.executeQuery()) {
                 assertTrue(rs.next());
@@ -284,6 +330,7 @@ class PresenterScenarioMainHttpTest {
                 assertTrue(buddy.path("holdConsent").asBoolean());
                 assertEquals(1, rs.getLong(3));
                 assertEquals("confirmed", rs.getString(4));
+                assertEquals(POLICY, rs.getString(5));
             }
         }
     }

@@ -41,6 +41,17 @@ class OfferJourneyPolicyTest {
     }
 
     @Test
+    void preparationRegistrationPrecedesScenarioStartupWhileTheLaterEnsureStaysAfterClock() throws Exception {
+        var registration = OfferJourneyPolicy.class.getDeclaredMethod("beforeScenarios", io.quarkus.runtime.StartupEvent.class)
+                .getParameters()[0].getAnnotation(jakarta.annotation.Priority.class);
+        var scenarios = gcsp.api.scenario.ScenarioWiring.class
+                .getDeclaredMethod("onStart", io.quarkus.runtime.StartupEvent.class)
+                .getParameters()[0].getAnnotation(jakarta.annotation.Priority.class);
+        assertTrue(registration.value() < scenarios.value());
+        assertTrue(OfferJourneyPolicy.AFTER_CLOCK > scenarios.value());
+    }
+
+    @Test
     void theSuccessorAlsoUsesTheExistingPersistedStartupAdoption() {
         IllegalStateException e = assertThrows(IllegalStateException.class,
                 () -> with("gcsp-policy-v1+offer-journey-v2", "env", "run-1").ensure());
