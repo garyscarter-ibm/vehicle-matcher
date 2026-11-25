@@ -32,11 +32,29 @@ describe('Greg planning bearer transport', () => {
     fetcher.mockResolvedValueOnce(json({ status: 'ok', value: plan() })).mockResolvedValueOnce(json({ status: 'ok', value: { ...plan(), mode: 'preview', preview: true, activePolicyVersion: 'p1', activePlan: plan().plan } }))
       .mockResolvedValueOnce(json({ status: 'ok', value: production() })).mockResolvedValueOnce(json({ status: 'ok', value: submission() }));
     await client.readPlan(); await client.previewPlan([{ key: 'orderPlan.budgetMinor', value: 0 }]); await client.readProduction(); await client.submit(command());
-    expect(fetcher.mock.calls.map(([url]) => url)).toEqual(['greg/order-plan', 'greg/order-plan/preview', 'greg/production', 'greg/production/requests'].map(path => `https://api.example/api/gcsp/v1/${path}`));
+    expect(fetcher.mock.calls.map(([url]) => url)).toEqual(['greg/order-plan', 'greg/order-plan/preview', 'greg/orders', 'greg/production/requests'].map(path => `https://api.example/api/gcsp/v1/${path}`));
     for (const [, options] of fetcher.mock.calls) expect(options).toEqual(expect.objectContaining({ credentials: 'omit', cache: 'no-store', redirect: 'error', headers: expect.objectContaining({ Authorization: 'Bearer access-token' }) }));
     expect(fetcher.mock.calls[0][1]?.body).toBeUndefined();
     expect(JSON.parse(fetcher.mock.calls[1][1]?.body as string)).toEqual({ changes: [{ key: 'orderPlan.budgetMinor', value: 0 }] });
     expect(JSON.parse(fetcher.mock.calls[3][1]?.body as string)).toEqual(command());
+  });
+  it('pins intentional manual requests and keeps release queue retries on Greg endpoints', async () => {
+    fetcher.mockResolvedValueOnce(json({ status: 'ok', value: submission() }))
+      .mockResolvedValueOnce(json({ status: 'ok', value: { requestId: 'request-1', queued: [] } }));
+    const manual = { commandId: 'manual-1', model: '3 Series', derivative: '320i', quantity: 2,
+      expectedPolicyVersion: 'p1', expectedStockVersion: 's1' };
+    expect((await client.submitManual(manual)).status).toBe('ok');
+    expect((await client.queue({ commandId: 'queue-1', requestId: 'request-1' })).status).toBe('ok');
+    expect(fetcher.mock.calls.map(([url]) => url)).toEqual(['https://api.example/api/gcsp/v1/greg/orders', 'https://api.example/api/gcsp/v1/greg/orders/queue']);
+    expect(JSON.parse(fetcher.mock.calls[0][1]?.body as string)).toEqual(manual);
+  });
+  it('rejects injected manual identity and invalid quantities without sending', async () => {
+    const manual = { commandId: 'manual-1', model: '3 Series', derivative: '320i', quantity: 2,
+      expectedPolicyVersion: 'p1', expectedStockVersion: 's1' };
+    for (const patch of [{ quantity: 0 }, { quantity: 1001 }, { quantity: 1.5 }, { runId: 'other' }]) {
+      expect((await client.submitManual({ ...manual, ...patch })).status).toBe('invalid');
+    }
+    expect(fetcher).not.toHaveBeenCalled();
   });
   it('rejects command identity injection, changed keys and preview edits on submission before sending', async () => {
     for (const extra of [{ runId: 'other' }, { actorId: 'other' }, { changes: [] }, { versions: { policy: 4 } }]) {

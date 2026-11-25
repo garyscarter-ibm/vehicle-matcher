@@ -24,6 +24,14 @@ UI states and actual envelopes. Image framing/dimensions remain distinct; the se
 availability evidence. The pair awaits human review; this local run does not prove a hosted sign-in journey.
 
 Select FUCQ-561 presenter coverage with `npm --prefix apps/gcsp-web run test:e2e -- --case f561`.
+Select FUCQ-559 planning and Production coverage with `npm --prefix apps/gcsp-web run test:e2e -- --case f559`.
+It uses two sequential owned compositions: the retained Main inputs for real Greg requests and separate
+Presenter confirmation/delay, then a fresh supported `gcsp-policy-v1+learned-model-v1` configuration for
+actual learned differences. The latter is compared with the frozen source widget using the unchanged Java
+response; this establishes presentation behavior, not equivalent Node forecast values or configured scenarios.
+The release-queue recovery case deliberately loses only the acknowledgement of an actual confirmed supply,
+as in `GregOrdersHttpTest`, then exercises the real queue route and checks idempotency. It labels this fault
+separately from a natural successful confirmation. Node/Angular 1280 captures remain pending human review.
 Run once on the final committed source. It checks the Basic console, actual release projection,
 suitability, captured mail, restart and the live frozen 1280px comparison. The local composition
 uses each engine's public Main reset and Basic release button, comparing semantic inputs, confirmed

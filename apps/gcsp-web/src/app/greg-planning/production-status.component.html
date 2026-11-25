@@ -1,5 +1,5 @@
-<section id="gcsp-order-requests" class="production-page" aria-labelledby="production-title" [attr.aria-busy]="store.productionBusy() || store.submitting()">
-  <div class="production-heading"><h2 id="production-title" tabindex="-1">Order requests</h2>
+<section id="gcsp-order-requests" class="gcsp gcsp-orders production-page" aria-labelledby="production-title" [attr.aria-busy]="store.productionBusy() || store.submitting()">
+  <div class="gcsp-orders-header"><h2 class="gcsp-h2" id="production-title" tabindex="-1">Order requests</h2>
     @if (store.access() === 'ready') { <button gcspButton variant="ghost" type="button" [disabled]="store.productionBusy() || store.submitting()" (click)="store.refreshProduction()">Refresh Production status</button> }
   </div>
   @if (store.access() === 'ready') {
@@ -17,6 +17,11 @@
         </div>
       }
     </div>
+    @if (store.orderOutcome(); as outcome) {
+      <p data-order-result tabindex="-1" role="status">{{ store.orderMessage() }}</p>
+    }
+    @if (store.canRetryOrder()) { <p class="gcsp-note">The earlier command is retained. Retry continues the same command.</p>
+      <button gcspButton type="button" [disabled]="store.submitting()" (click)="store.retryOrder()">{{ store.orderRetryKind() === 'queue' ? 'Retry release queue' : 'Retry same command' }}</button> }
     @if (store.pendingValue(); as value) {
       <p>Submission reference: {{ value.submissionId }}</p>
       <ul>@for (request of value.requests; track $index) { <li>{{ request['model'] }} {{ request['derivative'] }} · {{ request['quantity'] }} requested · {{ request['state'] }}@if (request['reason']) { : {{ request['reason'] }} }</li> }</ul>
@@ -26,20 +31,41 @@
     @if (store.needsAuthentication()) { <button gcspButton type="button" (click)="store.signIn()">Sign in again</button> }
     @if (store.productionFailure(); as failure) { <gcsp-status-screen title="Production status unavailable" [message]="store.failureMessage(failure)" [level]="2" announcement="alert" /> }
     @if (store.production(); as production) {
-      <p class="gcsp-note">Status as of {{ production.asOf }}</p>
+      <p class="gcsp-note">Production · as of {{ date(production.asOf) }}. Only released cars enter supply.</p>
+      <div class="gcsp-orders-tracking"><gcsp-data-table caption="Requested, confirmed and released cars" [columns]="columns" [rows]="tableRows()" emptyText="No requests yet. Choose a model, derivative and quantity to request cars." /></div>
+      <div class="gcsp-orders-queues">@for (request of queueRequests(); track request.requestId) {
+        <div class="gcsp-orders-queue"><p class="gcsp-note">{{ request.model }} {{ request.derivative }}: confirmed supply is saved and awaiting the release queue.</p>
+          @if (!store.canRetryOrder() || store.orderRetryKind() !== 'queue') { <button gcspButton variant="ghost" type="button" [disabled]="store.queueBlocked(request.requestId)" (click)="store.retryReleaseQueue(request.requestId)">Retry release queue</button> }
+        </div>
+      }</div>
+    <details class="gcsp-orders-production"><summary>Request cars</summary>
+      <form class="gcsp-orders-form" (submit)="requestCars($event)"><h3 class="gcsp-h3">Request cars</h3><div class="gcsp-orders-fields">
+        <gcsp-labelled-field controlId="greg-manual-model" label="Model"><select id="greg-manual-model" required [value]="chosenModel()" [disabled]="!store.canRequestCars()" (change)="model.set(text($event)); derivative.set('')">
+          @for (name of models(); track name) { <option [value]="name">{{ name }}</option> }
+        </select></gcsp-labelled-field>
+        <gcsp-labelled-field controlId="greg-manual-derivative" label="Derivative"><select id="greg-manual-derivative" required [value]="chosenDerivative()" [disabled]="!store.canRequestCars()" (change)="derivative.set(text($event))">
+          @for (name of derivatives(); track name) { <option [value]="name">{{ name }}</option> }
+        </select></gcsp-labelled-field>
+        <gcsp-labelled-field controlId="greg-manual-quantity" label="Quantity"><input id="greg-manual-quantity" type="number" min="1" max="1000" step="1" required [value]="quantity()" [disabled]="!store.canRequestCars()" (input)="quantity.set(text($event))" /></gcsp-labelled-field>
+      </div><button gcspButton variant="ghost" type="submit" [disabled]="!store.canRequestCars()">Submit request</button>
+      @if (!store.canRequestCars()) { <p class="gcsp-note">Refresh current orders or resolve the earlier command before requesting cars.</p> }
+      </form>
+    </details>
+      <details><summary>Request details and history</summary>
       @for (request of production.requests; track request.id) {
         <article class="production-request" [attr.aria-labelledby]="'production-' + request.id">
           <div class="request-heading"><h3 [id]="'production-' + request.id">{{ request.model }} {{ request.derivative }}</h3><strong>{{ request.stage }}</strong></div>
           @if (request.message) { <p>{{ request.message }}</p> }
           @if (request.reason) { <p class="production-reason">{{ request.reason }}</p> }
           <gcsp-fact-list [rows]="request.facts" />
-          <details><summary>Request details and history</summary><p>Request reference: {{ request.id }}</p><p>Production state: {{ request.state }}</p>
+        <details><summary>Request details and history</summary><p>Request reference: {{ request.id }}</p><p>Production state: {{ request.state }}</p>
             @if (request.code) { <p>Response code: {{ request.code }}</p> }
             <ol>@for (event of request.history; track $index) { <li><strong>{{ event.state }}</strong> · <time [attr.datetime]="event.at">{{ event.at }}</time><gcsp-fact-list [rows]="event.details" /></li> } @empty { <li>No response history supplied.</li> }</ol>
             @for (supply of request.supplies; track supply.id) { <h4>{{ supply.id }}</h4><gcsp-fact-list [rows]="supply.facts" /> }
           </details>
         </article>
       } @empty { <p class="production-empty">No Production requests yet.</p> }
+      </details>
       <button gcspButton variant="ghost" type="button" [disabled]="store.planBusy() || store.submitting()" (click)="replan()">Replan after Production response</button>
       <details><summary>Production source and submissions</summary><gcsp-fact-list [rows]="production.provider" /><gcsp-fact-list [rows]="production.submissions" /></details>
     } @else if (!store.productionFailure() && !store.productionBusy()) { <p role="status">Loading Production requests…</p> }

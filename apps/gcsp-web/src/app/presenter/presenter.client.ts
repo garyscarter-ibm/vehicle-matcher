@@ -1,3 +1,4 @@
+import { GregOrders, parseGregOrders } from '../greg-planning/greg-orders.model';
 import { parseRelease, parseSuitability } from './presenter.projections';
 import { inject, Injectable } from '@angular/core';
 import { AuthPort } from '../auth/auth.port';
@@ -8,7 +9,7 @@ import type {
   PresenterAdvance, PresenterAdvanceInput, PresenterCatalogue, PresenterClientFailure, PresenterClock,
   PresenterCommand, PresenterCommandValue, PresenterControls, PresenterControlTickInput, PresenterCurrentScenario,
   PresenterEvidence, PresenterFault, PresenterFaultInput, PresenterFaults, PresenterRefusal, PresenterRequestOptions,
-  PresenterReset, PresenterResetInput, PresenterResult, PresenterScenario, PresenterScenarioSummary, PresenterTick, PresenterTickInput,
+  PresenterReset, PresenterResetInput, PresenterResult, PresenterProductionInput, PresenterScenario, PresenterScenarioSummary, PresenterTick, PresenterTickInput,
 } from './presenter.types';
 
 type ReadySession = Extract<SessionState, { status: 'ready' }>;
@@ -163,6 +164,7 @@ export class PresenterClient {
     } while (after);
     return { state: 'ready', value: { count: ids.size } };
   }
+  readProduction(options: PresenterRequestOptions = {}): Promise<PresenterResult<GregOrders>> { return this.request('/greg/production', parseGregOrders, options); }
   readLatestRelease(options: PresenterRequestOptions = {}) { return this.request('/presenter/releases/latest', parseRelease, options); }
   readSuitability(page = 1, buddyPage = 1, release: 'all' | 'latest' = 'all', options: PresenterRequestOptions = {}) {
     if (![page, buddyPage].every(whole) || !['all', 'latest'].includes(release)) return Promise.resolve(failed('invalid-selector'));
@@ -177,6 +179,7 @@ export class PresenterClient {
     if (!id(tickId, 200) || !/^[A-Za-z0-9][A-Za-z0-9._:-]*$/.test(tickId)) return Promise.resolve(failed('invalid-selector'));
     return this.request(`/presenter/clock/ticks/${encodeURIComponent(tickId)}`, (v) => { const t = tick(v); return t?.tickId === tickId ? t : null; }, options);
   }
+  prepareProduction(input: PresenterProductionInput) { return this.prepare('production', input); }
   prepareAdvance(input: PresenterAdvanceInput) { return this.prepare('advance', input); }
   prepareTick(input: PresenterTickInput) { return this.prepare('tick', input); }
   prepareControlTick(input: PresenterControlTickInput) { return this.prepare('control-tick', input); }
@@ -188,6 +191,10 @@ export class PresenterClient {
     if (!object(input)) return failed('invalid-command', { writeOutcome: 'not-sent' });
     let valid = false;
     switch (kind) {
+      case 'production': valid = only(input, ['commandId', 'requestId', 'expectedVersion', 'action', 'quantity', 'delayUntil', 'reason'])
+        && id(input['commandId'], 200) && id(input['requestId'], 200) && whole(input['expectedVersion'])
+        && (input['action'] === 'confirm' && whole(input['quantity']) && input['delayUntil'] === undefined && input['reason'] === undefined
+          || input['action'] === 'delay' && instant(input['delayUntil']) && text(input['reason'], 500) && input['quantity'] === undefined); break;
       case 'advance': valid = only(input, ['commandId', 'expectedClockVersion', 'bySeconds', 'to']) && id(input['commandId']) && whole(input['expectedClockVersion'])
         && (whole(input['bySeconds']) && input['to'] === undefined || input['bySeconds'] === undefined && text(input['to'], 200)); break;
       case 'tick': valid = only(input, ['tickId', 'expectedClockVersion']) && id(input['tickId'], 200)
@@ -208,10 +215,17 @@ export class PresenterClient {
   submit(command: PresenterCommand, options: PresenterRequestOptions = {}): Promise<PresenterResult<PresenterCommandValue>> {
     const intent = command && this.intents.get(command);
     if (!intent) return Promise.resolve(failed('unrecognized-command', { writeOutcome: 'not-sent' }));
-    const paths = { advance: '/presenter/clock/advance', tick: '/presenter/clock/tick', 'control-tick': '/presenter/controls/tick',
+    const paths = { production: '/presenter/production', advance: '/presenter/clock/advance', tick: '/presenter/clock/tick', 'control-tick': '/presenter/controls/tick',
       reset: '/presenter/scenarios/reset', fault: '/presenter/scenarios/faults' };
     const parse: Parser<PresenterCommandValue> = (v) => {
       switch (command.kind) {
+        case 'production': return object(v) && ['reconciled', 'applied', 'queued'].every(k => Number.isSafeInteger(v[k]) && (v[k] as number) >= 0)
+          && Array.isArray(v['requests']) && v['requests'].length === 1 && object(v['requests'][0])
+          && v['requests'][0]['requestId'] === command.input.requestId && text(v['requests'][0]['outcome'])
+          && object(v['scripted']) && v['scripted']['requestId'] === command.input.requestId && v['scripted']['action'] === command.input.action && whole(v['scripted']['seq'])
+          ? { reconciled: v['reconciled'] as number, applied: v['applied'] as number, queued: v['queued'] as number,
+            requests: [{ requestId: command.input.requestId, outcome: v['requests'][0]['outcome'] }],
+            scripted: { requestId: command.input.requestId, action: command.input.action, seq: v['scripted']['seq'] } } : null;
         case 'advance': return advance(v);
         case 'tick': { const t = tick(v); return t?.tickId === command.input.tickId ? t : null; }
         case 'fault': return faults(v);
