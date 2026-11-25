@@ -210,6 +210,14 @@ test('FUCQ-561: presenter console follows the actual signed-in release, inspecti
       await frame.waitFor();
       assert.equal(await frame.getAttribute('sandbox'), '');
       assert.ok((await frame.getAttribute('srcdoc'))?.length > 0, 'The captured body is rendered through the existing mail view');
+      const mail = drawer.frameLocator('iframe');
+      await mail.getByRole('heading', { level: 1 }).waitFor();
+      await until(() => mail.locator('img').evaluateAll((images) => images.every((image) => image.complete)),
+        'The captured body images must settle before its screenshot');
+      suite.receipt.checks.capturedEmailImages = await mail.locator('img').evaluateAll((images) => images.map((image) => ({
+        src: image.getAttribute('src'), resolved: image.src, currentSrc: image.currentSrc,
+        complete: image.complete, naturalWidth: image.naturalWidth, naturalHeight: image.naturalHeight,
+      })));
       await suite.screenshot(presenter, 'presenter-captured-email-1280');
       await presenter.keyboard.press('Escape');
       await drawer.waitFor({ state: 'hidden' });
@@ -217,9 +225,11 @@ test('FUCQ-561: presenter console follows the actual signed-in release, inspecti
       await noInternals(presenter);
       await presenter.setViewportSize({ width: 375, height: 812 });
       await fits(presenter);
+      await email.scrollIntoViewIfNeeded();
       await suite.screenshot(presenter, 'presenter-feed-375');
       await email.click();
       await drawer.waitFor({ state: 'visible' });
+      await mail.getByRole('heading', { level: 1 }).waitFor();
       await fits(presenter);
       await suite.screenshot(presenter, 'presenter-captured-email-375');
       await presenter.keyboard.press('Escape');
@@ -247,7 +257,7 @@ test('FUCQ-561: presenter console follows the actual signed-in release, inspecti
       });
       assert.equal(reference.state, 'matched', 'The frozen comparison must run; an omitted reference does not prove parity');
       suite.receipt.checks.parity = { engineeringPrecheck: true, engineRunIds: reference.engineRunIds,
-        knownVisualDifference: 'F561 AC1 remains open: Java per-tick allocation summary is unavailable; no cumulative inference is used.', humanVerdict: 'pending' };
+        knownVisualDifference: 'Java per-tick allocation summary is unavailable; no cumulative inference is used. The original AC1 headline/release/restart behavior is evidenced separately.', humanVerdict: 'pending' };
     });
 
     await t.test('AC1/6 local boundary: confirmed Main restart clears cars and Basic releases through Java', async () => {

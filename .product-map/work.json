@@ -12860,21 +12860,21 @@
       "assignee": "usget",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-561",
       "evidence": "Native In Progress/assignee readback by Rapunzel on 25 November 2026; local claim DEV-2026-11-22-vesper-033. All seven original acceptance criteria retained.",
-      "observed_at": "2026-11-25T18:25:06Z",
+      "observed_at": "2026-11-25T19:54:18Z",
       "slices": [
         {
           "id": "console-panels",
           "status": "in-progress",
           "title": "Basic console, release, suitability and captured mail (AC1–5)",
-          "observed_at": "2026-11-25T18:25:06Z",
-          "evidence": "Actual 375px capture exposed duplicate toolbar branding overlap; scoped HTML/CSS fix ready, rendered confirmation pending. Exact wire client regression: RED 48 pass / 1 expected fail; minimal preparation/clock-pin coupling fix: GREEN 6 presenter files / 91 passes. Static 147 plus boundary/syntax passed at 18:23:45 UTC; reviewer verdict passed. These checks do not prove individual AC1–5 composition screens. See DEV-2026-11-22-vesper-033 Result."
+          "observed_at": "2026-11-25T19:54:17Z",
+          "evidence": "Actual registered d55365b37 local behavior subtests pass; inspected1280/375 Basic/release/suitability: AC1/2/3/5 evidenced. AC4 real feed/drawer works but desktop iframe captured before paint and narrow mail car image broken; settle/image diagnostics prepared, unrun. Per-tick summary remains disclosed separately, not an added AC1 requirement. See F561 Result."
         },
         {
           "id": "integration",
           "status": "in-progress",
           "title": "Connected Main, actual hosted cue and human pair (AC6–7)",
-          "observed_at": "2026-11-25T18:25:06Z",
-          "evidence": "First registered run d2e5af831 failed Main reset after server 200: client coupled legitimate preparation and clock pin namespaces; later timeouts were dependent, no resource issue. Partial-prefix peaks: web build 1,543,749,632 bytes; suite 1,382,596,608 bytes, not full-journey proof. Evidence: browser-d2e5af831-chromium159; PG drop/scratch cleanup verified. True 3 GiB repeat pending clean checkpoint; hosted cue and Node/Angular 1280 human verdict remain open. All seven ACs remain unchecked."
+          "observed_at": "2026-11-25T19:54:18Z",
+          "evidence": "Published d55365b37 frozen comparison fails only exact prepared Main policyVersion: Node +offer-journey-v1 vs Java base. Separate verified F594 parentF433/RelatesF479 records real Java adoption/order pin defect; no equality relaxed. AC6 hosted still old mechanics/no cue at17:55UTC; AC7 pair/human verdict pending. Suite20.08s/2134949888B peakRSS; PG/process/scratch cleanup verified."
         }
       ],
       "unsliced": false
