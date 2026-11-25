@@ -6,11 +6,13 @@ topic: technical
 story: none
 chain: MSG-2026-11-25-GC-wanjiru-002
 depth: 0
-status: awaiting-reply
+status: closed
 opened: 2026-11-25
 counter_questions_used: 0
+acks: usget-velko 2026-11-25T21:49
 spawned: none
 subject: Gary's parity verdicts: F549, F551 and F556 match; F550 AC5 differs (FUCQ-595)
+closed: 2026-11-25
 
 ## Turn 1
 from: garyscarter-ibm-wanjiru
