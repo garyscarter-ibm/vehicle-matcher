@@ -13126,29 +13126,29 @@
       "assignee": "usget",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-559",
       "branch": "dev/DEV-2026-11-22-vesper-035",
-      "evidence": "Formal claim feecd6993; original4AC/horse13. FrozenF449/F434 and Gary20Nov restore ruling; exact Greg request/queue versus Presenter production role split retained.",
+      "evidence": "Partial source b3f9336d6; real registered6/6 and Angular182/182. AC1met; originalAC2/3prequeue date parity and humanAC4remain, coveringbatchdue. No acceptance inferred.",
       "observed_at": "2026-11-25T21:37:41Z",
       "slices": [
         {
           "id": "planning-controls",
           "status": "in-progress",
           "title": "Planning controls (5 points; AC1–2)",
-          "observed_at": "2026-11-25T21:37:41Z",
-          "evidence": "Claimed; first verify actual producer facts, then port source slider/reuse table/forms; no acceptance claimed."
+          "observed_at": "2026-11-25T23:33:21Z",
+          "evidence": "Requestform/slider/learned emphasis proven; table prequeue date parity remains originalAC2."
         },
         {
           "id": "production-actions",
           "status": "in-progress",
           "title": "Production actions (5 points; AC3)",
-          "observed_at": "2026-11-25T21:37:41Z",
-          "evidence": "Claimed; restore role-correct Presenter response to Greg tracking/queue, with versioned existing APIs."
+          "observed_at": "2026-11-25T23:33:21Z",
+          "evidence": "Actual role-correct confirm/delay/queue503+lost-response recovery proven; prequeue timing remains originalAC3."
         },
         {
           "id": "integration",
-          "status": "not-started",
+          "status": "in-progress",
           "title": "Real composition, focused validation and human pair (3 points; AC4)",
-          "observed_at": "2026-11-25T21:37:41Z",
-          "evidence": "Final native/focused specs, registered actual composition1280/375 and same-scenario pair; humanAC4 and covering batch remain required."
+          "observed_at": "2026-11-25T23:33:21Z",
+          "evidence": "Final registered6/6 and focused182/182, A29/40/B0; original humanAC4blank and sharedbrowserbatchdue."
         }
       ],
       "unsliced": false
