@@ -3882,3 +3882,11 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 - **Cause:** the caller assumed the offset would be converted; the helper's time contract instead expects the Jira user's wall time.
 - **Action/outcome:** replayed the same saved five-issue input with `--now 2026-11-25T17:11:23-06:00`. The final cursor is `2026-11-25 17:11`; the saved `told` digest suppressed duplicate FUCQ-595 notification/marker changes. The replay changed no card or Jira content and reported zero imports, updates, changes, comments or notifications. Query receipts preserve both inputs.
 - **Framework follow-up:** when a UTC as-of instant is supplied, convert it to Jira-user wall time before passing `--now`, and retain both values in the receipt. No helper change was made.
+
+
+### 2026-11-25 23:26 UTC · usget-velko · DL-20261125-VELKO-07 · F559 visual review found theme and stale-state faults
+
+- **Evidence/impact:** independent Assessment A at04a390410 scored25/40 and found invisible slider paint, a stale request acknowledgement after confirmed/delayed reads, and Node/Java disagreement on prequeue arrival timing. Root inspected the actual1280/375 captures.
+- **Cause/action:** the shared range lacked the existing VM token scope. Production feedback retained a historical acknowledgement; the first correction also lost its comparison across a failed read, reproduced by the review regression (1failed/21passed), then fixed using the last successful fingerprint reset with signed-in scope (22/22green). The date regression went1failed/9passed→10/10green. Source a44a08b5d is published and independent state-risk review passed; final combined/browser checks and corrected visual review are pending.
+- **Remaining boundary:** Java has no authoritative date/policy provenance before immutable queue insertion, as the existing F477 contract requires; queue retry can bind a later policy. Render pending queue/date honestly rather than guessing. Frozen Node prequeue timing parity remains original F559 work affecting table/state criteria; no backend/schema change or acceptance tick is inferred.
+- **Framework improvement proposed:** compare theme scope and failure→recovery state sequences when reviewing existing parity evidence; no new gate was introduced.
