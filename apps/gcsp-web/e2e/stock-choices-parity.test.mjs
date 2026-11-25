@@ -238,7 +238,7 @@ test('FUCQ-553: source stock, choices and gallery reservation handover', { timeo
       galleryClaims.rejectPending(); await page.getByRole('button', { name: 'Check status', exact: true }).click();
       await until(async () => (await runtime.manualClaims.readClaim(principal)).value?.state === 'claim-failed', 'Node real custody failure');
       receipt.stockGallery.failed = await runtime.manualClaims.readClaim(principal);
-      const recovery = page.getByText(/^(Your previous reservation has ended\. Availability has been refreshed\.|No current reservation was found\. Retry this same reservation or check its status\.)$/);
+      const recovery = page.getByLabel('Reservation status', { exact: true }).getByText(/^(Your previous reservation has ended\. Availability has been refreshed\.|No current reservation was found\. Retry this same reservation or check its status\.)$/);
       await recovery.waitFor(); receipt.stockGallery.failedRecoveryCopy = await recovery.innerText();
       await capture(page, 'node-reservation-failed-1280');
       return { stockChoicesParity: { pending: 'Captured actual pending operation', failed: 'Captured actual terminal claim-failed', humanAcceptance: 'pending' } };
