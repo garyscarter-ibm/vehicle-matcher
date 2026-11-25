@@ -117,6 +117,9 @@ class LifecycleMixedRoleHttpTest {
         assertEquals("operator-greg", identity.get("employeeId").asText());
         assertEquals("sub-greg-dual", identity.get("subject").asText());
 
+        JsonNode actualAccount = value(http.as("paula").get(BASE + "/manual/account"));
+        ReturnJourneySteps.prepareCollectionWindows(dataSource, persistence, actualAccount);
+
         // F581 supplies scoped run time to claims and ordering; use the actual unmodified scenario clock.
         // The released input includes an X1 eligible for Alex's grade, as in DocumentsJourneySupport.
         seedReleasedStock();

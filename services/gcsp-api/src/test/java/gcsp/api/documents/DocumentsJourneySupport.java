@@ -108,6 +108,8 @@ final class DocumentsJourneySupport {
     // ---- ordering: released stock is the only seeded input ----
 
     void seedStock() throws Exception {
+        JsonNode actualAccount = body(as("paula").get(BASE + "/manual/account")).get("value");
+        ReturnJourneySteps.prepareCollectionWindows(ds, persistence, actualAccount);
         var run = persistence.guard().currentRun();
         try (Connection c = ds.getConnection()) {
             List<JsonNode> rows = new ArrayList<>(StockDbFixture.rows());

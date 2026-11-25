@@ -185,6 +185,8 @@ class ClaimRunClockHttpTest {
         assertEquals(initial, Instant.parse(clock().get("now").asText()));
         assertEquals(initial, claimClock.now(new RunContext(run.environmentId(), run.runId(), "probe")));
         assertTrue(initial.plusSeconds(quoteSeconds).isBefore(capturedWall));
+        JsonNode actualAccount = ok(http.as("paula").get(BASE + "/manual/account"));
+        ReturnJourneySteps.prepareCollectionWindows(dataSource.get(), persistence, actualAccount, ahead);
         try (Connection c = dataSource.get().getConnection()) {
             List<JsonNode> rows = new ArrayList<>(StockDbFixture.rows());
             ObjectNode extra = rows.get(0).deepCopy();

@@ -12145,54 +12145,6 @@
       "evidence": "Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Reviewed delivery/merge records remain authoritative; session stopped with no new pickup."
     },
     {
-      "id": "FUCQ-583",
-      "title": "Lifecycle HTTP tests age out their fixed collection dates at midnight",
-      "type": "Bug",
-      "status": "In Review",
-      "original_status": "In Review",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-583",
-      "branch": "dev/DEV-2026-11-24-vesper-002",
-      "unsliced": false,
-      "note": "Recorded technical integration and green canonical covering complete. Native In Review; collaborator acceptance remains separate.",
-      "workers": [
-        {
-          "name": "Lord Business",
-          "role": "story-lead",
-          "harness": "codex",
-          "observed_at": "2026-11-24T02:29:38.948403+00:00",
-          "expires_at": "2026-11-24T02:29:38.948403+00:00",
-          "source": "Retained task /root/lord_business; actual final proof and independent review receipts",
-          "status": "Completed handoff; final covering integration recorded; no active worker"
-        }
-      ],
-      "observed_at": "2026-11-24T08:54:20Z",
-      "slices": [
-        {
-          "id": "fixture-inputs",
-          "status": "complete",
-          "title": "Admissible canonical date inputs and preserved clock lineage",
-          "observed_at": "2026-11-24T02:29:38.948403+00:00",
-          "evidence": "Lead actual final whole-class proof: 11 cases pass, zero failures/errors/skips; unchanged reviewed source 5d3693b83e680459b5c9a839845ad4446c0dbdde. Marvin independent original-AC/runtime review PASS; f583-f584-final-validation/marvin-runtime-review.json."
-        },
-        {
-          "id": "regression-callers",
-          "status": "complete",
-          "title": "Real OIDC and PostgreSQL regression plus six HTTP callers",
-          "observed_at": "2026-11-24T02:29:38.948403+00:00",
-          "evidence": "Lead actual final whole-class proof: 11 cases pass, zero failures/errors/skips; unchanged reviewed source 5d3693b83e680459b5c9a839845ad4446c0dbdde. Marvin independent original-AC/runtime review PASS; f583-f584-final-validation/marvin-runtime-review.json."
-        },
-        {
-          "id": "integration",
-          "status": "complete",
-          "title": "Combine scoped evidence and independent review for handoff",
-          "observed_at": "2026-11-24T08:54:19.702202+00:00",
-          "evidence": "Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Original scoped review, identity and cleanup qualifications remain in the delivery Result; no human acceptance inferred."
-        }
-      ],
-      "native_observed_at": "2026-11-24T02:45:43.439Z",
-      "evidence": "Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Reviewed delivery/merge records remain authoritative; session stopped with no new pickup."
-    },
-    {
       "id": "FUCQ-584",
       "title": "Auth route inventory omits the approved public demo issuer endpoints",
       "type": "Bug",
@@ -12630,6 +12582,72 @@
           "status": "completed engineering allocation; human parity handoff remains"
         }
       ]
+    },
+    {
+      "id": "FUCQ-583",
+      "title": "Lifecycle HTTP tests age out their fixed collection dates at midnight",
+      "type": "Bug",
+      "status": "In Review",
+      "original_status": "In Review",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-583",
+      "branch": "dev/DEV-2026-11-25-sorrel-001",
+      "unsliced": false,
+      "note": "25 November continuation development built: all three original ACs proved by lead-reviewed source a5ab249c8 and real six-class/eleven-case proof. Original 23-to-24 archive remains unchanged. Dispatcher covering batch and collaborator acceptance remain separate.",
+      "workers": [
+        {
+          "name": "Lord Business",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-24T02:29:38.948403+00:00",
+          "expires_at": "2026-11-24T02:29:38.948403+00:00",
+          "source": "Retained task /root/lord_business; actual final proof and independent review receipts",
+          "status": "Completed handoff; final covering integration recorded; no active worker"
+        },
+        {
+          "name": "The Brain",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-25T02:08:15.174914+00:00",
+          "expires_at": "2026-11-25T02:08:15.174914+00:00",
+          "source": "Native task /root/the_brain, claimed continuation e50edf678",
+          "status": "Scoped delivery complete; lead reviewed diff, ran 11/11 green and verified owned cleanup. No active worker claimed after handoff."
+        },
+        {
+          "name": "Porky Pig",
+          "role": "mechanic",
+          "harness": "codex",
+          "observed_at": "2026-11-25T02:05:51.998799+00:00",
+          "expires_at": "2026-11-25T02:05:51.998799+00:00",
+          "source": "Native task /root/the_brain/porky_pig; gpt-6-luna/high; title confirmed",
+          "status": "Source slice returned; lead reviewed actual diff and independently ran all eleven cases green."
+        }
+      ],
+      "observed_at": "2026-11-25T02:08:15Z",
+      "slices": [
+        {
+          "id": "fixture-inputs",
+          "status": "complete",
+          "title": "Coherent isolated source windows before business records",
+          "observed_at": "2026-11-25T02:05:52Z",
+          "evidence": "Lead reviewed five-file diff; actual six signed-OIDC/native-PG17 classes executed 11/11, zero failures/errors/skips on 25 November, including actual 24-to-25 midnight. Source hashes unchanged; sorrel-f583-20261125/result.json."
+        },
+        {
+          "id": "regression-callers",
+          "status": "complete",
+          "title": "Eleven original signed-OIDC/native-PG cases across six classes",
+          "observed_at": "2026-11-25T02:05:52Z",
+          "evidence": "Lead reviewed five-file diff; actual six signed-OIDC/native-PG17 classes executed 11/11, zero failures/errors/skips on 25 November, including actual 24-to-25 midnight. Source hashes unchanged; sorrel-f583-20261125/result.json."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Lead review and scoped delivery; covering acceptance remains separate",
+          "observed_at": "2026-11-25T02:08:15Z",
+          "evidence": "Lead reviewed exact five-file diff and all three original ACs; actual six-class signed-OIDC/native-PG17 proof 11/11 with zero failures/errors/skips and verified cleanup. Source a5ab249c8; continuation card Result. Dispatcher owns later merge/covering acceptance."
+        }
+      ],
+      "native_observed_at": "2026-11-24T02:45:43.439Z",
+      "evidence": "_dev/in-progress/DEV-2026-11-25-sorrel-001.md Result; .claude/poller/sorrel-f583-20261125/result.json; source a5ab249c865947677245c8d9f33aec8a45928bed"
     }
   ]
 }

@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.sql.DataSource;
 import org.postgresql.ds.PGSimpleDataSource;
 
 /** The shared steps of the old-car return journeys: one real handover order driven over HTTP, plus return helpers. */
@@ -107,6 +108,109 @@ public final class ReturnJourneySteps {
     }
 
     // ---- ordering ----
+
+    /** Widen only the synthetic account inputs so every required run phase has an admissible collection date. */
+    public static void prepareCollectionWindows(DataSource dataSource, Persistence persistence, JsonNode actualAccount,
+            Instant... requiredPhases) throws Exception {
+        JsonNode rules = selected(actualAccount.get("assumptions"), "key", "manual.context.v1").get("value");
+        JsonNode minimum = rules.get("minimumLeadDays"), maximum = rules.get("maximumLeadDays");
+        assertTrue(minimum != null && minimum.isIntegralNumber() && minimum.canConvertToLong()
+                && maximum != null && maximum.isIntegralNumber() && maximum.canConvertToLong(),
+                "the canonical collection lead bounds must be integral day counts");
+        long min = minimum.longValue(), max = maximum.longValue();
+        assertTrue(min >= 0 && max >= min, "the canonical collection lead bounds must be valid");
+
+        LocalDate accountDay = LocalDate.parse(actualAccount.get("asOf").asText().substring(0, 10));
+        LocalDate earliestPhaseDay = accountDay, latestPhaseDay = accountDay;
+        for (Instant phase : requiredPhases) {
+            assertNotNull(phase, "a required collection phase must have a time");
+            LocalDate phaseDay = LocalDate.ofInstant(phase, ZoneOffset.UTC);
+            if (phaseDay.isBefore(earliestPhaseDay)) earliestPhaseDay = phaseDay;
+            if (phaseDay.isAfter(latestPhaseDay)) latestPhaseDay = phaseDay;
+        }
+        LocalDate earliest = earliestPhaseDay.plusDays(min);
+        LocalDate latest = latestPhaseDay.plusDays(max);
+        assertTrue(!earliest.isAfter(latest), "the synthetic collection window must be non-empty");
+
+        var run = persistence.guard().currentRun();
+        try (Connection c = dataSource.getConnection()) {
+            c.setAutoCommit(false);
+            try {
+                for (String table : List.of("manual_drafts", "manual_claims", "custody_holds", "selection_orders")) {
+                    try (PreparedStatement ps = c.prepareStatement("SELECT count(*) FROM " + table
+                            + " WHERE environment_id = ? AND run_id = ?")) {
+                        ps.setString(1, run.environmentId());
+                        ps.setString(2, run.runId());
+                        try (ResultSet rs = ps.executeQuery()) {
+                            assertTrue(rs.next());
+                            assertEquals(0L, rs.getLong(1), table + " must be empty before changing account inputs");
+                        }
+                    }
+                }
+
+                List<AccountRecordInput> records = new ArrayList<>();
+                try (PreparedStatement ps = c.prepareStatement("SELECT employee_id, record_set_id, record::text, version "
+                        + "FROM employee_account_records WHERE environment_id = ? AND run_id = ? "
+                        + "AND employee_id IN (?, ?) ORDER BY employee_id FOR UPDATE")) {
+                    ps.setString(1, run.environmentId());
+                    ps.setString(2, run.runId());
+                    ps.setString(3, "employee-paula");
+                    ps.setString(4, "employee-alex");
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            String employeeId = rs.getString(1);
+                            String recordSetId = rs.getString(2);
+                            ObjectNode record = (ObjectNode) ApptHttp.JSON.readTree(rs.getString(3));
+                            assertEquals("manual:" + employeeId + ":v1", recordSetId);
+                            assertEquals(recordSetId, record.path("recordSetId").asText());
+                            JsonNode contracts = record.get("contracts");
+                            assertTrue(contracts != null && contracts.isArray(), employeeId + " contracts must be an array");
+                            assertEquals(1, contracts.size(), employeeId + " must have its single packaged current contract");
+                            JsonNode contract = contracts.get(0);
+                            assertEquals("current:" + employeeId, contract.path("contractId").asText());
+                            assertEquals(employeeId, contract.path("employeeId").asText());
+                            assertEquals("current", contract.path("status").asText());
+                            assertEquals("synthetic", contract.at("/source/mode").asText());
+                            assertEquals("fixture:manual-records-v1", contract.at("/source/sourceRef").asText());
+                            records.add(new AccountRecordInput(employeeId, recordSetId, rs.getLong(4), record.deepCopy()));
+                        }
+                    }
+                }
+                assertEquals(List.of("employee-alex", "employee-paula"),
+                        records.stream().map(AccountRecordInput::employeeId).toList(),
+                        "both packaged employee account inputs must be present in the active run");
+
+                for (AccountRecordInput input : records) {
+                    ObjectNode record = input.record();
+                    ObjectNode contract = (ObjectNode) record.path("contracts").get(0);
+                    contract.put("earliestCollectionDate", earliest.toString());
+                    contract.put("latestCollectionDate", latest.toString());
+                    try (PreparedStatement ps = c.prepareStatement("UPDATE employee_account_records "
+                            + "SET record = ?::jsonb, version = version + 1 "
+                            + "WHERE environment_id = ? AND run_id = ? AND employee_id = ? "
+                            + "AND record_set_id = ? AND version = ?")) {
+                        ps.setString(1, record.toString());
+                        ps.setString(2, run.environmentId());
+                        ps.setString(3, run.runId());
+                        ps.setString(4, input.employeeId());
+                        ps.setString(5, input.recordSetId());
+                        ps.setLong(6, input.version());
+                        assertEquals(1, ps.executeUpdate(), input.employeeId() + " account input must update once");
+                    }
+                }
+                c.commit();
+            } catch (Exception | AssertionError failure) {
+                try {
+                    c.rollback();
+                } catch (Exception rollbackFailure) {
+                    failure.addSuppressed(rollbackFailure);
+                }
+                throw failure;
+            }
+        }
+    }
+
+    private record AccountRecordInput(String employeeId, String recordSetId, long version, ObjectNode record) {}
 
     /** Change only the date, using the server's selected account, policy and window at every required phase. */
     public static ObjectNode withCollectionDate(JsonNode account, ObjectNode choices, Instant... laterPhases) {
@@ -268,6 +372,8 @@ public final class ReturnJourneySteps {
 
     /** Seeds stock, orders for paula and delivers the first clock tick (which the return plan reads its time from). */
     void startOrder() throws Exception {
+        JsonNode actualAccount = body(http.as("paula").get(BASE + "/manual/account")).get("value");
+        prepareCollectionWindows(ds, persistence, actualAccount);
         seedStock();
         order = placeOrder("paula");
         t0 = Instant.parse(clock().get("now").asText());
