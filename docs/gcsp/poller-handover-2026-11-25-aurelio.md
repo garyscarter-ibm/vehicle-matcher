@@ -21,17 +21,14 @@ first (OneDrive ban, Story test set, Shared local test stack). Shared checkout s
   product-map append conflicts), -03 (story-lead hand-back mid-story).
 
 ## In flight
-- **FUCQ-520 (DEV-2026-11-22-vesper-009)**, claimed by us (3 points), Jira In Progress. Story-lead Taz, with
-  implementer Pinky, works in `.claude/worktrees/DEV-2026-11-22-vesper-009`. Existing fix dff5b1ec2 is on base (45/45
-  manual specs pass). Uncommitted at 22:34: new browser test `apps/gcsp-web/e2e/manual-review.test.mjs` (case f520),
-  run.py/composition.mjs/README edits and a product-map entry. Open point: the preview page says "contact and
-  collection details are unavailable". It may be a separate Bug: file it through `defects` only if Taz's Result gives
-  evidence. AC3 needs `npm --prefix apps/gcsp-web run test:e2e -- --case f520` passing on the final commit. If Taz
-  returns `waiting` naming that check, run it overnight under `heavy`. If Taz never reported (this session ended),
-  start a fresh story-lead on the same branch with the worktree state above.
+- None. **FUCQ-520 (DEV-2026-11-22-vesper-009)** finished after the first draft of this note: existing repair dff5b1ec2,
+  plus new web-e2e case f520 (`apps/gcsp-web/e2e/manual-review.test.mjs`, 1/1 at 1280 and 390, peak 2.5 GiB).
+  Merged at e919a2784, closed, Jira In Review. Specs 45/45, rerun by the poller. The preview's "details unavailable"
+  text was a transient loading state, not a Bug. Acceptance waits on covering web and web-e2e batch lines: the web-e2e
+  batch must include `--case f520`.
 
 ## Left to do
-- **web-e2e batch is due** (last line 03:17 UTC; merges since touch `apps/gcsp-web/**`). It needs about 3.5 GiB, over
+- **web-e2e batch is due** (last line 03:17 UTC; merges since touch `apps/gcsp-web/**`, including new case f520). It needs about 3.5 GiB, over
   the 3 GiB daytime cap: claim it after 00:00 local with
   `python3 -B _tools/scaffold_git.py --poller <name> batch claim --suite web-e2e --base <sha> --ttl 3600`. Environment:
   JDK 21 `/opt/homebrew/opt/openjdk@21`, PG 17 `/opt/homebrew/opt/postgresql@17/bin`, Node 24.22.3 via the pinned npx
