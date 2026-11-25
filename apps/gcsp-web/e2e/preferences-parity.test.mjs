@@ -230,13 +230,13 @@ test('FUCQ-552: source preferences, real preview, keyboard and accepted exits', 
 
     let angularEditor;
     await check('AC4/5: editor chips, two axes, end labels and actual decision-card preview', async () => {
-      await openEditor(employee, `${suite.origins.web}/gcsp/preferences`);
       const response = employee.waitForResponse((value) => value.request().method() === 'POST'
         && new URL(value.url()).pathname.endsWith('/brief/preview'));
-      await employee.getByRole('button', { name: 'Update preview', exact: true }).click();
+      await openEditor(employee, `${suite.origins.web}/gcsp/preferences`);
       const actual = await response; assert.equal(actual.status(), 200);
       suite.receipt.preferences.preview = await actual.json(); assert.equal(suite.receipt.preferences.preview.status, 'ok');
       await until(async () => await employee.locator('.gcsp-brief-cards article.vm-card').count() > 0, 'The real preview produces decision cards');
+      assert.equal(await employee.getByRole('button', { name: /^(Update|Retry) preview$/ }).count(), 0, 'Successful automatic preview needs no manual refresh action');
       angularEditor = await editorSurface(employee);
       assert.ok(angularEditor.preferences.length > 0 && angularEditor.questions.length > 0);
       for (const field of angularEditor.preferences) {

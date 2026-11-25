@@ -63,8 +63,9 @@
       @if (store.fullState() === 'saved' && !store.fullDirty() && store.consent().search && editor.selection?.state !== 'accepted') { <a gcspButton presentation="source" variant="ghost" routerLink="/activity">See your buddy at work</a> }
       @if (replace()) { <div class="replace-confirm gcsp-brief-refresh"><p>Replace your edits and permissions with your saved preferences?</p><button gcspButton presentation="source" type="button" (click)="reload()">Replace draft with saved preferences</button><button gcspButton presentation="source" variant="ghost" type="button" (click)="replace.set(false)">Keep editing</button></div> }
     </section>
-  </form><section class="preview gcsp-brief-preview"><h2>Cars that suit your preferences</h2><button gcspButton presentation="source" variant="ghost" type="button" [disabled]="store.locked() || store.queueBusy() || store.fullBusy() || store.previewLoading()" (click)="store.requestPreview()">{{ store.previewLoading() ? 'Updating cars...' : 'Update preview' }}</button>
+  </form><section class="preview gcsp-brief-preview"><h2>Cars that suit your preferences</h2>
     <div [attr.aria-busy]="store.previewLoading()"><p class="gcsp-brief-preview-status" role="status">@if (store.previewLoading()) { Updating cars... } @else if (store.preview(); as result) { @if (result.status === 'ok') { {{ previewSummary(result.value) }} } @else { Preview unavailable. Your edits are kept. } } @else { Preview not calculated. }</p>
+      @if (store.preview()?.status === 'unavailable' && !store.previewLoading()) { <button gcspButton presentation="source" variant="ghost" type="button" [disabled]="store.locked() || store.queueBusy() || store.fullBusy() || store.previewLoading()" (click)="store.requestPreview()">Retry preview</button> }
       <div class="gcsp-brief-cards">@if (store.preview(); as result) { @if (result.status === 'ok') { @for (decision of result.value.decisions; track decision.orderUuid) {
         <gcsp-brief-preview-card [view]="previewCard(decision, result.value)" />
       } @empty { <p>No stock is available for this preview.</p> } } } </div>
