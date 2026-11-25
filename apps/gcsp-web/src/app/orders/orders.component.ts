@@ -15,10 +15,13 @@ import { StageTrackerComponent } from '../kit/stage-tracker.component';
 import type { StageTrackerItem } from '../kit/stage-tracker.component';
 import { TaskListComponent } from '../kit/task-list.component';
 import type { TaskGroup, TaskItem } from '../kit/task-list.component';
+import { SlotPickerComponent } from '../kit/slot-picker.component';
+import { ActivityTimelineComponent } from '../kit/activity-timeline.component';
+import type { TimelineEvent } from '../kit/activity-timeline.component';
 import { OrdersActions, OrdersActionState, OrderAction } from './orders.actions';
 import { OrdersClient } from './orders.client';
 import { OrdersController, OrdersControllerState } from './orders.controller';
-import type { LifecycleResult, OfferedSlot, OrderAppointment, OwnedStep, ProducerSection } from './orders.types';
+import type { LifecycleResult, OfferedSlot, OrderAppointment, OrderReturnPlan, OwnedStep, ProducerSection } from './orders.types';
 import type { OrdersReadContext } from './orders.read-port';
 
 const stageStates: Readonly<Record<string, StageTrackerItem['state']>> = Object.freeze({
@@ -47,6 +50,10 @@ const dated = (label: string, instant: unknown): string => {
   const text = typeof instant === 'string' && Number.isFinite(Date.parse(instant)) ? demoTime(instant) : null;
   return text ? `${label}: ${text}` : `${label}.`;
 };
+const handoverHistoryLabels: Readonly<Record<string, string>> = Object.freeze({ requested: 'Requested', 'change-proposed': 'New time proposed',
+  scheduled: 'Booked', completed: 'Handover complete', 'no-show': 'Handover missed' });
+const returnHistoryLabels: Readonly<Record<string, string>> = Object.freeze({ requested: 'Return requested', 'change-proposed': 'New return time proposed',
+  scheduled: 'Return booked', returned: 'Returned', 'return-missed': 'Return missed' });
 type ReadinessGroup = { readonly heading: string; readonly labels: readonly string[] };
 
 const contextKey = (c: OrdersReadContext | null): string | null => c
@@ -55,7 +62,7 @@ const contextKey = (c: OrdersReadContext | null): string | null => c
 @Component({
   selector: 'gcsp-orders',
   imports: [RouterLink, ButtonDirective, FactListComponent, LabelledFieldComponent, ScreenIntroComponent, StatusScreenComponent,
-    StageTrackerComponent, TaskListComponent],
+    StageTrackerComponent, TaskListComponent, SlotPickerComponent, ActivityTimelineComponent],
   templateUrl: './orders.component.html', styleUrl: './orders.component.css',
 })
 export class OrdersComponent implements OnDestroy {
@@ -70,6 +77,8 @@ export class OrdersComponent implements OnDestroy {
   readonly action = signal<OrdersActionState>({ review: null, busy: false, result: null });
   readonly failedImage = signal<string | null>(null);
   private opener: HTMLElement | null = null;
+  private readonly returnPickers = new Map<string, (slot: OfferedSlot) => void>();
+  readonly appointmentPicker = (slot: OfferedSlot): void => this.pickAppointment(slot);
   private disposed = false;
   private refreshEpoch = 0;
   readonly refreshMessage = signal('');
@@ -204,6 +213,86 @@ export class OrdersComponent implements OnDestroy {
     this.focusSection();
   }
   private focusSection(): void { queueMicrotask(() => this.host.nativeElement.querySelector<HTMLElement>('.order-notice, .order-actions-heading')?.focus()); }
+  appointmentSlots(value: Pick<OrderAppointment, 'offeredSlots'>, permittedIds: readonly string[]): readonly OfferedSlot[] {
+    const permitted = new Set(permittedIds);
+    return value.offeredSlots.filter((slot) => permitted.has(slot.slotId));
+  }
+  returnSlots(value: Pick<OrderReturnPlan, 'offeredSlots'>, choiceId: string, permitted: readonly { readonly choiceId: string; readonly slotIds: readonly string[] }[]): readonly OfferedSlot[] {
+    const ids = permitted.find((choice) => choice.choiceId === choiceId)?.slotIds;
+    if (!ids?.length) return [];
+    const allowed = new Set(ids);
+    return (value.offeredSlots[choiceId] ?? []).filter((slot) => allowed.has(slot.slotId));
+  }
+  returnPicker(choiceId: string): (slot: OfferedSlot) => void {
+    let picker = this.returnPickers.get(choiceId);
+    if (!picker) {
+      picker = (slot) => this.pickReturn(choiceId, slot);
+      this.returnPickers.set(choiceId, picker);
+    }
+    return picker;
+  }
+  private pickAppointment(slot: OfferedSlot): void {
+    const p = this.model(); const a = p?.appointment.state === 'ok' ? p.appointment.value : null;
+    if (!p || !a || !p.actions.appointment.requestSlotIds.includes(slot.slotId)
+      || !a.offeredSlots.some((offered) => offered.slotId === slot.slotId) || !this.canAct('appointment')) return;
+    this.prepare({ kind: 'request-appointment', slotId: slot.slotId });
+  }
+  private pickReturn(choiceId: string, slot: OfferedSlot): void {
+    const p = this.model(); const r = p?.returnPlan.state === 'ok' ? p.returnPlan.value : null;
+    const action = p?.actions.returnPlan.choices.find((choice) => choice.choiceId === choiceId);
+    if (!p || !r || !action?.slotIds.includes(slot.slotId)
+      || !r.choices.some((choice) => choice.id === choiceId && choice.available)
+      || !r.offeredSlots[choiceId]?.some((offered) => offered.slotId === slot.slotId) || !this.canAct('return')) return;
+    this.prepare({ kind: 'request-return', choice: choiceId, slotId: slot.slotId });
+  }
+  appointmentState(value: OrderAppointment): string {
+    if (value.state === 'scheduled' && value.booked) return 'Handover booked';
+    if (value.state === 'completed') return dated('Handover complete', value.outcome?.['at']);
+    if (value.state === 'no-show') return dated('Handover missed', value.slot?.start);
+    return this.words(value.state);
+  }
+  appointmentDetail(value: OrderAppointment): string | null {
+    if (value.state === 'scheduled' && value.booked) return when('Booked for', value.slot);
+    if (value.state === 'change-proposed') return `${when('New time proposed:', value.proposedSlot)}. Not booked yet.`;
+    if (value.state === 'requested' || value.state === 'scheduled') return `${when('Requested', value.requestedSlot)}. Not booked yet.`;
+    return null;
+  }
+  earlierMissed(value: OrderAppointment): string | null {
+    const previous = value['previousAttempts'];
+    if (typeof value['attempt'] !== 'number' || value['attempt'] <= 1 || !Array.isArray(previous)) return null;
+    const missed = previous.filter((row) => row && typeof row === 'object' && (row as EvidenceRecord)['state'] === 'no-show').at(-1);
+    const slot = missed && typeof missed === 'object' ? (missed as EvidenceRecord)['slot'] : null;
+    const start = slot && typeof slot === 'object' ? (slot as EvidenceRecord)['start'] : undefined;
+    return missed ? dated('Earlier handover missed', start) : null;
+  }
+  historyEvents(history: readonly EvidenceRecord[] | undefined, forReturn = false): readonly TimelineEvent[] {
+    const labels = forReturn ? returnHistoryLabels : handoverHistoryLabels;
+    return (history ?? []).map((row, index) => {
+      const state = row['appointmentState'] ?? row['state'];
+      const key = typeof state === 'string' ? state : '';
+      return { id: `${String(state)}-${index}`, occurredAt: typeof row['at'] === 'string' ? row['at'] : null,
+        label: labels[key] ?? 'Update recorded' };
+    });
+  }
+  returnState(value: OrderReturnPlan): string {
+    if (value.state === 'returned') return dated('Returned', value.outcome?.['at']);
+    if (value.state === 'return-missed') {
+      const direct = this.recordSlot(value['slot']);
+      const outcome = value.outcome?.['appointment'];
+      const nested = outcome && typeof outcome === 'object' ? this.recordSlot((outcome as EvidenceRecord)['slot']) : null;
+      return dated('Return missed', direct?.start ?? nested?.start);
+    }
+    return this.words(value.state || 'Not planned');
+  }
+  returnDetail(value: OrderReturnPlan): string | null {
+    if (value.state === 'return-scheduled' && value.scheduled) return when('Return booked:', this.recordSlot(value['slot']));
+    if (value.state === 'return-requested' && value.appointment?.state === 'change-proposed')
+      return `${when('New return time proposed:', value.proposedSlot)}. Not booked yet.`;
+    if (value.state === 'return-requested') return `${when('Return requested', this.recordSlot(value['requestedSlot']))}. Not booked yet.`;
+    return null;
+  }
+  private recordSlot(value: unknown): OfferedSlot | null { return value && typeof value === 'object' ? value as OfferedSlot : null; }
+  returnActionLabel(choiceId: string): string { return choiceId === 'same-visit' ? 'Request return at handover,' : 'Request return'; }
   private handoverStep(appointment: OrderAppointment | null): StageTrackerItem {
     const step: StageTrackerItem = { label: 'Handover booked', state: 'upcoming' };
     if (!appointment) return step;

@@ -10959,10 +10959,10 @@
     {
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-029",
-      "evidence": "Published merge de454757f of918263482 verified; first production build passes. Covering web batch green1499/86files, initial resource-incomplete attempt excluded; all10attempt/chunk roots/groups and batch worktree/ref/link/lease removed. Source composition and actual live pair pending.",
+      "evidence": "Published223fe4844 tracker/tasks checkpoint; settled lead164/164 across11Orders/kit specs.347ratchet/boundary checks plus11painted-copy cases and boundaryCLI pass; missing-dependency attempts retained. No connected/human claim.",
       "id": "FUCQ-556",
-      "note": "Resumed original13point/sixAC build at6b0c8ecb49. Stable four slices preserved. Retained source ports/no-show increment reused; current Orders rendering gap confirmed; connected/human parity remain pending.",
-      "observed_at": "2026-11-25T06:15:15Z",
+      "note": "Original13point/sixAC build. Canonical tracker/tasks/slots/history composition source reviewed; connected and human parity remain pending.",
+      "observed_at": "2026-11-25T06:50:42Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10976,20 +10976,20 @@
           "id": "tracker-documents",
           "status": "in-progress",
           "title": "Orders tracker and document checklist composition (5 points)",
-          "observed_at": "2026-11-25T06:15:15Z",
-          "evidence": "Resumed original Orders composition at6b0c8ecb49; source/type and actual retained images inspected, canonical kit available, original AC1-2 selected."
+          "observed_at": "2026-11-25T06:50:42.216573+00:00",
+          "evidence": "Source composition reviewed and focused164Orders/kit cases green; actual connected and human parity pending."
         },
         {
-          "evidence": "No-show provider-slot request eligibility restored through unchanged explicit review/confirm/version/no-replay path;111scoped Orders cases plus boundaries/inline4/ratchet124. Canonical SlotPicker/Timeline composition and other original states, supported integration/live proof remain.",
+          "evidence": "Source composition reviewed and focused164Orders/kit cases green; actual connected and human parity pending.",
           "id": "appointment-return",
-          "observed_at": "2026-11-23T06:24:07Z",
+          "observed_at": "2026-11-25T06:50:42.216573+00:00",
           "status": "in-progress",
           "title": "Appointment return history help and missed-state parity (3 points)"
         },
         {
-          "evidence": "Independent source increment merged de454757f; first production build and covering Angular1499/86file batch green, recovery/cleanup evidenced. Original screen/sibling/runtime/keyboard/live same-state pair/human review remain; all6AC open, still building.",
+          "evidence": "Authored three-case registered-family draft and syntax reviewed. F551 shared support refresh, actual composition, screenshot review and human pair remain pending.",
           "id": "integration-proof",
-          "observed_at": "2026-11-23T06:51:21Z",
+          "observed_at": "2026-11-25T06:50:42.216573+00:00",
           "status": "in-progress",
           "title": "Supported sibling integration and actual same-state pair (2 points)"
         }
@@ -11030,6 +11030,36 @@
           "observed_at": "2026-11-25T06:15:15.576028+00:00",
           "expires_at": "2026-11-25T08:15:15.579675+00:00",
           "source": "Native collaboration dispatch/title confirmed; requested/selected Sol/high, no fallback. Original scope and existing claim unchanged."
+        },
+        {
+          "id": "01a21158-dabc-7343-a360-c18b1d041fd9",
+          "name": "Henery Hawk",
+          "role": "mechanic",
+          "harness": "codex",
+          "status": "complete; source reviewed",
+          "observed_at": "2026-11-25T06:50:42.216573+00:00",
+          "expires_at": "2026-11-25T06:50:42.216573+00:00",
+          "source": "Requested/selected Luna/high, no fallback; both source slices reviewed by lead and164settled Orders/kit cases rerun. No runtime claim."
+        },
+        {
+          "id": "01a21159-b611-78b2-a820-ee12d8aca7b3",
+          "name": "Michigan J. Frog",
+          "role": "runner",
+          "harness": "codex",
+          "status": "complete; read-only inventory",
+          "observed_at": "2026-11-25T06:41:42.200446+00:00",
+          "expires_at": "2026-11-25T06:41:42.200446+00:00",
+          "source": "Title/result observed; requested/selected Luna/high, no fallback; source-only composition/provider inventory, no runtime/test/edit."
+        },
+        {
+          "id": "01a21161-7aae-77f3-8d53-265acabe1d70",
+          "name": "Grub",
+          "role": "implementer",
+          "harness": "codex",
+          "status": "complete; source review",
+          "observed_at": "2026-11-25T06:41:42.200446+00:00",
+          "expires_at": "2026-11-25T06:41:42.200446+00:00",
+          "source": "Title/result observed; requested/selected Sol/medium, no fallback; original integration family drafted/refined; syntax only, no runtime."
         }
       ]
     },
