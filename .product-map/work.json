@@ -12696,7 +12696,7 @@
     {
       "assignee": "",
       "id": "FUCQ-340",
-      "observed_at": "2026-11-25T03:32:58Z",
+      "observed_at": "2026-11-25T03:57:50Z",
       "original_status": "To Do",
       "status": "In Progress",
       "title": "Prepare a repeatable second walkthrough where Paula requests an SUV",
@@ -12718,8 +12718,16 @@
           "harness": "codex",
           "role": "implementer",
           "observed_at": "2026-11-25T03:32:58.372274+00:00",
-          "expires_at": "2026-11-25T06:32:00Z",
+          "expires_at": "2026-11-25T03:47:08.363399+00:00",
           "source": "F340 allocated bounded SUV preparation"
+        },
+        {
+          "name": "Marvin the Martian",
+          "harness": "codex",
+          "role": "browser-runner",
+          "observed_at": "2026-11-25T03:47:08.363399+00:00",
+          "expires_at": "2026-11-25T03:57:50.531303+00:00",
+          "source": "F340 registered final source proof at2191992b4"
         }
       ],
       "slices": [
@@ -12731,8 +12739,10 @@
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Reset/replay browser proof and independent rendered critique (AC1-4)"
+          "status": "blocked",
+          "title": "Reset/replay browser proof and independent rendered critique (AC1-4)",
+          "observed_at": "2026-11-25T03:57:50Z",
+          "evidence": "Actual Main reset and estate replay pass; SUV keyboard activation in the existing preferences component remains unresolved. Source2be300e14, retained registered-browser receipts; root checking original F552 ownership before repair."
         }
       ]
     }
