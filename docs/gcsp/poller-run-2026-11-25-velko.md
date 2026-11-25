@@ -14,6 +14,8 @@ Russell answered the concrete F340 resolution question: **“Yes - there are no 
 
 ## Resume from existing work
 
+Further run direction, Russell, 25 November, approximately23:19 UK: “There's a few tiny looking bugs on the backlog, 2 and 3 pointers. Can you knock them down this evening please, as well as the bigger ones?” Prioritise eligible two- and three-point Bugs alongside the larger owned work, subject to actual capacity, independent file ownership, existing decisions and access restrictions. This changes pickup emphasis for this run; it does not preempt current leads, lower original acceptance or validation, claim peer work, or supply missing human verdicts. It ends with this poller run.
+
 Read `.claude/poller/sorrel.md`, especially its first 46 lines, and the later peer update `docs/gcsp/poller-handover-2026-11-25-wanjiru.md`. Preserve the existing Angular gap run, related authorised repairs, original criteria and claims. Resume existing work before fresh pickup.
 
 - F551: the explicit “Resolve the FUCQ-551 merge” approval authorises its isolated reconciliation only. Preserve the exact F551 map row and all incoming rows/order, both F551 and F593 tests, and the union of browser registrations. Normal base merge/push follows review. Hosted-image and human-review gaps stay open.
