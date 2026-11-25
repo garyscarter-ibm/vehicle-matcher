@@ -3845,3 +3845,21 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 ### 2026-11-25 22:17 UTC · usget-codex · DL-20261124-F555-08 · F595 import repeats explicit-message omission
 
 - Published F595 import commit `068e27a5829f03d6a318094823103833c5b0b072` lacks the Codex trailer. Impact: one already-published metadata commit has incomplete attribution; no Jira content is affected. Cause matches prior observations: explicit `commit_paths` messages do not gain a trailer from the imported module's `ATTRIBUTION`. The published commit is preserved. This learning-log commit sets that actual module attribute and wraps `commit_paths` to append a literal blank-line trailer; its final message is read back before push. Proposed improvement: make explicit-message attribution part of the helper contract and verify committed trailers centrally; no framework fix is applied here.
+
+### 2026-11-25 22:40 UTC · garyscarter-ibm-aurelio · DL-20261125-AURELIO-03 · Story-lead handed back mid-story with its implementer live
+
+- Story-lead Taz (FUCQ-520, DEV-2026-11-22-vesper-009) returned `waiting` after about 232k tokens and 25 min, with nothing committed, no Result and its implementer still running; it named the forced hand-back as the cause. The poller resumed the same story-lead with SendMessage so it keeps its context and its implementer's work. Impact: the story stalled until the poller noticed; no work lost (the worktree was intact). Proposed framework improvement: story-leads commit a work-in-progress checkpoint and a partial Result before any hand-back, and the poller resumes rather than restarting. Applied: resume only.
+
+
+### 2026-11-25 22:35 UTC · usget-velko · DL-20261125-VELKO-06 · Presenter proof reads rendered state too early
+
+- Observed: registered F559 at cf66b7ef5 passed its real slider/form/request checks then failed `showAdvanced` on immediate aria-pressed false versus true; registered F595 at62967cc54 independently stopped at the same helper before any AC group. No product failure or acceptance result follows. F595 suite11.14s, database dropped, manifest-owned scratch absent and process cleanup remaining[]; F559 lead reports matching teardown and2.205GB peak.
+- Cause/action: helper clicked the Angular signal-backed toggle then synchronously asserted its rendered attribute. Isolated proof-only fe0de918b waits boundedly for the same true attribute and retains the assertion. Root reuses that correction; no product/CSS/role change. Applied mitigation, final registered verification pending. This repeats the earlier observed signal-versus-render distinction.
+- Proposed framework improvement: synchronize browser helpers at rendered interaction boundaries before evaluating their existing assertions; preserve failed-attempt receipts and avoid inferring a product change from a setup/helper race. No new admission gate or wider Story scope.
+
+### 2026-11-25 22:44 UTC · usget-codex · DL-20261125-CODEX-01 · Jira date query returned a pre-watermark candidate
+
+- **Evidence/impact:** the normal delta used watermark 2026-11-25 16:01 Chicago (22:01Z) and unqualified JQL `updated >= "2026-11-25 16:01"` returned 42 candidates on a complete page. FUCQ-334 reports `2026-11-25T11:24:06.201-0600` (17:24Z), before the UTC cutoff; strict ISO timestamp filtering retained seven issues. An explicit `22:01` comparison query returned the same seven. The bounded pull completed with 0 imported/updated, one in-progress notification (FUCQ-553), 0 failures/unparented; the cursor advanced to 16:17 Chicago and reconciliation remains null.
+- **Cause/uncertainty:** direct evidence does not establish how Jira interpreted the local-wall-time literal or the parser cause.
+- **Action/outcome:** retained only candidates whose returned ISO timestamps met the cutoff. No reconciliation query or Jira write ran; the normal pull found the same seven in-window issues as the comparison query.
+- **Framework follow-up:** preserve the literal, returned timestamp and UTC cutoff in receipts when auditing a date-boundary mismatch; investigate interpretation before changing the query/parser. No helper change or new gate was applied.

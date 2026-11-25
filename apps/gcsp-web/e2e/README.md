@@ -30,6 +30,11 @@ uses each engine's public Main reset and Basic release button, comparing semanti
 brief, clock and stock while retaining the distinct generated run IDs. It does not establish the
 actual hosted-dev release cue or human acceptance of the screenshot pair.
 
+Select the FUCQ-520 manual review check with `npm --prefix apps/gcsp-web run test:e2e -- --case f520`.
+One real Main composition releases stock through the public presenter controls, reserves a car from `/gcsp/stock`,
+reads the claim back from the API, and asserts at 1280 and 390 that `/gcsp/manual/review` shows the pinned car name,
+identity and a loaded photo (never the "not supplied" fallbacks), with no horizontal scroll. It does not place the order.
+
 ## Manual F340 walkthrough
 
 Run `python3 -B apps/gcsp-web/e2e/run.py --case f340 --manual` with the same pinned Node, installed
