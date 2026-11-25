@@ -12475,9 +12475,9 @@
     {
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-027",
-      "evidence": "Engineering source070904ed0: final24/24 covering specs, earlier91/91 focused,135/135ratchet,0drift,7/7scopedboundaries,6/6browser entries/all5groups. Four actual1280pairs inspected/committed; humanAC7pending; In Progress/original13points retained.",
+      "evidence": "Source 27681a4b7: native Body Enter/Space toggles/focus at 1280/390 pass registered f552, 6/6 entries/all five groups; lead 25/25, 142 static, 7 targeted, 0 drift. Prior keyboard evidence excluded Body. Original 13 points/seven ACs; human AC7 pending.",
       "id": "FUCQ-552",
-      "observed_at": "2026-11-25T01:15:24Z",
+      "observed_at": "2026-11-25T04:15:44Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -12498,8 +12498,8 @@
           "id": "editor-controls",
           "status": "complete",
           "title": "Source editor chips and labelled axes (AC4)",
-          "observed_at": "2026-11-25T01:15:24.347086+00:00",
-          "evidence": "Verified frozen registry/question order; sourcechips/axes/endlabels and24/24covering regression pass."
+          "observed_at": "2026-11-25T04:15:43Z",
+          "evidence": "Original AC4 keyboard gap repaired at 27681a4b7: native Body Enter/Space toggles independently with focus at 1280/390; practical radio arrows preserved. Lead 25/25; actual f552 green."
         },
         {
           "id": "preview-cards",
@@ -12519,15 +12519,15 @@
           "id": "source-validation",
           "status": "complete",
           "title": "Lead review, focused regressions, ratchet, boundaries and build",
-          "observed_at": "2026-11-25T01:15:24.347086+00:00",
-          "evidence": "Lead source review,91/91prior +24/24final covering,135ratchet,0drift,7scopedCSP,productionbuild pass."
+          "observed_at": "2026-11-25T04:15:44Z",
+          "evidence": "Source 27681a4b7: lead 25/25, 142 ratchet/source, 7 targeted, actual analyzer, 0 drift; prior unchanged 91-case kit/store/account evidence reused. Native Body browser green."
         },
         {
           "id": "connected-parity",
           "status": "in-progress",
           "title": "Integrated real OIDC/state browser cases and reviewed 1280 pairs (all ACs/AC7)",
-          "observed_at": "2026-11-25T01:15:24.347086+00:00",
-          "evidence": "ActualJava/OIDC/PG+frozenNode final6/6/all5groups pass; four1280pairs independently inspected and committed; originalhumanAC7 and coveringbatch remain."
+          "observed_at": "2026-11-25T04:15:44Z",
+          "evidence": "Actual 27681a4b7 f552 six entries/all five groups green, including native Body keys at 1280/390; prior keyboard result did not cover Body. Pugh inspected new selected/focused captures. Human AC7 and covering batch remain."
         }
       ],
       "status": "In Progress",
@@ -12580,6 +12580,33 @@
           "expires_at": "2026-11-25T01:15:24.347086+00:00",
           "source": "Final actual070904ed0 proof/cleanup and Result; no active worker inferred from commits. Sol/high lead, Sol/medium implementers; no fallback.",
           "status": "completed engineering allocation; human parity handoff remains"
+        },
+        {
+          "name": "Pugh",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-25T04:15:43.911802+00:00",
+          "expires_at": "2026-11-25T04:15:43.911802+00:00",
+          "source": "Observed keyboard continuation and verified cleanup; no active worker inferred from commits. gpt-6.1-sol/high requested/selected.",
+          "status": "engineering keyboard repair complete; human parity pending"
+        },
+        {
+          "name": "Baymax",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-25T04:15:43.911802+00:00",
+          "expires_at": "2026-11-25T04:15:43.911802+00:00",
+          "source": "Observed keyboard continuation and verified cleanup; no active worker inferred from commits. gpt-6-luna/high requested/selected; no fallback.",
+          "status": "engineering keyboard repair complete; human parity pending"
+        },
+        {
+          "name": "Mulan",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-25T04:15:43.911802+00:00",
+          "expires_at": "2026-11-25T04:15:43.911802+00:00",
+          "source": "Observed keyboard continuation and verified cleanup; no active worker inferred from commits. gpt-6-luna/high requested/selected; no fallback.",
+          "status": "engineering keyboard repair complete; human parity pending"
         }
       ]
     },
