@@ -124,7 +124,25 @@ test('FUCQ-559: intentional planning and role-separated Production responses use
       states.queueLost = await refresh(suite, greg);
       assert.equal(states.queueLost.requests.find(row => row.requestId === confirmed.requestId).supplies[0].queued, false);
       screenshots.queueLost = await capture(suite, greg, 'production-release-queue-retry');
+      let receiveCommitted;
+      const committed = new Promise(resolve => { receiveCommitted = resolve; });
+      await greg.route('**/greg/orders/queue', async route => {
+        const input = route.request().postDataJSON();
+        const response = await route.fetch();
+        const actual = { status: response.status(), body: await response.json() };
+        await route.abort('failed'); receiveCommitted({ input, response: actual });
+      }, { times: 1 });
+      await greg.getByRole('button', { name: 'Retry release queue', exact: true }).click();
+      const lostResponse = await committed; good(lostResponse.response, 'Queue recovery committed before its response was deliberately lost');
+      commands.push({ operation: 'queue-response-lost', ...lostResponse });
+      states.queuedAfterLostResponse = await refresh(suite, greg);
+      assert.equal(states.queuedAfterLostResponse.requests.find(row => row.requestId === confirmed.requestId).supplies[0].queued, true);
+      assert.equal(await greg.locator('.gcsp-orders-queue').count(), 0, 'Authoritative refresh removes the ordinary unqueued row');
+      assert.equal(await greg.getByRole('button', { name: 'Retry release queue', exact: true }).count(), 1,
+        'An explicit retained-command retry survives the authoritative queued projection');
+      const retryRequest = greg.waitForRequest(request => request.method() === 'POST' && new URL(request.url()).pathname.endsWith('/greg/orders/queue'));
       const queued = await waitPost(greg, '/greg/orders/queue', () => greg.getByRole('button', { name: 'Retry release queue', exact: true }).click());
+      assert.deepEqual((await retryRequest).postDataJSON(), lostResponse.input, 'Explicit uncertain recovery preserves the original command identity');
       commands.push({ operation: 'queue', response: queued }); good(queued, 'Real deliberate queue recovery');
       states.retried = await refresh(suite, greg);
       assert.equal(states.retried.requests.length, 2, 'Queue recovery creates no new Production request');

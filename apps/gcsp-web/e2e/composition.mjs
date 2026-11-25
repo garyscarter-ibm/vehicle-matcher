@@ -669,9 +669,9 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       const before = read();
       assert.equal(before.length, 1, 'The fixture selects only the confirmation created by the actual UI command');
       assert.ok(before[0].queuedAt && before[0].eligibleFrom, 'The actual confirmation queued normally before the fault');
-      sql(`UPDATE production_confirmations SET queued_at=NULL,eligible_from=NULL WHERE ${predicate};`);
+      sql(`UPDATE production_confirmations SET queued_at=NULL WHERE ${predicate};`);
       const after = read();
-      assert.deepEqual(after.map(row => ({ ...row, queuedAt: before[0].queuedAt, eligibleFrom: before[0].eligibleFrom })), before);
+      assert.deepEqual(after.map(row => ({ ...row, queuedAt: before[0].queuedAt })), before);
       receipt.productionQueueFault = { kind: 'lost-queue-acknowledgement', before, after,
         authority: 'GregOrdersHttpTest.queueingReturnsTheSupplyIdsOnceAndNeverSubmitsOrAsksProduction; root-approved25Nov',
         limitation: 'A case-owned fault after real confirmation, not the natural successful-confirm state. The existing queue entry is preserved.' };
