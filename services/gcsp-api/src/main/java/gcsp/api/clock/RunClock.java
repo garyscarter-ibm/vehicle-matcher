@@ -230,6 +230,8 @@ public final class RunClock {
     /** The shared forward move of advance and presenter-tick; a refusal writes nothing. */
     private static WorkResult moveClock(gcsp.api.persistence.Tx tx, RunContext scope, long expected, Long bySeconds,
             String to, Presenter presenter) throws SQLException {
+        WorkResult preparation = scenarioPreparationRefusal(tx, scope);
+        if (preparation != null) return preparation;
         Optional<ClockRows.Clock> found = tx.first(ClockRows.CLOCK_SQL, ClockRows::mapClock, scope.environmentId(),
                 scope.runId());
         if (found.isEmpty()) return TickRunner.refusal("unavailable", "clock-not-initialized", "The clock is unavailable.", true, null);
@@ -269,6 +271,30 @@ public final class RunClock {
         if (presenter == null) return WorkResult.ok(advance);
         presenter.plan().set("advance", advance);
         return WorkResult.ok(presenter.plan());
+    }
+
+    /** Serializes clock work with preparation's commit; a refusal changes nothing and stores no receipt. */
+    static WorkResult scenarioPreparationRefusal(gcsp.api.persistence.Tx tx, RunContext scope) throws SQLException {
+        if (tx.first("SELECT 1 FROM runs WHERE environment_id = ? AND run_id = ? AND status = 'active' FOR UPDATE",
+                rs -> 1, scope.environmentId(), scope.runId()).isEmpty()) {
+            return TickRunner.refusal("stale-run", "stale-run", "The run is no longer active.", false, null);
+        }
+        record Preparation(String scenarioId, String state) {}
+        Optional<Preparation> preparation = tx.first("SELECT scenario_id, state FROM scenario_runs "
+                + "WHERE environment_id = ? AND run_id = ?", rs -> new Preparation(rs.getString(1), rs.getString(2)),
+                scope.environmentId(), scope.runId());
+        if (preparation.isPresent()) {
+            Preparation value = preparation.get();
+            if ("prepared".equals(value.state()) || "gcsp-clock-scenario-v1".equals(value.scenarioId())) return null;
+        } else {
+            // Before its first marker, a scenario reset has no stored payload distinguishing journey from mechanics.
+            if (tx.first("SELECT 1 FROM run_resets WHERE environment_id = ? AND activated_run_id = ? "
+                    + "AND command_id LIKE 'scenario:reset:%'", rs -> 1, scope.environmentId(), scope.runId()).isEmpty()) {
+                return null;
+            }
+        }
+        return TickRunner.refusal("unavailable", "scenario-preparation-incomplete",
+                "Send the same reset again to finish preparing its selected scenario.", true, null);
     }
 
     private static WorkResult invalidTime(String field, String reason) {

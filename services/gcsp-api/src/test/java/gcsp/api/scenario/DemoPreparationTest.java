@@ -13,11 +13,24 @@ import gcsp.api.account.AccountScope;
 import gcsp.api.account.RepositoryAccountRecords;
 import gcsp.api.account.SourceResult;
 import gcsp.api.clock.ClockResult;
+import gcsp.api.brief.BriefAssumptions;
+import gcsp.api.brief.BriefPreviewPort;
+import gcsp.api.brief.BriefService;
+import gcsp.api.persistence.RunReset;
+import gcsp.api.persistence.TransactionRunner;
 import gcsp.api.persistence.Outcome;
 import gcsp.api.persistence.RunContext;
+import gcsp.api.policy.PolicyRead;
+import gcsp.api.policy.PolicyService;
+import gcsp.api.policy.RetainedFilePolicySource;
 import gcsp.api.scenario.ScenarioService.ResetRequest;
 import java.sql.SQLException;
+import java.time.InstantSource;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -258,7 +271,7 @@ class DemoPreparationTest {
     }
 
     @Test
-    void anInterruptedResetIsCompletedByTheSameCommandAndByTheStartupPass() throws Exception {
+    void anInterruptedResetIsCompletedByTheSameCommandAndStartupNeverGuessesItsScenario() throws Exception {
         ScenarioService s = fx.service();
         s.startup(ScenarioFixture.ENV, RUN);
         RunContext scope = fx.presenter(RUN);
@@ -278,9 +291,123 @@ class DemoPreparationTest {
         String third = ScenarioService.newRunId(ScenarioFixture.ENV, next, "cmd-2");
         fx.rawReset().reset(ScenarioFixture.ENV, "presenter:test", "scenario:reset:cmd-2", next, third);
         assertEquals(0, people(third));
-        assertTrue(fx.service().startup(ScenarioFixture.ENV, third).ok());
-        assertEquals(5, people(third));
-        assertEquals("gcsp-clock-scenario-v1", fx.text("SELECT scenario_id FROM scenario_runs WHERE run_id = ?", third));
+        ClockResult.Failure waiting = assertInstanceOf(ClockResult.Failure.class,
+                fx.service().startup(ScenarioFixture.ENV, third));
+        assertEquals("scenario-preparation-incomplete", waiting.code());
+        assertEquals(0, people(third));
+        assertEquals(0, fx.count("SELECT count(*) FROM scenario_runs WHERE run_id = ?", third));
+    }
+
+    private ScenarioService journeyService(DemoPreparation.StartLoader start) throws Exception {
+        var source = fx.pool();
+        var policy = new PolicyService(new RetainedFilePolicySource());
+        var clock = fx.clock();
+        Set<String> capabilities = Set.of("brief-confirmation", "stock-release", "buddy-allocation", "buddy-offers",
+                "captured-notifications", "offer-decisions", "brief-change", "order-handoff");
+        return new ScenarioService(source, new RunReset(source, fx.database, ScenarioFixture.ENV), clock,
+                new DemoPreparation(source, new TransactionRunner(source), clock, policy,
+                        InstantSource.fixed(ScenarioFixture.WALL), fx.file, capabilities, start), fx.file);
+    }
+
+    @Test
+    void aPartlyPreparedJourneyResumesBeforeItIsShownAsCurrent() throws Exception {
+        AtomicBoolean available = new AtomicBoolean();
+        java.util.concurrent.atomic.AtomicInteger loads = new java.util.concurrent.atomic.AtomicInteger();
+        ScenarioService s = journeyService((scope, scenario) -> {
+            if (scenario.mechanics()) return ClockResult.ok(com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.objectNode());
+            loads.incrementAndGet();
+            return available.get() ? ClockResult.ok(com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.objectNode())
+                    : ClockResult.unavailable("test-loader-unavailable", "Unavailable", true);
+        });
+        assertTrue(s.startup(ScenarioFixture.ENV, RUN).ok());
+        ResetRequest req = reset("main-partial", RUN, MainJourneyStart.SCENARIO_ID, s, fx.presenter(RUN));
+        ClockResult.Failure incomplete = assertInstanceOf(ClockResult.Failure.class, s.reset(fx.presenter(RUN), req));
+        assertEquals("scenario-preparation-incomplete", incomplete.code());
+        String next = ScenarioService.newRunId(ScenarioFixture.ENV, RUN, "main-partial");
+        assertEquals("preparing", fx.text("SELECT state FROM scenario_runs WHERE run_id = ?", next));
+        assertTrue(((ClockResult.Ok) s.current(fx.presenter(next))).value().path("currentScenario").isNull());
+        var clock = fx.clock();
+        ClockResult.Failure held = assertInstanceOf(ClockResult.Failure.class,
+                clock.advance(fx.presenter(next), "pending-main-advance", 1, 60L, null));
+        assertEquals("scenario-preparation-incomplete", held.code());
+        available.set(true);
+        JsonNode replay = assertInstanceOf(ClockResult.Ok.class, s.reset(fx.presenter(next), req)).value();
+        assertTrue(replay.path("replayed").asBoolean());
+        assertEquals("prepared", fx.text("SELECT state FROM scenario_runs WHERE run_id = ?", next));
+        assertEquals(2, loads.get());
+        assertTrue(s.startup(ScenarioFixture.ENV, next).ok());
+        assertTrue(s.reset(fx.presenter(next), req).ok());
+        assertEquals(2, loads.get());
+        assertEquals(1, fx.count("SELECT count(*) FROM run_resets"));
+        assertTrue(clock.advance(fx.presenter(next), "pending-main-advance", 1, 60L, null).ok());
+    }
+
+    private ScenarioService mainJourneyService() throws Exception {
+        var source = fx.pool();
+        var policy = new PolicyService(new RetainedFilePolicySource());
+        var clock = fx.clock();
+        BriefService briefs = new BriefService(source, version -> {
+            var entries = new LinkedHashMap<String, JsonNode>();
+            PolicyRead read = new PolicyRead(RUN, ScenarioFixture.WALL.toString(), version);
+            for (String key : BriefAssumptions.KEYS) entries.put(key, policy.getAssumption(key, read).value());
+            return Optional.of(new BriefAssumptions(version, entries));
+        }, (environment, run, employee) -> Optional.empty(), (environment, run, employee) -> List.of(),
+                (scope, input) -> BriefPreviewPort.unconfigured(), clock::now);
+        MainJourneyStart start = new MainJourneyStart(briefs, policy, clock, fx.file);
+        return journeyService(start::load);
+    }
+
+    @Test
+    void mainLoadsTheFrozenBriefThroughActualBriefCommandsAndNeverReseedsOnRestart() throws Exception {
+        ScenarioService s = mainJourneyService();
+        assertTrue(s.startup(ScenarioFixture.ENV, RUN).ok());
+        ResetRequest req = reset("main-real", RUN, MainJourneyStart.SCENARIO_ID, s, fx.presenter(RUN));
+        ClockResult done = s.reset(fx.presenter(RUN), req);
+        assertTrue(done.ok(), done.toString());
+        String next = ScenarioService.newRunId(ScenarioFixture.ENV, RUN, "main-real");
+        assertEquals(1, fx.count("SELECT count(*) FROM briefs WHERE run_id = ?", next));
+        assertEquals("estate", fx.text("SELECT content->'preferences'->'body'->>'value' FROM briefs WHERE run_id = ?", next));
+        assertEquals(1, fx.count("SELECT count(*) FROM briefs CROSS JOIN LATERAL jsonb_object_keys(content->'preferences') "
+                + "WHERE run_id = ?", next));
+        assertEquals("true", fx.text("SELECT buddy->>'searchConsent' FROM briefs WHERE run_id = ?", next));
+        assertEquals(0, fx.count("SELECT count(*) FROM buddy_offers WHERE run_id = ?", next));
+        assertEquals(0, fx.count("SELECT count(*) FROM stock_cars WHERE run_id = ?", next));
+        assertTrue(mainJourneyService().startup(ScenarioFixture.ENV, next).ok());
+        assertTrue(s.reset(fx.presenter(next), req).ok());
+        assertEquals(1, fx.count("SELECT count(*) FROM briefs WHERE run_id = ?", next));
+    }
+
+    @Test
+    void restartBeforeTheFirstMarkerRecoversTheOriginalMainResetAndFrozenClock() throws Exception {
+        ScenarioService original = mainJourneyService();
+        assertTrue(original.startup(ScenarioFixture.ENV, RUN).ok());
+        RunContext scope = fx.presenter(RUN);
+        ResetRequest req = reset("main-before-marker", RUN, MainJourneyStart.SCENARIO_ID, original, scope);
+        String expectedStart = find(((ClockResult.Ok) original.catalogue(scope)).value(), MainJourneyStart.SCENARIO_ID)
+                .path("clockStart").asText();
+        String next = ScenarioService.newRunId(ScenarioFixture.ENV, RUN, req.commandId());
+        assertInstanceOf(Outcome.Committed.class, fx.rawReset().reset(ScenarioFixture.ENV, scope.actorId(),
+                "scenario:reset:" + req.commandId(), RUN, next, ScenarioService.resetInput(req)));
+        ScenarioService restarted = mainJourneyService();
+        ClockResult.Failure waiting = assertInstanceOf(ClockResult.Failure.class,
+                restarted.startup(ScenarioFixture.ENV, next));
+        assertEquals("scenario-preparation-incomplete", waiting.code());
+        assertEquals(0, people(next));
+        assertEquals(0, fx.count("SELECT count(*) FROM scenario_runs WHERE run_id = ?", next));
+        assertEquals(0, fx.count("SELECT count(*) FROM run_clocks WHERE run_id = ?", next));
+        JsonNode recovered = assertInstanceOf(ClockResult.Ok.class, restarted.reset(fx.presenter(next), req)).value();
+        assertTrue(recovered.path("replayed").asBoolean());
+        assertEquals(next, recovered.path("activatedRunId").asText());
+        assertEquals(MainJourneyStart.SCENARIO_ID, recovered.path("scenario").path("scenarioId").asText());
+        assertEquals(expectedStart, recovered.path("clock").path("now").asText());
+        assertEquals("prepared", fx.text("SELECT state FROM scenario_runs WHERE run_id = ?", next));
+        assertEquals("estate", fx.text("SELECT content->'preferences'->'body'->>'value' FROM briefs WHERE run_id = ?", next));
+        assertEquals(1, fx.count("SELECT count(*) FROM briefs WHERE run_id = ?", next));
+        assertEquals(1, fx.count("SELECT count(*) FROM run_resets"));
+        assertTrue(mainJourneyService().startup(ScenarioFixture.ENV, next).ok());
+        assertTrue(restarted.reset(fx.presenter(next), req).ok());
+        assertEquals(1, fx.count("SELECT count(*) FROM briefs WHERE run_id = ?", next));
+        assertEquals(expectedStart, ((ClockResult.Ok) fx.clock().state(fx.presenter(next))).value().path("now").asText());
     }
 
     @Test

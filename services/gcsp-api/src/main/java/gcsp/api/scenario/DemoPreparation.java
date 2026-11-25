@@ -23,12 +23,10 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
+import java.util.Set;
 import javax.sql.DataSource;
 
-/**
- * Explicit, labelled-synthetic preparation of one run: fictional employees, their account records and entitlement
- * slots from the packaged file, then the scenario row, in one command. Existing rows are never overwritten.
- */
+/** Prepares synthetic principals, then actual starting services, before marking a run prepared. */
 public final class DemoPreparation {
 
     public static final String ACTOR = "system:scenario";
@@ -42,15 +40,31 @@ public final class DemoPreparation {
     private final PolicyService policy;
     private final InstantSource wall;
     private final DemoPreparationFile file;
+    private final Set<String> capabilities;
+    private final StartLoader loader;
+
+    @FunctionalInterface
+    interface StartLoader {
+        ClockResult load(RunContext scope, ScenarioCatalogue.Entry scenario);
+    }
 
     public DemoPreparation(DataSource dataSource, TransactionRunner runner, RunClock clock, PolicyService policy,
             InstantSource wall, DemoPreparationFile file) {
+        this(dataSource, runner, clock, policy, wall, file, Set.of(),
+                (scope, scenario) -> scenario.mechanics() ? ClockResult.ok(F.objectNode())
+                        : ClockResult.unavailable("scenario-loader-unavailable", "The scenario loader is unavailable.", false));
+    }
+
+    DemoPreparation(DataSource dataSource, TransactionRunner runner, RunClock clock, PolicyService policy,
+            InstantSource wall, DemoPreparationFile file, Set<String> capabilities, StartLoader loader) {
         this.dataSource = dataSource;
         this.runner = runner;
         this.clock = clock;
         this.policy = policy;
         this.wall = wall;
         this.file = file;
+        this.capabilities = Set.copyOf(capabilities);
+        this.loader = loader;
     }
 
     /** The scenario id already recorded for the run, one selected read. */
@@ -86,23 +100,50 @@ public final class DemoPreparation {
         ObjectNode named = F.objectNode();
         dated.namedTimes().forEach((name, at) -> named.put(name, iso(at)));
         return new Loaded(ScenarioCatalogue.build(file, config.policyVersion(), config.scenarioVersion(),
-                config.fixtureVersion(), iso(dated.startsAt()), named), null);
+                config.fixtureVersion(), iso(dated.startsAt()), named, capabilities), null);
     }
 
     private static String iso(Instant at) {
         return ISO.format(at.truncatedTo(ChronoUnit.MILLIS));
     }
 
-    /**
-     * Ensures the run's clock, then prepares the run once for the scenario. A run that already has a scenario row is
-     * left alone, so a replay or a restart never reseeds.
-     */
+    /** A fresh process resumes an identified preparation; an unrecorded reset waits for its original request. */
+    public ClockResult startup(RunContext scope) {
+        try {
+            Optional<String> selected = existing(scope.environmentId(), scope.runId());
+            if (selected.isPresent()) return prepare(scope, selected.get());
+            try (Connection c = dataSource.getConnection(); PreparedStatement ps = c.prepareStatement(
+                    "SELECT 1 FROM run_resets WHERE environment_id = ? AND activated_run_id = ?")) {
+                ps.setString(1, scope.environmentId());
+                ps.setString(2, scope.runId());
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) return ClockResult.unavailable("scenario-preparation-incomplete",
+                            "Send the same reset again to finish preparing its selected scenario.", true);
+                }
+            }
+            return prepare(scope, ScenarioService.MECHANICS_ID);
+        } catch (SQLException e) {
+            return ClockResult.unavailable("database-unavailable", "The database could not be reached.", true);
+        }
+    }
+
+    /** A prepared marker is final; a preparing marker retries only its original, receipted domain commands. */
     public ClockResult prepare(RunContext scope, String scenarioId) {
         ClockResult started = clock.initialize(scope.environmentId(), scope.runId());
         if (started instanceof ClockResult.Failure) return started;
         try {
-            if (existing(scope.environmentId(), scope.runId()).isPresent()) {
-                return ClockResult.ok(F.objectNode().put("runId", scope.runId()).put("prepared", false));
+            try (Connection c = dataSource.getConnection(); PreparedStatement ps = c.prepareStatement(
+                    "SELECT scenario_id, state FROM scenario_runs WHERE environment_id = ? AND run_id = ?")) {
+                ps.setString(1, scope.environmentId());
+                ps.setString(2, scope.runId());
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        if (!scenarioId.equals(rs.getString(1))) return ClockResult.conflict("scenario-input-changed",
+                                "This run is being prepared for another scenario.", null);
+                        if ("prepared".equals(rs.getString(2))) return ClockResult.ok(
+                                F.objectNode().put("runId", scope.runId()).put("prepared", false));
+                    }
+                }
             }
         } catch (SQLException e) {
             return ClockResult.unavailable("database-unavailable", "The database could not be reached.", true);
@@ -111,12 +152,24 @@ public final class DemoPreparation {
         if (!loaded.ok()) return loaded.failure();
         Optional<ScenarioCatalogue.Entry> entry = loaded.catalogue().find(scenarioId);
         if (entry.isEmpty()) return ClockResult.notFound("scenario-not-found", "No such scenario.");
-        return write(scope.environmentId(), scope.runId(), entry.get());
+        if (!entry.get().available()) return ClockResult.unavailable("scenario-not-available-yet",
+                "The scenario's required services are unavailable.", true);
+        ClockResult people = write(scope.environmentId(), scope.runId(), entry.get());
+        if (!people.ok()) return people;
+        ClockResult start;
+        try {
+            start = loader.load(scope, entry.get());
+        } catch (RuntimeException e) {
+            return ClockResult.unavailable("scenario-start-incomplete", "The scenario start did not finish.", true);
+        }
+        if (!start.ok()) return start;
+        return finish(scope, entry.get());
     }
 
     private ClockResult write(String environmentId, String runId, ScenarioCatalogue.Entry scenario) {
         RunContext scope = new RunContext(environmentId, runId, ACTOR);
         ObjectNode input = F.objectNode().put("runId", runId).put("preparationVersion", file.preparationVersion());
+        input.set("scenario", scenario.summary());
         Outcome done = runner.execute(scope, new Command("scenario.prepare", "scenario:prepare:" + runId, input), tx -> {
             if (tx.first("SELECT 1 FROM scenario_runs WHERE environment_id = ? AND run_id = ?", rs -> 1, environmentId,
                     runId).isPresent()) {
@@ -124,11 +177,27 @@ public final class DemoPreparation {
             }
             for (JsonNode p : file.principals()) insertPerson(tx, environmentId, runId, p);
             tx.write("INSERT INTO scenario_runs (environment_id, run_id, scenario_id, scenario_version, fixture_version, "
-                    + "policy_version, preparation_version, state, prepared_at) VALUES (?, ?, ?, ?, ?, ?, ?, 'prepared', now())",
+                    + "policy_version, preparation_version, state) VALUES (?, ?, ?, ?, ?, ?, ?, 'preparing')",
                     environmentId, runId, scenario.scenarioId(), scenario.scenarioVersion(), scenario.fixtureVersion(),
                     scenario.policyVersion(), file.preparationVersion());
             return WorkResult.ok(F.objectNode().put("runId", runId).put("prepared", true));
         });
+        return result(done);
+    }
+
+    private ClockResult finish(RunContext original, ScenarioCatalogue.Entry scenario) {
+        RunContext scope = new RunContext(original.environmentId(), original.runId(), ACTOR);
+        Outcome done = runner.execute(scope, new Command("scenario.prepared", "scenario:prepared:" + scope.runId(),
+                scenario.summary()), tx -> {
+            tx.write("UPDATE scenario_runs SET state = 'prepared', prepared_at = now(), version = version + 1 "
+                    + "WHERE environment_id = ? AND run_id = ? AND scenario_id = ? AND state = 'preparing'",
+                    scope.environmentId(), scope.runId(), scenario.scenarioId());
+            return WorkResult.ok(F.objectNode().put("runId", scope.runId()).put("prepared", true));
+        });
+        return result(done);
+    }
+
+    private static ClockResult result(Outcome done) {
         if (done instanceof Outcome.Committed c) return ClockResult.ok(c.result());
         if (done instanceof Outcome.Conflict c && "stale-run".equals(c.code())) return ClockResult.staleRun();
         if (done instanceof Outcome.Uncertain u) return ClockResult.uncertain(u.operationId());
