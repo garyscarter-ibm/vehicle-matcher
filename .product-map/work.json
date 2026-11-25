@@ -12661,14 +12661,14 @@
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-026",
       "id": "FUCQ-551",
-      "observed_at": "2026-11-25T05:49:34Z",
+      "observed_at": "2026-11-25T06:22:12Z",
       "original_status": "To Do",
       "slices": [
         {
-          "evidence": "Source9f668374f; lead reviewed frozen markup/classes, factCSSspecificity, rating scopedqueue/canonicalack/retry, help lifecycle, exactcountdown and photo-base mapping; fresh89/89 in6specs passed lead-current-car-review receipt. Source boundary only; fullAC/pair remain pending.",
+          "evidence": "25 November actual same-state computed title14px Angular versus23px frozenNode. Unlayered account h2 overrides layered shared vehicle title; selector now excludes canonical title. Final connected computed-style verification pending; no image CSS change because actual source images differ.",
           "id": "current-car",
-          "observed_at": "2026-11-22T23:20:17Z",
-          "status": "complete",
+          "observed_at": "2026-11-25T06:11:49Z",
+          "status": "in-progress",
           "title": "Current car source styling and rating (5 points)"
         },
         {
@@ -12738,20 +12738,40 @@
           "name": "Spike",
           "role": "story-lead",
           "harness": "codex",
-          "observed_at": "2026-11-25T05:49:34.890928+00:00",
-          "expires_at": "2026-11-25T06:34:34.890928+00:00",
+          "observed_at": "2026-11-25T06:22:12.487319+00:00",
+          "expires_at": "2026-11-25T07:07:12.487319+00:00",
           "status": "active",
-          "source": "Observed running via native collaboration; original F551 claim retained, no new tracker claim. Lead owns bounded remaining account diagnosis/repair/validation."
+          "source": "Observed running via native collaboration; lead reviewed parser/CSS diff and independently passed114 account tests,340 UI/source-kit checks,7 boundary tests and source walker; final connected check pending."
         },
         {
           "id": "/root/spike/melissa_duck",
           "name": "Melissa Duck",
           "role": "runner",
           "harness": "codex",
-          "observed_at": "2026-11-25T05:49:34.890928+00:00",
-          "expires_at": "2026-11-25T06:34:34.890928+00:00",
-          "status": "active",
-          "source": "Observed running via native collaboration for one real envelope/client-status diagnostic; no production edits."
+          "observed_at": "2026-11-25T06:22:12.487319+00:00",
+          "expires_at": "2026-11-25T06:22:12.487319+00:00",
+          "status": "stopped",
+          "source": "Observed returned via native collaboration. One real diagnostic and public actual-current-derived hosted asset200 completed; exact raw replay failed and is explicitly unproved. Cleanup receipts retained."
+        },
+        {
+          "id": "/root/spike/cecil_turtle",
+          "name": "Cecil Turtle",
+          "role": "mechanic",
+          "harness": "codex",
+          "observed_at": "2026-11-25T06:22:12.487319+00:00",
+          "expires_at": "2026-11-25T06:22:12.487319+00:00",
+          "status": "stopped",
+          "source": "Observed completed via native collaboration. Scoped parser red/green and cleanup verified."
+        },
+        {
+          "id": "/root/spike/speedy_gonzales",
+          "name": "Speedy Gonzales",
+          "role": "implementer",
+          "harness": "codex",
+          "observed_at": "2026-11-25T06:22:12.487319+00:00",
+          "expires_at": "2026-11-25T06:22:12.487319+00:00",
+          "status": "stopped",
+          "source": "Observed completed via native collaboration. Bounded F551 family and registration authored/syntax checked; lead final source/runtime review pending."
         }
       ]
     }

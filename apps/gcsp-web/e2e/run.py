@@ -22,6 +22,7 @@ CASES = {
     'f548': 'apps/gcsp-web/e2e/notification-bell.test.mjs',
     'f549': 'apps/gcsp-web/e2e/navigation-parity.test.mjs',
     'f550': 'apps/gcsp-web/e2e/live-refresh.test.mjs',
+    'f551': 'apps/gcsp-web/e2e/account-parity.test.mjs',
     'f552': 'apps/gcsp-web/e2e/preferences-parity.test.mjs',
     'f555': 'apps/gcsp-web/e2e/offer-parity.test.mjs',
 }
