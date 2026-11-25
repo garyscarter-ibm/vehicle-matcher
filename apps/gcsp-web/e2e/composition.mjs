@@ -24,6 +24,7 @@ async function until(check, message, timeout = 12000) {
 export async function showAdvanced(page) {
   const advanced = page.locator('.gcsp-console-mode');
   if (await advanced.getAttribute('aria-pressed') === 'false') await advanced.click();
+  await until(async () => await advanced.getAttribute('aria-pressed') === 'true', 'Presenter Advanced mode settles after the deliberate click');
   assert.equal(await advanced.getAttribute('aria-pressed'), 'true');
 }
 const sha = (value) => createHash('sha256').update(value).digest('hex');
