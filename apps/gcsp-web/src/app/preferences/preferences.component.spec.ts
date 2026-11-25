@@ -159,6 +159,59 @@ describe('native preference controls', () => {
     await store.reload(); store.fullState.set('saved'); store.consent.set({ search: true, hold: true });
     await fixture.whenStable(); expect(onward()).toBeUndefined();
   });
+  it('previews automatically after opening and editing without normal or loading refresh actions', async () => {
+    let finish!: (value: unknown) => void;
+    const preview = vi.fn().mockResolvedValueOnce({ status: 'ok', value: representativePreviewFixture() })
+      .mockImplementationOnce(() => new Promise((resolve) => { finish = resolve; }));
+    Object.assign(client, { preview });
+    try {
+      const fixture = TestBed.createComponent(PreferencesComponent); await fixture.whenStable();
+      const root = fixture.nativeElement as HTMLElement; const store = fixture.componentInstance.store;
+      const actions = () => Array.from(root.querySelectorAll<HTMLButtonElement>('.gcsp-brief-preview button'));
+      expect(actions()).toHaveLength(0);
+      await vi.waitFor(() => expect(store.preview()?.status).toBe('ok')); await fixture.whenStable();
+      expect(root.querySelectorAll('.gcsp-brief-cards article.vm-card')).toHaveLength(2);
+      expect(actions()).toHaveLength(0);
+      const economy = root.querySelector<HTMLInputElement>('#preference-economy')!;
+      economy.value = '88'; economy.dispatchEvent(new Event('input')); await fixture.whenStable();
+      await vi.waitFor(() => expect(store.previewLoading()).toBe(true)); await fixture.whenStable();
+      expect(root.querySelector('[aria-busy="true"]')).toBeTruthy(); expect(actions()).toHaveLength(0);
+      expect(preview.mock.calls[1][0].brief.preferences.economy.value).toBe(88);
+      finish({ status: 'ok', value: representativePreviewFixture() });
+      await vi.waitFor(() => expect(store.previewLoading()).toBe(false)); await fixture.whenStable();
+      expect(root.querySelectorAll('.gcsp-brief-cards article.vm-card')).toHaveLength(2);
+      expect(store.brief().preferences['economy'].value).toBe(88); expect(store.fullDirty()).toBe(true);
+      expect(actions()).toHaveLength(0); expect(client.saveDraft).not.toHaveBeenCalled();
+    } finally { Reflect.deleteProperty(client, 'preview'); }
+  });
+  it('offers unavailable-only preview retry, respects busy and locked states and keeps the unsaved draft', async () => {
+    let finish!: (value: unknown) => void;
+    const preview = vi.fn().mockResolvedValueOnce({ status: 'unavailable', retryable: true })
+      .mockImplementationOnce(() => new Promise((resolve) => { finish = resolve; }));
+    Object.assign(client, { preview });
+    try {
+      const fixture = TestBed.createComponent(PreferencesComponent); await fixture.whenStable();
+      const root = fixture.nativeElement as HTMLElement; const store = fixture.componentInstance.store;
+      const economy = root.querySelector<HTMLInputElement>('#preference-economy')!;
+      economy.value = '88'; economy.dispatchEvent(new Event('input')); await fixture.whenStable();
+      await vi.waitFor(() => expect(store.preview()?.status).toBe('unavailable')); await fixture.whenStable();
+      const retry = () => Array.from(root.querySelectorAll<HTMLButtonElement>('.gcsp-brief-preview button'))
+        .find(button => button.textContent?.trim() === 'Retry preview');
+      expect(root.textContent).toContain('Preview unavailable. Your edits are kept.'); expect(retry()).toBeTruthy();
+      store.fullBusy.set(true); await fixture.whenStable(); expect(retry()!.disabled).toBe(true);
+      store.fullBusy.set(false); store.buddyRefreshing.set(true); await fixture.whenStable(); expect(retry()!.disabled).toBe(true);
+      store.buddyRefreshing.set(false); store.failure.set({ status: 'stale-version' }); await fixture.whenStable(); expect(retry()!.disabled).toBe(true);
+      store.failure.set(null); await fixture.whenStable(); expect(retry()!.disabled).toBe(false);
+      retry()!.click(); await fixture.whenStable();
+      expect(store.previewLoading()).toBe(true); expect(retry()).toBeUndefined();
+      finish({ status: 'ok', value: representativePreviewFixture() });
+      await vi.waitFor(() => expect(store.previewLoading()).toBe(false)); await fixture.whenStable();
+      expect(root.querySelectorAll('.gcsp-brief-cards article.vm-card')).toHaveLength(2); expect(retry()).toBeUndefined();
+      expect(store.brief().preferences['economy'].value).toBe(88); expect(store.fullDirty()).toBe(true);
+      expect(client.saveDraft).not.toHaveBeenCalled(); expect(client.confirm).not.toHaveBeenCalled();
+      store.preview.set({ status: 'denied' }); await fixture.whenStable(); expect(retry()).toBeUndefined();
+    } finally { Reflect.deleteProperty(client, 'preview'); }
+  });
   it('uses source option buttons and an importance switch, with explicit removal/cancel intents', async () => {
     const fixture = TestBed.createComponent(PreferenceCategoryComponent); const definition = briefEditorFixture().context.accountPreferences.categories['body'];
     fixture.componentRef.setInput('id', 'category-body'); fixture.componentRef.setInput('definition', definition); fixture.componentRef.setInput('state', { state: 'considered', value: ['estate'], importance: 'high', exact: true }); fixture.componentRef.setInput('open', true); await fixture.whenStable();

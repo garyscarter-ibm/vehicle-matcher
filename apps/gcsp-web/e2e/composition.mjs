@@ -68,7 +68,7 @@ function identity(pid) {
 }
 
 export async function startComposition({ caseId = 'f548', ordering = 'synthetic' } = {}) {
-  assert.ok(['f548', 'f549', 'f550', 'f551', 'f552', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked', 'f561'].includes(caseId));
+  assert.ok(['f340', 'f548', 'f549', 'f550', 'f551', 'f552', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked', 'f561'].includes(caseId));
   assert.ok(['synthetic', 'rejected', 'unknown-then-rejected'].includes(ordering));
   const scratch = local(process.env.SCRATCH ?? '');
   assert.ok(scratch.startsWith('/private/tmp/'), 'The supervisor must own /private/tmp scratch');
@@ -102,13 +102,29 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
   const planBytes = gunzipSync(compressedPlan, { maxOutputLength: 256 * 1024 * 1024 });
   assert.equal(input.reference.commit, FROZEN);
   assert.equal(sha(planBytes), input.stockPlan.sha256, 'The exact retained Node stock input must match its provenance');
-  const plan = JSON.parse(planBytes);
+  let plan = JSON.parse(planBytes);
   assert.equal(planBytes.length, input.stockPlan.bytes);
   assert.equal(plan.windows.length, input.stockPlan.windowCount);
   assert.equal(plan.windows.reduce((total, window) => total + window.stock.length, 0), input.stockPlan.stockCount);
   assert.ok(plan.windows.length <= 100 && input.stockPlan.stockCount <= 10000, 'Bound retained input windows/cars');
+  let walkthroughPreparation;
+  if (caseId === 'f340') {
+    const preparation = JSON.parse(readFileSync(path.join(ROOT, 'server/gcsp/fixtures/scenarios/suv-walkthrough-v1.json'), 'utf8'));
+    assert.equal(preparation.stock.sha256, input.stockPlan.sha256);
+    const window = plan.windows.find((item) => item.windowId === preparation.stock.windowId);
+    assert.ok(window, 'The SUV preparation selects an existing retained window');
+    assert.equal(window.availableAt, preparation.stock.releaseAt);
+    assert.equal(window.stock.length, preparation.stock.count);
+    assert.ok(window.stock.length <= 100);
+    // Preserve the whole source window, including every car/fact/identity/date. Only input selection changes.
+    plan = { ...plan, windows: [window] };
+    walkthroughPreparation = { fixtureVersion: preparation.fixtureVersion, sourcePlanSha256: sha(planBytes),
+      selectedPlanSha256: sha(Buffer.from(JSON.stringify(plan))), selectedWindowId: window.windowId,
+      selectedReleaseAt: window.availableAt, selectedStockCount: window.stock.length,
+      basis: 'Whole retained window selected for bounded input preparation; actual Main reset and editor commands are exercised by f340.' };
+  }
   const planFile = path.join(dirs.tmp, 'main-stock-plan.json');
-  writeFileSync(planFile, planBytes);
+  writeFileSync(planFile, walkthroughPreparation ? JSON.stringify(plan) : planBytes);
   assert.ok(plan.windows.length && plan.windows.every((window) => window.stock.length));
   const preparationFile = path.join(ROOT, 'services/gcsp-api/src/main/resources/gcsp/scenario/demo-preparation-v1.json');
   const preparation = JSON.parse(readFileSync(preparationFile, 'utf8'));
@@ -132,7 +148,10 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
     reference: input.reference, caseId, composition: { origins, issuer, environmentId: envId, runId, database: database[3], ordering,
       identity: 'started Java demo issuer, code/PKCE and signed bearer validation', supply: 'tranche-plan over exact retained Node input' },
     input: { stockPlan: input.stockPlan, scenario: input.scenario, clock: input.clock },
-    setupDifferences: ['Java named Main reset availability is recorded separately (FUCQ-562); no successful reset is claimed.',
+    ...(walkthroughPreparation ? { walkthroughPreparation } : {}),
+    setupDifferences: [walkthroughPreparation
+      ? 'The initial source fixture is bootstrap only. F340 discards it through actual named Main resets and prepares both walkthroughs through the normal editor; reset outcomes are recorded separately.'
+      : 'Java named Main reset availability is recorded separately (FUCQ-562); no successful reset is claimed.',
       'A bootstrap run migrates the owned database, then is legally retired. A fresh replay run receives the exact initial clock before Java restarts; no clock guard is bypassed.',
       'The exact initial Main brief and consent are fixture inputs in the owned test database; public editor validation is unchanged.',
       'The frozen Node stock instance enters Java through its existing tranche-plan provider; release, allocation, holds and offers are actual services.'],

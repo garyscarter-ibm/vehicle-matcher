@@ -3755,3 +3755,55 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 ### 2026-11-25 17:57 UTC · usget-velko · DL-20261125-SORREL-16 · Optional enrichment incorrectly made required
 
 - F561's new read projection initially passed27 native cases but the lead's119-case covering run exposed two original presenter callers returning503 instead of200 when optional policy was unavailable. Root rejected adding Main seed solely to satisfy the enrichment. Frozen Node tolerates unavailable names/pricing, so the new projection was corrected to preserve complete recorded cars/counts, fallback names and empty points; actual required stock/custody contradictions still fail503. Both original caller fixtures were restored unchanged and the unnecessary Supply policy seed removed. Lead's corrected86-case focused run passed with no failures/errors/skips; independent delta review passed. Earlier strict-policy evidence remains superseded. Normal integration refresh has now aborted cleanly on four shared metadata/runner files; no unapproved reconciliation, final browser pass or acceptance is claimed. Proposed improvement: check optional-versus-required producer contracts against existing real callers before enriching the view.
+
+
+### 2026-11-25 19:55 UTC · usget-velko · DL-20261125-SORREL-16 · Approved F340 integration and cleanup verified
+
+- Russell explicitly approved the prepared integration and waived further approval requests for this run, preserving Gary’s decisions and original acceptance. F340 source c021fccdf passed Node11/11, CLI6/6 and registered5/5 across four Estate/SUV1280/390 resets; root independently reran CLI6/6. Final refresh changed metadata only. Normal mergead4d43d26, archive dd78beb64 and cleanup874469db0 are published; owned worktree/ref/lease removed. Native In Review is read back. Shared covering batches remain open; no Done or human acceptance is inferred.
+
+
+### 2026-11-25 19:55 UTC · usget-velko · DL-20261125-SORREL-16 · F552 duplicate preview action repaired
+
+- The always-visible Update preview duplicated the existing180ms automatic request. The minimal template change offers Retry preview only for typed unavailable results; TS/store/CSS behavior is unchanged. Two meaningful regressions were first RED;67 focused and142 static checks passed. Registered f552 passed6/6 entries/five groups, peak2720481280B, scratch130657120B, with owned cleanup verified. Root independently67/67; final refreshed product/test blobs are identical. Merge9788987e0 and corrected-pair ledger b85393f1d are published. Gary’s old differs verdict remains; new attachment1647676/1647677 row is blank and originalAC7 open.
+
+
+### 2026-11-25 19:55 UTC · usget-velko · DL-20261124-F555-08 · Attribution mitigation missed an actual CLI module
+
+- F548 published merge8a41e94e3 received the legacy Claude trailer because the worker invoked the CLI rather than the imported sg module carrying the explicit process-local Codex override. Published history was preserved. F555 refresh/merge and named close/cleanup commits subsequently used the actual imported module and Codex trailers. The earlier actual-module Jira import622a45008 also has the trailer. This is a bounded caller mitigation with a verified recurrence, not a framework repair or proof that arbitrary CLI invocations are corrected.
+
+
+### 2026-11-25 19:55 UTC · usget-velko · DL-20261117-GCC-012 · Typed endpoints do not change link semantics
+
+- The six corrected Bug parents525/527/528/530/545/534 are verified under432. Their native typed Story endpoints use Blocks, while the configured canonical relation is Relates; therefore helper origin_unknown remains honest. A typed Story endpoint alone did not prove a canonical Related origin. No links/descriptions/labels or archived claims were changed to hide that limitation. A later complete delta returned25 local issues; nine evidence files verified ready, including two reused local mobile images. The next empty delta processed all39 pending attachments across13 records as ready.
+
+
+### 2026-11-25 19:55 UTC · usget-velko · DL-20261125-VELKO-02 · Shared FETCH_HEAD is not branch truth
+
+- A lease fetch replaced shared FETCH_HEAD with a lease commit, briefly suggesting the integration remote had moved to unrelated JSON. Direct advertised origin/gcsp-poc-dev, tracking ref and HEAD agreed, and normal helper pull correctly used the named tracking branch. No reset or branch repair was needed. Use the named advertised branch when diagnosing this condition; no new merge gate or helper change was added.
+
+
+### 2026-11-25 19:55 UTC · usget-velko · DL-20261125-SORREL-16 · F561 real reset response and preparation ordering
+
+- The reset client rejected a legitimate200 response by equating independent preparation and clock version namespaces. The minimal parser correction preserves exact selected preparation pins, activated-run identity and complete nested clock validation; a real-shape regression was RED first, then91 presenter tests passed and independent review passed. Later registered checks pass local Basic/release/suitability/mail-action/reset behavior, but the frozen comparison exposed a genuine Main brief policy binding difference: Node adopts reviewed policy before its loader, Java afterwards. BugF594 records the independently confirmed ordering problem and verified StoryF479 origin underF433; no policy ordering implementation or parity pass is yet claimed. AC4 mail image rendering and hosted/human evidence remain distinct open checks.
+
+
+### 2026-11-25 20:25 UTC · usget-velko · DL-20261125-VELKO-03 · Batch lease monitor interrupted an active suite
+
+- Canonical Node attempt2017 is running, but earlier2003 was interrupted after about3m55s: its caller allowed20s for a batch-renew helper whose checkout mutex legitimately waits30s. The live remote lease remained ours; apparent fleet/Greg failures said Interrupted while running, not an established new product defect. Owned processes/links/scratch were removed. The ephemeral caller now permits45s while retaining owner/base/TTL checks. An unrun2014 attempt then reported uncertain EOF/child join; standalone status-renew-status succeeded, and2017 has completed its initial handshake and periodic renewal. This verifies those protocol operations, not the unfinished suite. No product/framework helper changed. Proposed improvement: align helper protocol deadline with documented mutex wait and retain interrupted versus test-failure distinctions.
+
+### 2026-11-25 20:25 UTC · usget-velko · DL-20261125-SORREL-16 · Canonical partial status and F551 hosted evidence
+
+- F552’s bold status failed the existing partial parser; metadata3048e7956 renamed historical Result headings and made the latest canonical status plain partial. Actual Push.is_partial reads true; the seven original criteria and humanAC7 remain. F551 hosted read-only authenticated Paula/account check proved actual painted Touring image HTTP200,image/webp,natural1200x675 at1280; root inspected the screenshot. Attachment1647679/comment5068380 retained. The initial auxiliary branch was refused by normal refresh as unclaimed; its metadata was transferred onto the owned Story branch, then normally refreshed/merged atdb4b30c82. Auxiliary branch/worktree cleanup succeeded. Original claim persists; AC4 checked, humanAC6 open; native In Review read back20:21UTC under this run’s human-only exception. No human verdict or full batch pass inferred.
+
+### 2026-11-25 20:25 UTC · usget-velko · DL-20261124-F555-08 · Explicit commit messages need explicit trailer
+
+- F594 triage920e6abe2 omitted the Codex trailer because setting the actual imported sg.ATTRIBUTION does not append it to explicit commit_paths messages. Follow-up984bdfab6 includes a real blank-line trailer; published history was preserved. Normal claim434f411c3 uses the automatic-operation override. Proposed caller correction: include the trailer in every explicit message as well as setting the module constant for automatic commits. This records a recurrence, not a framework fix.
+
+
+### 2026-11-25 20:52 UTC · usget-velko · DL-20261125-VELKO-03 · Canonical batch completed and owned cleanup corrected
+
+- The45s protocol mitigation completed the pinned literal npm test with live owner/base/TTL checks:4285tests/4182pass/37fail/66skip/0cancelled,585.75s, peak850083840B RAM/137073536B scratch. Six once-alone modules ran133tests/93pass/37fail/3skip in50.173s; all37 exact F555 identities matched, no extras. Full RED/report-only disposition is preserved in92eea91b1. Isolation preparation took about12min before the first module, with no concrete tool blocker; initial wrapper-path and missing NODE_OPTIONS attempts ran no test. Existing guarded runner and explicit approved per-process options resolved them. Parent normal drop then found two owned bytecode files after the worker reported clean; only those exact batch files were removed, normal retry succeeded and worktree absence was observed. Lease released; shared caches and unknown root files preserved. Proposed improvement: carry exact invocation/environment across continuation and distinguish tracked cleanliness from all untracked cleanup; no helper/source change made.
+
+### 2026-11-25 20:52 UTC · usget-velko · DL-20261125-SORREL-16 · F594 policy binding repaired; strict comparison remains open
+
+- Required Main adoption now precedes preparation through a typed callback; Main binds reads/brief to actual active-at-clock policy. Independent review caught an initial best-effort handler swallowing adoption failure; frozen Node already skips Main on that failure. The corrected path returns existing retryable preparation failure while optional mechanics and learned postprepare behavior remain. Actual native policy-INSERT fault leaves base readable and no brief/marker, then identical reset recovers once. Child142/142 and parent31/31 passed; parent peak1217986560B/scratch33452800B,26.50s, ownedDB/scratch/target cleanup observed. Normal partial merge3a072cd99 pushed; originalAC3 strict F561 comparison remains open/owned. No policy content, schema, tick writer or assertion weakened. Proposed framework improvement: review required callback failure propagation alongside ordering when moving it before a loader; no generic gate added.

@@ -23,7 +23,10 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.BiFunction;
 import javax.sql.DataSource;
 
 /** Prepares synthetic principals, then actual starting services, before marking a run prepared. */
@@ -42,6 +45,7 @@ public final class DemoPreparation {
     private final DemoPreparationFile file;
     private final Set<String> capabilities;
     private final StartLoader loader;
+    private final List<BiFunction<RunContext, ScenarioCatalogue.Entry, ClockResult>> beforeStart = new CopyOnWriteArrayList<>();
 
     @FunctionalInterface
     interface StartLoader {
@@ -65,6 +69,11 @@ public final class DemoPreparation {
         this.file = file;
         this.capabilities = Set.copyOf(capabilities);
         this.loader = loader;
+    }
+
+    /** Run-scoped composition needed by the loader, after its clock exists; prepared runs never repeat it. */
+    void onBeforeStart(BiFunction<RunContext, ScenarioCatalogue.Entry, ClockResult> listener) {
+        beforeStart.add(listener);
     }
 
     /** The scenario id already recorded for the run, one selected read. */
@@ -154,6 +163,10 @@ public final class DemoPreparation {
         if (entry.isEmpty()) return ClockResult.notFound("scenario-not-found", "No such scenario.");
         if (!entry.get().available()) return ClockResult.unavailable("scenario-not-available-yet",
                 "The scenario's required services are unavailable.", true);
+        for (var listener : beforeStart) {
+            ClockResult composed = listener.apply(scope, entry.get());
+            if (!composed.ok()) return composed;
+        }
         ClockResult people = write(scope.environmentId(), scope.runId(), entry.get());
         if (!people.ok()) return people;
         ClockResult start;

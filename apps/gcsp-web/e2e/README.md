@@ -30,6 +30,39 @@ uses each engine's public Main reset and Basic release button, comparing semanti
 brief, clock and stock while retaining the distinct generated run IDs. It does not establish the
 actual hosted-dev release cue or human acceptance of the screenshot pair.
 
+## Manual F340 walkthrough
+
+Run `python3 -B apps/gcsp-web/e2e/run.py --case f340 --manual` with the same pinned Node, installed
+dependencies/browser and shared-build settings below. This option accepts F340 alone. Without `--manual`,
+case selection and automated tests keep their existing behavior.
+
+The supervisor prints **F340 manual session ready**, actual local Presenter/Paula links and an exact
+`touch -- <run-owned-stop-file>` command. Wait for that message, then open the links yourself in separate tabs
+and sign in as Presenter and Paula. The automation never opens or focuses your browser. Startup checks use
+two owned headless tabs for signed OIDC/context reads, then close them; they perform no scenario reset,
+preference save or release. Follow `docs/gcsp/suv-walkthrough-2026-11-25.md` for the manual journey.
+
+The local HTTPS certificate is self-signed and lasts two days; a fresh session generates a new certificate.
+If your browser shows a certificate warning, review the hostname and use its per-site session exception only
+for the printed `gcsp-web.localhost` and `gcsp-api.localhost` origins. Open the printed API certificate-check
+link first if needed (a signed-out/401 response is expected), then the Presenter and Paula links. No trust is
+installed and no browser security setting is changed by the runner. A browser that refuses a per-site exception
+remains a manual-browser setup limitation; do not disable certificate checks globally or install system trust.
+
+This is a held manual interval within the **same ten-minute startup/run chunk**, including build/startup time,
+2 GiB scratch and 3.5 GiB night/CI RAM budget. It does not reserve another ten minutes after readiness. Stop by
+running the exact printed command in another terminal; its unique marker belongs only to this run, so an old
+stop file cannot end a new session. Ctrl+C requests cancellation and runs the existing finalizers. Timeout or
+resource exhaustion also ends the interval. The composition closes, the owned database is dropped, owned
+processes are joined and scratch absence is recorded; inspect `run-receipt.json` for actual cleanup results.
+
+`f340/manual-session.json` is published atomically with run/source identity, readiness, actual origins/links
+and the exact stop file, then updated on stop/failure. `f340/browser-receipt.json` records startup sign-in probes
+and the manual stop request; `run-receipt.json` records mode `manual` with no test files. These records establish
+startup/teardown evidence, not successful completion of a person's walkthrough or passing automated tests.
+
+## Automated cases and shared setup
+
 Select the bounded FUCQ-552 preferences family with `npm --prefix apps/gcsp-web run test:e2e -- --case f552`.
 It reuses this composition and unchanged Main inputs to check category icons, importance/bin/stops, segmented
 mode/help, understanding segments, editor chips/range axes/end labels, actual preview decision cards and keyboard

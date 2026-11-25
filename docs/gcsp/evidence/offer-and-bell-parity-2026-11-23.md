@@ -201,3 +201,26 @@ Use one response for the combined batch, with `matches`, `differs: <description 
 | Preferences — F552 AC7 | Editor practical questions,1280×800 | Practical pair above | matches (Gary: "otherwise they all match") | Gary Carter | 2026-11-25 | Gary Carter, reviewing the committed pairs with the Claude poller; quoted verbatim in reply on `MSG-2026-11-25-sorrel-001` |
 | Preferences — F552 AC7 | Editor first preview card,1280×800 | Preview pair above | matches (Gary: "otherwise they all match") | Gary Carter | 2026-11-25 | Gary Carter, reviewing the committed pairs with the Claude poller; quoted verbatim in reply on `MSG-2026-11-25-sorrel-001` |
 | Orders / order progress — F556 AC6 | Same Main sent-to-ordering order, 1280×800 | Frozen Node attachment `1647115`; Angular attachment `1647116`; FUCQ-556 comment `5067335` | | | | |
+| Orders / order progress — FUCQ-593 AC1 | Same Main sent-to-ordering order, 1280 and 390 widths | [Node 1280](https://ibm-consulting.atlassian.net/secure/attachment/1647132/node-ordering-1280.png) (`1647132`); [Angular 1280](https://ibm-consulting.atlassian.net/secure/attachment/1647133/angular-ordering-1280.png) (`1647133`); [Node 390](https://ibm-consulting.atlassian.net/secure/attachment/1647604/node-ordering-390.png) (`1647604`); [Angular 390](https://ibm-consulting.atlassian.net/secure/attachment/1647605/angular-ordering-390.png) (`1647605`) | | | | [FUCQ-593 comment 5068283](https://ibm-consulting.atlassian.net/browse/FUCQ-593) |
+
+FUCQ-593 remains **In Progress** at **5 points** with its original AC1 unchanged. The final captures show the selected vehicle name and photo in Node and Angular; the Angular hero card is larger with a different image scale/crop and adds “Refresh status”. The authenticated `/manual/order` response body was not retained, so the captures do not independently verify the authoritative payload. These are agent observations, not a human verdict; the verdict cells remain blank pending review.
+
+## Preferences — corrected 3b editor pair — F552 AC7 — 25 November
+
+This fresh pair follows Gary's recorded 3b difference above. The original images and **differs** verdict remain historical evidence. The extra normal-state **Update preview** action has been removed; preview now arrives automatically. **Retry preview** is shown only for a typed unavailable result while no preview request is loading. The saved-version notice and existing photo-source/framing observations remain.
+
+The fresh source is `abd5394bc0cb8a9984321d32c8c368ee901bd753`; the live frozen Node reference remains `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`. Both editor captures are 1280×800 and use the retained Main successful journey inputs (`main-successful-journey-inputs-v2`), Paula, saved brief 2 and the actual release clock **23 November 2026, 11:30 UTC**. Angular used the real Java API, signed OIDC and owned PostgreSQL composition; the automatic preview returned 42 eligible cars. The same registered F552 family passed 6/6 reported entries across five groups. These are engineering observations, not a human verdict.
+
+The PNGs were attached once to the existing FUCQ-552 issue and their native attachment IDs, names, MIME types and sizes were read back on 25 November. No additional review question or thread was created.
+
+| Frozen Node | Angular / Java |
+| --- | --- |
+| [Corrected 3b reference: node-editor-1280.png](https://ibm-consulting.atlassian.net/secure/attachment/1647676/node-editor-1280.png) — attachment `1647676`, 170,826 bytes | [Corrected 3b: angular-editor-1280.png](https://ibm-consulting.atlassian.net/secure/attachment/1647677/angular-editor-1280.png) — attachment `1647677`, 176,217 bytes |
+
+PNG SHA-256: Node `ce66644dae0378036e546a57bf6b221188b0bbd315aed1e6ece2216b22c0c555`; Angular `53be2651ad7f6cdbc5ad8ecae68afc302068b8f86db858d5045ecfa5472c0cd8`. Fresh retained run evidence is `.claude/poller/velko-f552-20261125/browser-abd5394bc-chromium159/f552/browser-receipt.json`; native publication readback is `.claude/poller/velko-f552-20261125/corrected-pair-publication.json`.
+
+| Screen / original criterion | State and viewport | Pair | Verdict | Human reviewer | Date | Source |
+| --- | --- | --- | --- | --- | --- | --- |
+| Preferences — F552 AC7, corrected 3b | Editor categories/axes, 1280×800; automatic preview settled | Node attachment `1647676`; Angular attachment `1647677` above | | | | |
+
+F552 remains **partial / In Progress, 13 points**, with AC1–6 checked and AC7 unchecked. The new human-verdict cells remain blank.
