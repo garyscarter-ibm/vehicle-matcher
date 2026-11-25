@@ -1,0 +1,39 @@
+<section class="gcsp-suitability" [attr.aria-labelledby]="id + '-title'">
+  <details [open]="opened()" (toggle)="toggle($event)"><summary class="gcsp-suitability-summary"><h2 [id]="id + '-title'">Car suitability</h2> <span class="gcsp-suitability-summary-note">Why a Buddy did or didn’t match</span></summary>
+    <div class="gcsp-suitability-content">
+      <div class="gcsp-suitability-tools"><gcsp-labelled-field [controlId]="id + '-release'" label="Released cars"><select class="gcsp-select" [id]="id + '-release'" [value]="release()" [disabled]="reading() || busy()" (change)="changeRelease($event)"><option value="all">All releases</option><option value="latest">Latest release</option></select></gcsp-labelled-field><button gcspButton variant="ghost" type="button" [disabled]="reading() || busy()" (click)="refresh()">Refresh suitability</button></div>
+      <div class="gcsp-suitability-body" [attr.aria-busy]="reading() || busy() ? 'true' : null">
+        @if (reading() || busy()) { <div gcspLoadingSkeleton label="Loading car suitability" layout="section" [role]="null"></div> }
+        @else if (failed()) { <gcsp-status-screen title="Car suitability unavailable" message="Refresh the presenter readback or try again." [level]="3" [announcement]="null"><button gcspButton type="button" (click)="refresh()">Retry suitability</button></gcsp-status-screen> }
+        @else if (value(); as value) {
+          <p class="gcsp-suitability-note">{{ value.paging.cars.total }} released cars · {{ value.paging.buddies.total }} engaged {{ value.paging.buddies.total === 1 ? 'Buddy' : 'Buddies' }} · Latest recorded check per pair</p>
+          <div class="gcsp-suitability-pass"><h3>What counts as a pass?</h3><p>No minimum fit score is set. The required scheme, allowance, practical, charging, timing and current-car checks must pass.</p><p class="gcsp-suitability-note">Allocation order: {{ order(value.policy.allocationRule) }}</p><p class="gcsp-suitability-note">Fit is out of 100, not the chance of an offer. Blocked and unevaluated cars have no fit score to compare.</p></div>
+          @if (!value.cars.length || !value.buddies.length) { <gcsp-status-screen [title]="!value.cars.length ? 'No cars released yet' : 'No engaged Buddies'" [message]="!value.cars.length ? 'Release cars to see their recorded suitability.' : 'The matrix appears when an employee engages Buddy.'" [level]="3" [announcement]="null" /> }
+          @else {
+            <ng-template #matrixCell let-row let-column="column">
+              @if (column.key === 'car') { {{ car(row).name }}<span class="gcsp-suitability-car-note">{{ car(row).colour }}{{ car(row).orderNumber ? ' · Order ' + car(row).orderNumber : '' }}</span><span class="gcsp-suitability-car-note">{{ availability(car(row)) }}</span> }
+              @else { @let cell = this.cell(row, column); <button gcspButton variant="ghost" class="gcsp-suitability-cell" type="button" [attr.data-status]="passed(cell) ? 'passed' : cell.state === 'evaluated' ? 'blocked' : 'unknown'" [attr.aria-label]="car(row).name + ', order ' + (car(row).orderNumber || car(row).id) + ', ' + column.label + ': ' + score(cell) + ', ' + status(cell) + (cell.outdated ? ', earlier result' : '')" [attr.aria-controls]="id + '-details'" [attr.aria-pressed]="pressed(row, column)" (click)="select(row, column)">{{ score(cell) }}<span class="gcsp-suitability-cell-note">{{ status(cell) }}</span>@if (cell.outdated) { <span class="gcsp-suitability-cell-note">Earlier result</span> }</button> }
+            </ng-template>
+            <gcsp-data-table class="gcsp-suitability-table" caption="Released cars × engaged Buddies" [captionHidden]="true" [columns]="columns()" [rows]="rows()" [cellTemplate]="matrixCell" />
+            <div class="gcsp-suitability-pages">@for (axis of ['cars', 'buddies']; track axis) { @let meta = axis === 'cars' ? value.paging.cars : value.paging.buddies; <nav class="gcsp-suitability-pager" [attr.aria-label]="axis === 'cars' ? 'Cars pages' : 'Buddies pages'"><button gcspButton variant="ghost" type="button" [attr.data-page-action]="axis + '-Previous'" [disabled]="meta.page <= 1" (click)="turn(axis === 'cars' ? 'cars' : 'buddies', -1)">Previous {{ axis }}</button><span>{{ axis === 'cars' ? 'Cars' : 'Buddies' }}: {{ meta.page }} of {{ meta.pages }} · {{ meta.total }} total</span><button gcspButton variant="ghost" type="button" [attr.data-page-action]="axis + '-Next'" [disabled]="meta.page >= meta.pages" (click)="turn(axis === 'cars' ? 'cars' : 'buddies', 1)">Next {{ axis }}</button></nav> }</div>
+            <section class="gcsp-suitability-details" [id]="id + '-details'" [attr.aria-labelledby]="inspected() ? id + '-detail-title' : null" aria-live="polite">
+              @if (inspected(); as detail) { <h3 [id]="id + '-detail-title'">{{ detail.car.name }} · {{ detail.buddy.name }}</h3><p class="gcsp-suitability-detail-score">{{ score(detail.cell) }} · {{ check(detail.cell) }}</p>
+                @if (detail.cell.state !== 'evaluated') { <p>No recorded evaluation for this car and Buddy. It may have been reserved already, outside this employee’s scheme, or released before this Buddy engaged. No fit score is available.</p> }
+                @else {
+                  @if (detail.cell.outdated) { <p class="gcsp-suitability-warning">Earlier result. The brief, permission, employee details or policy has changed since this check.</p> }
+                  @if (passed(detail.cell)) { <p>{{ detail.cell.score === null ? 'The required checks passed. This decision did not produce a numeric fit score.' : 'The required checks passed. Fit ranks preferences; passing does not guarantee an offer.' }}</p> }
+                  <ul class="gcsp-suitability-checks">@for (entry of detail.cell.blockers; track $index) { <li>{{ explanation(entry, 'blockers') }}</li> }</ul>
+                  @if (detail.cell.unknowns?.length) { <h4>Information gaps</h4><ul class="gcsp-suitability-checks">@for (entry of detail.cell.unknowns; track $index) { <li>{{ explanation(entry, 'unknowns') }}</li> }</ul> }
+                  @if (detail.cell.reasons?.length) { <h4>Recorded checks and preferences</h4><ul class="gcsp-suitability-checks">@for (entry of detail.cell.reasons; track $index) { <li>{{ explanation(entry, 'reasons') }}</li> }</ul> }
+                  <h4>Allocation at this check</h4><p>{{ detail.cell.outcome?.state === 'assigned' ? 'This car was matched to ' + person(detail.cell.outcome?.employeeId) + '.' : detail.cell.outcome?.state === 'assigned-other-car' ? 'This Buddy was matched to another car in this check.' : 'This check did not produce a match for this pair.' }}</p>
+                  <p class="gcsp-suitability-note">Recorded order: {{ order(detail.cell.recorded?.allocationRule) }}</p><p class="gcsp-suitability-note">Checked {{ time(detail.cell.recorded?.evaluatedAt) || 'at an unknown time' }} · Brief {{ detail.cell.recorded?.briefVersion ?? 'unknown' }} · Policy {{ detail.cell.recorded?.policyVersion || 'unknown' }}</p>
+                }
+                <h4>Car now</h4><p>{{ carNow(detail.car) }}</p>
+              } @else { <p class="gcsp-suitability-note">Select any cell to explain the Buddy’s decision.</p> }
+            </section>
+          }
+        }
+      </div>
+    </div>
+  </details>
+</section>

@@ -52,26 +52,7 @@
           }
         </ul>
         @if (selected(); as message) {
-          <section class="gcsp-mail-detail" aria-label="Selected email">
-            <h2 class="gcsp-mail-heading" tabindex="-1">{{ subject(message) }}</h2>
-            <p class="gcsp-mail-line">To {{ recipient(message) }}. {{ status(message) }}. Demo clock: {{ time(message.time) }}.</p>
-            <p class="gcsp-note">{{ deliveryNote(message) }}</p>
-            @if (safeOfferLink(message.offerLink); as link) {
-              <div class="gcsp-mail-offer"><a gcspButton variant="ghost" [href]="link" target="_blank" rel="noopener noreferrer">Open the offer<span class="gcsp-vh"> (opens in a new tab)</span></a></div>
-            } @else { <p class="gcsp-note">Offer link not available</p> }
-            @if (emailDocument(); as document) {
-              <iframe class="gcsp-mail-frame" sandbox="" referrerpolicy="no-referrer" [title]="'Email preview: ' + subject(message)" [srcdoc]="document"></iframe>
-            } @else { <p class="gcsp-note">Email content is not available.</p> }
-            @if (message.textBody !== null) {
-              <details class="gcsp-mail-fold"><summary>Plain-text version</summary><pre class="gcsp-mail-text">{{ message.textBody }}</pre></details>
-            }
-            <details class="gcsp-mail-fold"><summary>Delivery attempts</summary>
-              <dl class="gcsp-mail-facts"><div><dt>Attempts</dt><dd>{{ message.attempts }}</dd></div>
-                @if (message.state === 'retrying') { <div><dt>Next attempt, demo clock</dt><dd>{{ time(message.nextAttemptAt) }}</dd></div> }
-                @if (error(message)) { <div><dt>Problem</dt><dd>{{ error(message) }}</dd></div> }
-              </dl>
-            </details>
-          </section>
+          <gcsp-mail-detail [message]="message" />
         }
       </div>
     }

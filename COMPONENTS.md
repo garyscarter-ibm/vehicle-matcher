@@ -968,6 +968,40 @@ remain pending. Drawer Close, the four gallery icon actions, and the follow-up
 actions and Activity exit use `gcspButton presentation="source"`; gallery picker
 thumbs retain their specialized controls.
 
+### Angular source presenter primitives (FUCQ-561)
+
+`CountBarsComponent` / `gcsp-count-bars` ports frozen `countBars` with supplied `label`,
+`rows: readonly {label,count}[]`, optional `limit`, `otherLabel`, heading `level` and `id`.
+It keeps the labelled figure, source list/bar/count classes, positive whole counts and Other grouping.
+`ReleaseGridComponent` / `gcsp-release-grid` ports frozen `releaseGrid`: supplied exact
+`tiles: readonly {id,imageSrc,label}[]`, `label`, `columns`, `loading`, `animate`, `timeoutMs`
+and optional `preload` function. The `settled` output fires after preloading and the optional source
+cascade, and is cancelled when superseded. Presenter totals then count over 600 ms.
+Source rows/cells, skeleton geometry, failed-image labels,
+preload cancellation, reduced motion, stagger and clamped roving keyboard navigation remain.
+Both hosts use `display: contents` and existing FUCQ-548 global CSS; no copied presentation rules.
+Use these ports instead of local release tiles or count charts. `kit/friendly-time.ts` ports the
+pure London wall-clock helpers including calendar-day and daylight-saving behavior.
+
+`ActivityTimelineComponent.headingHidden` (false by default) omits the heading while keeping an
+accessible section name. The presenter's What happened disclosure already supplies its visible heading;
+all existing callers retain theirs.
+
+`DataTableComponent.cellTemplate` optionally supplies a `TemplateRef` with the exact row as
+`$implicit`, plus `column` and supplied `value`. Native caption/row/column header association
+and source cell wrappers stay in the table. Existing callers keep the default safe text rendering;
+the presenter matrix uses the outlet for source row sublines and per-pair inspection buttons.
+
+`MailDetailComponent` / `gcsp-mail-detail` ports source `messageDetail` for outbox and presenter
+inspection. Required `message: OutboxMessage`, optional `showHeading` (true). Ordinary Angular
+sanitized `srcdoc`, empty iframe sandbox, no-referrer policy, safe offer links, plain text,
+status and delivery-attempt disclosures remain. It sends nothing. `mailPresentation` shares the
+existing outbox's status, error, recipient, date and safe-link copy; the original outbox retains
+its private read/refresh/filter lifecycle. Presenter drawer sets `showHeading=false` because the
+shared SideDrawer owns the heading. Gallery: **Presenter source components**, including empty,
+loading, long labels, supplied matrix action, captured email and failed-image fallback.
+Focused specs cover each port and both consumers; connected screenshots/human parity remain separate.
+
 ## Port status
 
 Frozen source: `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`. The assembled global stylesheet and inventory are in [styles.md](docs/migration/FUCQ-432/styles.md). Existing native Angular equivalents above remain catalogued; they are marked ported here only after preserving the source DOM/classes/state classes. Utility/gallery modules remain explicit source modules, with no invented root class.
@@ -981,14 +1015,14 @@ Frozen source: `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`. The assembled global 
 | `buddy-tile-gallery` (`blocks/gcsp/kit/buddy-tile-gallery.js`) | `.vm-gallery-section` | | not yet | pending |
 | `buddy-tile` (`blocks/gcsp/kit/buddy-tile.js`) | `.gcsp-buddy-tile` | `apps/gcsp-web/src/app/kit/buddy-tile.component.ts` | ported | yes |
 | `category-preferences` (`blocks/gcsp/kit/category-preferences.js`) | `.gcsp-prefs` | | not yet | pending |
-| `count-bars` (`blocks/gcsp/kit/count-bars.js`) | `.gcsp-count-bars` | | not yet | pending |
+| `count-bars` (`blocks/gcsp/kit/count-bars.js`) | `.gcsp-count-bars` | `apps/gcsp-web/src/app/kit/count-bars.component.ts` | ported | yes |
 | `data-table` (`blocks/gcsp/kit/data-table.js`) | `.gcsp-table-wrap` | `apps/gcsp-web/src/app/kit/data-table.component.ts` | ported | yes |
 | `finish-shades-data` (`blocks/gcsp/kit/finish-shades-data.js`) | none (utility) | `apps/gcsp-web/src/app/kit/finish-shades-data.ts` | ported | yes |
 | `finish-shades` (`blocks/gcsp/kit/finish-shades.js`) | none (utility) | `apps/gcsp-web/src/app/kit/finish-shades.ts` | ported | yes |
 | `focus-key` (`blocks/gcsp/kit/focus-key.js`) | none (utility) | | not yet | pending |
 | `form-controls-gallery` (`blocks/gcsp/kit/form-controls-gallery.js`) | none (gallery composition) | | not yet | pending |
 | `form-controls` (`blocks/gcsp/kit/form-controls.js`) | `.gcsp-field` | | not yet | pending |
-| `friendly-time` (`blocks/gcsp/kit/friendly-time.js`) | none (utility) | | not yet | pending |
+| `friendly-time` (`blocks/gcsp/kit/friendly-time.js`) | none (utility) | `apps/gcsp-web/src/app/kit/friendly-time.ts` | ported | yes |
 | `help-tip` (`blocks/gcsp/kit/help-tip.js`) | `.gcsp-help-tip` | `apps/gcsp-web/src/app/kit/help-tip.directive.ts` | ported | yes |
 | `loading-skeleton` (`blocks/gcsp/kit/loading-skeleton.js`) | `.gcsp-skeleton` | `apps/gcsp-web/src/app/kit/loading-skeleton.component.ts` | ported | yes |
 | `media-gallery-examples` (`blocks/gcsp/kit/media-gallery-examples.js`) | none (gallery composition) | | not yet | pending |
@@ -1002,7 +1036,7 @@ Frozen source: `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`. The assembled global 
 | `presenter-bar` (`blocks/gcsp/kit/presenter-bar.js`) | `.gcsp-presenter-bar` | | not yet | pending |
 | `range-bar` (`blocks/gcsp/kit/range-bar.js`) | `.gcsp-range-bar` | | not yet | pending |
 | `rating-gallery` (`blocks/gcsp/kit/rating-gallery.js`) | none (gallery composition) | | not yet | pending |
-| `release-grid` (`blocks/gcsp/kit/release-grid.js`) | `.gcsp-release-grid` | | not yet | pending |
+| `release-grid` (`blocks/gcsp/kit/release-grid.js`) | `.gcsp-release-grid` | `apps/gcsp-web/src/app/kit/release-grid.component.ts` | ported | yes |
 | `run-restarted` (`blocks/gcsp/kit/run-restarted.js`) | `.gcsp-run-restarted` | | not yet | pending |
 | `show-more` (`blocks/gcsp/kit/show-more.js`) | `.gcsp-show-more` | | not yet | pending |
 | `side-drawer` (`blocks/gcsp/kit/side-drawer.js`) | `.gcsp-side-drawer` | `apps/gcsp-web/src/app/kit/side-drawer.component.ts` | ported | yes |

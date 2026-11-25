@@ -21,6 +21,11 @@ async function until(check, message, timeout = 12000) {
   while (Date.now() < deadline) { if (await check()) return; await delay(100); }
   assert.fail(message);
 }
+export async function showAdvanced(page) {
+  const advanced = page.locator('.gcsp-console-mode');
+  if (await advanced.getAttribute('aria-pressed') === 'false') await advanced.click();
+  assert.equal(await advanced.getAttribute('aria-pressed'), 'true');
+}
 const sha = (value) => createHash('sha256').update(value).digest('hex');
 const literal = (value) => `'${String(value).replaceAll("'", "''")}'`;
 const canonical = (value) => JSON.stringify(value, (_key, item) => item && typeof item === 'object' && !Array.isArray(item)
@@ -63,7 +68,7 @@ function identity(pid) {
 }
 
 export async function startComposition({ caseId = 'f548', ordering = 'synthetic' } = {}) {
-  assert.ok(['f340', 'f548', 'f549', 'f550', 'f551', 'f552', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked'].includes(caseId));
+  assert.ok(['f340', 'f548', 'f549', 'f550', 'f551', 'f552', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked', 'f561'].includes(caseId));
   assert.ok(['synthetic', 'rejected', 'unknown-then-rejected'].includes(ordering));
   const scratch = local(process.env.SCRATCH ?? '');
   assert.ok(scratch.startsWith('/private/tmp/'), 'The supervisor must own /private/tmp scratch');
@@ -78,7 +83,8 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
   const runId = NODE_REPLAY_IDENTITY.runId;
   const ports = { web: Number(process.env.PROOF_WEB_PORT ?? 7548), api: Number(process.env.PROOF_API_PORT ?? 8548) };
   assert.ok(Object.values(ports).every((port) => Number.isInteger(port) && port > 1023 && port < 65536) && ports.web !== ports.api);
-  const origins = { web: `https://gcsp-web.localhost:${ports.web}`, api: `https://gcsp-api.localhost:${ports.api}` };
+  const webHost = caseId === 'f561' ? 'gcsp-web.example.test' : 'gcsp-web.localhost';
+  const origins = { web: `https://${webHost}:${ports.web}`, api: `https://gcsp-api.localhost:${ports.api}` };
   const issuer = `${origins.api}/demo-idp`;
   const apiBase = `${origins.api}/api/gcsp/v1`;
   const database = /^jdbc:postgresql:\/\/(127\.0\.0\.1|localhost)(?::(\d+))?\/([a-zA-Z0-9_]+)(?:\?.*)?$/.exec(process.env.GCSP_TEST_DATABASE_URL ?? '');
@@ -217,7 +223,7 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
     const cert = (name) => path.join(dirs.certs, name);
     const ssl = (args) => execFileSync('openssl', args, { env: nodeEnv, stdio: ['ignore', 'pipe', 'pipe'], timeout: 30000 });
     ssl(['req', '-x509', '-newkey', 'rsa:2048', '-nodes', '-keyout', cert('leaf.key'), '-out', cert('leaf.pem'), '-days', '2',
-      '-subj', '/CN=gcsp-web.localhost', '-addext', 'subjectAltName=DNS:gcsp-web.localhost,DNS:gcsp-api.localhost,DNS:localhost,IP:127.0.0.1']);
+      '-subj', `/CN=${webHost}`, '-addext', `subjectAltName=DNS:${webHost},DNS:gcsp-api.localhost,DNS:localhost,IP:127.0.0.1`]);
     execFileSync(path.join(javaHome, 'bin/keytool'), ['-importcert', '-alias', 'local-browser-suite', '-file', cert('leaf.pem'),
       '-keystore', cert('trust.p12'), '-storetype', 'PKCS12', '-storepass', 'local-test-trust', '-noprompt'], { env: nodeEnv, stdio: 'pipe', timeout: 30000 });
     const config = runtimeConfigFromEnv({ GCSP_PUBLIC_ENVIRONMENT_ID: envId, GCSP_PUBLIC_API_BASE_URL: apiBase,
@@ -303,7 +309,8 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       GCSP_SUPPLY_PROVIDER: 'tranche-plan', GCSP_SUPPLY_TRANCHE_PLAN_FILE: planFile,
       GCSP_ALLOCATION_CANDIDATES_PROVIDER: 'recommendation',
       ...ordersProviders,
-      GCSP_CLAIMS_SWEEP_INTERVAL: '10m', GCSP_NOTIFY_DRAIN_INTERVAL: '10m', GCSP_PUBLIC_BASE_URL: 'https://gcsp-proof.example.test',
+      GCSP_CLAIMS_SWEEP_INTERVAL: '10m', GCSP_NOTIFY_DRAIN_INTERVAL: '10m',
+      GCSP_PUBLIC_BASE_URL: caseId === 'f561' ? origins.web : 'https://gcsp-proof.example.test',
     };
     const replayApiEnv = { ...apiEnv, GCSP_RUN_ID: runId };
     api = start('api-bootstrap', path.join(javaHome, 'bin/java'), apiArgs, apiEnv);
@@ -394,7 +401,10 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
     const type = process.env.GCSP_E2E_BROWSER === 'webkit' ? webkit : chromium;
     receipt.browsers.requested = type.name();
     const executablePath = process.env.GCSP_E2E_BROWSER_PATH;
+    const hostRules = caseId === 'f561' && type === chromium ? [`--host-resolver-rules=MAP ${webHost} 127.0.0.1`] : [];
+    if (hostRules.length) receipt.browsers.hostResolution = { hostname: webHost, address: '127.0.0.1', scope: 'owned Chromium process' };
     browserServer = await type.launchServer({ headless: true, ...(executablePath ? { executablePath: local(executablePath) } : {}),
+      ...(hostRules.length ? { args: hostRules } : {}),
       downloadsPath: path.join(dirs.tmp, 'downloads'), timeout: 30000 });
     recordProcess('browser', browserServer.process());
     browser = await type.connect(browserServer.wsEndpoint());
@@ -579,6 +589,7 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       return actual;
     }
     async function releaseMainOffer(employeePage, presenterPage) {
+      await showAdvanced(presenterPage);
       const catalogue = await call(presenterPage, 'GET', '/presenter/scenarios');
       assert.equal(catalogue.status, 200);
       const main = catalogue.body.value.scenarios.find((item) => item.scenarioId === 'main-successful-journey');

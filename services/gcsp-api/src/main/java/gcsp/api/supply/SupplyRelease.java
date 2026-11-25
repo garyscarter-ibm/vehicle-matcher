@@ -26,6 +26,13 @@ public class SupplyRelease {
     @Inject
     Instance<AgroalDataSource> dataSource;
 
+    @Inject
+    gcsp.api.evidence.EvidenceSelection evidence;
+
+    public com.fasterxml.jackson.databind.node.ObjectNode latest(String environmentId) throws SQLException {
+        return new PresenterReleaseProjection(source(), evidence.selected().catalogue()).latest(environmentId);
+    }
+
     private StockRelease release;
     private ReleasedStock stock;
 

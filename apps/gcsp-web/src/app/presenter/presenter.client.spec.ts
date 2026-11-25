@@ -163,6 +163,20 @@ describe('PresenterClient Java routes, pinned commands and private lifecycle', (
     fetcher.mockResolvedValueOnce(ok({ ...resetValue(), replayed: true, clock: null }));
     expect(await client.submit(r)).toMatchObject({ state: 'ready', value: { clock: null, replayed: true } });
   });
+  it('P12 keeps Main preparation pins distinct from the clock policy pins after reset', async () => {
+    const input: PresenterResetInput = { commandId: 'main-reset', expectedRunId: 'run-1', scenarioId: 'main-successful-journey',
+      scenarioVersion: 'gcsp-acceptance-scenarios-v1', fixtureVersion: 'main-successful-journey-inputs-v2', policyVersion: 'policy-1' };
+    const request = command(client.prepareReset(input));
+    // ScenarioService returns its selected preparation plus the independent RunClock.state view.
+    fetcher.mockResolvedValueOnce(ok({ retiredRunId: 'run-1', activatedRunId: 'run-2', replayed: false,
+      scenario: { scenarioId: 'main-successful-journey', name: 'Main successful journey',
+        scenarioVersion: 'gcsp-acceptance-scenarios-v1', fixtureVersion: 'main-successful-journey-inputs-v2', policyVersion: 'policy-1' },
+      clock: { runId: 'run-2', now: at, clockVersion: 2, startsAt: at, namedTimes: { release: at },
+        scenarioVersion: 'gcsp-clock-scenario-v1', fixtureVersion: 'gcsp-clock-fixtures-v1', lastTick: null } }));
+    expect(await client.submit(request)).toMatchObject({ state: 'ready', value: { activatedRunId: 'run-2',
+      scenario: { scenarioVersion: 'gcsp-acceptance-scenarios-v1', fixtureVersion: 'main-successful-journey-inputs-v2' },
+      clock: { runId: 'run-2', scenarioVersion: 'gcsp-clock-scenario-v1', fixtureVersion: 'gcsp-clock-fixtures-v1', lastTick: null } } });
+  });
   it('P13 retains exact reset input after preparation failure and explicit recovery', async () => {
     const r = command(client.prepareReset(resetInput()));
     fetcher.mockResolvedValueOnce(json({ status: 'unavailable', code: 'scenario-preparation-incomplete', reason: 'Send the same reset again', retryable: true, runId: 'run-2' }, 503));
@@ -243,4 +257,27 @@ describe('PresenterClient Java routes, pinned commands and private lifecycle', (
     state.set({ status: 'ready', context: context({ environmentId: 'other' }) }); gate.resolve(config);
     expect(await pending).toMatchObject({ problem: 'context-changed', writeOutcome: 'not-sent' }); expect(getAccessToken).not.toHaveBeenCalled(); expect(fetcher).not.toHaveBeenCalled();
   });
+  it('reads the complete presenter order count and refuses partial or mixed-run pages', async () => {
+    fetcher.mockResolvedValueOnce(ok({ orders: [{ orderUuid: 'car-1', runId: 'run-1' }], failed: [], failedCount: 0, nextAfter: 'car-1' }));
+    fetcher.mockResolvedValueOnce(ok({ orders: [{ orderUuid: 'car-2', runId: 'run-1' }], failed: [], failedCount: 0, nextAfter: null }));
+    expect(await client.readOrderCount()).toEqual({ state: 'ready', value: { count: 2 } });
+    expect(String(fetcher.mock.calls[1][0])).toContain('/orders/progress/all?limit=100&after=car-1');
+    fetcher.mockResolvedValueOnce(ok({ orders: [], failed: [{ orderUuid: 'bad' }], failedCount: 1, nextAfter: null }));
+    expect((await client.readOrderCount()).state).toBe('invalid-response');
+    fetcher.mockResolvedValueOnce(ok({ orders: [{ orderUuid: 'car-2', runId: 'another-run' }], failed: [], failedCount: 0, nextAfter: null }));
+    expect((await client.readOrderCount()).state).toBe('invalid-response');
+  });
+  it('does not accept the old receipt-only release projection as fabricated zero totals', async () => {
+    fetcher.mockResolvedValueOnce(ok({ runId: 'run-1', release: null }));
+    expect((await client.readLatestRelease()).state).toBe('invalid-response');
+    const value = { runId: 'run-1', release: null, cars: [], modelLines: [], charts: { colours: [], points: [], fuel: [] }, counts: { released: 0, totalReleased: 0, onScheme: 0, buddyAllocated: 0, manuallyAllocated: 0 }, allocation: { pending: 0, declined: 0, accepted: 0 } };
+    fetcher.mockResolvedValueOnce(ok(value)); expect((await client.readLatestRelease()).state).toBe('ready');
+    fetcher.mockResolvedValueOnce(ok({ ...value, runId: 'another-run' })); expect((await client.readLatestRelease()).state).toBe('scope-mismatch');
+  });
+  it('only sends bounded positive suitability selectors and preserves release/page identity', async () => {
+    expect((await client.readSuitability(0)).state).toBe('failed'); expect(fetcher).not.toHaveBeenCalled();
+    fetcher.mockResolvedValueOnce(ok({ runId: 'run-1', asOf: at, release: 'latest', policy: { version: 'one', minimumFit: null, allocationRule: null }, paging: { cars: {page: 1,pages: 1,total: 0,size: 8}, buddies: {page: 1,pages: 1,total: 0,size: 4} }, cars: [], buddies: [], people: [] }));
+    expect((await client.readSuitability(1, 1, 'latest')).state).toBe('ready'); expect(String(fetcher.mock.calls[0][0])).toContain('/presenter/suitability?page=1&buddyPage=1&release=latest');
+  });
+
 });

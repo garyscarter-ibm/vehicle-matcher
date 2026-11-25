@@ -13,6 +13,10 @@ describe('source activity timeline', () => {
     expect(root.querySelector('time')?.getAttribute('datetime')).toBe('2026-07-01T10:00:00Z'); expect(root.querySelector('.gcsp-timeline-time')?.textContent).toContain('11:00');
     expect(root.textContent).toContain('Time not available'); expect(root.querySelector('button')?.textContent).toBe('Supplied action'); fixture.destroy();
   });
+  it('omits the redundant heading only when requested and retains an accessible section name', async () => {
+    const fixture = TestBed.createComponent(ActivityTimelineComponent); fixture.componentRef.setInput('heading', 'What happened'); fixture.componentRef.setInput('headingHidden', true); await fixture.whenStable();
+    const root: HTMLElement = fixture.nativeElement; expect(root.querySelector('h2')).toBeNull(); expect(root.querySelector('section')?.getAttribute('aria-label')).toBe('What happened'); expect(root.querySelector('section')?.hasAttribute('aria-labelledby')).toBe(false); fixture.destroy();
+  });
   it('aliases the shared UK/DST formatter and collapses only adjacent identical rows', async () => {
     expect(demoTime).toBe(formatActivityTime); expect(demoTime('2026-01-01T10:00:00Z')).toContain('10:00'); expect(demoTime('2026-07-01T10:00:00Z')).toContain('11:00');
     const fixture = TestBed.createComponent(ActivityTimelineComponent); const event = { label: 'Checked', occurredAt: '2026-11-22T10:00:00Z', detail: 'Four cars' };

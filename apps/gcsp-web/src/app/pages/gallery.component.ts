@@ -1,3 +1,7 @@
+import { CountBarsComponent } from '../kit/count-bars.component';
+import { ReleaseGridComponent } from '../kit/release-grid.component';
+import { MailDetailComponent } from '../kit/mail-detail.component';
+import { friendlyTime } from '../kit/friendly-time';
 import { BriefPreviewCardComponent, BriefPreviewCardView } from '../kit/brief-preview-card.component';
 import { MediaWellComponent } from '../kit/media-well.component';
 import { Component, signal } from '@angular/core';
@@ -44,7 +48,7 @@ const buddyPreview = (patch: Partial<ActivityProjection> = {}): ActivityProjecti
   searchEvidence: { status: 'recorded', checks: 1 }, currentOffer: null, offers: [], stateChanges: [], stateChangesEvidence: { status: 'recorded', rejectedReceipts: 0 }, ...patch });
 const galleryOffer: ActivityOffer = { offerRef: { offerId: 'gallery-held' }, state: 'active', displayState: 'active', version: 1, briefVersion: 4, createdAt: '2026-11-22T09:00:00Z', expiresAt: '2026-11-23T12:00:00Z' };
 const readyBuddy = (value: ActivityProjection): ActivityResult<ActivityProjection> => ({ status: 'ok', value });
-@Component({ selector: 'gcsp-gallery', imports: [BriefPreviewCardComponent, NotificationBellComponent, MailStatusChipComponent, GregNavigationComponent, MediaWellComponent, PreferenceCategoryComponent, PreferenceModeComponent, UnderstandingMeterComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LoadingSkeletonComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent, VehicleDetailsComponent, MediaGalleryComponent, CheckboxFieldComponent, OptionListComponent, TaskListComponent, SlotPickerComponent, BuddyStatusComponent, BuddyTileComponent, ActivityTimelineComponent, ActivityOfferComponent], styleUrl: './gallery.component.css', template: `
+@Component({ selector: 'gcsp-gallery', imports: [CountBarsComponent, ReleaseGridComponent, MailDetailComponent, BriefPreviewCardComponent, NotificationBellComponent, MailStatusChipComponent, GregNavigationComponent, MediaWellComponent, PreferenceCategoryComponent, PreferenceModeComponent, UnderstandingMeterComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LoadingSkeletonComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent, VehicleDetailsComponent, MediaGalleryComponent, CheckboxFieldComponent, OptionListComponent, TaskListComponent, SlotPickerComponent, BuddyStatusComponent, BuddyTileComponent, ActivityTimelineComponent, ActivityOfferComponent], styleUrl: './gallery.component.css', template: `
   <gcsp-screen-intro title="Angular components" lede="Shared portal components and states." />
   <section class="gcsp-panel"><h2>GCSP notification bell</h2><div class="notification-gallery">
     @for (example of bells; track example.label) { <div class="notification-example" [class.has-panel]="example.open"><h3>{{ example.label }}</h3>
@@ -76,6 +80,18 @@ const readyBuddy = (value: ActivityProjection): ActivityResult<ActivityProjectio
   <gcsp-status-screen title="Loading your account" message="Please wait." [busy]="true" [level]="2" />
   <gcsp-status-screen title="Account unavailable" message="Please try again." [level]="2"><button gcspButton type="button">Try again</button></gcsp-status-screen>
   <gcsp-status-screen title="Access not available" message="Your account does not have access to this page." [level]="2" />
+  <section class="gcsp-panel"><h2>Presenter source components</h2>
+    <p>{{ presenterTime }}</p>
+    <gcsp-activity-timeline heading="What happened" [headingHidden]="true" [events]="[{label: 'Scheme started', occurredAt: '2026-11-16T09:00:00Z'}]" />
+    <gcsp-count-bars label="Colour" [rows]="[{label: 'Blue', count: 8}, {label: 'White', count: 4}, {label: 'Red', count: 2}]" [limit]="2" otherLabel="Other colours" />
+    <gcsp-count-bars label="Empty release" [rows]="[]" />
+    <gcsp-release-grid [columns]="3" [animate]="false" [tiles]="[{id: 'a', imageSrc: '', label: 'BMW 330e Touring in Blue'}, {id: 'b', imageSrc: '', label: 'MINI Cooper Electric'}]" />
+    <gcsp-release-grid label="Loading released cars" [columns]="3" [loading]="true" />
+    <gcsp-mail-detail [message]="capturedExample" />
+    <ng-template #matrixCell let-row let-column="column">@if (column.key === 'car') { {{ row.label }} } @else { <button gcspButton type="button" variant="ghost" (click)="matrixChoice = row.label">Inspect {{ row.label }}</button> }</ng-template>
+    <gcsp-data-table caption="Supplied cell content" [columns]="[{key: 'car', label: 'Car'}, {key: 'buddy', label: 'Buddy'}]" [rows]="[{id: 'gallery-car', label: 'BMW 330e Touring', cells: {car: 'BMW 330e Touring'}}]" [cellTemplate]="matrixCell" />
+    <p>{{ matrixChoice }}</p>
+  </section>
   <section class="gcsp-panel"><h2>Outbox delivery status</h2><div class="gcsp-actions">
     <span gcspMailStatusChip state="sent" transport="captured" label="Captured, not sent"></span>
     <span gcspMailStatusChip state="sent" transport="configured" label="Accepted by email provider"></span>
@@ -247,6 +263,10 @@ const readyBuddy = (value: ActivityProjection): ActivityResult<ActivityProjectio
   </section>
 ` })
 export class GalleryComponent {
+  readonly presenterTime = friendlyTime('2026-11-16T11:30:00Z');
+  matrixChoice = '';
+  readonly capturedExample = { jobId: 'gallery-email', messageKind: 'offer', state: 'sent', transport: 'captured' as const, attempts: 1, error: null, nextAttemptAt: null, time: '2026-11-16T11:30:00Z', recipient: { employeeId: 'gallery-paula', name: 'Paula Mason' }, subject: 'Your reserved car', htmlBody: '<p>Your BMW 330e Touring is ready to review.</p>', textBody: 'Your BMW 330e Touring is ready to review.', offerLink: null };
+
   readonly skeletonLayouts = ['page', 'form', 'timeline', 'card', 'feature', 'console', 'section', 'release-grid', 'stats', 'bars', 'offer', 'media'];
   readonly selectedReason = signal('gallery-size');
   readonly exampleReasons = [

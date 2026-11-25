@@ -1,6 +1,10 @@
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { DataTableComponent } from './data-table.component';
+
+@Component({ imports: [DataTableComponent], template: `<ng-template #cell let-row let-column="column"><button type="button" (click)="chosen = row.id + ':' + column.key">{{ row.label }} {{ column.label }}</button></ng-template><gcsp-data-table caption="Matrix" [columns]="[{key: 'car', label: 'Car'}, {key: 'buddy', label: 'Buddy'}]" [rows]="[{id: 'exact-car', label: 'BMW Touring', cells: {car: 'BMW Touring'}}]" [cellTemplate]="cell" />` })
+class TemplateTableHost { chosen = ''; }
 
 describe('canonical source data table', () => {
   afterEach(() => TestBed.resetTestingModule());
@@ -11,6 +15,14 @@ describe('canonical source data table', () => {
     fixture.componentRef.setInput('rows', [{ id: 'case"[1]', label: 'Paula', cells: { employee: '<img src=x>', status: 'Open' } }]);
     fixture.detectChanges(); return fixture;
   }
+  it('retains semantic row and column headers when an explicit cell template supplies inspection actions', async () => {
+    const fixture = TestBed.createComponent(TemplateTableHost); await fixture.whenStable();
+    const root: HTMLElement = fixture.nativeElement;
+    expect(root.querySelector('tbody th[scope="row"] button')?.textContent).toBe('BMW Touring Car');
+    const cell = root.querySelector<HTMLButtonElement>('tbody td button')!; cell.click();
+    expect(fixture.componentInstance.chosen).toBe('exact-car:buddy');
+    for (const id of root.querySelector('tbody td')!.getAttribute('headers')!.split(' ')) expect(root.querySelector(`[id="${id}"]`)).not.toBeNull();
+  });
   it('has source defaults with no implicit case action, a caption-labelled region and literal row headers', () => {
     const fixture = table(); const root: HTMLElement = fixture.nativeElement;
     const region = root.querySelector('[role=region]')!; const caption = root.querySelector('caption')!;

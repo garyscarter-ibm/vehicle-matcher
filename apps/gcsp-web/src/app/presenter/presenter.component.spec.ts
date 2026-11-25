@@ -5,6 +5,7 @@ import { RouterTestingHarness } from '@angular/router/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { ApplicationContext, AuthPort, SessionState } from '../auth/auth.port';
 import { routes } from '../routes';
+import { OutboxClient } from '../outbox/outbox.client';
 import { PresenterClient } from './presenter.client';
 import { PresenterComponent } from './presenter.component';
 import { PresenterCatalogue, PresenterCommandValue, PresenterControls, PresenterCurrentScenario, PresenterFaults, PresenterResult, PresenterScenario, PresenterTick } from './presenter.types';
@@ -18,12 +19,17 @@ const lastTick: PresenterTick = { runId: 'run-1', tickId: 'tick-current', kind: 
   handlerOrder: [{ handlerId: 'stock-release', stage: 'release' }], missingStages: ['allocation'], outcomes: [{ handlerId: 'stock-release', stage: 'release', outcome: { status: 'pending', operationId: 'op-current' } }] };
 const controls = (patch: Partial<PresenterControls> = {}): PresenterControls => ({ runId: 'run-1', now: at, clockVersion: 4, scenarioVersion: 'scenario-1', fixtureVersion: 'fixture-1', startsAt: at,
   namedTimes: scenario.namedTimes, lastTick, controls: { policyVersion: 'policy-1', step: { value: 60, unit: 'seconds' }, namedTimes: scenario.namedTimes, nextRelease: { status: 'available', to: 'tomorrow', at: '2026-11-17T12:00:00.000Z' } }, ...patch });
-const catalogue: PresenterCatalogue = { catalogueVersion: 'catalogue-1', policyVersion: 'policy-1', scenarios: [scenario, unavailableScenario] };
+const mainScenario: PresenterScenario = { ...scenario, scenarioId: 'main-successful-journey', name: 'Main successful journey' };
+const catalogue: PresenterCatalogue = { catalogueVersion: 'catalogue-1', policyVersion: 'policy-1', scenarios: [scenario, mainScenario, unavailableScenario] };
 const current = (patch: Partial<PresenterCurrentScenario> = {}): PresenterCurrentScenario => ({ ...controls(), catalogueVersion: 'catalogue-1', currentScenario: scenario, ...patch });
 const faults: PresenterFaults = { runId: 'run-1', faults: [{ adapter: 'stock', available: true, mode: 'none', modes: ['none', 'unavailable'] }, { adapter: 'ordering', available: false, reason: 'not available yet' }] };
 const ok = <T>(value: T): PresenterResult<T> => ({ state: 'ready', value });
 const acknowledged = (): PresenterResult<PresenterCommandValue> => ok({ runId: 'run-1', now: at, clockVersion: 5 });
+const releaseValue = { runId: 'run-1', release: null, cars: [], counts: { released: 0, totalReleased: 0, onScheme: 0, buddyAllocated: 0, manuallyAllocated: 0 }, allocation: { pending: 0, declined: 0, accepted: 0 }, modelLines: [], charts: { colours: [], points: [], fuel: [] } };
 const fakeClient = () => ({
+  readOrderCount: vi.fn<PresenterClient['readOrderCount']>().mockResolvedValue(ok({ count: 0 })),
+  readLatestRelease: vi.fn<PresenterClient['readLatestRelease']>().mockResolvedValue(ok(releaseValue)),
+  readSuitability: vi.fn<PresenterClient['readSuitability']>().mockResolvedValue({ state: 'failed', value: null, problem: 'not configured' }),
   readControls: vi.fn<PresenterClient['readControls']>().mockResolvedValue(ok(controls())),
   readClock: vi.fn<PresenterClient['readClock']>().mockResolvedValue(ok(controls())),
   readTick: vi.fn<PresenterClient['readTick']>().mockResolvedValue(ok(lastTick)),
@@ -48,7 +54,7 @@ describe('FUCQ-450 registered presenter route and deliberate controls', () => {
     let sequence = 0; vi.stubGlobal('crypto', { randomUUID: () => `00000000-0000-4000-8000-${String(++sequence).padStart(12, '0')}` });
     state = signal<SessionState>({ status: 'ready', context }); client = fakeClient();
     auth = { state, recovery: signal(null), initialize: vi.fn(async () => {}), retry: vi.fn(async () => {}), signIn: vi.fn(async () => {}), signOut: vi.fn(async () => {}), completeSignIn: vi.fn(async () => {}), getAccessToken: vi.fn(async () => null) };
-    TestBed.configureTestingModule({ providers: [provideRouter(routes), { provide: AuthPort, useValue: auth }, { provide: PresenterClient, useValue: client }] });
+    TestBed.configureTestingModule({ providers: [provideRouter(routes), { provide: AuthPort, useValue: auth }, { provide: PresenterClient, useValue: client }, { provide: OutboxClient, useValue: { read: vi.fn(async () => ({ status: 'ok', value: { runId: 'run-1', messages: [] } })) } }] });
     harness = await RouterTestingHarness.create();
   });
   afterEach(() => { harness?.fixture.destroy(); TestBed.resetTestingModule(); vi.unstubAllGlobals(); });
@@ -56,7 +62,7 @@ describe('FUCQ-450 registered presenter route and deliberate controls', () => {
   const text = () => root().textContent!.replace(/\s+/g, ' ');
   const settle = async () => { harness.detectChanges(); await harness.fixture.whenStable(); harness.detectChanges(); };
   const wait = async (assertion: () => void) => { await vi.waitFor(async () => { await settle(); assertion(); }); };
-  async function enter() { page = await harness.navigateByUrl('/presenter', PresenterComponent); await wait(() => expect(page.controls()?.clockVersion).toBe(4)); }
+  async function enter() { page = await harness.navigateByUrl('/presenter', PresenterComponent); await wait(() => expect(page.controls()?.clockVersion).toBe(4)); page.advanced.set(true); harness.detectChanges(); }
   function button(label: string): HTMLButtonElement {
     const result = Array.from(root().querySelectorAll('button')).find(b => b.textContent!.trim() === label);
     if (!result) throw new Error(`Missing button: ${label}`); return result;
@@ -80,9 +86,10 @@ describe('FUCQ-450 registered presenter route and deliberate controls', () => {
     state.set({ status: 'ready', context: { ...context, roles: [role] } }); await harness.navigateByUrl('/presenter');
     expect(TestBed.inject(Router).url).toBe('/access-denied'); expect(client.readControls).not.toHaveBeenCalled(); expect(client.submit).not.toHaveBeenCalled();
   });
-  it('P04 renders authoritative UTC/run/version and actual missing-stage/handler outcomes', async () => {
-    await enter(); expect(text()).toContain(at); expect(text()).toContain('run-1'); expect(text()).toContain('tick-current'); expect(text()).toContain('stock-release');
-    expect(text()).toContain('allocation'); expect(text()).toContain('op-current'); expect(text()).toContain('pending'); expect(text()).not.toContain('All handlers completed');
+  it('P04 keeps actual clock/outcome facts in words without run, version or raw ISO leakage', async () => {
+    await enter(); expect(text()).toContain('Mon 16 Nov, 12:00pm'); expect(text()).toContain('Stock release: Waiting to complete');
+    for (const internal of [at, 'run-1', 'tick-current', 'stock-release', 'op-current', 'Clock version']) expect(text()).not.toContain(internal);
+    expect(text()).not.toContain('All handlers completed');
   });
   it('P05 pins step and next-release to the current clock version with fresh command references', async () => {
     await enter(); await completeCommand('Step 60 seconds'); await completeCommand('Next release');
@@ -95,7 +102,7 @@ describe('FUCQ-450 registered presenter route and deliberate controls', () => {
   it('P06 disables unavailable next release and describes the actual reason', async () => {
     const value = controls(); client.readControls.mockResolvedValue(ok({ ...value, controls: { ...value.controls, nextRelease: { status: 'unavailable', reason: 'No further release configured' } } }));
     await enter(); expect(button('Next release').disabled).toBe(true); expect(text()).toContain('No further release configured');
-    expect(button('Next release').getAttribute('aria-describedby')).toBe(page.control('release-reason'));
+    expect(button('Next release').getAttribute('aria-describedby')).toBe(page.control('advanced-release-reason'));
     await page.step('next-release'); expect(client.prepareControlTick).not.toHaveBeenCalled();
   });
   it('P07 submits exactly seconds or a named/instant target and preserves edited drafts across readback', async () => {
@@ -116,7 +123,7 @@ describe('FUCQ-450 registered presenter route and deliberate controls', () => {
   });
   it('P10 resets only after an inline pinned review, while Cancel and Escape restore trigger focus', async () => {
     await enter(); button('Reset scenario').click(); harness.detectChanges(); expect(document.activeElement).toBe(root().querySelector('[data-reset-review]'));
-    expect(text()).toContain('Run to replace'); expect(client.submit).not.toHaveBeenCalled();
+    expect(text()).toContain('Baseline'); expect(text()).not.toContain('Run to replace'); expect(client.submit).not.toHaveBeenCalled();
     button('Cancel').click(); harness.detectChanges(); expect(document.activeElement).toBe(button('Reset scenario'));
     button('Reset scenario').click(); harness.detectChanges(); root().querySelector('.presenter-confirmation')!.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })); harness.detectChanges();
     expect(document.activeElement).toBe(button('Reset scenario')); expect(client.submit).not.toHaveBeenCalled();
@@ -158,7 +165,7 @@ describe('FUCQ-450 registered presenter route and deliberate controls', () => {
   it('P17 shows a current-version conflict and uses current GET state without retrying the refused command', async () => {
     await enter(); client.submit.mockResolvedValueOnce({ state: 'refused', value: null, refusal: { status: 'conflict', code: 'clock-version', reason: 'Clock changed', retryable: false, currentVersion: 8 } });
     client.readControls.mockResolvedValueOnce(ok(controls({ clockVersion: 8 }))); await completeCommand('Step 60 seconds');
-    expect(page.controls()?.clockVersion).toBe(8); expect(text()).toContain('Current-version conflict'); expect(text()).toContain('Current version: 8'); expect(page.retryCommand()).toBeNull(); expect(client.submit).toHaveBeenCalledOnce();
+    expect(page.controls()?.clockVersion).toBe(8); expect(text()).toContain('Current-version conflict'); expect(text()).not.toContain('Current version: 8'); expect(page.retryCommand()).toBeNull(); expect(client.submit).toHaveBeenCalledOnce();
   });
   it('P18 reports an unavailable readback after acknowledgement and keeps new commands disabled', async () => {
     await enter(); client.readControls.mockResolvedValueOnce({ state: 'refused', value: null, refusal: { status: 'unavailable', code: 'database', reason: 'Database unavailable', retryable: true } });
@@ -221,17 +228,47 @@ describe('FUCQ-450 registered presenter route and deliberate controls', () => {
     page = await harness.navigateByUrl('/presenter', PresenterComponent); await wait(() => expect(page.reading()).toBe(false));
     expect(page.controls()).toBeNull(); expect(text()).toContain('active run changed'); await page.step('step'); expect(client.submit).not.toHaveBeenCalled();
   });
-  it('P25 reports the activated reset run, requests context refresh and reads the new run without replay', async () => {
+  it('P25 refreshes context after a confirmed reset and never exposes or replays the retired run', async () => {
     await enter(); const activated = controls({ runId: 'run-2', clockVersion: 1, lastTick: null });
     client.submit.mockResolvedValueOnce(ok({ retiredRunId: 'run-1', activatedRunId: 'run-2', replayed: false, scenario, clock: activated }));
-    client.readControls.mockResolvedValueOnce({ state: 'scope-mismatch', value: null });
-    button('Reset scenario').click(); harness.detectChanges(); await completeCommand('Confirm reset');
-    expect(text()).toContain('Activated run: run-2'); expect(text()).toContain('Refresh sign-in context to read the active run'); expect(page.controls()).toBeNull();
     client.readControls.mockResolvedValue(ok(activated)); client.readCurrentScenario.mockResolvedValue(ok(current({ ...activated, currentScenario: scenario })));
     client.readFaults.mockResolvedValue(ok({ ...faults, runId: 'run-2' }));
     auth.retry.mockImplementationOnce(async () => { state.set({ status: 'ready', context: { ...context, runId: 'run-2' } }); });
-    await completeCommand('Refresh sign-in context'); await wait(() => expect(page.controls()?.runId).toBe('run-2'));
-    expect(client.submit).toHaveBeenCalledOnce(); expect(page.retryCommand()).toBeNull(); expect(text()).toContain('Current backend state loaded.');
+    button('Reset scenario').click(); harness.detectChanges(); await completeCommand('Confirm reset'); await wait(() => expect(page.controls()?.runId).toBe('run-2'));
+    expect(auth.retry).toHaveBeenCalledOnce(); expect(client.submit).toHaveBeenCalledOnce(); expect(page.retryCommand()).toBeNull();
+    expect(text()).not.toContain('run-2'); expect(text()).not.toContain('run-1');
+  });
+  it('P28 sends the Basic primary to the next weekday clock target, independent of the named cue', async () => {
+    client.readCurrentScenario.mockResolvedValue(ok(current({ currentScenario: mainScenario })));
+    await enter(); page.advanced.set(false); harness.detectChanges(); await completeCommand("Release tomorrow's cars");
+    expect(client.prepareControlTick).toHaveBeenCalledWith({ commandId: expect.any(String), expectedClockVersion: 4, mode: 'to', to: '2026-11-17T11:30:00.000Z' });
+    expect(client.submit).toHaveBeenCalledOnce();
+  });
+  it('P29 stops a confirmed-reset continuation when context refresh destroys the old route', async () => {
+    await enter(); const activated = controls({runId: 'run-2',clockVersion: 1,lastTick: null});
+    client.submit.mockResolvedValueOnce(ok({retiredRunId: 'run-1',activatedRunId: 'run-2',replayed: false,scenario,clock: activated}));
+    let finish!: () => void;
+    auth.retry.mockImplementationOnce(async () => {state.set({status: 'loading'}); await new Promise<void>(done => {finish = done;}); state.set({status: 'ready',context: {...context,runId: 'run-2'}});});
+    page.reviewReset(); const reset = page.confirmReset(); await vi.waitFor(() => expect(auth.retry).toHaveBeenCalledOnce());
+    const signal = client.readControls.mock.calls.at(-1)![0]!.signal!; const reads = client.readControls.mock.calls.length;
+    harness.fixture.destroy(); expect(signal.aborted).toBe(true); finish(); await reset;
+    expect(client.readControls).toHaveBeenCalledTimes(reads); expect(client.readLatestRelease).toHaveBeenCalledTimes(reads); expect(client.submit).toHaveBeenCalledOnce(); expect(signal.aborted).toBe(true);
+  });
+  it('P30 preserves released cars during ordinary readback instead of flashing the loading skeleton', async () => {
+    client.readLatestRelease.mockResolvedValue(ok({...releaseValue,release: {trancheId: 'first',windowId: 'first',releasedAt: at},cars: [{id: 'car-1',imageSrc: null,imageAlt: 'BMW Touring',modelName: 'BMW Touring',colourName: 'Blue'}]}));
+    await enter(); page.advanced.set(false); await settle();
+    let finish!: (value: PresenterResult<PresenterControls>) => void; client.readControls.mockReturnValueOnce(new Promise(done => {finish = done;}));
+    const refresh = page.refresh(); harness.detectChanges();
+    expect(page.reading()).toBe(true); expect(root().querySelector('.gcsp-release-grid')?.getAttribute('aria-busy')).toBeNull(); expect(root().querySelector('.gcsp-release-grid')?.textContent).toContain('BMW Touring');
+    finish(ok(controls())); await refresh;
+  });
+  it('P27 restores the basic console, day bar and Main confirmation without preparing on Cancel', async () => {
+    await enter(); page.advanced.set(false); harness.detectChanges();
+    expect(root().querySelector('.gcsp-console')).not.toBeNull(); expect(root().querySelector('.gcsp-console-week [aria-current="date"]')?.textContent).toBe('Mon 16');
+    button('Start again').click(); harness.detectChanges(); expect(text()).toContain('Day 1, cars cleared. Preferences kept.'); expect(document.activeElement).toBe(button('Confirm'));
+    expect(client.prepareReset).toHaveBeenCalledWith(expect.objectContaining({ scenarioId: 'main-successful-journey', expectedRunId: 'run-1' })); expect(client.submit).not.toHaveBeenCalled();
+    button('Cancel').click(); harness.detectChanges(); expect(document.activeElement).toBe(button('Start again')); expect(client.submit).not.toHaveBeenCalled();
+    expect(root().querySelector('.gcsp-console-release')?.textContent).toContain("Today's release"); expect(text()).toContain('Car suitability'); expect(text()).toContain('What happened');
   });
   it.each(['ready', 'unknown', 'unavailable'] as const)('P26 clears the fault with %s recovery while preserving the exact interrupted control command', async clearOutcome => {
     await enter(); field('fault', 'stock'); field('mode', 'unavailable'); await completeCommand('Set fault mode');

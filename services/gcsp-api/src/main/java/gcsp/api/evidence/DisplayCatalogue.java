@@ -144,6 +144,44 @@ public final class DisplayCatalogue {
         return asset != null && asset.isTextual() && ASSET.matcher(asset.textValue()).matches() ? asset.textValue() : null;
     }
 
+    /** Node configurationIdDisplayImage, then modelDisplayImage, for an already released stock snapshot. */
+    public JsonNode presenterImage(String configurationId, String modelKey) {
+        if (data == null) return null;
+        try {
+            Signature sig = signature(JsonNodeFactory.instance.textNode(configurationId));
+            if (sig != null) {
+                JsonNode model = lookup(data.get("vgModels"), sig.vg());
+                if (model != null && (modelKey == null || modelKey.startsWith(textOf(model.get("generation")) + " "))) {
+                    JsonNode entry = configurations.get(configurationId);
+                    JsonNode raw = entry == null ? variantImage(model, sig.paint()) : entry.get("image");
+                    if (raw != null) {
+                        JsonNode found = published(merged(raw));
+                        if (found != null) return found;
+                    }
+                }
+            }
+            JsonNode raw = lookup(data.get("models"), modelKey);
+            return raw == null ? null : published(merged(raw));
+        } catch (RuntimeException e) {
+            return null;
+        }
+    }
+
+    /** Paint code of a catalogue picture, matching Node's pictureColours fallback. */
+    public Map<String, String> presenterPaints() {
+        if (data == null) return Map.of();
+        List<JsonNode> images = new ArrayList<>();
+        for (JsonNode row : data.get("configurations")) images.add(row.get("image"));
+        data.get("variants").forEach(images::add);
+        data.get("models").forEach(images::add);
+        Map<String, String> paints = new LinkedHashMap<>();
+        for (JsonNode image : images) {
+            Signature sig = signature(image.get("configurationId"));
+            if (sig != null && assetPath(image) != null) paints.put("/" + assetPath(image), sig.paint());
+        }
+        return paints;
+    }
+
     /** Node configurationDisplayGallery: ordered, individually verified retained views, or none. */
     public List<JsonNode> gallery(JsonNode record) {
         if (data == null) return List.of();

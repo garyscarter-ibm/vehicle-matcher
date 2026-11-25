@@ -23,6 +23,13 @@ the brief. Supply the frozen reference below. Account parser states are labelled
 UI states and actual envelopes. Image framing/dimensions remain distinct; the separate hosted asset probe is
 availability evidence. The pair awaits human review; this local run does not prove a hosted sign-in journey.
 
+Select FUCQ-561 presenter coverage with `npm --prefix apps/gcsp-web run test:e2e -- --case f561`.
+Run once on the final committed source. It checks the Basic console, actual release projection,
+suitability, captured mail, restart and the live frozen 1280px comparison. The local composition
+uses each engine's public Main reset and Basic release button, comparing semantic inputs, confirmed
+brief, clock and stock while retaining the distinct generated run IDs. It does not establish the
+actual hosted-dev release cue or human acceptance of the screenshot pair.
+
 ## Manual F340 walkthrough
 
 Run `python3 -B apps/gcsp-web/e2e/run.py --case f340 --manual` with the same pinned Node, installed
