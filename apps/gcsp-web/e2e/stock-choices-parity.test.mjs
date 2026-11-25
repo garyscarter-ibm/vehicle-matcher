@@ -79,17 +79,24 @@ test('FUCQ-553: source stock, choices and gallery reservation handover', { timeo
   const employee = await suite.newPage('employee', 'demo-paula', 'account');
   const presenter = await suite.newPage('presenter', 'demo-presenter', 'presenter');
   await suite.prepareInitialBrief(employee, presenter);
-  await saveActualDraft(suite, employee);
   const released = await suite.releaseMainOffer(employee, presenter);
   const offerId = released.offer.offerRef.offerId;
+  await saveActualDraft(suite, employee);
   observeClaims(employee);
   await employee.setViewportSize({ width: 1280, height: 800 });
   await check('held-offer navigation preserves the source cards', async () => {
+    const stock = good(await suite.call(employee, 'GET', '/manual/stock'), 'Actual current-context held-offer stock');
+    assert.equal(stock.heldOffer.offerId, offerId);
     await employee.goto(`${suite.origins.web}/gcsp/stock`);
     await employee.getByRole('button', { name: 'View your offer', exact: true }).waitFor();
     assert.ok(await employee.locator('.vm-card.vm-card-explicit.gcsp-card').count() > 0);
-    await employee.getByRole('button', { name: 'View your offer', exact: true }).click();
+    await suite.screenshot(employee, 'angular-held-offer-stock-1280', { fullPage: true });
+    await employee.setViewportSize({ width: 375, height: 812 }); await noOverflow(employee);
+    await suite.screenshot(employee, 'angular-held-offer-stock-375', { fullPage: true });
+    await employee.getByRole('button', { name: 'View your offer', exact: true }).focus();
+    await employee.getByRole('button', { name: 'View your offer', exact: true }).press('Enter');
     await employee.waitForURL(url => url.pathname.endsWith(`/offers/${offerId}`));
+    await employee.setViewportSize({ width: 1280, height: 800 });
     await declineActualOffer(suite, employee, offerId);
     evidence.choices = await saveActualDraft(suite, employee);
   });
@@ -155,6 +162,9 @@ test('FUCQ-553: source stock, choices and gallery reservation handover', { timeo
     assert.equal(evidence.failed.state, 'claim-failed'); assert.equal(evidence.failed.pendingOperation, null);
     await employee.setViewportSize({ width: 1280, height: 800 });
     await suite.screenshot(employee, 'angular-reservation-failed-1280', { fullPage: true });
+    await employee.setViewportSize({ width: 375, height: 812 }); await noOverflow(employee);
+    await suite.screenshot(employee, 'angular-reservation-failed-375', { fullPage: true });
+    await employee.setViewportSize({ width: 1280, height: 800 });
   });
   await check('fresh pins, explicit identical retry after a lost request, held review without another reserve', async () => {
     await employee.locator('.vm-card [data-review-id]:enabled').first().waitFor();
