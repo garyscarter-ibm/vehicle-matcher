@@ -66,7 +66,9 @@ describe('pure owned order and Java lifecycle projection', () => {
   });
 
   it('joins only the exact selected car and preserves absent display facts', () => {
-    const snapshot = ok({ selection: { stock: { orderUuid: identity.orderUuid, facts: { display: { name: 'Supplied BMW', photo: '/car.png' } } } } });
+    const snapshot = ok({ status: 'acknowledged', selection: { orderUuid: identity.orderUuid, orderNumber: 'supplied-number',
+      configurationId: 'config', quoteId: 'saved-quote', termsVersion: 'terms', policyVersion: 'policy', receivedAt: null,
+      stock: { orderUuid: identity.orderUuid, facts: { display: { name: 'Supplied BMW', photo: '/car.png' } } } } });
     expect(projectOrders(input({ snapshot })).vehicle).toEqual({ name: 'Supplied BMW', photo: '/car.png' });
     expect(projectOrders(input({ snapshot: ok({ selection: { stock: { orderUuid: 'another-order', facts: { display: { name: 'Other car' } } } } }) })).vehicle).toBeNull();
     expect(projectOrders(input({ snapshot: ok({ selection: { stock: { orderUuid: identity.orderUuid } } }) })).vehicle).toBeNull();
