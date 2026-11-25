@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "fixtureVersion": "suv-walkthrough-inputs-v1",
+  "ownerStory": "FUCQ-340",
+  "reset": {
+    "scenarioId": "main-successful-journey",
+    "scenarioVersion": "gcsp-acceptance-scenarios-v1",
+    "fixtureVersion": "main-successful-journey-inputs-v2"
+  },
+  "stock": {
+    "source": "apps/gcsp-web/e2e/fixtures/main-stock-plan.json.gz",
+    "sha256": "50f19efc4b4ae818f500b6a2e32c1f1f5ea3d56150d05d72312102f35748c475",
+    "windowId": "demo-4bf037223a3a9fd0792fb06668db141a:stock:4",
+    "releaseAt": "2026-11-27T11:30:00.000Z",
+    "count": 100
+  },
+  "baseline": {
+    "principalId": "demo-paula",
+    "service": "brief",
+    "operation": "confirm",
+    "preferences": {
+      "body": {
+        "value": "estate",
+        "importance": 80
+      },
+      "comfort": {
+        "value": 50,
+        "importance": 50
+      },
+      "sportiness": {
+        "value": 50,
+        "importance": 50
+      }
+    },
+    "essentials": {
+      "seats": 5,
+      "charging": "not-ready"
+    },
+    "consent": {
+      "search": true,
+      "hold": true
+    }
+  },
+  "suv": {
+    "principalId": "demo-paula",
+    "service": "brief",
+    "operation": "confirm",
+    "preferences": {
+      "body": {
+        "value": "suv",
+        "importance": 80
+      },
+      "comfort": {
+        "value": 50,
+        "importance": 50
+      },
+      "sportiness": {
+        "value": 50,
+        "importance": 50
+      }
+    },
+    "essentials": {
+      "seats": 5,
+      "charging": "not-ready"
+    },
+    "consent": {
+      "search": true,
+      "hold": true
+    }
+  },
+  "provenance": {
+    "basis": "FUCQ-125 Main reset and FUCQ-128 decline/body-change walkthrough; separate bounded employee inputs, not a catalogue entry or computed outcome",
+    "referenceCommit": "e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38",
+    "stockInput": "Exact retained Main generated source instance; facts and all source identifiers unchanged",
+    "policy": "Canonical active PolicyService supplies eligibility, points, essential operators and matching assumptions",
+    "dataStrategy": "specified: Java 21/Quarkus 3, existing PostgreSQL run state and selected adapters; no new persistence or topology",
+    "piHeld": "Synthetic scenario identity only; no new store"
+  },
+  "mainStart": {
+    "principalId": "demo-paula",
+    "service": "brief",
+    "operation": "confirm",
+    "preferences": {
+      "body": {
+        "value": "estate",
+        "importance": 80
+      }
+    },
+    "essentials": {
+      "seats": 5,
+      "charging": "not-ready"
+    },
+    "consent": {
+      "search": true,
+      "hold": true
+    }
+  }
+}
