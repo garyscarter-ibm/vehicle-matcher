@@ -22,6 +22,8 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
   const employee = await suite.newPage('employee', 'demo-paula', 'account');
   const presenter = await suite.newPage('presenter', 'demo-presenter', 'presenter');
   let offer;
+  let offerRunId;
+  let offerHref;
   let activeRows;
 
   await t.test('AC1/2: initial empty state and employee header placement', async () => {
@@ -92,8 +94,11 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
     const raw = await suite.call(employee, 'GET', '/activity');
     assert.equal(raw.status, 200);
     offer = raw.body.value.currentOffer;
+    offerRunId = raw.body.value.runId;
     assert.equal(offer.state, 'active');
     assert.ok(offer.orderUuid && offer.offerRef?.offerId && offer.expiresAt);
+    assert.ok(typeof offerRunId === 'string' && offerRunId.length > 0);
+    offerHref = `/gcsp/offers/${encodeURIComponent(offer.offerRef.offerId)}?runId=${encodeURIComponent(offerRunId)}`;
     const sourceCars = suite.plan.windows.flatMap((window) => window.stock);
     assert.ok(sourceCars.some((car) => car.orderUuid === offer.orderUuid), 'The held car comes from the exact retained Node input');
     suite.receipt.offer = { orderUuid: offer.orderUuid, offerId: offer.offerRef.offerId, state: offer.state, expiresAt: offer.expiresAt };
@@ -107,7 +112,7 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
     await image.waitFor();
     await until(() => image.evaluate((node) => node.complete && node.naturalWidth > 0), 'The real offer thumbnail must load');
     const href = await panel(employee).getByRole('link', { name: 'View your offer', exact: true }).getAttribute('href');
-    assert.ok(href.includes(encodeURIComponent(offer.offerRef.offerId)) || href.includes(offer.offerRef.offerId));
+    assert.equal(href, offerHref, 'The bell retains the exact encoded current-offer identity and run context');
     activeRows = await panel(employee).locator('.gcsp-bell-row').count();
     assert.ok(activeRows >= 1 && activeRows <= 6, 'Notification projection is bounded');
     const badgeColor = await employee.locator('.gcsp-bell-badge').evaluate((node) => getComputedStyle(node).backgroundColor);
@@ -164,8 +169,29 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
     await suite.compareFrozenNode({ ...suite.receipt.offer, hold: suite.receipt.actualHold.semantic, panel: suite.receipt.activePanel,
       clock: suite.receipt.actualReleaseClock });
     assert.equal(await employee.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'The header adds no narrow horizontal overflow');
+    const offerResponse = employee.waitForResponse((response) => response.request().method() === 'GET'
+      && response.url() === `${suite.apiBase}/offers/${encodeURIComponent(offer.offerRef.offerId)}?runId=${encodeURIComponent(offerRunId)}`);
     await panel(employee).getByRole('link', { name: 'View your offer', exact: true }).click();
-    await employee.waitForURL((url) => url.pathname.includes('/gcsp/offers/'));
+    const target = new URL(offerHref, suite.origins.web);
+    const opensExactOffer = (url) => {
+      // Angular canonicalizes characters such as colon; decode only the owned final segment.
+      const segments = url.pathname.split('/');
+      return url.origin === target.origin && segments.length === 4 && segments[0] === ''
+        && segments[1] === 'gcsp' && segments[2] === 'offers'
+        && decodeURIComponent(segments[3]) === offer.offerRef.offerId
+        && url.search === target.search && url.hash === target.hash;
+    };
+    await employee.waitForURL(opensExactOffer);
+    assert.ok(opensExactOffer(new URL(employee.url())), `The bell opens the exact owned offer route: ${employee.url()}`);
+    const loadedResponse = await offerResponse;
+    assert.equal(loadedResponse.status(), 200);
+    const loaded = await loadedResponse.json();
+    assert.equal(loaded.status, 'ok');
+    assert.equal(loaded.value.offerId, offer.offerRef.offerId);
+    assert.equal(loaded.value.runId, offerRunId);
+    assert.equal(loaded.value.quote.orderUuid, offer.orderUuid, 'The opened offer retains its actual held car');
+    suite.receipt.offerNavigation = { href: employee.url(), offerId: loaded.value.offerId,
+      runId: loaded.value.runId, orderUuid: loaded.value.quote.orderUuid };
     await bell(employee).waitFor();
     await until(async () => await bell(employee).getAttribute('aria-label') === 'Notifications, 1 car offer waiting', 'Opening the actual offer does not clear the count');
     await suite.screenshot(employee, 'offer-count-preserved-375');
