@@ -84,7 +84,7 @@ async function offerLink(dialog, page, offer) {
   const actual = new URL(await link.getAttribute('href'), page.url());
   assert.equal(actual.href, new URL(offer.href, page.url()).href, 'The link uses its actual activity API offer target');
   assert.equal(actual.searchParams.get('offerId') ?? decodeURIComponent(actual.pathname.split('/').at(-1)), offer.offerRef.offerId);
-  return { href: actual.href, offerId: offer.offerRef.offerId };
+  return { path: actual.pathname, offerId: offer.offerRef.offerId };
 }
 
 async function dismissDrawer(page, opener, name, inspect = async () => {}) {
@@ -234,6 +234,25 @@ test('FUCQ-551: actual held account, frozen pair, commands, truthful failure and
         assert.equal(activity.body.value.currentOffer.state, 'active');
         await tile.getByRole('button', { name: paused ? 'Resume search' : 'Pause search', exact: true }).waitFor();
         await suite.screenshot(employee, paused ? 'angular-account-paused-1280' : 'angular-account-resumed-1280', { fullPage: true });
+        if (paused) {
+          const before = good(await suite.call(employee, 'GET', '/brief/editor'), 'Actual paused editor');
+          evidence.resumePreparation = { before: redact(before),
+            basis: 'The captured Main brief has one considered category. After the unchanged held pair and real Pause, use public Same again autosave to meet the existing engagement minimum while preserving pause and the held offer.' };
+          if (before.initial.buddy.remaining > 0) {
+            const save = employee.waitForResponse((response) => response.request().method() === 'POST'
+              && new URL(response.url()).pathname.endsWith('/brief/preferences'));
+            await employee.getByRole('radio', { name: 'Same again, please!', exact: true }).check();
+            const saved = await save;
+            evidence.resumePreparation.save = redact({ status: saved.status(), body: await saved.json() });
+            good(evidence.resumePreparation.save, 'Actual Same again autosave');
+            let after;
+            await until(async () => {
+              after = good(await suite.call(employee, 'GET', '/brief/editor'), 'Actual saved eligibility');
+              return after.initial.sameAgain.on && after.initial.buddy.reason === 'paused' && after.initial.buddy.remaining === 0;
+            }, 'The public autosave preserves pause and meets the existing minimum');
+            evidence.resumePreparation.after = redact(after);
+          }
+        }
       }
     });
 
@@ -261,7 +280,10 @@ test('FUCQ-551: actual held account, frozen pair, commands, truthful failure and
       const mileage = dialog.getByLabel('Expected return mileage (miles)', { exact: true });
       await mileage.fill('5400'); await mileage.press('Tab');
       const declarations = dialog.getByRole('checkbox');
+      assert.ok(await declarations.count() > 0);
       for (let index = 0; index < await declarations.count(); index++) await declarations.nth(index).check();
+      await until(() => dialog.getByRole('button', { name: 'Accept offer', exact: true }).isEnabled(),
+        'The actual acceptance control enables after declaration rendering');
       const decision = employee.waitForResponse((response) => response.request().method() === 'POST' &&
         new URL(response.url()).pathname.endsWith(`/offers/${offerId}/decision`));
       await dialog.getByRole('button', { name: 'Accept offer', exact: true }).click();
