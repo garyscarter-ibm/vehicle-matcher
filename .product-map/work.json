@@ -10880,84 +10880,6 @@
     },
     {
       "assignee": "Russell Gowers",
-      "branch": "dev/DEV-2026-11-22-vesper-026",
-      "id": "FUCQ-551",
-      "observed_at": "2026-11-23T11:56:57Z",
-      "original_status": "To Do",
-      "slices": [
-        {
-          "evidence": "Source9f668374f; lead reviewed frozen markup/classes, factCSSspecificity, rating scopedqueue/canonicalack/retry, help lifecycle, exactcountdown and photo-base mapping; fresh89/89 in6specs passed lead-current-car-review receipt. Source boundary only; fullAC/pair remain pending.",
-          "id": "current-car",
-          "observed_at": "2026-11-22T23:20:17Z",
-          "status": "complete",
-          "title": "Current car source styling and rating (5 points)"
-        },
-        {
-          "evidence": "Source793b9f51f. Lead compared frozen ports/composition, scoped command authority, adjacent canonical editor sync, journey omission, neutral preference frame and focus. Worker29 distinct focused cases plus lead84 caller cases/final6 HTTP passed;126ratchet/4inline/boundary receipts verified. Source boundary only; rendered/global-style/live/pair acceptance remains open.",
-          "id": "buddy",
-          "observed_at": "2026-11-22T23:37:17.621716+00:00",
-          "status": "complete",
-          "title": "Account Buddy composition (5 points)"
-        },
-        {
-          "evidence": "Source76607f189: lead reviewed frozen DataTable/history and explicit callers;26hashes/6receipts matched,101scoped cases/128ratchet/4inline/boundary passed. Clean pinned build and921compiled/assembled WebP hashes/87265982B pass. Actual authenticated hosted current-image200 remains unproved; all6ACs open.",
-          "id": "account-history-media",
-          "observed_at": "2026-11-22T23:54:50.278295+00:00",
-          "status": "in-progress",
-          "title": "Shared history, failure regression and hosted image (3 points)"
-        },
-        {
-          "evidence": "Own source76607f189 clean production build and explicit targeted built boundary passed; code_key6fe81454, tree61d1da70. Supported F548/549/550/552/555 sibling/global/shared-presenter integration remains dispatcher work. No copying/manual stacking or rendered acceptance claimed.",
-          "id": "integration-validation",
-          "observed_at": "2026-11-22T23:54:50.278295+00:00",
-          "status": "blocked",
-          "title": "Supported sibling integration and focused validation"
-        },
-        {
-          "evidence": "No connected runtime/browser/deploy work performed. F562reset503/F564clock decisions remain unanswered; no equality weakened. Actual hosted src200, real same-state1280Node/Angular pair, attachments, independent visual critique and human-signed ledger remain absent. All6original ACs stay open.",
-          "id": "connected-parity",
-          "observed_at": "2026-11-22T23:54:50.278295+00:00",
-          "status": "blocked",
-          "title": "Actual live same-state Node Angular parity"
-        },
-        {
-          "evidence": "Partial Result/plan1f5b0bbe5 published after lead source/caller review, verified receipts, pinned build/asset proof and targeted boundary.71/71owned roots/groups/reservations absent; own dist/dependency link removed, shared caches preserved, heavy slot released. Source handoff only; all6ACs unticked and Jira In Progress unchanged.",
-          "id": "review-handoff",
-          "observed_at": "2026-11-22T23:54:50.278295+00:00",
-          "status": "complete",
-          "title": "Lead review, fixed AC evidence and cleanup"
-        }
-      ],
-      "status": "In Progress",
-      "title": "Angular Your cars lost the Buddy tile and car styling, shows a false error...",
-      "type": "Bug",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-551",
-      "workers": [
-        {
-          "expires_at": "2026-11-22T23:59:50.278295+00:00",
-          "harness": "codex",
-          "id": "01a20553-daae-7f10-944e-1d8cb280ed69",
-          "name": "Chester",
-          "observed_at": "2026-11-22T23:54:50.278295+00:00",
-          "role": "story-lead",
-          "source": "Observed running via collaboration.list_agents; completing final metadata publication and partial source handoff. All6ACs remain unticked; no connected work active. Parent will reconcile final completion.",
-          "status": "active"
-        },
-        {
-          "expires_at": "2026-11-22T23:54:50.278295+00:00",
-          "harness": "codex",
-          "id": "01a2057b-3589-7b41-809e-9e26b50cdb3e",
-          "name": "Beaky Buzzard",
-          "observed_at": "2026-11-22T23:54:50.278295+00:00",
-          "role": "implementer",
-          "source": "Observed completed via collaboration.list_agents; canonical source reviewed and published76607f189; matching worker receipts/cleanup verified. No descendants.",
-          "status": "stopped"
-        }
-      ]
-    },
-    {
-      "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-029",
       "evidence": "Published merge de454757f of918263482 verified; first production build passes. Covering web batch green1499/86files, initial resource-incomplete attempt excluded; all10attempt/chunk roots/groups and batch worktree/ref/link/lease removed. Source composition and actual live pair pending.",
       "id": "FUCQ-556",
@@ -12734,6 +12656,104 @@
       "type": "Bug",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-564"
+    },
+    {
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-22-vesper-026",
+      "id": "FUCQ-551",
+      "observed_at": "2026-11-25T05:49:34Z",
+      "original_status": "To Do",
+      "slices": [
+        {
+          "evidence": "Source9f668374f; lead reviewed frozen markup/classes, factCSSspecificity, rating scopedqueue/canonicalack/retry, help lifecycle, exactcountdown and photo-base mapping; fresh89/89 in6specs passed lead-current-car-review receipt. Source boundary only; fullAC/pair remain pending.",
+          "id": "current-car",
+          "observed_at": "2026-11-22T23:20:17Z",
+          "status": "complete",
+          "title": "Current car source styling and rating (5 points)"
+        },
+        {
+          "evidence": "Source793b9f51f. Lead compared frozen ports/composition, scoped command authority, adjacent canonical editor sync, journey omission, neutral preference frame and focus. Worker29 distinct focused cases plus lead84 caller cases/final6 HTTP passed;126ratchet/4inline/boundary receipts verified. Source boundary only; rendered/global-style/live/pair acceptance remains open.",
+          "id": "buddy",
+          "observed_at": "2026-11-22T23:37:17.621716+00:00",
+          "status": "complete",
+          "title": "Account Buddy composition (5 points)"
+        },
+        {
+          "evidence": "Source76607f189: lead reviewed frozen DataTable/history and explicit callers;26hashes/6receipts matched,101scoped cases/128ratchet/4inline/boundary passed. Clean pinned build and921compiled/assembled WebP hashes/87265982B pass. Actual authenticated hosted current-image200 remains unproved; all6ACs open.",
+          "id": "account-history-media",
+          "observed_at": "2026-11-22T23:54:50.278295+00:00",
+          "status": "in-progress",
+          "title": "Shared history, failure regression and hosted image (3 points)"
+        },
+        {
+          "evidence": "Supported sibling sources integrated by root e8bf8bd1e; focused final validation still pending. Reuse stable original slice plan.",
+          "id": "integration-validation",
+          "observed_at": "2026-11-25T05:45:54Z",
+          "status": "in-progress",
+          "title": "Supported sibling integration and focused validation"
+        },
+        {
+          "evidence": "25 November Spike resumes original six-AC increment after supported F550 integration at e8bf8bd1e. One bounded real envelope/client-status diagnosis precedes any banner repair; historical F562/F564 holds are superseded by integrated working sources. Human pair acceptance remains open.",
+          "id": "connected-parity",
+          "observed_at": "2026-11-25T05:45:54Z",
+          "status": "in-progress",
+          "title": "Actual live same-state Node Angular parity"
+        },
+        {
+          "evidence": "Spike resumes retained original increment; final repair review, current evidence and resource reconciliation pending.",
+          "id": "review-handoff",
+          "observed_at": "2026-11-25T05:45:54Z",
+          "status": "in-progress",
+          "title": "Lead review, fixed AC evidence and cleanup"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Angular Your cars lost the Buddy tile and car styling, shows a false error...",
+      "type": "Bug",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-551",
+      "workers": [
+        {
+          "expires_at": "2026-11-22T23:59:50.278295+00:00",
+          "harness": "codex",
+          "id": "01a20553-daae-7f10-944e-1d8cb280ed69",
+          "name": "Chester",
+          "observed_at": "2026-11-22T23:54:50.278295+00:00",
+          "role": "story-lead",
+          "source": "Observed running via collaboration.list_agents; completing final metadata publication and partial source handoff. All6ACs remain unticked; no connected work active. Parent will reconcile final completion.",
+          "status": "stopped"
+        },
+        {
+          "expires_at": "2026-11-22T23:54:50.278295+00:00",
+          "harness": "codex",
+          "id": "01a2057b-3589-7b41-809e-9e26b50cdb3e",
+          "name": "Beaky Buzzard",
+          "observed_at": "2026-11-22T23:54:50.278295+00:00",
+          "role": "implementer",
+          "source": "Observed completed via collaboration.list_agents; canonical source reviewed and published76607f189; matching worker receipts/cleanup verified. No descendants.",
+          "status": "stopped"
+        },
+        {
+          "id": "01a2113c-19bd-7a01-a6f9-9fb237f12fda",
+          "name": "Spike",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-25T05:49:34.890928+00:00",
+          "expires_at": "2026-11-25T06:34:34.890928+00:00",
+          "status": "active",
+          "source": "Observed running via native collaboration; original F551 claim retained, no new tracker claim. Lead owns bounded remaining account diagnosis/repair/validation."
+        },
+        {
+          "id": "/root/spike/melissa_duck",
+          "name": "Melissa Duck",
+          "role": "runner",
+          "harness": "codex",
+          "observed_at": "2026-11-25T05:49:34.890928+00:00",
+          "expires_at": "2026-11-25T06:34:34.890928+00:00",
+          "status": "active",
+          "source": "Observed running via native collaboration for one real envelope/client-status diagnostic; no production edits."
+        }
+      ]
     }
   ]
 }
