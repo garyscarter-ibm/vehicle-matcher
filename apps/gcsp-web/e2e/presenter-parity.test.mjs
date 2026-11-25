@@ -203,6 +203,20 @@ test('FUCQ-561: presenter console follows the actual signed-in release, inspecti
       await presenter.getByText('What happened', { exact: true }).click();
       const email = presenter.getByRole('button', { name: /^View email,/ }).first();
       await email.waitFor({ state: 'visible' });
+      const mailNetwork = { requestFailures: [], consoleErrors: [] };
+      const safeUrl = (raw) => { try { const url = new URL(raw); return url.origin + url.pathname; } catch { return raw.split('?')[0]; } };
+      const failedImage = (request) => {
+        if (request.resourceType() === 'image' && mailNetwork.requestFailures.length < 10) {
+          mailNetwork.requestFailures.push({ url: safeUrl(request.url()), error: request.failure()?.errorText });
+        }
+      };
+      const mailConsole = (message) => {
+        if (message.type() === 'error' && mailNetwork.consoleErrors.length < 10) {
+          mailNetwork.consoleErrors.push(message.text().replace(/https?:\/\/[^\s"'<>]+/g, safeUrl).slice(0, 500));
+        }
+      };
+      presenter.on('requestfailed', failedImage);
+      presenter.on('console', mailConsole);
       await email.click();
       const drawer = presenter.getByRole('dialog');
       await drawer.waitFor({ state: 'visible' });
@@ -233,6 +247,9 @@ test('FUCQ-561: presenter console follows the actual signed-in release, inspecti
       await fits(presenter);
       await suite.screenshot(presenter, 'presenter-captured-email-375');
       await presenter.keyboard.press('Escape');
+      presenter.off('requestfailed', failedImage);
+      presenter.off('console', mailConsole);
+      suite.receipt.checks.capturedEmailNetwork = mailNetwork;
       await presenter.getByText('What happened', { exact: true }).click();
       await presenter.setViewportSize({ width: 1280, height: 800 });
       await presenter.evaluate(() => scrollTo(0, 0));

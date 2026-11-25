@@ -289,7 +289,8 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       GCSP_SUPPLY_PROVIDER: 'tranche-plan', GCSP_SUPPLY_TRANCHE_PLAN_FILE: planFile,
       GCSP_ALLOCATION_CANDIDATES_PROVIDER: 'recommendation',
       ...ordersProviders,
-      GCSP_CLAIMS_SWEEP_INTERVAL: '10m', GCSP_NOTIFY_DRAIN_INTERVAL: '10m', GCSP_PUBLIC_BASE_URL: 'https://gcsp-proof.example.test',
+      GCSP_CLAIMS_SWEEP_INTERVAL: '10m', GCSP_NOTIFY_DRAIN_INTERVAL: '10m',
+      GCSP_PUBLIC_BASE_URL: caseId === 'f561' ? origins.web : 'https://gcsp-proof.example.test',
     };
     const replayApiEnv = { ...apiEnv, GCSP_RUN_ID: runId };
     api = start('api-bootstrap', path.join(javaHome, 'bin/java'), apiArgs, apiEnv);
