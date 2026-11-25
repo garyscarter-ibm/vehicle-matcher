@@ -3,6 +3,7 @@ package gcsp.api.presenter;
 import static gcsp.api.presenter.PresenterClockSupport.get;
 import static gcsp.api.presenter.PresenterClockSupport.post;
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.notNullValue;
@@ -303,5 +304,19 @@ class PresenterScenarioHttpTest {
                 .body("code", equalTo("scenario-not-available-yet")).body("retryable", equalTo(false))
                 .body("missingCapabilities", hasItem("offer-expiry"));
         assertEquals(run, current().getString("value.runId"));
+    }
+
+    @Test
+    void mainNamesOnlyTheCapabilitiesMissingFromThisCompositionAndDoesNotReset() throws Exception {
+        String run = current().getString("value.runId");
+        get(presenter, "/scenarios").then().statusCode(200)
+                .body("value.scenarios.find { it.scenarioId == 'main-successful-journey' }.availability.missingCapabilities",
+                        containsInAnyOrder("stock-release", "buddy-allocation", "buddy-offers", "order-handoff"));
+        long resets = count("SELECT count(*) FROM run_resets WHERE retired_run_id = ?", run);
+        post(presenter, "/scenarios/reset", resetBody(id(), run, "main-successful-journey")).then().statusCode(503)
+                .body("code", equalTo("scenario-not-available-yet"))
+                .body("missingCapabilities", containsInAnyOrder("stock-release", "buddy-allocation", "buddy-offers", "order-handoff"));
+        assertEquals(run, current().getString("value.runId"));
+        assertEquals(resets, count("SELECT count(*) FROM run_resets WHERE retired_run_id = ?", run));
     }
 }

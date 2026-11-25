@@ -8,8 +8,14 @@ import javax.sql.DataSource;
 
 import gcsp.api.clock.ClockResult;
 import gcsp.api.clock.RunClockHolder;
+import gcsp.api.account.AccountSelection;
+import gcsp.api.brief.BriefServiceHolder;
+import gcsp.api.notify.MailTransportSelection;
+import gcsp.api.ordering.OrderingProviderBindings;
+import gcsp.api.ordering.OrderingSelection;
 import gcsp.api.persistence.Persistence;
 import gcsp.api.policy.PolicyService;
+import gcsp.api.supply.SupplySelection;
 import io.agroal.api.AgroalDataSource;
 import io.quarkus.runtime.Startup;
 import io.quarkus.runtime.StartupEvent;
@@ -20,6 +26,8 @@ import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import java.time.InstantSource;
+import java.util.HashSet;
+import java.util.Set;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
@@ -50,6 +58,24 @@ public class ScenarioWiring {
     @Inject
     Instance<AgroalDataSource> dataSource;
 
+    @Inject
+    BriefServiceHolder briefs;
+
+    @Inject
+    AccountSelection accounts;
+
+    @Inject
+    SupplySelection supply;
+
+    @Inject
+    MailTransportSelection mail;
+
+    @Inject
+    OrderingProviderBindings ordering;
+
+    @ConfigProperty(name = "gcsp.allocation.candidates.provider", defaultValue = "none")
+    String candidatesProvider;
+
     private volatile String mode;
     private volatile String summary = "not-run";
     private ScenarioService service;
@@ -75,10 +101,33 @@ public class ScenarioWiring {
             DemoPreparationFile file = DemoPreparationFile.load();
             AgroalDataSource source = dataSource.get();
             var clock = holder.clock();
+            var brief = briefs.service().orElseThrow();
+            MainJourneyStart start = new MainJourneyStart(brief, policy, clock, file);
             service = new ScenarioService(source, persistence.reset(), clock,
-                    new DemoPreparation(source, persistence.runner(), clock, policy, InstantSource.system(), file), file);
+                    new DemoPreparation(source, persistence.runner(), clock, policy, InstantSource.system(), file,
+                            capabilities(), start::load), file);
         }
         return service;
+    }
+
+    private Set<String> capabilities() {
+        Set<String> ready = new HashSet<>();
+        boolean account = AccountSelection.REPOSITORY.equals(accounts.mode());
+        if (account) {
+            ready.add("brief-confirmation");
+            ready.add("brief-change");
+        }
+        if (!SupplySelection.NONE.equals(supply.provider().mode()) && !SupplySelection.NONE.equals(supply.policyMode())) {
+            ready.add("stock-release");
+        }
+        if (account && "recommendation".equals(candidatesProvider.trim())) {
+            ready.add("buddy-allocation");
+            ready.add("buddy-offers");
+        }
+        if ("captured".equals(mail.transport().name())) ready.add("captured-notifications");
+        ready.add("offer-decisions");
+        if (!OrderingSelection.NONE.equals(ordering.mode())) ready.add("order-handoff");
+        return Set.copyOf(ready);
     }
 
     void onStart(@Observes @Priority(BEFORE_CLOCK_PASS) StartupEvent event) {
