@@ -56,6 +56,36 @@ async function capture(suite, page, name, anchor) {
   return destination;
 }
 
+async function bodyKeyboardChecks(suite, page, width) {
+  const body = page.locator('#preference-body');
+  await body.waitFor({ state: 'visible' });
+  assert.equal(await body.getAttribute('role'), 'group');
+  const choices = body.getByRole('checkbox');
+  const snapshot = () => choices.evaluateAll((buttons) => buttons.map((button) => ({
+    label: button.textContent.trim(), checked: button.getAttribute('aria-checked'),
+  })));
+  const before = await snapshot();
+  const suv = body.getByRole('checkbox', { name: /^SUV$/i });
+  const label = (await suv.innerText()).trim();
+  assert.equal(await suv.getAttribute('aria-checked'), 'false', 'The actual Main brief starts with SUV unselected');
+  assert.ok(before.some((choice) => choice.label !== label && choice.checked === 'true'),
+    'An existing Body choice remains selected while independently toggling SUV');
+  const steps = [];
+  await suv.focus();
+  for (const [key, checked] of [['Enter', 'true'], ['Space', 'false'], ['Space', 'true'], ['Enter', 'false']]) {
+    await page.keyboard.press(key);
+    await until(async () => await suv.getAttribute('aria-checked') === checked,
+      `${width}px Body SUV toggles to ${checked} through native ${key} activation`);
+    assert.equal(await focused(suv), true, 'Native Body activation retains the focused chip');
+    assert.deepEqual((await snapshot()).filter((choice) => choice.label !== label),
+      before.filter((choice) => choice.label !== label), 'Other Body checkboxes retain their independent selection');
+    steps.push({ key, checked, focusRetained: true });
+    if (steps.length === 1) await capture(suite, page, `angular-body-keyboard-selected-${width}`, body);
+  }
+  assert.deepEqual(await snapshot(), before, 'Keyboard toggles restore the starting Body draft');
+  return { width, before, steps, restored: true };
+}
+
 async function accountSurface(page) {
   const root = page.locator('.gcsp-prefs').first(); await root.waitFor();
   return root.evaluate((node) => ({
@@ -302,6 +332,11 @@ test('FUCQ-552: source preferences, real preview, keyboard and accepted exits', 
     });
 
     await check('AC1/2/4: 390px keyboard controls retain input and leave the saved brief unchanged', async () => {
+      suite.receipt.preferences.bodyKeyboard = [];
+      for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 }]) {
+        await employee.setViewportSize(viewport);
+        suite.receipt.preferences.bodyKeyboard.push(await bodyKeyboardChecks(suite, employee, viewport.width));
+      }
       await employee.setViewportSize({ width: 390, height: 844 });
       const question = employee.locator('.gcsp-brief-question').first();
       const no = question.getByRole('radio', { name: 'No', exact: true });
