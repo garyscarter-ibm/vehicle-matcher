@@ -46,55 +46,46 @@
         <section class="order-panel order-stages" aria-labelledby="order-stages-title">
           <h2 id="order-stages-title" class="order-actions-heading" tabindex="-1">Your order</h2>
           @if (p.stages.state !== 'ok') { <p class="gcsp-note">{{ sectionMessage(p.stages) }}</p> }
-          @if (p.stages.value; as stages) {
-            <ol class="stage-list">@for (step of stageRows(); track $index) {
-              <li [class.is-current]="step.current" [class.is-complete]="step.complete" [class.is-failed]="step.failed" [attr.aria-current]="step.current ? 'step' : null">
-                <span>{{ step.label }}</span><strong>{{ step.state }}</strong>
-                @if (step.at) { <time [attr.datetime]="step.at">{{ time(step.at) }}</time> }
-              </li>
-            }</ol>
-            <gcsp-fact-list [rows]="ownership(stages)" />
-            @if (stages.blocked?.reason) { <p class="order-attention">{{ stages.blocked?.reason }}</p> }
+          @if (p.stages.state === 'ok' && p.stages.value; as stages) {
+            <gcsp-stage-tracker heading="Steps" [stages]="stageRows()" [level]="3" />
             @if (stages.outcome === 'declined') { <a gcspButton variant="ghost" routerLink="/help">Get help</a> }
           }
         </section>
         <section class="order-panel" aria-labelledby="handover-title"><h2 id="handover-title">Handover</h2>
           @if (p.appointment.state !== 'ok') { <p class="gcsp-note">{{ sectionMessage(p.appointment) }}</p> }
           @if (p.appointment.value; as a) {
-            <p class="order-state">{{ a.state === 'scheduled' && a.booked ? 'Handover booked' : a.state === 'completed' ? 'Handover complete' : a.state === 'no-show' ? 'Handover missed' : words(a.state) }}</p>
-            @if (a.state === 'scheduled' && a.booked) { <p>{{ slot(a.slot) }}</p> }
-            @else if (a.state === 'change-proposed') { <p>New time proposed: {{ slot(a.proposedSlot) }}. Not booked yet.</p> }
-            @else if (a.requestedSlot && a.state === 'requested') { <p>Requested: {{ slot(a.requestedSlot) }}. Not booked yet.</p> }
+            @let handoverSlots = appointmentSlots(a, p.actions.appointment.requestSlotIds);
+            <p class="order-state">{{ appointmentState(a) }}</p>
+            @if (appointmentDetail(a); as detail) { <p>{{ detail }}</p> }
             @if (a.pending) { <p class="order-attention">Waiting for confirmation of your last update.</p> }
-            @if (a.state === 'completed') { <p>{{ time(fact(a['outcome'], 'at')) }}</p> }
             @if (a.blocked?.reason || a.eligibility?.reason) { <p class="order-attention">{{ a.blocked?.reason || a.eligibility?.reason }}</p> }
             <gcsp-fact-list [rows]="ownership(a)" />
-            @if (p.actions.appointment.requestSlotIds.length) {
-              <p>Choose a handover time.</p><ul class="slot-list">@for (slot of a.offeredSlots; track slot.slotId) {
-                @if (p.actions.appointment.requestSlotIds.includes(slot.slotId)) {
-                  <li><span>{{ time(slot.start) }}</span><button gcspButton variant="ghost" type="button" [attr.aria-label]="'Request handover ' + time(slot.start)" [disabled]="!canAct('appointment')" (click)="prepare({ kind: 'request-appointment', slotId: slot.slotId })">Request</button></li>
-                }
-              }</ul>
-            } @else if (a.state === 'not-requested' && !a.pending && !a.blocked && !a.eligibility?.reason) { <p class="gcsp-note">No handover times are available yet.</p> }
-            @if (p.actions.appointment.acceptProposalId) { <button gcspButton type="button" [disabled]="!canAct('appointment')" (click)="prepare({ kind: 'accept-appointment' })">Accept new handover time</button> }
-            @if (a.history && a.history.length > 1) { <details><summary>Handover history</summary><ol class="history-list">@for (event of a.history; track $index) { <li>{{ words(fact(event, 'state')) }} · {{ time(event['at']) }}</li> }</ol></details> }
+            @if (earlierMissed(a); as earlier) { <p class="gcsp-order-note">{{ earlier }}</p> }
+            @if (a.state === 'not-requested' && a.eligibility?.eligible === false) {
+              <p class="gcsp-note">Handover times open once your order is sent to ordering.</p>
+            } @else if (handoverSlots.length) {
+              <p>{{ a.state === 'no-show' ? 'Choose a new handover time.' : 'Choose a handover time.' }}</p>
+              <ul gcspSlotPicker [slots]="handoverSlots" actionLabel="Request" [disabled]="!canAct('appointment')" [onPick]="appointmentPicker"></ul>
+            } @else if ((a.state === 'not-requested' || a.state === 'no-show') && !a.pending && !a.blocked && !a.eligibility?.reason && !a.offeredSlots.length) {
+              <p class="gcsp-note">No handover times are available yet.</p>
+            }
+            @if (a.state === 'change-proposed' && p.actions.appointment.acceptProposalId) { <button gcspButton type="button" [disabled]="!canAct('appointment')" (click)="prepare({ kind: 'accept-appointment' })">Accept new handover time</button> }
+            @if (a.state === 'change-proposed') { <a gcspButton variant="ghost" routerLink="/help">Can't make it? Get help</a> }
+            @if (a.history && a.history.length > 1) { <gcsp-activity-timeline [events]="historyEvents(a.history)" heading="Handover history" [level]="3" /> }
           }
         </section>
         <section class="order-panel" aria-labelledby="documents-title"><h2 id="documents-title">Documents and checks</h2>
           @if (p.documents.state !== 'ok') { <p class="gcsp-note">{{ sectionMessage(p.documents) }}</p> }
-          @if (p.documents.value; as d) {
+          @if (p.documents.state === 'ok' && p.documents.value; as d) {
             <p class="order-state">{{ d.readiness.ready ? 'Ready for handover' : 'Not ready for handover' }}</p>
             <gcsp-fact-list [rows]="[{ label: 'Documents', value: d.readiness.documentsComplete ? 'Complete' : 'Outstanding' }, { label: 'Vehicle preparation', value: d.readiness.vehicleReady ? 'Ready' : 'Outstanding' }]" />
-            <ul class="task-list">@for (item of d.items; track item.itemId) {
-              <li [class.is-failed]="item.status === 'failed'"><div><h3>{{ item.label || words(item.itemId) }}</h3><p>{{ owner(item.owner) }} · {{ item.status === 'waiting-for-employee' ? 'Waiting for you' : words(item.status) }}</p>
-                @if (item['overdue'] === true) { <p class="order-attention">Overdue</p> }
-                @if (item['dueAt'] && item.status !== 'complete') { <p class="gcsp-note">Due {{ time(item['dueAt']) }}</p> }
-                @if (item.reason) { <p class="order-attention">{{ item.reason }}</p> }</div>
-                @if (p.actions.documentTaskIds.includes(item.itemId)) { <button gcspButton variant="ghost" type="button" [disabled]="!canAct('documents')" (click)="prepare({ kind: 'acknowledge', itemId: item.itemId })">{{ item.action || 'Acknowledge' }}</button> }
-              </li>
-            } @empty { <li>No documents or checks are listed yet.</li> }</ul>
-            @if (d.readiness.failed.length) { <p class="order-attention">Needs attention: {{ d.readiness.failed.join(', ') }}</p> }
-            @if (d.readiness.blocking.length && !d.readiness.ready) { <p class="gcsp-note">Still to do: {{ d.readiness.blocking.join(', ') }}</p> }
+            @for (group of documentChecklist().readiness; track $index) {
+              <div class="gcsp-order-todo gcsp-order-choice">
+                <p class="gcsp-order-todo-title gcsp-order-choice-label">{{ group.heading }}</p>
+                <ul class="gcsp-order-todo-list">@for (label of group.labels; track $index) { <li>{{ label }}</li> }</ul>
+              </div>
+            }
+            <section gcspTaskList heading="Checklist" emptyText="No documents or checks are listed yet." [level]="3" [rows]="true" [groups]="documentChecklist().groups"></section>
           }
         </section>
         <section class="order-panel" aria-labelledby="relationship-title"><h2 id="relationship-title">Current car</h2>
@@ -105,13 +96,10 @@
           <section class="order-panel" aria-labelledby="return-title"><h2 id="return-title">Returning your previous car</h2>
             @if (p.returnPlan.state !== 'ok') { <p class="gcsp-note">{{ sectionMessage(p.returnPlan) }}</p> }
             @if (p.returnPlan.value; as r) {
-              <p class="order-state">{{ words(r.state || 'Not planned') }}</p>
+              <p class="order-state">{{ returnState(r) }}</p>
               <gcsp-fact-list [rows]="[{ label: 'Car to return', value: fact(r.currentCar, 'model') }, { label: 'Return place', value: fact(r['location'], 'label') }]" />
-              @if (r.scheduled) { <p>Return booked: {{ time(r['slot'] && fact(r['slot'], 'start')) }}</p> }
-              @else if (r.state === 'return-requested' && r.appointment?.state === 'change-proposed' && r.proposedSlot) { <p>New time proposed: {{ slot(r.proposedSlot) }}. Not booked yet.</p> }
-              @else if (r.state === 'return-requested') { <p>Return requested. Not booked yet.</p> }
+              @if (returnDetail(r); as detail) { <p>{{ detail }}</p> }
               @if (r.pending) { <p class="order-attention">Waiting for confirmation of your last update.</p> }
-              @if (r.state === 'returned' || r.state === 'return-missed') { <p>{{ time(fact(r.outcome, 'at')) }}</p> }
               @if (r.outcome && r.outcome['reason']) { <p class="order-attention">{{ fact(r.outcome, 'reason') }}</p> }
               @if (r.outcome && r.outcome['providerReference']) { <p class="gcsp-note">Return reference: {{ fact(r.outcome, 'providerReference') }}</p> }
               @if (r.blocked?.reason) { <p class="order-attention">{{ r.blocked?.reason }}</p> }
@@ -120,14 +108,17 @@
                 @for (choice of r.choices; track choice.id) {
                   <div class="return-choice"><h3>{{ choice.label || words(choice.id) }}</h3>
                     @if (!choice.available) { <p class="gcsp-note">{{ choice.reason || 'Not available yet.' }}</p> }
-                    @else { <ul class="slot-list">@for (slot of r.offeredSlots[choice.id] || []; track slot.slotId) {
-                      <li><span>{{ time(slot.start) }}</span><button gcspButton variant="ghost" type="button" [attr.aria-label]="'Request return ' + (choice.label || choice.id) + ' ' + time(slot.start)" [disabled]="!canAct('return') || !p.actions.returnPlan.choices.length" (click)="prepare({ kind: 'request-return', choice: choice.id, slotId: slot.slotId })">Request</button></li>
-                    } @empty { <li>No return times are available yet.</li> }</ul> }
+                    @else {
+                      @let returnSlotsForChoice = returnSlots(r, choice.id, p.actions.returnPlan.choices);
+                      @if (returnSlotsForChoice.length) {
+                        <ul gcspSlotPicker [slots]="returnSlotsForChoice" [actionLabel]="returnActionLabel(choice.id)" [disabled]="!canAct('return')" [onPick]="returnPicker(choice.id)"></ul>
+                      } @else if (!(r.offeredSlots[choice.id] || []).length) { <p class="gcsp-note">No return times are available yet.</p> }
+                    }
                   </div>
                 }
               }
-              @if (p.actions.returnPlan.acceptProposalId) { <button gcspButton type="button" [disabled]="!canAct('return')" (click)="prepare({ kind: 'accept-return' })">Accept new return time</button> }
-              @if (r.history && r.history.length > 1) { <details><summary>Return history</summary><ol class="history-list">@for (event of r.history; track $index) { <li>{{ words(fact(event, 'appointmentState') || fact(event, 'state')) }} · {{ time(event['at']) }}</li> }</ol></details> }
+              @if (r.state === 'return-requested' && p.actions.returnPlan.acceptProposalId) { <button gcspButton type="button" [disabled]="!canAct('return')" (click)="prepare({ kind: 'accept-return' })">Accept new return time</button> }
+              @if (r.history && r.history.length > 1) { <gcsp-activity-timeline [events]="historyEvents(r.history, true)" heading="Return history" [level]="3" /> }
             }
           </section>
         }

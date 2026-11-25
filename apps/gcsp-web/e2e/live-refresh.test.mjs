@@ -323,7 +323,7 @@ test('FUCQ-550: live Java/OIDC screen refresh and frozen status presentation', {
         assert.ok(progress); assert.equal(progress.body.status, 'ok');
         assert.equal(progress.body.value.orderUuid, state.offer.orderUuid);
         assert.equal(progress.body.value.runId, suite.receipt.composition.runId);
-        assert.ok(await orderPage.locator('.stage-list li').count() > 0);
+        assert.ok(await orderPage.locator('.gcsp-stage-list .gcsp-stage').count() > 0);
         evidence.orderChange.actual = progress.body.value;
         evidence.orderChange.sections = Object.fromEntries(orderSections.map((route) => {
           const row = journal.rows.findLast((item) => item.path === route);
@@ -380,7 +380,7 @@ test('FUCQ-550: live Java/OIDC screen refresh and frozen status presentation', {
       await employee.close(); employee = null;
       await readerMatrix(suite, orderPage, presenter, { name: 'orders', heading: 'Order progress', root: '.orders-screen',
         paths: ['/orders/progress/all', ...orderSections], unavailablePaths: ['/appointments'], assertView: async () => {
-          await orderPage.locator('.order-summary').waitFor(); assert.ok(await orderPage.locator('.stage-list li').count() > 0);
+          await orderPage.locator('.order-summary').waitFor(); assert.ok(await orderPage.locator('.gcsp-stage-list .gcsp-stage').count() > 0);
         } }, evidence);
       await orderPage.close(); orderPage = null;
     });

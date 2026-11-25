@@ -10959,10 +10959,10 @@
     {
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-029",
-      "evidence": "Published merge de454757f of918263482 verified; first production build passes. Covering web batch green1499/86files, initial resource-incomplete attempt excluded; all10attempt/chunk roots/groups and batch worktree/ref/link/lease removed. Source composition and actual live pair pending.",
+      "evidence": "Sourcea5d14378d; finalcb18938ba registered family2pass/0fail/1declineskip; lead164/root146focused cases, scoped static checks green; PughSol/high no blocking source findings. Actual1280/390pair reviewed by lead; human pending.",
       "id": "FUCQ-556",
-      "note": "All6AC open; still building. Independent canonical source/no-show increment merged as de454757f; complete covering Angular batch1499passed/86files in9resource-bounded whole-file chunks. Original screen/canonical sibling/runtime/keyboard/live-pair/human proof remains; no review-ready claim.",
-      "observed_at": "2026-11-23T06:51:21Z",
+      "note": "Partial original13point/sixAC build. AC1/2/3/5source+connected evidence; AC4declined/proposed connected and AC6human pair remain. Material full-screen visual differences reported; no Done/InReview claim.",
+      "observed_at": "2026-11-25T07:09:34Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10974,20 +10974,22 @@
         },
         {
           "id": "tracker-documents",
-          "status": "not-started",
-          "title": "Orders tracker and document checklist composition (5 points)"
+          "status": "complete",
+          "title": "Orders tracker and document checklist composition (5 points)",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
+          "evidence": "Canonical source reviewed; lead164and root146focused tests; actual tracker/currentowner/Next/blocked plus grouped task/acknowledgement readback pass in cb18938ba connected run."
         },
         {
-          "evidence": "No-show provider-slot request eligibility restored through unchanged explicit review/confirm/version/no-replay path;111scoped Orders cases plus boundaries/inline4/ratchet124. Canonical SlotPicker/Timeline composition and other original states, supported integration/live proof remain.",
+          "evidence": "Canonical slot/history and actual booking/no-show/rebook/earlier-missed/return-missed pass. Original declined/proposed-handover connected help substates remain unavailable; no criterion waived.",
           "id": "appointment-return",
-          "observed_at": "2026-11-23T06:24:07Z",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
           "status": "in-progress",
           "title": "Appointment return history help and missed-state parity (3 points)"
         },
         {
-          "evidence": "Independent source increment merged de454757f; first production build and covering Angular1499/86file batch green, recovery/cleanup evidenced. Original screen/sibling/runtime/keyboard/live same-state pair/human review remain; all6AC open, still building.",
+          "evidence": "cb18938ba real family2pass/0fail/1declineskip; exact1280/390same-order pair captured and lead-reviewed. Human verdict, observed full-screen differences and covering batch remain; Safari not run.",
           "id": "integration-proof",
-          "observed_at": "2026-11-23T06:51:21Z",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
           "status": "in-progress",
           "title": "Supported sibling integration and actual same-state pair (2 points)"
         }
@@ -11001,23 +11003,63 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-556",
       "workers": [
         {
-          "expires_at": "2026-11-23T00:41:42.562696+00:00",
+          "expires_at": "2026-11-25T07:09:34.292279+00:00",
           "harness": "codex",
           "id": "01a20553-daae-7f10-944e-1d8cb280ed69",
           "name": "Chester",
-          "observed_at": "2026-11-23T00:16:14.987181+00:00",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
           "role": "story-lead",
           "source": "Active F556 allocation observed through parent dispatch; requested/selected/effective gpt-6.1-sol/xhigh explicit StoryLead override, no fallback; actual identity/title independently verified by parent. Claim1f1080595.",
           "status": "stopped; child422; launcher continues"
         },
         {
-          "expires_at": "2026-11-23T01:26:42.562696+00:00",
+          "expires_at": "2026-11-25T07:09:34.292279+00:00",
           "harness": "codex",
           "name": "usget-vesper launcher",
-          "observed_at": "2026-11-23T00:41:42.562696+00:00",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
           "role": "dispatcher carrying source implementation",
           "source": "Direct work observed in root after child422; primary runtime pair not independently exposed. No substitute model/provider.",
           "status": "active; F556 source checkpoint publication"
+        },
+        {
+          "id": "01a21155-84b2-7871-8d53-5731b6ea34fb",
+          "name": "Egghead Jr",
+          "role": "story-lead",
+          "harness": "codex",
+          "status": "complete; partial handoff",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
+          "expires_at": "2026-11-25T07:09:34.292279+00:00",
+          "source": "Published source and two real connected groups; original pending criteria explicit; requested/selected Sol/high, no fallback."
+        },
+        {
+          "id": "01a21158-dabc-7343-a360-c18b1d041fd9",
+          "name": "Henery Hawk",
+          "role": "mechanic",
+          "harness": "codex",
+          "status": "complete; source reviewed",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
+          "expires_at": "2026-11-25T07:09:34.292279+00:00",
+          "source": "Requested/selected Luna/high, no fallback; both source slices reviewed by lead and164settled Orders/kit cases rerun. No runtime claim."
+        },
+        {
+          "id": "01a21159-b611-78b2-a820-ee12d8aca7b3",
+          "name": "Michigan J. Frog",
+          "role": "runner",
+          "harness": "codex",
+          "status": "complete; read-only inventory",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
+          "expires_at": "2026-11-25T07:09:34.292279+00:00",
+          "source": "Title/result observed; requested/selected Luna/high, no fallback; source-only composition/provider inventory, no runtime/test/edit."
+        },
+        {
+          "id": "01a21161-7aae-77f3-8d53-265acabe1d70",
+          "name": "Grub",
+          "role": "implementer",
+          "harness": "codex",
+          "status": "complete; source review",
+          "observed_at": "2026-11-25T07:09:34.292279+00:00",
+          "expires_at": "2026-11-25T07:09:34.292279+00:00",
+          "source": "Title/result observed; requested/selected Sol/medium, no fallback; original integration family drafted/refined; syntax only, no runtime."
         }
       ]
     },
