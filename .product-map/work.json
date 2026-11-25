@@ -12776,6 +12776,36 @@
       "type": "Bug",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-564"
+    },
+    {
+      "id": "FUCQ-593",
+      "title": "Angular Orders shows an empty vehicle summary",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "usget",
+      "branch": "dev/DEV-2026-11-24-sorrel-001",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-593",
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "selected-display",
+          "title": "Selected immutable vehicle display",
+          "status": "in-progress"
+        },
+        {
+          "id": "integration",
+          "title": "Connected Orders summary regression",
+          "status": "not-started"
+        },
+        {
+          "id": "parity",
+          "title": "Human Orders pair verdict",
+          "status": "not-started"
+        }
+      ],
+      "workers": [],
+      "observed_at": "2026-11-25T08:11:48Z"
     }
   ]
 }

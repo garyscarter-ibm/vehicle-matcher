@@ -68,15 +68,31 @@ async function refreshOrders(suite, page) {
   await until(async () => await page.locator('.order-sections[aria-busy="true"]').count() === 0,
     'Explicit refresh settles with a fresh projection and clears the previous action result');
 }
-async function screenshots(suite, page, label, widths = [1280, 390]) {
+async function screenshots(suite, page, label, widths = [1280, 390], beforeCapture) {
   const captures = {};
   for (const width of widths) {
     await page.setViewportSize({ width, height: width === 1280 ? 800 : 844 });
+    await beforeCapture?.(width);
     captures[width] = await suite.screenshot(page, `${label}-${width}`, { fullPage: true });
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true, `${label}: no horizontal overflow at ${width}`);
   }
   await page.setViewportSize({ width: 1280, height: 800 });
   return captures;
+}
+async function vehicleSummary(page, display, { nameSelector, imageSelector, readImage }) {
+  assert.equal(typeof display.name, 'string'); assert.ok(display.name.trim(), 'The selected immutable snapshot supplies its name');
+  const name = display.name.trim();
+  await until(async () => normalize(await page.locator(nameSelector).innerText()) === normalize(name), 'Orders renders the supplied vehicle name');
+  const photo = display.photo ?? display.images?.[0]?.src;
+  assert.match(photo ?? '', /^(https:\/\/|\/(?!\/))/, 'The Main selected snapshot supplies a usable vehicle image');
+  const image = page.locator(imageSelector); await image.waitFor();
+  assert.equal(await image.getAttribute('src'), photo, 'The rendered photo is the selected snapshot photo');
+  const observed = await readImage(image);
+  assert.equal(observed.response.status, 200, 'The displayed vehicle image response succeeds');
+  assert.match(observed.response.sha256 ?? '', /^[a-f0-9]{64}$/, 'Actual displayed image bytes are retained as a hash');
+  assert.ok(observed.complete && observed.naturalWidth > 0 && observed.naturalHeight > 0
+    && observed.renderedWidth > 0 && observed.renderedHeight > 0, 'The supplied image is loaded before capture');
+  return { name, image: observed };
 }
 async function tracker(page, stages) {
   const root = page.locator('.gcsp-stage-tracker');
@@ -222,7 +238,22 @@ test('FUCQ-556: real Orders tracker, tasks, handover keyboard booking and missed
     assert.equal(current.stages.outcome, 'sent-to-ordering', 'Actual approvals progress to ordering');
     await openOrders(suite, employee); await tracker(employee, current.stages);
     const orderingClock = await read(suite, presenter, '/presenter/clock', 'Actual ordering pair clock');
-    suite.receipt.orders.pairs.ordering = { angular: await screenshots(suite, employee, 'angular-ordering') };
+    const savedQuote = suite.readOfferPersistence(state.offer).quote;
+    assert.equal(savedQuote.order_uuid, orderUuid); assert.equal(savedQuote.run_id, suite.receipt.composition.runId);
+    const selected = await read(suite, employee, '/manual/order', 'FUCQ-593 actual selected vehicle snapshot');
+    assert.equal(selected.selection.orderUuid, orderUuid); assert.equal(selected.selection.stock.orderUuid, orderUuid);
+    assert.equal(selected.selection.quoteId, savedQuote.quote_id);
+    const savedDisplay = savedQuote.quote.snapshot.display;
+    const selectedDisplay = selected.selection.stock.facts.display;
+    assert.equal(selectedDisplay.name, savedDisplay.name, 'The read projection retains the immutable accepted name');
+    assert.equal(selectedDisplay.photo, savedDisplay.photo, 'The read projection retains the immutable accepted photo');
+    assert.ok(!('quote' in selected.selection) && !('reviewDetails' in selected.selection), 'The display read does not expose the saved quote or review details');
+    suite.receipt.orders.vehicleSummary = { orderUuid, quoteId: savedQuote.quote_id,
+      immutableQuoteDisplay: savedDisplay, angular: {}, node: {} };
+    suite.receipt.orders.pairs.ordering = { angular: await screenshots(suite, employee, 'angular-ordering', [1280, 390], async (width) => {
+      suite.receipt.orders.vehicleSummary.angular[width] = await vehicleSummary(employee, selectedDisplay, {
+        nameSelector: '#order-summary-title', imageSelector: '.order-media img', readImage: (image) => suite.readImage(employee, image) });
+    }) };
     const replay = await suite.visitFrozenNode({ ...suite.receipt.offer, hold: state.hold, clock: state.clock, finalAccount: state.account }, async (source) => {
       await source.page.goto(`${source.origin}/gcsp-offer.html?offerId=${encodeURIComponent(source.offer.offerRef.offerId)}&runId=${encodeURIComponent(source.control.runId)}`, { waitUntil: 'domcontentloaded' });
       await acceptOnPage(source.page, async (response, sent, body) => {
@@ -266,7 +297,15 @@ test('FUCQ-556: real Orders tracker, tasks, handover keyboard booking and missed
       assert.deepEqual(nodeAppointment.offeredSlots, current.appointment.offeredSlots, 'Same actual offered handover choices on both engines');
       await source.page.locator('section.gcsp-task-list').waitFor();
       assert.ok(await source.page.locator('ul.gcsp-slot-picker button').count() > 0);
-      source.receipt.ordersScreenshots = await screenshots(suite, source.page, 'node-ordering');
+      const sourceOrder = nodeGood(await source.runtime.manualOrder.readOrder(source.employee), 'Frozen actual selected vehicle snapshot');
+      assert.equal(sourceOrder.selection.stock.orderUuid, orderUuid);
+      const sourceDisplay = sourceOrder.selection.stock.facts.display;
+      assert.equal(sourceDisplay.name, selectedDisplay.name, 'The actual frozen and Java selected vehicle names agree');
+      source.receipt.ordersVehicleDisplay = { orderUuid, display: sourceDisplay };
+      source.receipt.ordersScreenshots = await screenshots(suite, source.page, 'node-ordering', [1280, 390], async (width) => {
+        suite.receipt.orders.vehicleSummary.node[width] = await vehicleSummary(source.page, sourceDisplay, {
+          nameSelector: '.gcsp-order-car-name', imageSelector: '.gcsp-order-media img', readImage: (image) => source.images.read(image) });
+      });
       suite.receipt.orders.pairs.ordering.node = source.receipt.ordersScreenshots;
       suite.receipt.orders.pairs.ordering.state = { orderUuid, runId: stages.runId, stages: stages.stages, currentStage: stages.currentStage, outcome: stages.outcome, clock: orderingClock };
     });
@@ -331,7 +370,8 @@ test('FUCQ-556: real Orders tracker, tasks, handover keyboard booking and missed
     await screenshots(suite, employee, 'angular-return-missed', [1280]);
     assert.deepEqual(suite.receipt.consoleErrors, [], 'No app runtime errors in the checked lifecycle');
     suite.receipt.orders.observedCoverage = ['owned order / tracker owner and Next', 'early handover closed', 'grouped real document tasks / acknowledgement readback',
-      'keyboard slot selection / explicit confirmation / booked readback', 'canonical actual history', 'Greg no-show / rebooking / earlier missed copy', 'real offered return choice / scheduled readback / actual missed-return outcome', 'sent-to-ordering same-order Node/Angular 1280 and 390 captures'];
+      'keyboard slot selection / explicit confirmation / booked readback', 'canonical actual history', 'Greg no-show / rebooking / earlier missed copy', 'real offered return choice / scheduled readback / actual missed-return outcome', 'sent-to-ordering same-order Node/Angular 1280 and 390 captures',
+      'FUCQ-593 immutable selected quote / actual manual-order projection / supplied name and loaded-image DOM equality at both widths'];
     suite.receipt.checks.ordersReachableLifecycle = true;
   } catch (error) {
     suite.receipt.failure = { name: error.name, message: error.message.slice(0, 1000) }; throw error;

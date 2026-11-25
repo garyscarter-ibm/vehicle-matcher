@@ -287,6 +287,14 @@ class OrderingJourneyHttpTest {
         assertEquals(12000, stored.get("reviewDetails").get("details").get("expectedReturnMileage").asInt());
         assertEquals(holdId, stored.get("reviewDetails").get("binding").get("holdId").asText());
         assertTrue(stored.get("declarations").get("return").asBoolean());
+        // ManualSelection keeps the recorded VehicleSnapshot inside its facts wrapper.
+        JsonNode savedDisplay = stored.at("/stock/facts/facts/display");
+        assertFalse(savedDisplay.path("name").asText().isBlank(), "the accepted cart retains its supplied vehicle name");
+        assertEquals(car, value.at("/selection/stock/orderUuid").asText());
+        assertEquals(savedDisplay.path("name"), value.at("/selection/stock/facts/display/name"));
+        assertEquals(savedDisplay.path("photo"), value.at("/selection/stock/facts/display/photo"));
+        assertFalse(value.path("selection").has("quote"));
+        assertFalse(value.path("selection").has("reviewDetails"));
 
         // 5. Durable: one intent finalised, one provider receipt, one acknowledgement event.
         assertEquals(1, count("SELECT count(*) FROM selection_orders"));
@@ -303,6 +311,8 @@ class OrderingJourneyHttpTest {
         assertEquals(200, read.statusCode(), read.asString());
         assertEquals("acknowledged", body(read).get("value").get("status").asText());
         assertEquals(reference, body(read).get("value").get("providerReference").asText());
+        assertEquals(value.at("/selection/stock"), body(read).at("/value/selection/stock"),
+                "authenticated readback retains the exact saved vehicle summary");
 
         // 6. The same command replays; a changed body or a second command for the slot makes no second order.
         Response again = paula().body(good.toString()).post(ORDER);
