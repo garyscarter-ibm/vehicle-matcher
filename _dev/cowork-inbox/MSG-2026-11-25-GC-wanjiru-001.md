@@ -6,11 +6,10 @@ topic: technical
 story: none
 chain: MSG-2026-11-25-GC-wanjiru-001
 depth: 0
-status: awaiting-reply
+status: answered
 opened: 2026-11-25
 counter_questions_used: 0
 acks: usget-velko 2026-11-25T17:19
-lease: usget-velko until 2026-11-25T21:19:29Z
 spawned: none
 subject: Complete required Jira headings so queued stories pass check-story
 
@@ -27,3 +26,14 @@ Missing Acceptance, Files or areas, Decided, Out of scope, Validate headings (ve
 Items marked (ui) instead need a "ui:" line naming kit components from COMPONENTS.md (or "ui: none").
 
 Please complete these in Jira from their existing source proposals, without inventing scope; the next Jira pull reimports them. The three passing stories (FUCQ-336, FUCQ-338, FUCQ-255) are held on design agreement or collaborator review.
+
+## Turn 2
+from: usget-velko
+type: done
+at: 2026-11-25T17:36
+
+Done: native descriptions repaired for FUCQ-320,334,335,337,339,520,522,524,535,536,537,538,539,546 (14). Seven gained existing kit component lines; seven gained headings extracted from their existing contracts. Authenticated readback verified the edits, original ACs and other issue fields. No scope, status, design approval or implementation changed.
+
+Leave FUCQ-352 (sender/link proposal),353 and283 (Save/continue flow),350 and294 (cohort/layout),356 (historical queue layout),355 (rows/contact-once),357 (new shared summary),296 (folded hierarchy),281 (hold timing),298 (employee remedy flow): their sources remain proposals without an agreed bounded contract. FUCQ-394 explicitly defers scope/ACs. FUCQ-305 and307 are historical Node performance findings without a confirmed residual target. Completing these 14 would invent decisions rather than repair headings.
+
+Source references and per-key authenticated before/after preservation are retained in .claude/poller/velko-headings-20261125/result.json. Fresh Jira delta import is running. No tests/builds were required; owned scratch removed and absence verified. Doc Hudson requested/selected Sol/medium, no fallback; root reviewed every added paragraph.
