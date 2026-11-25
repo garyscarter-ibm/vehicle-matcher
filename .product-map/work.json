@@ -8604,6 +8604,31 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-460"
     },
     {
+      "id": "FUCQ-563",
+      "title": "Preserve NULL brief predecessor on Java reload",
+      "status": "In Progress",
+      "type": "Bug",
+      "branch": "dev/DEV-2026-11-22-vesper-038",
+      "observed_at": "2026-11-25T01:28:44Z",
+      "slices": [
+        {
+          "id": "decoder",
+          "status": "complete",
+          "title": "JDBC NULL predecessor repair and regression (3 points)",
+          "observed_at": "2026-11-25T01:28:44Z",
+          "evidence": "009a5adfe: lead reviewed JDBC NULL capture; native SQL NULL/1 red and green repository/service regression; validation-summary.json in .claude/poller/sorrel-f563-20261125."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Native PostgreSQL/OIDC round-trip and existing controls proof",
+          "observed_at": "2026-11-25T01:28:44Z",
+          "evidence": "191 distinct scoped cases green:186 unchanged plus final5-case repository rerun; signed-OIDC Phase1/Phase2 restart, original auth/stale-writer controls and ten mandated startup/wiring classes; full suite deferred to batch."
+        }
+      ],
+      "unsliced": false
+    },
+    {
       "assignee": "Russell Gowers",
       "id": "FUCQ-461",
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
@@ -12496,29 +12521,115 @@
       ]
     },
     {
-      "id": "FUCQ-563",
-      "title": "Preserve NULL brief predecessor on Java reload",
-      "status": "In Progress",
-      "type": "Bug",
-      "branch": "dev/DEV-2026-11-22-vesper-038",
-      "observed_at": "2026-11-25T01:28:44Z",
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-22-vesper-027",
+      "evidence": "Engineering source070904ed0: final24/24 covering specs, earlier91/91 focused,135/135ratchet,0drift,7/7scopedboundaries,6/6browser entries/all5groups. Four actual1280pairs inspected/committed; humanAC7pending; In Progress/original13points retained.",
+      "id": "FUCQ-552",
+      "observed_at": "2026-11-25T01:15:24Z",
+      "original_status": "In Progress",
       "slices": [
         {
-          "id": "decoder",
+          "evidence": "Actual1280/390icons,importance,bin,stoppedslider and focus pass; inspected final pairs.",
+          "id": "category-port",
+          "observed_at": "2026-11-25T01:15:24.347086+00:00",
           "status": "complete",
-          "title": "JDBC NULL predecessor repair and regression (3 points)",
-          "observed_at": "2026-11-25T01:28:44Z",
-          "evidence": "009a5adfe: lead reviewed JDBC NULL capture; native SQL NULL/1 red and green repository/service regression; validation-summary.json in .claude/poller/sorrel-f563-20261125."
+          "title": "Source category icons, importance, bin and stopped controls (AC1)"
         },
         {
-          "id": "integration",
+          "id": "mode-meter-port",
           "status": "complete",
-          "title": "Native PostgreSQL/OIDC round-trip and existing controls proof",
-          "observed_at": "2026-11-25T01:28:44Z",
-          "evidence": "191 distinct scoped cases green:186 unchanged plus final5-case repository rerun; signed-OIDC Phase1/Phase2 restart, original auth/stale-writer controls and ten mandated startup/wiring classes; full suite deferred to batch."
+          "title": "Source mode choice, help and completeness meter (AC2/3)",
+          "observed_at": "2026-11-25T01:15:24.347086+00:00",
+          "evidence": "Canonical sharedhelp, segmentedmode and6/11 labelledmeter pass actualkeyboard flow."
+        },
+        {
+          "id": "editor-controls",
+          "status": "complete",
+          "title": "Source editor chips and labelled axes (AC4)",
+          "observed_at": "2026-11-25T01:15:24.347086+00:00",
+          "evidence": "Verified frozen registry/question order; sourcechips/axes/endlabels and24/24covering regression pass."
+        },
+        {
+          "id": "preview-cards",
+          "status": "complete",
+          "title": "Source decision-card preview composition (AC5)",
+          "observed_at": "2026-11-25T01:15:24.347086+00:00",
+          "evidence": "Bothactual100unique candidates/configs/gates/titles match;42eligible ordered; eachDOM follows ownactualresponse."
+        },
+        {
+          "id": "navigation-integration",
+          "status": "complete",
+          "title": "Reuse F549 and accepted-order links (AC6)",
+          "observed_at": "2026-11-25T01:15:24.347086+00:00",
+          "evidence": "Actual save→Activity→heldofferacceptance→read-onlypreferences→Orders passes."
+        },
+        {
+          "id": "source-validation",
+          "status": "complete",
+          "title": "Lead review, focused regressions, ratchet, boundaries and build",
+          "observed_at": "2026-11-25T01:15:24.347086+00:00",
+          "evidence": "Lead source review,91/91prior +24/24final covering,135ratchet,0drift,7scopedCSP,productionbuild pass."
+        },
+        {
+          "id": "connected-parity",
+          "status": "in-progress",
+          "title": "Integrated real OIDC/state browser cases and reviewed 1280 pairs (all ACs/AC7)",
+          "observed_at": "2026-11-25T01:15:24.347086+00:00",
+          "evidence": "ActualJava/OIDC/PG+frozenNode final6/6/all5groups pass; four1280pairs independently inspected and committed; originalhumanAC7 and coveringbatch remain."
         }
       ],
-      "unsliced": false
+      "status": "In Progress",
+      "title": "Angular preferences category tiles, mode, completeness and editor parity",
+      "type": "Bug",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-552",
+      "workers": [
+        {
+          "expires_at": "2026-11-22T22:58:56Z",
+          "harness": "codex",
+          "name": "Mr Potato Head",
+          "observed_at": "2026-11-22T22:58:56Z",
+          "role": "story-lead",
+          "source": "Lead final source Result/cleanup handoff; no running source worker claimed",
+          "status": "source checkpoint complete; partial handoff"
+        },
+        {
+          "expires_at": "2026-11-22T22:48:32Z",
+          "harness": "codex",
+          "name": "The Brain",
+          "observed_at": "2026-11-22T22:48:32Z",
+          "role": "implementer",
+          "source": "Implementer final resource-audit.json; source committed by lead; no descendants",
+          "status": "completed source allocation"
+        },
+        {
+          "name": "Shaggy",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-25T01:15:24.347086+00:00",
+          "expires_at": "2026-11-25T01:15:24.347086+00:00",
+          "source": "Final actual070904ed0 proof/cleanup and Result; no active worker inferred from commits. Sol/high lead, Sol/medium implementers; no fallback.",
+          "status": "completed engineering allocation; human parity handoff remains"
+        },
+        {
+          "name": "Road Runner",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-25T01:15:24.347086+00:00",
+          "expires_at": "2026-11-25T01:15:24.347086+00:00",
+          "source": "Final actual070904ed0 proof/cleanup and Result; no active worker inferred from commits. Sol/high lead, Sol/medium implementers; no fallback.",
+          "status": "completed engineering allocation; human parity handoff remains"
+        },
+        {
+          "name": "Timone",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-25T01:15:24.347086+00:00",
+          "expires_at": "2026-11-25T01:15:24.347086+00:00",
+          "source": "Final actual070904ed0 proof/cleanup and Result; no active worker inferred from commits. Sol/high lead, Sol/medium implementers; no fallback.",
+          "status": "completed engineering allocation; human parity handoff remains"
+        }
+      ]
     }
   ]
 }
