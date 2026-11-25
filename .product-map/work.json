@@ -10933,7 +10933,7 @@
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-026",
       "id": "FUCQ-551",
-      "observed_at": "2026-11-25T06:47:11.466505Z",
+      "observed_at": "2026-11-25T19:59:56Z",
       "original_status": "To Do",
       "slices": [
         {
@@ -10951,10 +10951,10 @@
           "title": "Account Buddy composition (5 points)"
         },
         {
-          "evidence": "Shared real history/tag/named records and drawer focus pass; no false warning for no-order, actual aborted-read warning/retry recovers. Public current-derived hosted asset200 image/webp40050bytes matches repo. Local actual image loads; signed-in hosted journey remains unproved.",
+          "evidence": "Shared real history/tag/named records and drawer focus pass; no false warning for no-order, and actual aborted-read warning/retry recovers. The public current-derived hosted asset GET was 200 image/webp (40,050 bytes) matching the repository asset; local rendering passed. Accepted signed-in hosted probe: demo-paula saw a BMW 3 Series Touring 320i; its hosted web-origin image loaded 200 image/webp at 1200×675 and painted at x=97, y=205, 697.8×392.5 px. Screenshot attachment 1647679 is on FUCQ-551",
           "id": "account-history-media",
-          "observed_at": "2026-11-25T06:47:11.466505Z",
-          "status": "in-progress",
+          "observed_at": "2026-11-25T19:59:56Z",
+          "status": "complete",
           "title": "Shared history, failure regression and hosted image (3 points)"
         },
         {
