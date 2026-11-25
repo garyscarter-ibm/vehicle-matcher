@@ -57,10 +57,14 @@ describe('released stock screen', () => {
   it('restores the held-offer action and car-taken refresh notice above the retained cards', async () => {
     client.readStock.mockResolvedValue({ status: 'ok', value: { ...stock(), heldOffer: { offerId: 'offer/1', runId: 'run-1' } } });
     const { root, fixture, component } = await screen(); const view = vi.fn(); component.viewOffer.subscribe(view);
+    expect(button(root, 'View your offer').closest('div[gcspStatusScreen].vm-screen.vm-status')).not.toBeNull();
+    expect(button(root, 'View your offer').classList.contains('vm-btn-primary')).toBe(true);
     button(root, 'View your offer').click(); expect(view).toHaveBeenCalledExactlyOnceWith('offer/1');
     expect(root.querySelectorAll('gcsp-vehicle-card')).toHaveLength(6);
     fixture.componentRef.setInput('reservation', { state: 'failed', blocked: false, selection: null, claim: null, failure: 'car-taken', refresh: 0 });
     fixture.detectChanges(); expect(root.textContent).toContain('This car is no longer available');
+    expect(button(root, 'Refresh availability').closest('div[gcspStatusScreen].vm-screen.vm-status')).not.toBeNull();
+    expect(button(root, 'Refresh availability').classList.contains('vm-btn-ghost')).toBe(true);
     expect(root.querySelectorAll('gcsp-vehicle-card')).toHaveLength(6);
     const refreshed = vi.fn(); component.availabilityRefresh.subscribe(refreshed);
     button(root, 'Refresh availability').click(); await fixture.whenStable(); expect(client.readStock).toHaveBeenCalledTimes(2); expect(refreshed).toHaveBeenCalledOnce();

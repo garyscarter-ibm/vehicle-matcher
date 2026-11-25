@@ -18,13 +18,13 @@
     </section>
   }
   @if (store.projection()?.source?.heldOffer) {
-    <gcsp-status-screen title="You already have a car offer" message="Your buddy is holding a car for you. Decide on that offer before reserving another car." [level]="2" [announcement]="null">
-      @if (offerId(); as id) { <button gcspButton type="button" (click)="viewOffer.emit(id)">View your offer</button> }
-    </gcsp-status-screen>
+    <div gcspStatusScreen presentation="source" title="You already have a car offer" message="Your buddy is holding a car for you. Decide on that offer before reserving another car." [level]="2" [announcement]="null">
+      @if (offerId(); as id) { <button gcspButton presentation="source" type="button" (click)="viewOffer.emit(id)">View your offer</button> }
+    </div>
   }
-  @if (carTaken()) { <gcsp-status-screen title="This car is no longer available" message="Choose another car or refresh availability." [level]="2" [announcement]="null">
-    <button gcspButton type="button" variant="ghost" (click)="reload()">Refresh availability</button>
-  </gcsp-status-screen> }
+  @if (carTaken()) { <div gcspStatusScreen presentation="source" title="This car is no longer available" message="Choose another car or refresh availability." [level]="2" [announcement]="null">
+    <button gcspButton presentation="source" type="button" variant="ghost" (click)="reload()">Refresh availability</button>
+  </div> }
     @if (store.allCars().length) {
       <gcsp-option-list groupId="stock-series" label="Series" [options]="options().series" [value]="store.controls().series" (valueChange)="setControls({series: $event})" />
       <gcsp-option-list groupId="stock-body" label="Body style" [options]="options().bodies" [value]="store.controls().body" (valueChange)="setControls({body: $event})" />

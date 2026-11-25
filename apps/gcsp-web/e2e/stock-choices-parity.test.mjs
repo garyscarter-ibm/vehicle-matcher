@@ -147,12 +147,13 @@ test('FUCQ-553: source stock, choices and gallery reservation handover', { timeo
     await employee.reload({ waitUntil: 'domcontentloaded' });
     await employee.locator('.vm-card [data-review-id]:enabled').first().waitFor();
   });
-  let selected;
+  let selected; let pendingCommand;
   await check('real pending custody, GET-only status and matching terminal recovery', async () => {
     await employee.locator('.vm-card [data-review-id]:enabled').first().waitFor();
     selected = await employee.locator('.vm-card [data-review-id]:enabled').first().getAttribute('data-review-id');
     suite.claims.pending(); await employee.locator('.vm-card [data-review-id]:enabled').first().click();
     await employee.getByText('Your reservation is still being checked. Check its status before choosing another car.', { exact: true }).waitFor();
+    pendingCommand = claimPosts(employee).at(-1).body;
     evidence.pending = good(await suite.call(employee, 'GET', '/manual/claim'), 'Actual persisted pending claim');
     assert.equal(evidence.pending.state, 'claim-pending'); assert.equal(evidence.pending.hold.orderUuid, selected);
     await capture(employee, 'angular-reservation-pending-1280');
@@ -174,6 +175,10 @@ test('FUCQ-553: source stock, choices and gallery reservation handover', { timeo
   });
   await check('fresh pins, explicit identical retry after a lost request, held review without another reserve', async () => {
     await employee.locator('.vm-card [data-review-id]:enabled').first().waitFor();
+    const freshId = await employee.locator('.vm-card [data-review-id]:enabled').first().getAttribute('data-review-id');
+    const freshStock = good(await suite.call(employee, 'GET', '/manual/stock'), 'Actual refreshed stock after terminal failure');
+    const freshInput = freshStock.decisions.find(car => car.orderUuid === freshId)?.claimInput;
+    assert.ok(freshStock.carIds.includes(freshId) && freshInput);
     suite.claims.confirm(); let intercepted = false;
     const interrupt = async route => { if (!intercepted && route.request().method() === 'POST') { intercepted = true; await route.abort('failed'); } else await route.continue(); };
     await employee.route('**/manual/claim', interrupt);
@@ -181,7 +186,9 @@ test('FUCQ-553: source stock, choices and gallery reservation handover', { timeo
     await employee.getByRole('button', { name: 'Retry this reservation', exact: true }).waitFor();
     await employee.unroute('**/manual/claim', interrupt);
     const command = claimPosts(employee).at(-1).body;
-    assert.notEqual(command.commandId, claimPosts(employee)[0].body.commandId);
+    assert.notEqual(command.commandId, pendingCommand.commandId, 'A resolved pending attempt receives a new deliberate command identity');
+    const { commandId, ...input } = command;
+    assert.deepEqual(input, freshInput, 'The new selection uses the current authenticated stock pins');
     const before = claimPosts(employee).length;
     await employee.getByRole('button', { name: 'Check status', exact: true }).click();
     await employee.getByRole('button', { name: 'Retry this reservation', exact: true }).waitFor();
