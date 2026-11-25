@@ -172,9 +172,17 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
     const offerResponse = employee.waitForResponse((response) => response.request().method() === 'GET'
       && response.url() === `${suite.apiBase}/offers/${encodeURIComponent(offer.offerRef.offerId)}?runId=${encodeURIComponent(offerRunId)}`);
     await panel(employee).getByRole('link', { name: 'View your offer', exact: true }).click();
-    const target = new URL(offerHref, suite.origins.web).href;
-    await employee.waitForURL(target);
-    assert.equal(employee.url(), target, 'The bell opens the exact owned offer URL');
+    const target = new URL(offerHref, suite.origins.web);
+    const opensExactOffer = (url) => {
+      // Angular canonicalizes characters such as colon; decode only the owned final segment.
+      const segments = url.pathname.split('/');
+      return url.origin === target.origin && segments.length === 4 && segments[0] === ''
+        && segments[1] === 'gcsp' && segments[2] === 'offers'
+        && decodeURIComponent(segments[3]) === offer.offerRef.offerId
+        && url.search === target.search && url.hash === target.hash;
+    };
+    await employee.waitForURL(opensExactOffer);
+    assert.ok(opensExactOffer(new URL(employee.url())), `The bell opens the exact owned offer route: ${employee.url()}`);
     const loadedResponse = await offerResponse;
     assert.equal(loadedResponse.status(), 200);
     const loaded = await loadedResponse.json();
