@@ -10958,71 +10958,6 @@
     },
     {
       "assignee": "Russell Gowers",
-      "branch": "dev/DEV-2026-11-22-vesper-029",
-      "evidence": "Published merge de454757f of918263482 verified; first production build passes. Covering web batch green1499/86files, initial resource-incomplete attempt excluded; all10attempt/chunk roots/groups and batch worktree/ref/link/lease removed. Source composition and actual live pair pending.",
-      "id": "FUCQ-556",
-      "note": "All6AC open; still building. Independent canonical source/no-show increment merged as de454757f; complete covering Angular batch1499passed/86files in9resource-bounded whole-file chunks. Original screen/canonical sibling/runtime/keyboard/live-pair/human proof remains; no review-ready claim.",
-      "observed_at": "2026-11-23T06:51:21Z",
-      "original_status": "In Progress",
-      "slices": [
-        {
-          "evidence": "TaskList/SlotPicker source ports and compatible Button source option; same-commit catalogue/gallery. 17 direct/legacy +14 actual Gallery caller cases, boundaries4/config and ratchet124 passed. Source only: all6AC open; Orders/sibling integration/build/browser/live1280pair unrun. Receipts fucq556/launcher-*.json.",
-          "id": "source-ports",
-          "observed_at": "2026-11-23T00:40:55Z",
-          "status": "complete",
-          "title": "Pure TaskList and SlotPicker source ports (3 points)"
-        },
-        {
-          "id": "tracker-documents",
-          "status": "not-started",
-          "title": "Orders tracker and document checklist composition (5 points)"
-        },
-        {
-          "evidence": "No-show provider-slot request eligibility restored through unchanged explicit review/confirm/version/no-replay path;111scoped Orders cases plus boundaries/inline4/ratchet124. Canonical SlotPicker/Timeline composition and other original states, supported integration/live proof remain.",
-          "id": "appointment-return",
-          "observed_at": "2026-11-23T06:24:07Z",
-          "status": "in-progress",
-          "title": "Appointment return history help and missed-state parity (3 points)"
-        },
-        {
-          "evidence": "Independent source increment merged de454757f; first production build and covering Angular1499/86file batch green, recovery/cleanup evidenced. Original screen/sibling/runtime/keyboard/live same-state pair/human review remain; all6AC open, still building.",
-          "id": "integration-proof",
-          "observed_at": "2026-11-23T06:51:21Z",
-          "status": "in-progress",
-          "title": "Supported sibling integration and actual same-state pair (2 points)"
-        }
-      ],
-      "started_at": "2026-11-23",
-      "status": "In Progress",
-      "story_points": 13,
-      "title": "Angular order progress shows plain lists instead of the stage tracker, task checklist, slot picker and timeline",
-      "type": "Bug",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-556",
-      "workers": [
-        {
-          "expires_at": "2026-11-23T00:41:42.562696+00:00",
-          "harness": "codex",
-          "id": "01a20553-daae-7f10-944e-1d8cb280ed69",
-          "name": "Chester",
-          "observed_at": "2026-11-23T00:16:14.987181+00:00",
-          "role": "story-lead",
-          "source": "Active F556 allocation observed through parent dispatch; requested/selected/effective gpt-6.1-sol/xhigh explicit StoryLead override, no fallback; actual identity/title independently verified by parent. Claim1f1080595.",
-          "status": "stopped; child422; launcher continues"
-        },
-        {
-          "expires_at": "2026-11-23T01:26:42.562696+00:00",
-          "harness": "codex",
-          "name": "usget-vesper launcher",
-          "observed_at": "2026-11-23T00:41:42.562696+00:00",
-          "role": "dispatcher carrying source implementation",
-          "source": "Direct work observed in root after child422; primary runtime pair not independently exposed. No substitute model/provider.",
-          "status": "active; F556 source checkpoint publication"
-        }
-      ]
-    },
-    {
-      "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-025",
       "id": "FUCQ-550",
       "observed_at": "2026-11-25T05:51:12Z",
@@ -12734,6 +12669,83 @@
       "type": "Bug",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-564"
+    },
+    {
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-22-vesper-029",
+      "evidence": "Published merge de454757f of918263482 verified; first production build passes. Covering web batch green1499/86files, initial resource-incomplete attempt excluded; all10attempt/chunk roots/groups and batch worktree/ref/link/lease removed. Source composition and actual live pair pending.",
+      "id": "FUCQ-556",
+      "note": "Resumed original13point/sixAC build at6b0c8ecb49. Stable four slices preserved. Retained source ports/no-show increment reused; current Orders rendering gap confirmed; connected/human parity remain pending.",
+      "observed_at": "2026-11-25T06:15:15Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "TaskList/SlotPicker source ports and compatible Button source option; same-commit catalogue/gallery. 17 direct/legacy +14 actual Gallery caller cases, boundaries4/config and ratchet124 passed. Source only: all6AC open; Orders/sibling integration/build/browser/live1280pair unrun. Receipts fucq556/launcher-*.json.",
+          "id": "source-ports",
+          "observed_at": "2026-11-23T00:40:55Z",
+          "status": "complete",
+          "title": "Pure TaskList and SlotPicker source ports (3 points)"
+        },
+        {
+          "id": "tracker-documents",
+          "status": "in-progress",
+          "title": "Orders tracker and document checklist composition (5 points)",
+          "observed_at": "2026-11-25T06:15:15Z",
+          "evidence": "Resumed original Orders composition at6b0c8ecb49; source/type and actual retained images inspected, canonical kit available, original AC1-2 selected."
+        },
+        {
+          "evidence": "No-show provider-slot request eligibility restored through unchanged explicit review/confirm/version/no-replay path;111scoped Orders cases plus boundaries/inline4/ratchet124. Canonical SlotPicker/Timeline composition and other original states, supported integration/live proof remain.",
+          "id": "appointment-return",
+          "observed_at": "2026-11-23T06:24:07Z",
+          "status": "in-progress",
+          "title": "Appointment return history help and missed-state parity (3 points)"
+        },
+        {
+          "evidence": "Independent source increment merged de454757f; first production build and covering Angular1499/86file batch green, recovery/cleanup evidenced. Original screen/sibling/runtime/keyboard/live same-state pair/human review remain; all6AC open, still building.",
+          "id": "integration-proof",
+          "observed_at": "2026-11-23T06:51:21Z",
+          "status": "in-progress",
+          "title": "Supported sibling integration and actual same-state pair (2 points)"
+        }
+      ],
+      "started_at": "2026-11-23",
+      "status": "In Progress",
+      "story_points": 13,
+      "title": "Angular order progress shows plain lists instead of the stage tracker, task checklist, slot picker and timeline",
+      "type": "Bug",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-556",
+      "workers": [
+        {
+          "expires_at": "2026-11-23T00:41:42.562696+00:00",
+          "harness": "codex",
+          "id": "01a20553-daae-7f10-944e-1d8cb280ed69",
+          "name": "Chester",
+          "observed_at": "2026-11-23T00:16:14.987181+00:00",
+          "role": "story-lead",
+          "source": "Active F556 allocation observed through parent dispatch; requested/selected/effective gpt-6.1-sol/xhigh explicit StoryLead override, no fallback; actual identity/title independently verified by parent. Claim1f1080595.",
+          "status": "stopped; child422; launcher continues"
+        },
+        {
+          "expires_at": "2026-11-23T01:26:42.562696+00:00",
+          "harness": "codex",
+          "name": "usget-vesper launcher",
+          "observed_at": "2026-11-23T00:41:42.562696+00:00",
+          "role": "dispatcher carrying source implementation",
+          "source": "Direct work observed in root after child422; primary runtime pair not independently exposed. No substitute model/provider.",
+          "status": "active; F556 source checkpoint publication"
+        },
+        {
+          "id": "01a21155-84b2-7871-8d53-5731b6ea34fb",
+          "name": "Egghead Jr",
+          "role": "story-lead",
+          "harness": "codex",
+          "status": "active",
+          "observed_at": "2026-11-25T06:15:15.576028+00:00",
+          "expires_at": "2026-11-25T08:15:15.579675+00:00",
+          "source": "Native collaboration dispatch/title confirmed; requested/selected Sol/high, no fallback. Original scope and existing claim unchanged."
+        }
+      ]
     }
   ]
 }
