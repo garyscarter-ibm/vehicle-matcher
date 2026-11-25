@@ -12791,12 +12791,16 @@
         {
           "id": "selected-display",
           "title": "Selected immutable vehicle display",
-          "status": "in-progress"
+          "status": "complete",
+          "observed_at": "2026-11-25T08:29:49Z",
+          "evidence": "Lead inspected projection and identity/allowlist diff; corrected projection/OIDC HTTP 8/8 plus127 unchanged-boundary Java passes, Angular259/259 and ratchets340/340. Product d8a34ca89 unchanged in final3b6dc7d09; card Result DEV-2026-11-24-sorrel-001. Human parity remains pending."
         },
         {
           "id": "integration",
           "title": "Connected Orders summary regression",
-          "status": "not-started"
+          "status": "complete",
+          "observed_at": "2026-11-25T08:29:49Z",
+          "evidence": "Final3b6dc7d09 registered F556 family2pass/0fail/1native skip; actual saved quote/authenticated manual-order/name+loaded-image DOM equality at1280/390. Lead viewed four pairs; human verdict pending existing MSG-2026-11-25-sorrel-001. Evidence sorrel-f593-20261125/browser-3b6dc7d09-chromium159."
         },
         {
           "id": "parity",
@@ -12805,7 +12809,7 @@
         }
       ],
       "workers": [],
-      "observed_at": "2026-11-25T08:11:48Z"
+      "observed_at": "2026-11-25T08:29:49Z"
     }
   ]
 }
