@@ -625,6 +625,25 @@ uncertain requests available for an explicit same-command retry, and provides a 
 gallery states use inert projections with actions disabled; the live compact and full preferences
 views bind its outputs to the shared `BriefEditorStore` command lane.
 
+### Angular source single range slider (FUCQ-559)
+
+`gcsp-range-slider` ports `renderRangeSlider(single: true)` from frozen
+`blocks/vehicle-matcher/modes/question-ui.js`. Required `question` supplies
+`id`, `min`, `max`, `step` and optional `label`, `default`, `unit`, `format`,
+`plusAtMax`. Controlled `value: number | null`, `valueState` (confirmed,
+unconfirmed, unknown), `unknownText`, `unit`, `disabled` and `ariaLabel` project
+without emitting. Native input emits scalar `valueChange`, updates its local
+readout and confirms that local value. Unknown projections retain the physical
+thumb; a confirmed zero remains zero. Formatting retains source units, GBP and
+plus-at-maximum semantics. The source readout/input/bounds siblings and all
+`vm-slider-*` classes consume the assembled global stylesheet; the Angular host
+uses `display: contents`. Use instead of view-local single range inputs.
+Gallery: **Source single range slider**, including unknown, zero and disabled.
+Greg's derivative maximums keep their number input and use the source slider
+range of zero to `Math.max(10, baselineMax * 2)`; invalid/out-of-range number
+edits disable the slider with an unknown readout. Preview and submit remain
+explicit actions. Dual-handle mode is outside this bounded source port.
+
 ### Angular canonical history/DataTable contract (FUCQ-551)
 
 `kit/data-table.component.ts` uses one explicit Angular row envelope:
@@ -1035,6 +1054,7 @@ Frozen source: `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`. The assembled global 
 | `plain-copy` (`blocks/gcsp/kit/plain-copy.js`) | none (utility) | | not yet | pending |
 | `presenter-actions` (`blocks/gcsp/kit/presenter-actions.js`) | none (utility) | `apps/gcsp-web/src/app/kit/presenter-actions.ts` | ported | yes |
 | `presenter-bar` (`blocks/gcsp/kit/presenter-bar.js`) | `.gcsp-presenter-bar` | | not yet | pending |
+| renderRangeSlider.single (subcomposition only) | `.vm-slider-single` | `apps/gcsp-web/src/app/kit/range-slider.component.ts` | ported | yes: source readout/input/bounds siblings and unknown/disabled state |
 | `range-bar` (`blocks/gcsp/kit/range-bar.js`) | `.gcsp-range-bar` | | not yet | pending |
 | `rating-gallery` (`blocks/gcsp/kit/rating-gallery.js`) | none (gallery composition) | | not yet | pending |
 | `release-grid` (`blocks/gcsp/kit/release-grid.js`) | `.gcsp-release-grid` | `apps/gcsp-web/src/app/kit/release-grid.component.ts` | ported | yes |

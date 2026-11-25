@@ -52,7 +52,7 @@ export interface LearnedModelView {
   readonly classes: readonly { readonly label: string; readonly expected: string; readonly low: string; readonly high: string }[];
   readonly evaluation: readonly PlanningFact[]; readonly limitations: readonly string[];
   readonly differences: { readonly comparable: boolean; readonly note: string | null;
-    readonly rows: readonly { readonly label: string; readonly baseline: string; readonly learned: string; readonly difference: string }[] };
+    readonly rows: readonly { readonly label: string; readonly baseline: string; readonly learned: string; readonly difference: string; readonly changed?: boolean }[] };
 }
 export interface PlanView {
   readonly planId: string; readonly versions: Readonly<Record<string, string>>; readonly preview: boolean;
