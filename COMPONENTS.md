@@ -709,8 +709,9 @@ The account uses the original `gcsp-account-buddy-preferences` grid and direct B
 the authoritative `pendingOffer()` suppresses the old preview and current-car replacement action
 while Buddy is present. Journey choices omit Buddy and retain the source current-car action.
 The optional `buddyControls` input on AccountPreferences and BuddyControls defaults to false.
-Account passes true so the tile owns active/paused/disabled actions; inactive engagement and
-failure recovery remain reachable. No editor/store/client behavior or source CSS is duplicated.
+Account passes true so the tile owns active/paused/disabled actions. In compact account mode,
+healthy active/paused Buddy omits the redundant saved-status panel; inactive engagement and
+unavailable/pending/failure recovery remain reachable. No editor/store/client behavior or source CSS is duplicated.
 Gallery: **GCSP Buddy status**, **GCSP Buddy tile** (eight outcomes), and **GCSP activity timeline
 and offer**. Selected synthetic tests establish source/component contracts only; rendered source
 CSS, connected state, hosted assets and human parity review remain separate acceptance work.

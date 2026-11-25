@@ -38,6 +38,11 @@ uses each engine's public Main reset and Basic release button, comparing semanti
 brief, clock and stock while retaining the distinct generated run IDs. It does not establish the
 actual hosted-dev release cue or human acceptance of the screenshot pair.
 
+Select the FUCQ-520 manual review check with `npm --prefix apps/gcsp-web run test:e2e -- --case f520`.
+One real Main composition releases stock through the public presenter controls, reserves a car from `/gcsp/stock`,
+reads the claim back from the API, and asserts at 1280 and 390 that `/gcsp/manual/review` shows the pinned car name,
+identity and a loaded photo (never the "not supplied" fallbacks), with no horizontal scroll. It does not place the order.
+
 ## Manual F340 walkthrough
 
 Run `python3 -B apps/gcsp-web/e2e/run.py --case f340 --manual` with the same pinned Node, installed
@@ -183,3 +188,5 @@ seam pins its own file policy version; the approvals seam instead requires the a
 The ordering state has one actual frozen Node/Angular pair at 1280 and 390. Proposed-handover connected proof is
 unavailable with the bundled `proposeChange=false` policy and remains an explicit original acceptance gap;
 component proof does not close it. Screenshots still need human review and full suites remain in the shared batch.
+
+Select FUCQ-595 with `npm --prefix apps/gcsp-web run test:e2e -- --case f595`. It keeps the original account tab through the actual public release, verifies healthy offer/order envelopes and absence of the two duplicate panels, captures a matching frozen Node/Angular 1280 pair, then aborts an actual preview transport read and proves keyboard recovery from a successful real reread. Desktop and 375px failure/healthy captures support visual review; the new pair still requires a human verdict. No success responses are substituted.

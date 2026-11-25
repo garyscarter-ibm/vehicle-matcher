@@ -13043,6 +13043,77 @@
       "unsliced": false
     },
     {
+      "id": "FUCQ-520",
+      "title": "Show the pinned car name and photo on Angular manual review",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Bug",
+      "branch": "dev/DEV-2026-11-22-vesper-009",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-520",
+      "observed_at": "2026-11-25T22:37:19Z",
+      "workers": [
+        {
+          "name": "Taz",
+          "harness": "claude-code",
+          "role": "story-lead",
+          "status": "inactive; story-lead finished",
+          "observed_at": "2026-11-25T22:15:00Z",
+          "expires_at": "2026-11-25T22:40:00Z",
+          "source": "aurelio story-lead DEV-2026-11-22-vesper-009"
+        }
+      ],
+      "slices": [
+        {
+          "id": "reconcile",
+          "status": "complete",
+          "title": "Reconcile-existing-repair-and-regression",
+          "observed_at": "2026-11-25T22:30:16Z",
+          "evidence": "Repair dff5b1ec2 ancestor of base d03ccedc9, component blob b277a66 unchanged; manual review/projection/summary specs 45/45 on base; post-repair connected F443 run 105312Z (blob b277a66) shows name+photo."
+        },
+        {
+          "id": "e2e-review",
+          "status": "complete",
+          "title": "Browser-test-manual-review-name-photo-desktop-narrow",
+          "observed_at": "2026-11-25T22:37:19Z",
+          "evidence": "a5ddd2d53 f520 browser case: actual Main composition, stock->claim->preview->order review at 1280/390, pinned name/identity/loaded photo, no fallbacks; 1/1 pass (web-e2e-20261125-223613-122726)."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Story-test-set-and-final-commit-browser-pass",
+          "observed_at": "2026-11-25T22:37:19Z",
+          "evidence": "Story test set on a5ddd2d53: manual specs 45/45, e2e test_run 6/6, drift 0, f520 1/1 on final code; full suite deferred to batch."
+        }
+      ],
+      "unsliced": false
+    },
+    {
+      "id": "FUCQ-595",
+      "title": "Remove redundant healthy account recovery and Buddy status panels",
+      "branch": "dev/DEV-2026-11-25-004",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-595",
+      "source": "local claimed delivery plan; native tracker observation pending",
+      "unsliced": false,
+      "observed_at": "2026-11-25T22:54:53Z",
+      "slices": [
+        {
+          "id": "account-composition",
+          "status": "complete",
+          "title": "Compact account composition",
+          "observed_at": "2026-11-25T22:54:53Z",
+          "evidence": "Compact composition implemented; exact8Angular165/165 twice, UIratchet135, originalAC1-3 actual connected4/4 at6f5c7bed9."
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Connected public-release and recovery evidence",
+          "observed_at": "2026-11-25T22:54:53Z",
+          "evidence": "Registered real publicrelease/failure/recovery4/4 and independent1280/375visualreview; originalhumanAC4 blank and dueweb-e2ebatch waiting."
+        }
+      ]
+    },
+    {
       "id": "FUCQ-559",
       "title": "Greg's Angular planning lost the request-cars form, plan-limit slider and production actions",
       "type": "Bug",
