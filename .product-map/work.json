@@ -12914,15 +12914,15 @@
           "id": "policy-binding",
           "title": "Required Main policy adoption, brief binding and recovery",
           "status": "complete",
-          "observed_at": "2026-11-25T20:52:27Z",
-          "evidence": "Independent reviewed source, child142/142 and root31/31 native/OIDC/PostgreSQL passed; partial merge3a072cd99; AC3 strict F561 comparison remains open."
+          "observed_at": "2026-11-25T21:14:09Z",
+          "evidence": "Reviewed pre-loader policy adoption and recovery; child142/142 and root31/31 native checks passed; strict registered F56112e6e9486 now7/7. Original F594AC1/2/3 evidenced; full java batch remains required before acceptance."
         },
         {
           "id": "integration",
           "title": "Focused signed OIDC/native PostgreSQL and strict F561 comparison",
-          "status": "not-started",
-          "observed_at": "2026-11-25T20:43:26.243753Z",
-          "evidence": "Original AC3 remains open until refreshed F561 runs its unchanged strict comparison."
+          "status": "complete",
+          "observed_at": "2026-11-25T21:14:09Z",
+          "evidence": "Original AC3 complete: real signed-OIDC/native PostgreSQL reset/readbacks, root31/31; unchanged strict F561 policy/consent/version assertions executed, final registered12e6e9486 comparison7/7. Evidence .claude/poller/velko-f561-20261125/browser-12e6e9486-chromium159; shared java batch still pending acceptance."
         }
       ],
       "workers": [
@@ -12935,7 +12935,7 @@
           "source": "Root observed native F594 owner chunk launch; requested/selected Sol medium."
         }
       ],
-      "observed_at": "2026-11-25T20:52:27Z"
+      "observed_at": "2026-11-25T21:14:09Z"
     }
   ]
 }
