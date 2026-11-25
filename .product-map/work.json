@@ -12031,7 +12031,7 @@
       "native_status_observed_at": "2026-11-24T08:34:35.298175+00:00",
       "native_updated_at": "2026-11-23T10:21:31.120-0600",
       "note": "Session wound down at the human request. Final Chromium/WEB/Java covering complete with recorded variants/skips. F555 remains partial/native In Progress for original human AC8; F548 AC6 human verdict blank, WebKit26.4 c22 fullRED retained and actualSafari unproved. No acceptance inferred.",
-      "observed_at": "2026-11-24T08:54:19Z",
+      "observed_at": "2026-11-25T18:15:20Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -12091,10 +12091,10 @@
           "title": "Actual Java/OIDC/DemoClock persistent browser behavior (AC1-7)"
         },
         {
-          "evidence": "Retained23Nov source/time/provenance same-offer1280top+lowerTable/390support and F548bell1280pair unchanged. Lead+Pluto critique and framing/capture limits retained. Human F555AC8/F548AC6 rows remain blank in docs/gcsp/evidence/offer-and-bell-parity-2026-11-23.md; no new review chat started during wind-down.",
+          "evidence": "Original AC1-7 validated in the final retained source/connected result; AC8 Gary 2026-11-25 15:57 says offer matches, recorded in the latest Story Result and docs/gcsp/evidence/offer-and-bell-parity-2026-11-23.md. Matching WEB/browser/Java batch coverage is retained. Full Node remains RED with exactly 37 human-authorized F555-only report-only cases; WebKit F555 flows pass but its full run remains RED on separate F548 checks; actual Safari unproved, no cross-engine green.",
           "id": "reviewed-parity",
-          "observed_at": "2026-11-24T08:54:19.702202+00:00",
-          "status": "in-progress",
+          "observed_at": "2026-11-25T18:15:20Z",
+          "status": "complete",
           "title": "Live same-offer 1280 Node/Angular attachments and human review (AC8)"
         }
       ],
