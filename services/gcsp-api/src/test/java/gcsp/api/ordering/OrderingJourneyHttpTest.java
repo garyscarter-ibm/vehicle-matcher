@@ -1,5 +1,6 @@
 package gcsp.api.ordering;
 
+import static gcsp.api.appointments.ReturnJourneySteps.prepareCollectionWindows;
 import static gcsp.api.appointments.ReturnJourneySteps.withCollectionDate;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,7 +45,7 @@ import org.postgresql.ds.PGSimpleDataSource;
 
 /**
  * The employee's cart ordering handoff over HTTP on the started dev composition: real RS256 tokens, a private schema,
- * demo-prepared people and synthetic ordering, with no test alternative. Only released stock (upstream supply) is seeded.
+ * demo-prepared people and synthetic ordering, with no test alternative. Paula's collection window is prepared per run.
  */
 @QuarkusTest
 @TestProfile(OrderingJourneyProfile.class)
@@ -154,12 +155,14 @@ class OrderingJourneyHttpTest {
         return r;
     }
 
-    /** Released stock is upstream supply (the supply release is not part of this story), so it is the one thing seeded. */
+    /** Released stock is upstream supply; prepare Paula's active-run inputs before business state starts. */
     private void seedStock() throws Exception {
         var run = persistence.guard().currentRun();
         try (Connection c = dataSource.get().getConnection()) {
             StockDbFixture.insertStock(c, run.environmentId(), run.runId(), StockDbFixture.rows());
         }
+        JsonNode actualAccount = body(paula().get(BASE + "/manual/account")).get("value");
+        prepareCollectionWindows(dataSource.get(), persistence, actualAccount);
     }
 
     private static ObjectNode submitBody(String commandId, JsonNode claim, long detailsVersion, String digest) {
@@ -284,6 +287,14 @@ class OrderingJourneyHttpTest {
         assertEquals(12000, stored.get("reviewDetails").get("details").get("expectedReturnMileage").asInt());
         assertEquals(holdId, stored.get("reviewDetails").get("binding").get("holdId").asText());
         assertTrue(stored.get("declarations").get("return").asBoolean());
+        // ManualSelection keeps the recorded VehicleSnapshot inside its facts wrapper.
+        JsonNode savedDisplay = stored.at("/stock/facts/facts/display");
+        assertFalse(savedDisplay.path("name").asText().isBlank(), "the accepted cart retains its supplied vehicle name");
+        assertEquals(car, value.at("/selection/stock/orderUuid").asText());
+        assertEquals(savedDisplay.path("name"), value.at("/selection/stock/facts/display/name"));
+        assertEquals(savedDisplay.path("photo"), value.at("/selection/stock/facts/display/photo"));
+        assertFalse(value.path("selection").has("quote"));
+        assertFalse(value.path("selection").has("reviewDetails"));
 
         // 5. Durable: one intent finalised, one provider receipt, one acknowledgement event.
         assertEquals(1, count("SELECT count(*) FROM selection_orders"));
@@ -300,6 +311,8 @@ class OrderingJourneyHttpTest {
         assertEquals(200, read.statusCode(), read.asString());
         assertEquals("acknowledged", body(read).get("value").get("status").asText());
         assertEquals(reference, body(read).get("value").get("providerReference").asText());
+        assertEquals(value.at("/selection/stock"), body(read).at("/value/selection/stock"),
+                "authenticated readback retains the exact saved vehicle summary");
 
         // 6. The same command replays; a changed body or a second command for the slot makes no second order.
         Response again = paula().body(good.toString()).post(ORDER);

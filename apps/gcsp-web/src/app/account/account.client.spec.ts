@@ -47,14 +47,29 @@ describe('native signed-in account client', () => {
   it('reads preview paths through the same bearer boundary and uses only the trusted run for owned offer detail', async () => {
     const offers = { offers: [{ offerId: 'offer/id?with-query', runId: context.runId }] };
     const orders = page([{ orderUuid: 'exact-stock', entitlementSlotId: 'slot', source: { orderNumber: 'supplied' } }]);
-    const snapshot = { selection: { stock: { orderUuid: 'exact-stock', facts: { display: { name: 'BMW i4' } } } }, retainedFact: 'source' };
+    const snapshot = { schemaVersion: 1, status: 'acknowledged', selection: { orderUuid: 'exact-stock', orderNumber: 'supplied',
+      configurationId: 'config', quoteId: 'accepted-quote', termsVersion: 'terms', policyVersion: 'policy', receivedAt: null,
+      stock: { orderUuid: 'exact-stock', facts: { display: { name: 'BMW i4', photo: '/accepted-car.webp' } } } }, retainedFact: 'source' };
     fetcher.mockResolvedValueOnce(ok(offers)).mockResolvedValueOnce(ok({ state: 'pending', runId: context.runId }))
       .mockResolvedValueOnce(ok(orders)).mockResolvedValueOnce(ok(snapshot));
     expect(await client.readOffers()).toEqual({ status: 'ok', value: { offers: [{ ...offers.offers[0], state: 'pending' }] } });
     expect(await client.readOrders()).toEqual({ status: 'ok', value: { ...orders, pageEvidence: [{ after: null, nextAfter: null, failedCount: 0 }] } }); expect(await client.readOrder()).toEqual({ status: 'ok', value: snapshot });
+    expect(orderVehicle(snapshot, 'exact-stock')).toEqual({ name: 'BMW i4', photo: '/accepted-car.webp' });
     expect(fetcher.mock.calls.map(([url]) => url)).toEqual([`${config.apiBaseUrl}/offers/current`,
       `${config.apiBaseUrl}/offers/offer%2Fid%3Fwith-query?runId=${encodeURIComponent(context.runId)}`, `${config.apiBaseUrl}/orders/progress/all`, `${config.apiBaseUrl}/manual/order`]);
     for (const [, options] of fetcher.mock.calls) { expect(options).toMatchObject({ method: 'GET', credentials: 'omit', headers: { Authorization: 'Bearer access-token' } }); expect(options?.body).toBeUndefined(); }
+  });
+  it('accepts the current-offer row without runId and uses the signed-in run for pending detail', async () => {
+    // Reconstructed from the producer contract and captured keys; the raw envelope was not retained.
+    const offers = { offers: [{ createdAt: '2026-11-25T10:00:00Z', offerId: 'offer-current', state: 'active' }] };
+    const detail = { offerId: 'offer-current', runId: context.runId, state: 'pending' };
+    fetcher.mockResolvedValueOnce(ok(offers)).mockResolvedValueOnce(ok(detail));
+
+    expect(await client.readOffers()).toEqual({ status: 'ok', value: { offers: [{ ...offers.offers[0], state: 'pending' }] } });
+    expect(fetcher.mock.calls.map(([url]) => url)).toEqual([
+      `${config.apiBaseUrl}/offers/current`,
+      `${config.apiBaseUrl}/offers/offer-current?runId=${encodeURIComponent(context.runId)}`,
+    ]);
   });
   it('keeps empty previews distinct from failed reads and rejects embedded foreign offer authority before detail fetch', async () => {
     fetcher.mockResolvedValueOnce(ok({ offers: [] })).mockResolvedValueOnce(ok(page()));

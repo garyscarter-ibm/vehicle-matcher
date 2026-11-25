@@ -46,6 +46,7 @@ final class OrderingProjection {
         sel.put("termsVersion", s.path("terms").path("termsVersion").asText(null));
         sel.put("policyVersion", r.policyVersion());
         sel.put("receivedAt", s.path("receivedAt").asText(null));
+        vehicleDisplay(sel, s, r.orderUuid());
         String selectionState = acknowledged ? "acknowledged" : refused ? "handoff-failed" : "handoff-pending";
         JsonNode names = s.path("terms").path("approvalStages");
         ObjectNode progress = v.putObject("progress");
@@ -65,5 +66,40 @@ final class OrderingProjection {
         if (refused) v.putObject("failure").put("reason", r.outcome() == null ? null : r.outcome().path("reason").asText(null));
         v.put("attempts", (r.attempts() + 1) / 2);
         return v;
+    }
+
+    /** Expose only the selected car's saved presentation, never the quote's employee or review details. */
+    private static void vehicleDisplay(ObjectNode selection, JsonNode saved, String orderUuid) {
+        JsonNode stock = saved.path("stock");
+        JsonNode quote = saved.path("quote");
+        if (orderUuid == null || !orderUuid.equals(stock.path("orderUuid").asText(null))
+                || !matchesWhenSupplied(quote.path("orderUuid"), orderUuid)) return;
+
+        JsonNode snapshot = stock.path("facts");
+        if (!snapshot.path("display").isObject()) snapshot = stock.path("facts").path("facts");
+        if (!snapshot.path("display").isObject()) snapshot = quote.path("snapshot");
+        if (!matchesWhenSupplied(snapshot.path("sourceKeys").path("stockId"), orderUuid)) return;
+        JsonNode display = snapshot.path("display");
+        if (!display.isObject()) return;
+
+        ObjectNode visible = JSON.createObjectNode();
+        copyText(display, visible, "name");
+        copyText(display, visible, "photo");
+        if (display.path("images").isArray()) {
+            ArrayNode images = visible.putArray("images");
+            for (JsonNode image : display.path("images")) {
+                if (image.path("src").isTextual()) images.addObject().put("src", image.path("src").textValue());
+            }
+        }
+        if (visible.isEmpty()) return;
+        selection.putObject("stock").put("orderUuid", orderUuid).putObject("facts").set("display", visible);
+    }
+
+    private static boolean matchesWhenSupplied(JsonNode identity, String expected) {
+        return identity.isMissingNode() || identity.isNull() || identity.isTextual() && expected.equals(identity.textValue());
+    }
+
+    private static void copyText(JsonNode source, ObjectNode target, String key) {
+        if (source.path(key).isTextual()) target.put(key, source.path(key).textValue());
     }
 }

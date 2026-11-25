@@ -1,5 +1,6 @@
 package gcsp.api.ordering;
 
+import static gcsp.api.appointments.ReturnJourneySteps.prepareCollectionWindows;
 import static gcsp.api.appointments.ReturnJourneySteps.withCollectionDate;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -169,12 +170,14 @@ abstract class OrderingRemoteJourneySupport {
         return done.getAsBoolean();
     }
 
-    /** Released stock is upstream supply (not part of this story), so it is the one thing seeded. */
+    /** Released stock is upstream supply; prepare Paula's active-run inputs before business state starts. */
     void seedStock() throws Exception {
         var run = persistence.guard().currentRun();
         try (Connection c = dataSource.get().getConnection()) {
             StockDbFixture.insertStock(c, run.environmentId(), run.runId(), StockDbFixture.rows());
         }
+        JsonNode actualAccount = body(employee("paula").get(BASE + "/manual/account")).get("value");
+        prepareCollectionWindows(dataSource.get(), persistence, actualAccount);
     }
 
     /** Account, draft, stock, claim, review details and terms through the real routes; returns the exact submit body. */

@@ -68,6 +68,29 @@ describe('native preference controls', () => {
     yes.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true })); await f.whenStable();
     expect(f.componentInstance.store.brief().essentials['seats'].value).toBeNull();
   });
+  it('leaves multiple-choice activation to native buttons and preserves practical radio navigation', async () => {
+    const f = TestBed.createComponent(PreferencesComponent); await f.whenStable(); const root = f.nativeElement as HTMLElement;
+    const bodyChoices = Array.from(root.querySelectorAll<HTMLButtonElement>('#preference-body button[role=checkbox]'));
+    bodyChoices[0].focus(); expect(bodyChoices[0].ownerDocument.activeElement).toBe(bodyChoices[0]);
+    for (const key of ['Enter', ' ']) {
+      const event = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true });
+      expect(bodyChoices[0].dispatchEvent(event)).toBe(true); expect(event.defaultPrevented).toBe(false);
+      await f.whenStable(); expect(bodyChoices[0].ownerDocument.activeElement).toBe(bodyChoices[0]);
+    }
+
+    const radios = Array.from(root.querySelectorAll<HTMLButtonElement>('#practical-seats button[role=radio]'));
+    let currentIndex = 0;
+    for (const { key, nextIndex } of [{ key: 'ArrowRight', nextIndex: 1 }, { key: 'Home', nextIndex: 0 }, { key: 'End', nextIndex: 2 }]) {
+      const source = radios[currentIndex]; source.focus();
+      const event = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true });
+      expect(source.dispatchEvent(event)).toBe(false); expect(event.defaultPrevented).toBe(true);
+      await f.whenStable();
+      expect(radios[nextIndex].matches(':disabled')).toBe(false);
+      expect(radios[nextIndex].ownerDocument.activeElement).toBe(radios[nextIndex]);
+      expect(radios[nextIndex].getAttribute('aria-checked')).toBe('true');
+      currentIndex = nextIndex;
+    }
+  });
   it('keeps unset axes untouched, charging choices keyboard-operable and disabled chips inert', async () => {
     const editor = briefEditorFixture(); const { economy: _economy, ...preferences } = editor.initial.brief.preferences;
     client.readEditor.mockResolvedValueOnce({ status: 'ok', value: { ...editor, initial: { ...editor.initial, brief: { ...editor.initial.brief, preferences } } } });

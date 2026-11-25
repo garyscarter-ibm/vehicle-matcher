@@ -1,8 +1,8 @@
 # Offer and bell parity evidence — 23 November 2026
 
-**25 November update:** one combined human review now includes the Preferences pairs below, alongside the retained Offer and bell pairs. Earlier stopped-session and setup notes describe their original observation times. F562 has since delivered Main reset; the 23 November capture provenance is preserved. All human verdicts remain pending. Combined review thread: `MSG-2026-11-25-sorrel-001`.
+**25 November update:** the combined human review includes the retained Offer (FUCQ-555 AC8) and bell (FUCQ-548 AC6) pairs, Preferences (FUCQ-552 AC7), F549 navigation (AC4), F550 release/update (AC5), and the F551 held-account pair (original AC6). Native issue, comment, filename and attachment-ID pointers appear below; no image copies were added. F549 AC1's control/Activity wording decision remains pending; AC2/3 engineering criteria are met. F550's required human decision is its original release/update pair; the outbox chip comparison is supporting context, not another gate. F562 has since delivered Main reset. Earlier stopped-session/setup notes and retained captures keep their original observation times. All human verdicts remain pending; F551's signed-in hosted journey remains unproved. Combined review thread: `MSG-2026-11-25-sorrel-001`.
 
-Two original human decisions remain pending: **Offer (FUCQ-555 AC8)** and **Employee notification bell (FUCQ-548 AC6)**. Each can receive its own verdict. No human verdict has been recorded, and neither Bug is accepted. The session is stopped after the requested wind-down; the prepared evidence remains available for human review. No new review chat was started during wind-down.
+The previous wind-down note describes that earlier session; the existing combined thread already points to this artifact. No new review question or thread is created here. No human review or acceptance is claimed, and no Bug is accepted.
 
 The latest registered Chromium suite at `c13e604bc4bf3578c1fcf76e9c948fe72e95d09b` passed **12/12 reported tests** across all six F548/F555 compositions, with all seven stage exits zero. Root independently reconciled all 1834 tracked inputs, actual checks/counts, complete dependency identities and current cleanup: `.claude/test-runs/f555-overnight-20261123/final-consolidated-chromium-20261124/root-independent-audit.json` (SHA `2447118a488f7383a8b6cf181c22c9562d18bb1a06719e9b481ca48be51bd6e1`). The test-only correction waits for specification visibility before the unchanged full-text comparison; no product, assertion, normalizer or frozen reference changed. The final WEB shared-cache variant separately passed **1955 cases / 117 specs / 12 serial chunks**; no npm ci is claimed. Root audit SHA `7db8afe706597fde734faa3c6feeb7552318a3e7d5bff614bed45ed09dd78f93` records exact inputs/raw reports and cleanup.
 
@@ -74,14 +74,68 @@ Root independently verified all 19 browser-owned process identities and groups, 
 
 F556's already-published compatible Button and supported Orders route are consumed. Whole Orders, TaskList, SlotPicker and associated screen acceptance remain outside this delivery's prerequisite gate. F562, F563 and F566 remain separately recorded, with the existing narrow rulings above.
 
+## F549 and F550 — native review evidence added 25 November
+
+These attachment pointers resolve through the existing Jira issues and comments across clones. The screenshots remain attached in Jira; this artifact does not duplicate their image bytes. Frozen Node reference for both comparisons: `e44ed08a9`.
+
+### F549 — navigation — source `65e5f210c` — AC4
+
+Actual connected Node/Angular pairs were captured on 25 November at 1280×800, before deliberate preference changes. Greg is settled at the same no-new-order outcome. Native publication is on FUCQ-549, comment `5067204`:
+
+| Role / state | Angular | Frozen Node |
+| --- | --- | --- |
+| Greg navigation, same no-new-order outcome | `angular-greg-navigation-1280.png` — attachment `1647050` | `node-greg-navigation-1280.png` — attachment `1647051` |
+| Employee navigation, before deliberate preference changes | `angular-employee-navigation-1280.png` — attachment `1647052` | `node-employee-navigation-1280.png` — attachment `1647053` |
+
+The pairs evidence role/account headers, rails, the selected Greg tab and breadcrumbs; body presentation differs. Angular's employee view shows a generic preview banner absent in Node alongside a `/manual/order` 404. The F549 capture retained statuses without bodies, so it did not establish the cause; the later F551 diagnosis tracks the no-false-error boundary. AC2/3 engineering criteria are met. AC1's control/Activity wording decision remains unresolved, and AC4 human review remains unchecked. No account/body repair or parity acceptance is inferred.
+
+### F550 — live release/update — source `4526da931` — AC5
+
+The actual public release updated the original open Your cars tab without employee input, navigation or reload. The 25 November 1280-wide full-page captures show Angular before and after that release and frozen Node in the same-release state. Native publication is on FUCQ-550, comment `5067240`:
+
+| Capture | Native attachment |
+| --- | --- |
+| Angular account before release; full page anchored at the pre-release fixed-header position | `account-before-public-release-1280.png` — `1647059` |
+| Angular account after release; same open tab, with the observed scroll reset | `account-after-public-release-1280.png` — `1647060` |
+| Frozen Node, same release | `node-account-same-release-1280.png` — `1647061` |
+| Angular outbox after release; supporting current-chip comparison only | `outbox-after-public-release-1280.png` — `1647062` |
+| Frozen Node outbox, same release; supporting current-chip comparison only | `node-outbox-same-release-1280.png` — `1647063` |
+
+Engineering evidence at `4526da931` is 5/5 reported tests (four selected groups plus parent); unchanged account/Activity/offer matrices are reused from `cb7e5049a`. This does not claim one full-family green run. The account recovery banner is visible. Its cause was unestablished at this capture; `/manual/order` 404 alone did not establish it. The later F551 diagnosis is recorded separately. The frozen Node outbox has two observed rows versus Angular's one, including an extra historical `renewal-case-update` at 22 November 09:30; its exact pre-release creation boundary was not observed. Only the current-offer chip's label/class/SVG/colour match is established, not full outbox inventory or layout parity. F551 retains the image-source/framing difference for human review and any necessary scoped producer proposal; no framing repair is claimed. F550 AC5 human review remains pending; no acceptance is claimed. These are preserved observations, not added F550 gates.
+
+## F551 — account / held offer — original AC6 — 25 November
+
+The final held-account pair is the original AC6 visual evidence. Native publication is on FUCQ-551, comment `5067309`; no image bytes are copied into this artifact.
+
+| State | Frozen Node | Angular |
+| --- | --- | --- |
+| Held account, 1280-wide (original AC6 pair) | `node-account-held-1280.png` — attachment `1647092` | `angular-account-held-1280.png` — attachment `1647093` |
+
+Supporting Angular captures provide narrow and additional account states only; they are not extra AC6 criteria:
+
+| State | Capture | Native attachment |
+| --- | --- | --- |
+| Held account, 390px | `angular-account-held-390.png` | `1647094` |
+| Paused account | `angular-account-paused-1280.png` | `1647095` |
+| Real read failure and retry | `angular-account-real-read-failure-1280.png` | `1647096` |
+| Finished account | `angular-account-finished-1280.png` | `1647097` |
+
+The final capture source is `1eb11b32356f36f7f7a53842bbe21aa65e74a6f0`; its six registered account groups passed in 24.37 seconds with no console errors. The production source is unchanged since `0a6fdcc30`. Actual evidence shows no false warning in the no-orders state; canonical current-offer rows without `runId` lead to pending detail. Pause returned 200; the subsequent public “Same again” autosave returned 200 and preserved both pause and hold; Resume then returned 200. A real aborted read showed the genuine warning and retry recovered; acceptance returned 200, displayed Finished and verified Track order. Runtime states are inferred from unique UI states and envelopes, without private object inspection.
+
+The Node and Angular captures use different image sources and framing (2560×1646 and 1200×675 respectively); photo-source equivalence is not established. Angular's no-orders line is 52px, and preferences, status and details presentation differ. The signed-in hosted journey remains unproved; the separate current-derived asset GET (200, 40,050 bytes) establishes availability only. F551 stays partial / In Progress. AC6 verdict, reviewer, date and source remain blank; no human parity acceptance or framing fix is claimed.
+
 ## Human verdict ledger
 
 Status: **human review pending; combined review resumed on 25 November.** One response can give a separate verdict for each row. The fields below stay blank until a human collaborator gives a cited verdict: `matches`, `differs: <Bug key>` or `intended change: <cited ruling>`. A described difference can be tracked before closure. Any collaborator has equal authority.
 
 | Screen / original criterion | State and viewport | Pair | Verdict | Human reviewer | Date | Source |
 | --- | --- | --- | --- | --- | --- | --- |
-| Offer — F555 AC8 | Pending held Main X2, 1280 | Top and lower table pairs above | | | | |
-| Employee bell — F548 AC6 | Open with one active Main X2, 1280 | Bell pair above | | | | |
+| Offer — F555 AC8 | Pending held Main X2, 1280 | Top and lower table pairs above | matches (Gary: "otherwise they all match") | Gary Carter | 2026-11-25 | Gary Carter, reviewing the committed pairs with the Claude poller; quoted verbatim in reply on `MSG-2026-11-25-sorrel-001` |
+| Employee bell — F548 AC6 | Open with one active Main X2, 1280 | Bell pair above | matches (Gary: "otherwise they all match") | Gary Carter | 2026-11-25 | Gary Carter, reviewing the committed pairs with the Claude poller; quoted verbatim in reply on `MSG-2026-11-25-sorrel-001` |
+| F549 — AC4 | Greg navigation, same no-new-order outcome, 1280×800 | Greg pair in F549 evidence section | | | | |
+| F549 — AC4 | Employee navigation before preference changes, 1280×800 | Employee pair in F549 evidence section | | | | |
+| F550 — AC5 | Open Your cars tab across public release, 1280-wide full page | Angular before/after plus frozen Node same-release captures in F550 evidence section; outbox pair is supporting chip evidence only | | | | |
+| F551 — AC6 | Held account, 1280-wide | Node attachment `1647092` and Angular attachment `1647093`; supporting states in F551 section | | | | |
 
 
 ## Preferences — F552 AC7 — 25 November review addition
@@ -118,13 +172,32 @@ The frozen reference is `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`; tested Angul
 
 Safari/private browsing and hosted BMW integration were not checked here. The earlier Offer/bell limitations and their original sources remain above. Source response/order, valid clock instants, actual candidate identities and local version semantics are retained in the linked provenance; no derived outcome was manufactured.
 
+## F556 — order progress — original AC6 — 25 November publication
+
+The same-order Main sent-to-ordering 1280px pair is now attached to FUCQ-556. Native comment `5067335` carries marker `F556-NATIVE-EVIDENCE-2026-11-25-CB18938BA`; readback confirmed the marker and each filename once. No image bytes are copied into this artifact.
+
+| Capture | Role | Jira attachment |
+| --- | --- | ---: |
+| `node-ordering-1280.png` | Frozen Node reference; original AC6 pair | `1647115` |
+| `angular-ordering-1280.png` | Angular; original AC6 pair | `1647116` |
+| `node-ordering-390.png` | Supporting narrow capture | `1647117` |
+| `angular-ordering-390.png` | Supporting narrow capture | `1647118` |
+| `angular-rebooked-1280.png` | Supporting rebooked state | `1647119` |
+| `angular-return-missed-1280.png` | Supporting missed-return state | `1647120` |
+| `angular-blocked-1280.png` | Supporting genuine blocked-note state | `1647121` |
+
+The final connected family `cb18938baf7597ba7cb93ad47f3d98a8c4110630` passed both supported groups, had no failures and explicitly skipped the unsupported declined-input group (37.5227 seconds). Actual acknowledgement, keyboard slot review/booking/readback, history, no-show/rebooking with earlier-missed copy, scheduled and missed return, and the genuine blocked note are covered by the retained run evidence. Root's 146/146 and lead's 164/164 covering checks are green; Pugh's Sol/high source review passed. FUCQ-556 remains partial / In Progress with its original 13 points and six criteria: AC1/2/3/5 are evidenced; AC4's decline/proposed-handover connected-help states remain unsupported. AC6 is now available for human review, not accepted.
+
+The human verdict row below remains blank. The Node 1280 photo is dark, so its image readiness is not certified; the `/manual/order` 200 response body was not retained, so the blank Angular vehicle summary's cause remains unknown. The vehicle-summary defect is tracked separately as FUCQ-593. Extra generic rows and return-model/location differences remain observations, not new F556 acceptance criteria. Safari/WebKit, the covering batch and the signed-in hosted journey remain unrun or unproved.
+
 ### Additional blank human ledger rows
 
 Use one response for the combined batch, with `matches`, `differs: <description or Bug>` or `intended change: <ruling>` for each pair. An agent may copy only an explicit human verdict into these blank rows and the original Offer/bell rows above.
 
 | Screen / original criterion | State and viewport | Pair | Verdict | Human reviewer | Date | Source |
 | --- | --- | --- | --- | --- | --- | --- |
-| Preferences — F552 AC7 | Account Sportiness open,1280×800 | Account pair above | | | | |
-| Preferences — F552 AC7 | Editor categories/axes,1280×800 | Editor pair above | | | | |
-| Preferences — F552 AC7 | Editor practical questions,1280×800 | Practical pair above | | | | |
-| Preferences — F552 AC7 | Editor first preview card,1280×800 | Preview pair above | | | | |
+| Preferences — F552 AC7 | Account Sportiness open,1280×800 | Account pair above | matches (Gary: "otherwise they all match") | Gary Carter | 2026-11-25 | Gary Carter, reviewing the committed pairs with the Claude poller; quoted verbatim in reply on `MSG-2026-11-25-sorrel-001` |
+| Preferences — F552 AC7 | Editor categories/axes,1280×800 | Editor pair above | differs: "Preferences 3b differs slightly with an extra "update preview" button" (Gary) | Gary Carter | 2026-11-25 | Gary Carter, reviewing the committed pairs with the Claude poller; quoted verbatim in reply on `MSG-2026-11-25-sorrel-001` |
+| Preferences — F552 AC7 | Editor practical questions,1280×800 | Practical pair above | matches (Gary: "otherwise they all match") | Gary Carter | 2026-11-25 | Gary Carter, reviewing the committed pairs with the Claude poller; quoted verbatim in reply on `MSG-2026-11-25-sorrel-001` |
+| Preferences — F552 AC7 | Editor first preview card,1280×800 | Preview pair above | matches (Gary: "otherwise they all match") | Gary Carter | 2026-11-25 | Gary Carter, reviewing the committed pairs with the Claude poller; quoted verbatim in reply on `MSG-2026-11-25-sorrel-001` |
+| Orders / order progress — F556 AC6 | Same Main sent-to-ordering order, 1280×800 | Frozen Node attachment `1647115`; Angular attachment `1647116`; FUCQ-556 comment `5067335` | | | | |

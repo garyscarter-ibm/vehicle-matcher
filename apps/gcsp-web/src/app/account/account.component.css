@@ -3,7 +3,7 @@
 .account-head { display: flex; justify-content: space-between; align-items: center; gap: var(--gcsp-space-4); }
 h2, h3, p { margin-top: 0; }
 h2, h3 { font-weight: var(--gcsp-font-strong-weight); }
-h2 { font-size: var(--gcsp-font-size-subheading); }
+h2:not(.gcsp-vehicle-title) { font-size: var(--gcsp-font-size-subheading); }
 h3 { font-size: var(--gcsp-font-size-regular); }
 .current-car { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(300px, 1fr); background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); }
 .car-media { display: grid; place-items: center; min-height: 320px; background: var(--gcsp-surface-muted); }
