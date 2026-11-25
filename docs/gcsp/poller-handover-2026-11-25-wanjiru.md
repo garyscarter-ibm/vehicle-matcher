@@ -29,8 +29,12 @@ Read `AGENTS.md` first (OneDrive ban, Story test set, shared test stack).
 - **Jira pull** is held: 262 issues fail because Jira omits `attachment` when an issue has none. The
   `attachments is EMPTY` witness needs the search response saved to a file by a tool, not retyped (the auto-mode
   classifier refuses hand transcription). Don't retry until there is a way to save the pages.
-- **Queue:** only FUCQ-336 and FUCQ-338 (need agreed design) and FUCQ-255 (needs collaborator review) pass
-  check-story; the rest wait on the job above.
+- **Queue (17:31 UTC):** Russell's poller `usget-velko` restarted at 17:13, acked the job above and ran a Jira
+  pull (41 commits). Three Bugs now pass check-story and are claimable, none claimed yet:
+  DEV-2026-11-22-vesper-001 (FUCQ-513, Greg planning sign-in return), DEV-2026-11-22-vesper-010 (FUCQ-515, Java
+  hold expiry vs run time) and DEV-2026-11-22-vesper-002 (FUCQ-516, premature claim release). Each says to
+  reconcile existing repair evidence before any duplicate fix. Claim through `scaffold_git.py claim` (a lease:
+  velko may take one first). FUCQ-336/338 still need agreed design and FUCQ-255 collaborator review.
 - The F552 3b difference may need a Bug or an intended-change ruling; ask Gary before filing one.
 - Blank ledger rows: F549 AC4, F550 AC5, F551 AC6, F556 AC6 (their pairs are Jira attachments).
 
