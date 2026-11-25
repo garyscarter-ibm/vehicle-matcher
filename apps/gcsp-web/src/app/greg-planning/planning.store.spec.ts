@@ -69,6 +69,17 @@ describe('route-scoped planning state', () => {
     gate.resolve(accepted()); await pending; expect(store.orderOutcome()).toBeNull(); expect(store.canRetryOrder()).toBe(false);
     expect(submitManual).toHaveBeenCalledOnce();
   });
+  it('retries a lost queue acknowledgement with the same identity after refreshed supply is already queued', async () => {
+    const value = ordersFixture(); const unqueued = { ...value, requests: [{ ...value.requests[0], queuedQuantity: 0,
+      supplies: [{ ...(value.requests[0]['supplies'] as Record<string, unknown>[])[0], queued: false }] }] };
+    readProduction.mockResolvedValueOnce({ status: 'ok', value: unqueued }); await store.refreshProduction();
+    queue.mockResolvedValueOnce({ status: 'uncertain', reason: 'Reply lost.' });
+    await store.retryReleaseQueue('request-1'); const original = queue.mock.calls[0][0];
+    readProduction.mockResolvedValue({ status: 'ok', value }); await store.refreshProduction();
+    expect(store.orders()?.requests[0].supplies.every(s => s.queued)).toBe(true); expect(store.canRetryOrder()).toBe(true); expect(store.canRequestCars()).toBe(false);
+    await store.retryOrder(); expect(queue.mock.calls[1][0]).toEqual(original); expect(store.canRetryOrder()).toBe(false); expect(store.canRequestCars()).toBe(true);
+    await store.refresh(); expect(store.canSubmit()).toBe(true);
+  });
   it('loads current inputs and Production without sending a command', () => {
     expect(store.canSubmit()).toBe(true); expect(store.production()?.requests).toEqual([]); expect(submit).not.toHaveBeenCalled();
   });

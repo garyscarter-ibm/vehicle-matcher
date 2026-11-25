@@ -20,8 +20,8 @@
     @if (store.orderOutcome(); as outcome) {
       <p data-order-result tabindex="-1" role="status">{{ store.orderMessage() }}</p>
     }
-    @if (store.canRetryOrder() && store.orderRetryKind() === 'manual') { <p class="gcsp-note">The earlier command is retained. Retry continues the same command.</p>
-      <button gcspButton type="button" [disabled]="store.submitting()" (click)="store.retryOrder()">Retry same command</button> }
+    @if (store.canRetryOrder()) { <p class="gcsp-note">The earlier command is retained. Retry continues the same command.</p>
+      <button gcspButton type="button" [disabled]="store.submitting()" (click)="store.retryOrder()">{{ store.orderRetryKind() === 'queue' ? 'Retry release queue' : 'Retry same command' }}</button> }
     @if (store.pendingValue(); as value) {
       <p>Submission reference: {{ value.submissionId }}</p>
       <ul>@for (request of value.requests; track $index) { <li>{{ request['model'] }} {{ request['derivative'] }} · {{ request['quantity'] }} requested · {{ request['state'] }}@if (request['reason']) { : {{ request['reason'] }} }</li> }</ul>
@@ -35,7 +35,7 @@
       <div class="gcsp-orders-tracking"><gcsp-data-table caption="Requested, confirmed and released cars" [columns]="columns" [rows]="tableRows()" emptyText="No requests yet. Choose a model, derivative and quantity to request cars." /></div>
       <div class="gcsp-orders-queues">@for (request of queueRequests(); track request.requestId) {
         <div class="gcsp-orders-queue"><p class="gcsp-note">{{ request.model }} {{ request.derivative }}: confirmed supply is saved and awaiting the release queue.</p>
-          <button gcspButton variant="ghost" type="button" [disabled]="store.queueBlocked(request.requestId)" (click)="store.retryReleaseQueue(request.requestId)">Retry release queue</button>
+          @if (!store.canRetryOrder() || store.orderRetryKind() !== 'queue') { <button gcspButton variant="ghost" type="button" [disabled]="store.queueBlocked(request.requestId)" (click)="store.retryReleaseQueue(request.requestId)">Retry release queue</button> }
         </div>
       }</div>
     <details class="gcsp-orders-production"><summary>Request cars</summary>
