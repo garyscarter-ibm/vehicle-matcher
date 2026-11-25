@@ -21,7 +21,7 @@ Engineering pre-check complete; **human verdict pending**. These are the origina
 
 ## Visible differences for the human verdict
 
-Angular retains the saved-version notice and Update preview button, shifting the editor/preview vertically. Frozen Node has a compact Engage Buddy footer; Angular retains separate Buddy controls. The shell navigation/account affordances differ. The same exact preview car has a larger image framing in Angular; both presenters render their own supplied `display.photo`, but the retained provider images differ. The card media-box proportions and decision-card structure align. No image-byte/photo-parity or intended-change verdict is claimed. Buddy tile and shell work remain outside F552.
+**Unresolved F552 AC7 observations:** Angular retains the saved-version notice and Update preview button, shifting the editor/preview vertically. The editor/card observations below remain against this existing F552 parity Bug until the human verdict. Frozen Node has a compact Engage Buddy footer; Angular retains separate Buddy controls. The shell navigation/account affordances differ. The same exact preview car has a larger image framing in Angular; both presenters render their own supplied `display.photo`, but the retained provider images differ. The card media-box proportions and decision-card structure align. No image-byte/photo-parity or intended-change verdict is claimed. The original F552 `out_of_scope` excludes the Buddy tile; existing Your cars parity Bug FUCQ-551 owns that Buddy composition. Shell/navigation remains with its FUCQ-439 origin and existing parity Bug FUCQ-549. Those existing allocations are preserved; no difference is declared intended.
 
 ## Checks and remaining decision
 
