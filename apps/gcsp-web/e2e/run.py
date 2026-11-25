@@ -25,6 +25,7 @@ CASES = {
     'f551': 'apps/gcsp-web/e2e/account-parity.test.mjs',
     'f552': 'apps/gcsp-web/e2e/preferences-parity.test.mjs',
     'f555': 'apps/gcsp-web/e2e/offer-parity.test.mjs',
+    'f556': 'apps/gcsp-web/e2e/orders-parity.test.mjs',
 }
 
 

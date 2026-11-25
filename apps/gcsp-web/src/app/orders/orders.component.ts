@@ -4,24 +4,65 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { LiveRefreshService } from '../live-refresh.service';
 import { AuthPort } from '../auth/auth.port';
 import { safeReturnTo } from '../auth/route-policy';
+import { formatActivityTime as demoTime } from '../activity/activity.copy';
 import type { EvidenceRecord } from '../account/account.types';
 import { ButtonDirective } from '../kit/button.directive';
 import { FactListComponent, FactRow } from '../kit/fact-list.component';
 import { LabelledFieldComponent } from '../kit/labelled-field.component';
 import { ScreenIntroComponent } from '../kit/screen-intro.component';
 import { StatusScreenComponent } from '../kit/status-screen.component';
+import { StageTrackerComponent } from '../kit/stage-tracker.component';
+import type { StageTrackerItem } from '../kit/stage-tracker.component';
+import { TaskListComponent } from '../kit/task-list.component';
+import type { TaskGroup, TaskItem } from '../kit/task-list.component';
+import { SlotPickerComponent } from '../kit/slot-picker.component';
+import { ActivityTimelineComponent } from '../kit/activity-timeline.component';
+import type { TimelineEvent } from '../kit/activity-timeline.component';
 import { OrdersActions, OrdersActionState, OrderAction } from './orders.actions';
 import { OrdersClient } from './orders.client';
 import { OrdersController, OrdersControllerState } from './orders.controller';
-import type { LifecycleResult, OfferedSlot, OwnedStep, ProducerSection } from './orders.types';
+import type { LifecycleResult, OfferedSlot, OrderAppointment, OrderReturnPlan, OwnedStep, ProducerSection } from './orders.types';
 import type { OrdersReadContext } from './orders.read-port';
+
+const stageStates: Readonly<Record<string, StageTrackerItem['state']>> = Object.freeze({
+  approved: 'done', pending: 'current', declined: 'declined', 'not-started': 'upcoming',
+});
+const itemStatuses: Readonly<Record<string, string>> = Object.freeze({
+  'not-started': 'Not started', 'waiting-for-employee': 'Waiting for you', 'in-progress': 'In progress',
+  complete: 'Complete', failed: 'Failed',
+});
+const itemOwners: Readonly<Record<string, string>> = Object.freeze({ employee: 'You', 'scheme-team': 'Scheme team', retailer: 'Retailer' });
+const ownerNames: Readonly<Record<string, string>> = Object.freeze({ employee: 'you', retailer: 'retailer', 'scheme-team': 'scheme team' });
+const ownersWithoutArticle = new Set(['HR', 'ordering', 'you']);
+const withOwner = (owner: string | null | undefined): string | undefined => {
+  const name = owner ? ownerNames[owner] ?? owner : undefined;
+  return name ? `With ${ownersWithoutArticle.has(name) ? name : `the ${name}`}` : undefined;
+};
+const sentence = (text: string): string => text ? text[0].toUpperCase() + text.slice(1) : '';
+const itemTone = (status: string, overdue: boolean): string => status === 'failed' ? 'failed'
+  : status === 'complete' ? 'done' : overdue ? 'overdue' : status === 'in-progress' ? 'in-progress' : 'todo';
+const slotText = (slot: OfferedSlot | null | undefined): string | null => typeof slot?.start === 'string' && Number.isFinite(Date.parse(slot.start))
+  ? demoTime(slot.start) : null;
+const when = (prefix: string, slot: OfferedSlot | null | undefined): string => {
+  const text = slotText(slot); return text ? `${prefix} ${text}` : prefix;
+};
+const dated = (label: string, instant: unknown): string => {
+  const text = typeof instant === 'string' && Number.isFinite(Date.parse(instant)) ? demoTime(instant) : null;
+  return text ? `${label}: ${text}` : `${label}.`;
+};
+const handoverHistoryLabels: Readonly<Record<string, string>> = Object.freeze({ requested: 'Requested', 'change-proposed': 'New time proposed',
+  scheduled: 'Booked', completed: 'Handover complete', 'no-show': 'Handover missed' });
+const returnHistoryLabels: Readonly<Record<string, string>> = Object.freeze({ requested: 'Return requested', 'change-proposed': 'New return time proposed',
+  scheduled: 'Return booked', returned: 'Returned', 'return-missed': 'Return missed' });
+type ReadinessGroup = { readonly heading: string; readonly labels: readonly string[] };
 
 const contextKey = (c: OrdersReadContext | null): string | null => c
   ? JSON.stringify([c.subject, c.environmentId, c.runId, c.employeeId, c.employeeAuthority]) : null;
 
 @Component({
   selector: 'gcsp-orders',
-  imports: [RouterLink, ButtonDirective, FactListComponent, LabelledFieldComponent, ScreenIntroComponent, StatusScreenComponent],
+  imports: [RouterLink, ButtonDirective, FactListComponent, LabelledFieldComponent, ScreenIntroComponent, StatusScreenComponent,
+    StageTrackerComponent, TaskListComponent, SlotPickerComponent, ActivityTimelineComponent],
   templateUrl: './orders.component.html', styleUrl: './orders.component.css',
 })
 export class OrdersComponent implements OnDestroy {
@@ -36,6 +77,8 @@ export class OrdersComponent implements OnDestroy {
   readonly action = signal<OrdersActionState>({ review: null, busy: false, result: null });
   readonly failedImage = signal<string | null>(null);
   private opener: HTMLElement | null = null;
+  private readonly returnPickers = new Map<string, (slot: OfferedSlot) => void>();
+  readonly appointmentPicker = (slot: OfferedSlot): void => this.pickAppointment(slot);
   private disposed = false;
   private refreshEpoch = 0;
   readonly refreshMessage = signal('');
@@ -46,18 +89,58 @@ export class OrdersComponent implements OnDestroy {
   readonly orders = computed(() => { const s = this.state(); return this.model() && s?.orders?.status === 'ok' ? s.orders.value.orders : []; });
   readonly busy = computed(() => this.action().busy || this.state()?.phase === 'loading');
   readonly photo = computed(() => { const p = this.model(); return p?.selection.order?.orderUuid !== this.failedImage() ? p?.vehicle?.photo : undefined; });
-  readonly stageRows = computed(() => {
-    const p = this.model(); const stages = p?.stages.value;
-    const rows = (stages?.stages ?? []).map((step) => ({ label: this.words(step.stage), state: this.words(step.state), at: step.at,
-      current: step.stage === stages?.currentStage, complete: step.state === 'approved', failed: step.state === 'declined' }));
-    if (stages && !stages.stages.some((step) => step.stage.toLowerCase() === 'handover')) {
-      const a = p?.appointment.value; const d = p?.documents.value;
-      rows.push({ label: 'Handover booked', state: a?.booked ? 'Booked' : a && a.state !== 'not-requested' ? this.words(a.state) : 'Not started',
-        at: null, current: false, complete: a?.booked === true, failed: false });
-      rows.push({ label: 'Ready for handover', state: d ? d.readiness.ready ? 'Ready' : 'Not ready' : 'Not supplied',
-        at: null, current: false, complete: d?.readiness.ready === true, failed: false });
-    }
-    return rows;
+  readonly stageRows = computed<readonly StageTrackerItem[]>(() => {
+    const p = this.model(); const stages = p?.stages.state === 'ok' ? p.stages.value : null;
+    if (!p || !stages) return [];
+    const rows: StageTrackerItem[] = stages.stages.map((step) => {
+      const here = step.stage === stages.currentStage;
+      const blocked = here && step.state === 'pending' && !!stages.blocked;
+      return { label: sentence(step.stage), state: blocked ? 'blocked' : stageStates[step.state] ?? 'upcoming',
+        at: typeof step.at === 'string' ? step.at : undefined, owner: here ? withOwner(stages.owner) : undefined,
+        next: here ? stages.nextStep ?? undefined : undefined, note: blocked ? stages.blocked?.reason ?? undefined : undefined };
+    });
+    if (stages.stages.some((step) => step.stage.toLowerCase() === 'handover')) return rows;
+
+    const appointment = p.appointment.state === 'ok' ? p.appointment.value : null;
+    const documents = p.documents.state === 'ok' ? p.documents.value : null;
+    const handover = this.handoverStep(appointment);
+    const ready: StageTrackerItem = { label: 'Ready for handover', state: documents?.readiness.ready === true || appointment?.state === 'completed'
+      ? 'done' : handover.state === 'done' ? 'current' : 'upcoming' };
+    const later = [handover, ready];
+    const open = appointment?.state === 'not-requested' && appointment.eligibility?.eligible !== false;
+    const focus = open ? handover : later.slice().reverse().find((step) => step.state === 'current');
+    if (focus) Object.assign(focus, { owner: withOwner(appointment?.owner), next: appointment?.nextStep ?? undefined });
+    const sourceRows = open || later.some((step) => step.state !== 'upcoming')
+      ? rows.map((step) => ({ ...step, owner: undefined, next: undefined })) : rows;
+    return [...sourceRows, ...later];
+  });
+  readonly documentChecklist = computed<{ groups: readonly TaskGroup[]; readiness: readonly ReadinessGroup[] }>(() => {
+    const p = this.model(); const d = p?.documents.state === 'ok' ? p.documents.value : null;
+    if (!p || !d) return { groups: [], readiness: [] };
+    const mine: TaskItem[] = d.tasks.map((task) => {
+      const item = d.items.find((candidate) => candidate.itemId === task.itemId);
+      const listedForAction = task.actionable && p.actions.documentTaskIds.includes(task.itemId);
+      const canAct = listedForAction && this.canAct('documents');
+      return { id: task.itemId, label: task.label || item?.label || this.words(task.itemId), status: itemStatuses[task.status],
+        tone: itemTone(task.status, task['overdue'] === true), due: task.status === 'complete' ? undefined
+          : typeof task['dueAt'] === 'string' ? task['dueAt'] : undefined,
+        reason: item?.reason ?? undefined, detail: task.actionable ? 'Acknowledgement, not a signature' : this.fact(task['acknowledgement'], 'label') || undefined,
+        action: listedForAction ? { label: task.action || 'Acknowledge', disabled: !canAct,
+          onSelect: canAct ? (id: string) => this.prepare({ kind: 'acknowledge', itemId: id }) : undefined } : undefined };
+    });
+    const others: TaskItem[] = d.items.filter((item) => item.owner !== 'employee').map((item) => ({
+      id: item.itemId, label: item.label || this.words(item.itemId), owner: itemOwners[item.owner] ?? item.owner,
+      status: itemStatuses[item.status], tone: itemTone(item.status, item['overdue'] === true),
+      due: item.status === 'complete' ? undefined : typeof item['dueAt'] === 'string' ? item['dueAt'] : undefined,
+      reason: item.reason ?? undefined,
+    }));
+    const listed = new Set([...mine, ...others].map((item) => item.id));
+    const label = (id: string): string => d.items.find((item) => item.itemId === id)?.label || this.words(id);
+    const readiness = !d.readiness.ready ? [
+      { heading: 'Needs attention', labels: d.readiness.failed.filter((id) => !listed.has(id)).map(label) },
+      { heading: 'Still to do', labels: d.readiness.blocking.filter((id) => !d.readiness.failed.includes(id) && !listed.has(id)).map(label) },
+    ].filter((group) => group.labels.length) : [];
+    return { groups: [{ heading: 'Your tasks', items: mine }, { heading: 'Being handled by others', items: others }], readiness };
   });
   readonly notice = computed(() => {
     const result = this.action().result; if (!result) return '';
@@ -130,6 +213,102 @@ export class OrdersComponent implements OnDestroy {
     this.focusSection();
   }
   private focusSection(): void { queueMicrotask(() => this.host.nativeElement.querySelector<HTMLElement>('.order-notice, .order-actions-heading')?.focus()); }
+  appointmentSlots(value: Pick<OrderAppointment, 'offeredSlots'>, permittedIds: readonly string[]): readonly OfferedSlot[] {
+    const permitted = new Set(permittedIds);
+    return value.offeredSlots.filter((slot) => permitted.has(slot.slotId));
+  }
+  returnSlots(value: Pick<OrderReturnPlan, 'offeredSlots'>, choiceId: string, permitted: readonly { readonly choiceId: string; readonly slotIds: readonly string[] }[]): readonly OfferedSlot[] {
+    const ids = permitted.find((choice) => choice.choiceId === choiceId)?.slotIds;
+    if (!ids?.length) return [];
+    const allowed = new Set(ids);
+    return (value.offeredSlots[choiceId] ?? []).filter((slot) => allowed.has(slot.slotId));
+  }
+  returnPicker(choiceId: string): (slot: OfferedSlot) => void {
+    let picker = this.returnPickers.get(choiceId);
+    if (!picker) {
+      picker = (slot) => this.pickReturn(choiceId, slot);
+      this.returnPickers.set(choiceId, picker);
+    }
+    return picker;
+  }
+  private pickAppointment(slot: OfferedSlot): void {
+    const p = this.model(); const a = p?.appointment.state === 'ok' ? p.appointment.value : null;
+    if (!p || !a || !p.actions.appointment.requestSlotIds.includes(slot.slotId)
+      || !a.offeredSlots.some((offered) => offered.slotId === slot.slotId) || !this.canAct('appointment')) return;
+    this.prepare({ kind: 'request-appointment', slotId: slot.slotId });
+  }
+  private pickReturn(choiceId: string, slot: OfferedSlot): void {
+    const p = this.model(); const r = p?.returnPlan.state === 'ok' ? p.returnPlan.value : null;
+    const action = p?.actions.returnPlan.choices.find((choice) => choice.choiceId === choiceId);
+    if (!p || !r || !action?.slotIds.includes(slot.slotId)
+      || !r.choices.some((choice) => choice.id === choiceId && choice.available)
+      || !r.offeredSlots[choiceId]?.some((offered) => offered.slotId === slot.slotId) || !this.canAct('return')) return;
+    this.prepare({ kind: 'request-return', choice: choiceId, slotId: slot.slotId });
+  }
+  appointmentState(value: OrderAppointment): string {
+    if (value.state === 'scheduled' && value.booked) return 'Handover booked';
+    if (value.state === 'completed') return dated('Handover complete', value.outcome?.['at']);
+    if (value.state === 'no-show') return dated('Handover missed', value.slot?.start);
+    return this.words(value.state);
+  }
+  appointmentDetail(value: OrderAppointment): string | null {
+    if (value.state === 'scheduled' && value.booked) return when('Booked for', value.slot);
+    if (value.state === 'change-proposed') return `${when('New time proposed:', value.proposedSlot)}. Not booked yet.`;
+    if (value.state === 'requested' || value.state === 'scheduled') return `${when('Requested', value.requestedSlot)}. Not booked yet.`;
+    return null;
+  }
+  earlierMissed(value: OrderAppointment): string | null {
+    const previous = value['previousAttempts'];
+    if (typeof value['attempt'] !== 'number' || value['attempt'] <= 1 || !Array.isArray(previous)) return null;
+    const missed = previous.filter((row) => row && typeof row === 'object' && (row as EvidenceRecord)['state'] === 'no-show').at(-1);
+    const slot = missed && typeof missed === 'object' ? (missed as EvidenceRecord)['slot'] : null;
+    const start = slot && typeof slot === 'object' ? (slot as EvidenceRecord)['start'] : undefined;
+    return missed ? dated('Earlier handover missed', start) : null;
+  }
+  historyEvents(history: readonly EvidenceRecord[] | undefined, forReturn = false): readonly TimelineEvent[] {
+    const labels = forReturn ? returnHistoryLabels : handoverHistoryLabels;
+    return (history ?? []).map((row, index) => {
+      const state = row['appointmentState'] ?? row['state'];
+      const key = typeof state === 'string' ? state : '';
+      return { id: `${String(state)}-${index}`, occurredAt: typeof row['at'] === 'string' ? row['at'] : null,
+        label: labels[key] ?? 'Update recorded' };
+    });
+  }
+  returnState(value: OrderReturnPlan): string {
+    if (value.state === 'returned') return dated('Returned', value.outcome?.['at']);
+    if (value.state === 'return-missed') {
+      const direct = this.recordSlot(value['slot']);
+      const outcome = value.outcome?.['appointment'];
+      const nested = outcome && typeof outcome === 'object' ? this.recordSlot((outcome as EvidenceRecord)['slot']) : null;
+      return dated('Return missed', direct?.start ?? nested?.start);
+    }
+    return this.words(value.state || 'Not planned');
+  }
+  returnDetail(value: OrderReturnPlan): string | null {
+    if (value.state === 'return-scheduled' && value.scheduled) return when('Return booked:', this.recordSlot(value['slot']));
+    if (value.state === 'return-requested' && value.appointment?.state === 'change-proposed')
+      return `${when('New return time proposed:', value.proposedSlot)}. Not booked yet.`;
+    if (value.state === 'return-requested') return `${when('Return requested', this.recordSlot(value['requestedSlot']))}. Not booked yet.`;
+    return null;
+  }
+  private recordSlot(value: unknown): OfferedSlot | null { return value && typeof value === 'object' ? value as OfferedSlot : null; }
+  returnActionLabel(choiceId: string): string { return choiceId === 'same-visit' ? 'Request return at handover,' : 'Request return'; }
+  private handoverStep(appointment: OrderAppointment | null): StageTrackerItem {
+    const step: StageTrackerItem = { label: 'Handover booked', state: 'upcoming' };
+    if (!appointment) return step;
+    const booked = appointment.state === 'scheduled' && appointment.booked === true;
+    if (appointment.state === 'not-requested') return step;
+    if (booked) return { ...step, state: 'done', note: when('Booked for', appointment.slot) };
+    if (appointment.state === 'completed') return { ...step, state: 'done', note: dated('Handover complete', appointment.outcome?.['at']) };
+    if (appointment.state === 'no-show') return { ...step, state: 'current', note: dated('Handover missed', appointment.slot?.start) };
+    if (appointment.state === 'requested' || appointment.state === 'scheduled') {
+      return { ...step, state: 'current', note: `${when('Requested', appointment.requestedSlot)}. Not booked yet.` };
+    }
+    if (appointment.state === 'change-proposed') {
+      return { ...step, state: 'current', note: `${when('New time proposed:', appointment.proposedSlot)}. Not booked yet.` };
+    }
+    return step;
+  }
   signIn(): void { this.commands.contextChanged(); this.controller.contextChanged(); void this.auth.signIn(safeReturnTo('/gcsp' + this.router.url)); }
   imageFailed(): void { this.failedImage.set(this.model()?.selection.order?.orderUuid ?? null); }
   ngOnDestroy(): void { this.stopLiveRefresh(); this.disposed = true; this.refreshEpoch++; this.commands.dispose(); this.controller.dispose(); }

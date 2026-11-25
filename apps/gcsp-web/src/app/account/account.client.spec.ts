@@ -47,11 +47,14 @@ describe('native signed-in account client', () => {
   it('reads preview paths through the same bearer boundary and uses only the trusted run for owned offer detail', async () => {
     const offers = { offers: [{ offerId: 'offer/id?with-query', runId: context.runId }] };
     const orders = page([{ orderUuid: 'exact-stock', entitlementSlotId: 'slot', source: { orderNumber: 'supplied' } }]);
-    const snapshot = { selection: { stock: { orderUuid: 'exact-stock', facts: { display: { name: 'BMW i4' } } } }, retainedFact: 'source' };
+    const snapshot = { schemaVersion: 1, status: 'acknowledged', selection: { orderUuid: 'exact-stock', orderNumber: 'supplied',
+      configurationId: 'config', quoteId: 'accepted-quote', termsVersion: 'terms', policyVersion: 'policy', receivedAt: null,
+      stock: { orderUuid: 'exact-stock', facts: { display: { name: 'BMW i4', photo: '/accepted-car.webp' } } } }, retainedFact: 'source' };
     fetcher.mockResolvedValueOnce(ok(offers)).mockResolvedValueOnce(ok({ state: 'pending', runId: context.runId }))
       .mockResolvedValueOnce(ok(orders)).mockResolvedValueOnce(ok(snapshot));
     expect(await client.readOffers()).toEqual({ status: 'ok', value: { offers: [{ ...offers.offers[0], state: 'pending' }] } });
     expect(await client.readOrders()).toEqual({ status: 'ok', value: { ...orders, pageEvidence: [{ after: null, nextAfter: null, failedCount: 0 }] } }); expect(await client.readOrder()).toEqual({ status: 'ok', value: snapshot });
+    expect(orderVehicle(snapshot, 'exact-stock')).toEqual({ name: 'BMW i4', photo: '/accepted-car.webp' });
     expect(fetcher.mock.calls.map(([url]) => url)).toEqual([`${config.apiBaseUrl}/offers/current`,
       `${config.apiBaseUrl}/offers/offer%2Fid%3Fwith-query?runId=${encodeURIComponent(context.runId)}`, `${config.apiBaseUrl}/orders/progress/all`, `${config.apiBaseUrl}/manual/order`]);
     for (const [, options] of fetcher.mock.calls) { expect(options).toMatchObject({ method: 'GET', credentials: 'omit', headers: { Authorization: 'Bearer access-token' } }); expect(options?.body).toBeUndefined(); }

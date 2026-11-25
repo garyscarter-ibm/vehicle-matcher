@@ -1,4 +1,6 @@
-> **Current run stopped, 24 November 2026:** Russell requested “Complete in-flight work and don't pick up more.” In-flight close-out is complete; poller and recovery are stopped, no new pickup is authorised. Read [the final F555 handover](poller-handover-2026-11-23-f555-overnight.md) first. Earlier continuation text below is historical; preserve evidence, original claims and human acceptance boundaries.
+> **Restarted by Russell, 25 November 2026 at approximately 17:10 UK time:** follow [the current Velko run directive](poller-run-2026-11-25-velko.md). Human questions end at 19:10 UK time today; delivery continues. The stopped-run notices and continuation checkpoints below are historical. Preserve original scope, claims and human acceptance boundaries.
+
+> **Previous run stopped, 24 November 2026:** Russell requested “Complete in-flight work and don't pick up more.” That run's close-out is complete. Its [final F555 handover](poller-handover-2026-11-23-f555-overnight.md) remains historical evidence.
 
 # Angular port gap run — 22 November 2026
 
