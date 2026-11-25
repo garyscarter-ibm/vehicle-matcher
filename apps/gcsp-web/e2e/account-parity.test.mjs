@@ -152,7 +152,7 @@ test('FUCQ-551: actual held account, frozen pair, commands, truthful failure and
 
     await check(1, async () => {
       const replay = await suite.visitFrozenNode({ ...suite.receipt.offer, hold: state.hold, clock: state.clock,
-        finalAccount: state.account }, async ({ page, origin, runtime, employee: principal, images, receipt }) => {
+        finalAccount: state.account }, async ({ page, origin, runtime, employee: principal, offer, images, receipt }) => {
         await page.goto(`${origin}/gcsp-account.html`, { waitUntil: 'domcontentloaded' });
         await page.locator('.gcsp-buddy-tile-offer').waitFor();
         const actual = { brief: await runtime.brief.readCurrent(principal), account: await runtime.account.readAccount(principal),
@@ -166,7 +166,9 @@ test('FUCQ-551: actual held account, frozen pair, commands, truthful failure and
         assert.equal(source.factsColumns, target.factsColumns); assert.deepEqual(source.facts, target.facts);
         assert.equal(source.pairColumns, target.pairColumns); assert.equal(source.held, target.held);
         const sourceActivity = actual.activity; assert.equal(sourceActivity.status, 'ok');
-        assert.equal(sourceActivity.value.currentOffer.offerRef.offerId, state.offer.offerRef.offerId);
+        assert.equal(sourceActivity.value.currentOffer.offerRef.offerId, offer.offerRef.offerId);
+        evidence.offerIdentityMapping = { node: offer.offerRef.offerId, java: state.offer.offerRef.offerId,
+          basis: 'Each engine creates its own offer ID; the shared boundary verifies the actual same car, deadline and hold semantics.' };
         evidence.imageComparison = { node: receipt.account.image, angular: evidence.angularImage,
           sameNaturalDimensions: receipt.account.image.naturalWidth === evidence.angularImage.naturalWidth &&
             receipt.account.image.naturalHeight === evidence.angularImage.naturalHeight,
