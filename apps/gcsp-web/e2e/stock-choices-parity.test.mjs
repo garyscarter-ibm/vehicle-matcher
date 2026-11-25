@@ -84,6 +84,7 @@ test('FUCQ-553: source stock, choices and gallery reservation handover', { timeo
   const presenter = await suite.newPage('presenter', 'demo-presenter', 'presenter');
   await suite.prepareInitialBrief(employee, presenter);
   const released = await suite.releaseMainOffer(employee, presenter);
+  await presenter.close();
   const offerId = released.offer.offerRef.offerId;
   await saveActualDraft(suite, employee);
   observeClaims(employee);
@@ -123,7 +124,7 @@ test('FUCQ-553: source stock, choices and gallery reservation handover', { timeo
     await employee.setViewportSize({ width: 1280, height: 800 });
   });
   await check('a real competing employee produces the retained-list car-taken notice and refresh', async () => {
-    const rival = await suite.newPage('other-employee', 'demo-jordan', 'account');
+    const rival = await suite.newPage('other-employee', 'demo-jordan', 'stock');
     await saveActualDraft(suite, rival);
     const stock = good(await suite.call(rival, 'GET', '/manual/stock'), 'Other employee actual stock');
     assert.equal(stock.payloadShape, 'manual-stock-compact-v1');
