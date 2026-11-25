@@ -1,5 +1,7 @@
 # Offer and bell parity evidence — 23 November 2026
 
+**25 November update:** one combined human review now includes the Preferences pairs below, alongside the retained Offer and bell pairs. Earlier stopped-session and setup notes describe their original observation times. F562 has since delivered Main reset; the 23 November capture provenance is preserved. All human verdicts remain pending.
+
 Two original human decisions remain pending: **Offer (FUCQ-555 AC8)** and **Employee notification bell (FUCQ-548 AC6)**. Each can receive its own verdict. No human verdict has been recorded, and neither Bug is accepted. The session is stopped after the requested wind-down; the prepared evidence remains available for human review. No new review chat was started during wind-down.
 
 The latest registered Chromium suite at `c13e604bc4bf3578c1fcf76e9c948fe72e95d09b` passed **12/12 reported tests** across all six F548/F555 compositions, with all seven stage exits zero. Root independently reconciled all 1834 tracked inputs, actual checks/counts, complete dependency identities and current cleanup: `.claude/test-runs/f555-overnight-20261123/final-consolidated-chromium-20261124/root-independent-audit.json` (SHA `2447118a488f7383a8b6cf181c22c9562d18bb1a06719e9b481ca48be51bd6e1`). The test-only correction waits for specification visibility before the unchanged full-text comparison; no product, assertion, normalizer or frozen reference changed. The final WEB shared-cache variant separately passed **1955 cases / 117 specs / 12 serial chunks**; no npm ci is claimed. Root audit SHA `7db8afe706597fde734faa3c6feeb7552318a3e7d5bff614bed45ed09dd78f93` records exact inputs/raw reports and cleanup.
@@ -74,9 +76,55 @@ F556's already-published compatible Button and supported Orders route are consum
 
 ## Human verdict ledger
 
-Status: **human review pending; session stopped after technical disposition.** One response can give a separate verdict for each row. The fields below stay blank until a human collaborator gives a cited verdict: `matches`, `differs: <Bug key>` or `intended change: <cited ruling>`. A described difference can be tracked before closure. Any collaborator has equal authority.
+Status: **human review pending; combined review resumed on 25 November.** One response can give a separate verdict for each row. The fields below stay blank until a human collaborator gives a cited verdict: `matches`, `differs: <Bug key>` or `intended change: <cited ruling>`. A described difference can be tracked before closure. Any collaborator has equal authority.
 
 | Screen / original criterion | State and viewport | Pair | Verdict | Human reviewer | Date | Source |
 | --- | --- | --- | --- | --- | --- | --- |
 | Offer — F555 AC8 | Pending held Main X2, 1280 | Top and lower table pairs above | | | | |
 | Employee bell — F548 AC6 | Open with one active Main X2, 1280 | Bell pair above | | | | |
+
+
+## Preferences — F552 AC7 — 25 November review addition
+
+The original seven criteria and ownership remain with FUCQ-552. Its source was merged at `e4341a613` as **partial**, with human AC7 and covering validation pending. Lead and Timone inspected all eleven final captures. The passing registered family reported 6/6 entries across five groups, including save → Activity → actual held-offer acceptance → read-only preferences → Orders; the final covering tests passed24/24 and scoped boundaries7/7. This engineering evidence supplies the pairs, without a human verdict.
+
+The frozen reference is `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`; tested Angular/source is `070904ed0303e06cf472fed0c79c0eedb18288a0`, integrated with F562 at `b5bc94a54`. Both use Main successful journey, `main-successful-journey-inputs-v2`, employee Paula, actual clock **23 November2026 11:30UTC**, saved brief2, custom mode and Buddy understanding6/11. Desktop viewport1280×800, Chromium, en-GB/Europe-London, reduced motion. Named regions scroll below the sticky header plus16px; offsets may differ while the named visible states match. [Full provenance and observations](preferences-parity-2026-11-25/README.md) retain the actual inputs, UUID membership and image-source limits.
+
+### Account — Sportiness open, 1280×800
+
+| Frozen Node | Angular / Java |
+| --- | --- |
+| ![Node Preferences account Sportiness](preferences-parity-2026-11-25/node-account-sportiness-1280.png) | ![Angular Preferences account Sportiness](preferences-parity-2026-11-25/angular-account-sportiness-1280.png) |
+
+### Editor — ordered categories and axes, 1280×800
+
+| Frozen Node | Angular / Java |
+| --- | --- |
+| ![Node Preferences editor](preferences-parity-2026-11-25/node-editor-1280.png) | ![Angular Preferences editor](preferences-parity-2026-11-25/angular-editor-1280.png) |
+
+### Editor — practical questions, 1280×800
+
+| Frozen Node | Angular / Java |
+| --- | --- |
+| ![Node Preferences practical questions](preferences-parity-2026-11-25/node-editor-practical-1280.png) | ![Angular Preferences practical questions](preferences-parity-2026-11-25/angular-editor-practical-1280.png) |
+
+### Editor — first preview card, 1280×800
+
+| Frozen Node | Angular / Java |
+| --- | --- |
+| ![Node Preferences first preview](preferences-parity-2026-11-25/node-editor-preview-1280.png) | ![Angular Preferences first preview](preferences-parity-2026-11-25/angular-editor-preview-1280.png) |
+
+**Pre-check / existing Bug ownership:** unresolved editor/card observations remain under **F552 AC7**. Angular's saved-version notice and Update preview button shift vertical positions. The same exact preview car has larger framing in Angular; both use their own supplied photo, whose retained image inputs differ. Media-box proportions and decision-card structure align; photo-byte parity is unproved. Frozen Node's compact Engage Buddy footer differs from Angular's separate Buddy controls: the original F552 Buddy-tile exclusion and existing **F551** allocation retain that composition. Shell/account affordances remain with **F439/F549**. These observations have no inferred matches or intended-change verdict. No additional actionable defect was found in the repaired F552 controls.
+
+Safari/private browsing and hosted BMW integration were not checked here. The earlier Offer/bell limitations and their original sources remain above. Source response/order, valid clock instants, actual candidate identities and local version semantics are retained in the linked provenance; no derived outcome was manufactured.
+
+### Additional blank human ledger rows
+
+Use one response for the combined batch, with `matches`, `differs: <description or Bug>` or `intended change: <ruling>` for each pair. An agent may copy only an explicit human verdict into these blank rows and the original Offer/bell rows above.
+
+| Screen / original criterion | State and viewport | Pair | Verdict | Human reviewer | Date | Source |
+| --- | --- | --- | --- | --- | --- | --- |
+| Preferences — F552 AC7 | Account Sportiness open,1280×800 | Account pair above | | | | |
+| Preferences — F552 AC7 | Editor categories/axes,1280×800 | Editor pair above | | | | |
+| Preferences — F552 AC7 | Editor practical questions,1280×800 | Practical pair above | | | | |
+| Preferences — F552 AC7 | Editor first preview card,1280×800 | Preview pair above | | | | |

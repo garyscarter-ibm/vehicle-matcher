@@ -3545,3 +3545,15 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-25 00:53 UTC · usget-sorrel · DL-20261124-F555-08 · Automatic helper attribution still differs by command
 
 - Root observed that scaffold_git.py still hardcodes Claude attribution for automatic refresh/merge, and _commit_two omits a trailer for claim. This run's pushed claim7fdbba12c has no Codex trailer; history is preserved. Explicit source/Result/log messages have the literal Codex trailer. The existing imported-helper ATTRIBUTION override was used for F562 refreshcd59170a7 and merge9c5f80d48; leads were told to use it for subsequent refreshes. No helper rewrite or claim that the interface is fixed. Proposed improvement: one harness-aware attribution path for claims, commits, refreshes and merges.
+
+### 2026-11-25 01:23 UTC · usget-sorrel · DL-20261125-SORREL-07 · Browser budget corrected from measured use
+
+- F552's refreshed final attempt was terminated at3,262,545,920B against3GiB; its pending-Promise cancellation did not establish a bad preview route. Lead verified the real route and corrected the initial diagnosis. Parent authorised existing runner/reservation/cleanup literals at3.5GiB for night/CI and safe unused presenter-page closure. Final composition passed6/6entries/all5groups at3,563,307,008B peak and137,038,278B scratch; owned runtime resources removed. HumanAC7 remains pending. Proposed improvement: size the existing composition budget from measured resident pages without serial assertion guesses.
+
+### 2026-11-25 01:23 UTC · usget-sorrel · DL-20261125-SORREL-08 · Daily drift candidates retained as triage
+
+- First25Nov batch claim ran drift/stale30:21static hits across clock-mix/orphan-selector,0list errors; stale-pin andcontract-callers were idle. Read-only Foghorn found metadata/comments/fixed-clock and negative/dynamic/fallback matches, plus a retained browser check requiring a removed presenter region. NativeF590/F591 capture one per pattern under found-inF433/origin-unknown; no runtime failure is inferred from a static hit. No scanner/test repair or unrelated delivery hold was introduced. Proposed improvement: distinguish candidate hits from verified drift and preserve historical-checker provenance.
+
+### 2026-11-25 01:23 UTC · usget-sorrel · DL-20261124-F555-07 · Existing window limitation reproduced on25November
+
+- Canonical Java@b5 failed193reported/10fail/0errors/skips in appointments; all10reproduced once alone on freshDBs. Rocky traced the same existing F583 cause: packaged Paula/Alex latestCollectionDate1Dec and canonical7daylead leave no admissible date from25Nov. Account correctly returns ordering-closed; two missing-draft failures cascade from setup. F583's prior Result already recorded the25Nov limitation and earlier23→24ruling; that history stays valid. F562 changed neither affected tests/account/policy/fixtures nor clock initialisation, so chronology is not regression attribution. Existing openF583 owns follow-up; later full-suite groups remain unrun. Proposed improvement: retain a keyed owner for a documented future-date test limitation before it becomes the next batch failure.
