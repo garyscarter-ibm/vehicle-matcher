@@ -12860,21 +12860,21 @@
       "assignee": "usget",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-561",
       "evidence": "Native In Progress/assignee readback by Rapunzel on 25 November 2026; local claim DEV-2026-11-22-vesper-033. All seven original acceptance criteria retained.",
-      "observed_at": "2026-11-25T18:12:13Z",
+      "observed_at": "2026-11-25T18:25:06Z",
       "slices": [
         {
           "id": "console-panels",
           "status": "in-progress",
           "title": "Basic console, release, suitability and captured mail (AC1–5)",
-          "observed_at": "2026-11-25T18:12:12Z",
-          "evidence": "AC1–5 source implemented. Postrefresh 1fcdf376d: Angular 19 files / 409 passes; static 147 / 147, boundary analyzer and e2e syntax pass. Corrected native 36 and parent 86 pass separately; initial 119 / 2 failed run retained. Optional policy preserves cars/counts; custody contradiction returns 503. Individual actual 1280/375 composition screens remain pending. See DEV-2026-11-22-vesper-033 Result."
+          "observed_at": "2026-11-25T18:25:06Z",
+          "evidence": "Actual 375px capture exposed duplicate toolbar branding overlap; scoped HTML/CSS fix ready, rendered confirmation pending. Exact wire client regression: RED 48 pass / 1 expected fail; minimal preparation/clock-pin coupling fix: GREEN 6 presenter files / 91 passes. Static 147 plus boundary/syntax passed at 18:23:45 UTC; reviewer verdict passed. These checks do not prove individual AC1–5 composition screens. See DEV-2026-11-22-vesper-033 Result."
         },
         {
           "id": "integration",
           "status": "in-progress",
           "title": "Connected Main, actual hosted cue and human pair (AC6–7)",
-          "observed_at": "2026-11-25T18:12:13Z",
-          "evidence": "Registered f561 and stable Advanced helper c04f1f166; refreshed source 1fcdf376d. Existing true 3 GiB caller is retargeted for planned daytime f561 execution after commit; browser remains unrun, no measured minimum. Hosted 25 Nov 17:55:51 UTC still shows Clock/reset mechanics, no cue and disabled Next release; revision unknown, no click. Actual Node/Angular 1280 pair and human verdict remain pending. All seven ACs stay open; see DEV-2026-11-22-vesper-033 Result."
+          "observed_at": "2026-11-25T18:25:06Z",
+          "evidence": "First registered run d2e5af831 failed Main reset after server 200: client coupled legitimate preparation and clock pin namespaces; later timeouts were dependent, no resource issue. Partial-prefix peaks: web build 1,543,749,632 bytes; suite 1,382,596,608 bytes, not full-journey proof. Evidence: browser-d2e5af831-chromium159; PG drop/scratch cleanup verified. True 3 GiB repeat pending clean checkpoint; hosted cue and Node/Angular 1280 human verdict remain open. All seven ACs remain unchecked."
         }
       ],
       "unsliced": false

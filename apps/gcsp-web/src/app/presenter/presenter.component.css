@@ -1,5 +1,8 @@
 :host { display: block; min-width: 0; }
 .gcsp-console [hidden] { display: none !important; }
+.gcsp-console-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; height: auto; min-height: var(--gcsp-header-height); padding-block: var(--gcsp-space-2); }
+.gcsp-console-time { min-width: 0; flex-wrap: wrap; row-gap: var(--gcsp-space-1); }
+.gcsp-console-mode { grid-column: 2; }
 .gcsp-console-controls { display: grid; gap: var(--gcsp-space-4); }
 .gcsp-console-controls form { display: grid; gap: var(--gcsp-space-3); max-width: 48rem; margin-block: var(--gcsp-space-4); }
 .gcsp-console-controls :is(input, select) { box-sizing: border-box; max-width: 100%; width: 100%; }

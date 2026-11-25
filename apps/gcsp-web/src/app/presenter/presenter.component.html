@@ -1,5 +1,5 @@
 <div class="gcsp-console" [attr.aria-busy]="pending() || reading() ? 'true' : null">
-  <header class="gcsp-console-head"><div class="gcsp-console-brand"><img src="assets/brand-logos/bmwgroup-bmw-mini.svg" alt="" width="88" height="24" /><span>Group Car Schemes</span><strong>Presenter</strong></div>
+  <header class="gcsp-console-head">
     @if (permitted() && controls()) { <div class="gcsp-console-time"><span class="gcsp-console-day">{{ clockDay() }}</span><span class="gcsp-console-clock">{{ clockTime() }}</span></div> }
     <button class="gcsp-console-mode" type="button" [attr.aria-pressed]="advanced()" (click)="advanced.set(!advanced())">{{ advanced() ? 'Basic' : 'Advanced' }}</button>
   </header>

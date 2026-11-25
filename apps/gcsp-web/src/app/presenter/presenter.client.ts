@@ -109,9 +109,10 @@ function reset(v: unknown, input: PresenterResetInput): PresenterReset | null {
   if (!object(v) || !id(v['retiredRunId'], 200) || !id(v['activatedRunId'], 200) || v['retiredRunId'] !== input.expectedRunId
     || v['activatedRunId'] === v['retiredRunId'] || typeof v['replayed'] !== 'boolean') return null;
   const scenario = summary(v['scenario']); const c = v['clock'] === null ? null : clock(v['clock']);
+  // Preparation and clock policy have independent version pins; both belong to the activated run.
   if (!scenario || scenario.scenarioId !== input.scenarioId || scenario.scenarioVersion !== input.scenarioVersion
     || scenario.fixtureVersion !== input.fixtureVersion || scenario.policyVersion !== input.policyVersion
-    || v['clock'] !== null && (!c || c.runId !== v['activatedRunId'] || c.scenarioVersion !== scenario.scenarioVersion || c.fixtureVersion !== scenario.fixtureVersion)) return null;
+    || v['clock'] !== null && (!c || c.runId !== v['activatedRunId'])) return null;
   return { retiredRunId: v['retiredRunId'], activatedRunId: v['activatedRunId'], replayed: v['replayed'], scenario, clock: c };
 }
 function refusal(v: Record<string, unknown>, http: number): PresenterRefusal | null {

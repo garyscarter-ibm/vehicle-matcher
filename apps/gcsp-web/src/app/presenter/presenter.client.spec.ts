@@ -163,6 +163,20 @@ describe('PresenterClient Java routes, pinned commands and private lifecycle', (
     fetcher.mockResolvedValueOnce(ok({ ...resetValue(), replayed: true, clock: null }));
     expect(await client.submit(r)).toMatchObject({ state: 'ready', value: { clock: null, replayed: true } });
   });
+  it('P12 keeps Main preparation pins distinct from the clock policy pins after reset', async () => {
+    const input: PresenterResetInput = { commandId: 'main-reset', expectedRunId: 'run-1', scenarioId: 'main-successful-journey',
+      scenarioVersion: 'gcsp-acceptance-scenarios-v1', fixtureVersion: 'main-successful-journey-inputs-v2', policyVersion: 'policy-1' };
+    const request = command(client.prepareReset(input));
+    // ScenarioService returns its selected preparation plus the independent RunClock.state view.
+    fetcher.mockResolvedValueOnce(ok({ retiredRunId: 'run-1', activatedRunId: 'run-2', replayed: false,
+      scenario: { scenarioId: 'main-successful-journey', name: 'Main successful journey',
+        scenarioVersion: 'gcsp-acceptance-scenarios-v1', fixtureVersion: 'main-successful-journey-inputs-v2', policyVersion: 'policy-1' },
+      clock: { runId: 'run-2', now: at, clockVersion: 2, startsAt: at, namedTimes: { release: at },
+        scenarioVersion: 'gcsp-clock-scenario-v1', fixtureVersion: 'gcsp-clock-fixtures-v1', lastTick: null } }));
+    expect(await client.submit(request)).toMatchObject({ state: 'ready', value: { activatedRunId: 'run-2',
+      scenario: { scenarioVersion: 'gcsp-acceptance-scenarios-v1', fixtureVersion: 'main-successful-journey-inputs-v2' },
+      clock: { runId: 'run-2', scenarioVersion: 'gcsp-clock-scenario-v1', fixtureVersion: 'gcsp-clock-fixtures-v1', lastTick: null } } });
+  });
   it('P13 retains exact reset input after preparation failure and explicit recovery', async () => {
     const r = command(client.prepareReset(resetInput()));
     fetcher.mockResolvedValueOnce(json({ status: 'unavailable', code: 'scenario-preparation-incomplete', reason: 'Send the same reset again', retryable: true, runId: 'run-2' }, 503));
