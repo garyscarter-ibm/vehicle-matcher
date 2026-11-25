@@ -8,7 +8,11 @@ export function navigationFor(roles: readonly Role[]): readonly Destination[] {
   if (roles.includes('presenter')) return [presenter];
   return [...(roles.includes('employee') ? [cars, orders] : []), ...(roles.includes('greg') ? [greg] : [])];
 }
-export function landingFor(roles: readonly Role[]): string | null { return navigationFor(roles)[0]?.path ?? null; }
+export function landingFor(roles: readonly Role[]): string | null {
+  if (roles.includes('presenter')) return presenter.path;
+  if (roles.includes('greg')) return greg.path;
+  return navigationFor(roles)[0]?.path ?? null;
+}
 export function permits(roles: readonly Role[], required: readonly Role[]): boolean {
   if (roles.includes('presenter')) return required.includes('presenter');
   return required.some((role) => roles.includes(role));

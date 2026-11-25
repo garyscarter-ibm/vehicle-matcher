@@ -25,7 +25,7 @@ async function until(check, message) {
 }
 const locationOf = (page) => { const url = new URL(page.url()); return { path: url.pathname, hash: url.hash }; };
 async function rail(page, label) {
-  await page.locator('.gcsp-nav').getByText(label, { exact: true }).click();
+  await page.locator('.gcsp-nav-btn .gcsp-nav-label').filter({ hasText: new RegExp(`^${label}$`) }).click();
 }
 async function arrived(page, pathname, hash = '') {
   await until(() => { const actual = locationOf(page); return actual.path === pathname && actual.hash === hash; },
@@ -128,25 +128,13 @@ test('FUCQ-549: live employee and Greg navigation and original off-rail context'
   assert.equal(String(evidence.actualReadbacks.account.versions.clock), String(state.clock.clockVersion));
 
   await group('AC1 source controls: employee rail, Buddy recent activity and history drawer', async () => {
-    assert.deepEqual(await employee.locator('.gcsp-nav-label').allTextContents(), ['Your cars', 'Order progress']);
+    assert.deepEqual(await employee.locator('.gcsp-nav-btn .gcsp-nav-label').allTextContents(), ['Your cars', 'Order progress']);
     evidence.screenshots.angularEmployee = await screenshot(suite, employee, 'angular-employee-navigation-1280');
     evidence.journeys.angularBuddy = await buddyContent(employee);
     await rail(employee, 'Order progress'); await arrived(employee, '/gcsp/orders');
     await employee.getByRole('heading', { name: 'Order progress', exact: true, level: 1 }).waitFor();
     await rail(employee, 'Your cars'); await arrived(employee, '/gcsp/account');
     evidence.journeys.angularRail = ['Order progress', 'Your cars'];
-  });
-
-  await group('AC1 runnable preferences exit reaches Activity through visible controls', async () => {
-    await rail(employee, 'Your cars'); await arrived(employee, '/gcsp/account');
-    await employee.getByRole('link', { name: 'Edit your preferences', exact: true }).click();
-    await arrived(employee, '/gcsp/preferences');
-    await employee.getByRole('heading', { name: 'Your preferences', exact: true, level: 1 }).waitFor();
-    await employee.getByRole('button', { name: 'Save your preferences', exact: true }).click();
-    await employee.getByRole('link', { name: 'See your buddy at work', exact: true }).click();
-    await arrived(employee, '/gcsp/activity');
-    await employee.getByRole('heading', { name: 'Buddy activity', exact: true, level: 1 }).waitFor();
-    evidence.journeys.angularPreferences = { actions: ['Your cars', 'Edit your preferences', 'Save your preferences', 'See your buddy at work'], destination: locationOf(employee) };
   });
 
   await group('AC3: active bell reaches owned offer with visible breadcrumb', async () => {
@@ -168,7 +156,11 @@ test('FUCQ-549: live employee and Greg navigation and original off-rail context'
     const greg = await suite.newPage('greg', 'demo-greg', '');
     evidence.initialEntries.push({ role: 'greg', route: '/gcsp/', landed: locationOf(greg), login: 'real local OIDC' });
     await arrived(greg, '/gcsp/greg/plan');
-    assert.deepEqual(await greg.locator('.gcsp-nav-label').allTextContents(), ['Employee car ordering']);
+    const actualContext = good(await suite.call(greg, 'GET', '/context'), 'Actual Greg context');
+    assert.equal(actualContext.subject, 'demo-greg');
+    assert.deepEqual([...actualContext.roles].sort(), ['employee', 'greg']);
+    evidence.journeys.angularGregContext = actualContext;
+    assert.deepEqual(await greg.locator('.gcsp-nav-btn .gcsp-nav-label').allTextContents(), ['Your cars', 'Order progress', 'Employee car ordering']);
     evidence.journeys.angularGreg = await gregTabs(greg, true);
     evidence.screenshots.angularGreg = await screenshot(suite, greg, 'angular-greg-navigation-1280');
     await greg.close();
@@ -211,5 +203,37 @@ test('FUCQ-549: live employee and Greg navigation and original off-rail context'
     ];
     for (const pair of evidence.pairs) assert.ok(pair.angular && pair.node, `Both ${pair.role} captures exist in this run`);
     evidence.pairReview = 'pending human review; original AC4 remains unchecked';
+  });
+
+  await group('AC1 runnable preferences exit reaches Activity through visible controls', async () => {
+    // Keep the matched navigation captures above on the original Main inputs. As in F552,
+    // complete the real Account minimum through public choices before explicitly engaging.
+    await rail(employee, 'Your cars'); await arrived(employee, '/gcsp/account');
+    const readEditor = async () => good(await suite.call(employee, 'GET', '/brief/editor'), 'Actual preference preparation');
+    const before = await readEditor();
+    const compact = employee.locator('.gcsp-prefs').first();
+    for (const [key, label] of [['comfort', 'Comfort'], ['sportiness', 'Sportiness']]) {
+      await compact.locator('.gcsp-prefs-open').filter({ hasText: label }).click();
+      await until(async () => (await readEditor()).initial.accountPreferences.categories[key]?.state === 'considered', `${label} public choice is saved`);
+      await until(async () => await compact.locator('.gcsp-understanding.is-pending').count() === 0, `${label} save has rendered`);
+    }
+    const prepared = await readEditor();
+    assert.equal(prepared.initial.buddy.canEngage, true, 'Public choices satisfy the existing Account minimum');
+    evidence.journeys.preferencesPreparation = { before: before.initial.buddy, after: prepared.initial.buddy,
+      actions: ['Comfort', 'Sportiness'], pairCapturesCompletedBeforePreparation: true };
+    await employee.getByRole('link', { name: 'Edit your preferences', exact: true }).click();
+    await arrived(employee, '/gcsp/preferences');
+    await employee.getByRole('button', { name: 'Refresh and review', exact: true }).click();
+    await employee.getByRole('button', { name: 'Replace draft with saved preferences', exact: true }).click();
+    await employee.getByRole('radio', { name: 'Engage Buddy', exact: true }).check();
+    const confirmation = employee.waitForResponse((response) => new URL(response.url()).pathname.endsWith('/brief/confirm') && response.request().method() === 'POST');
+    await employee.getByRole('button', { name: 'Save your preferences', exact: true }).click();
+    const response = await confirmation; const body = await response.json();
+    evidence.journeys.preferenceConfirmation = { status: response.status(), outcome: body.status, problem: body.status === 'ok' ? null : body };
+    assert.equal(response.status(), 200, 'Actual confirmation succeeds after the existing minimum is met');
+    await employee.getByRole('link', { name: 'See your buddy at work', exact: true }).click();
+    await arrived(employee, '/gcsp/activity');
+    await employee.getByRole('heading', { name: 'Buddy activity', exact: true, level: 1 }).waitFor();
+    evidence.journeys.angularPreferences = { actions: ['Your cars', 'Comfort', 'Sportiness', 'Edit your preferences', 'Refresh and review', 'Replace draft with saved preferences', 'Engage Buddy', 'Save your preferences', 'See your buddy at work'], destination: locationOf(employee) };
   });
 });
