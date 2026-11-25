@@ -3868,3 +3868,10 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 ### 2026-11-25 23:08 UTC · usget-velko · DL-20261125-VELKO-06 · Rendered-toggle synchronization verified in both compositions
 
 - The isolated showAdvanced bounded wait retained its true-attribute assertion. Registered F595 at6f5c7bed9 passed4/4 after the earlier setup failure; final F559 at04a390410 passed6/6 including actual Presenter confirm/delay. This verifies the observed shared-helper race mitigation in these compositions; it is not a framework-wide resolution. Both final runs dropped their owned DBs, removed scratch and recorded no remaining owned process. Other F559 setup/fault-contract failures have separate diagnosis; no product change was inferred from them.
+
+### 2026-11-25 23:11 UTC · usget-codex · DL-20261125-CODEX-01 · FUCQ-334 recurs as a pre-watermark candidate
+
+- **Evidence/impact:** the next normal overlap query used watermark 2026-11-25 22:17Z and JQL `updated >= "2026-11-25 16:15"`; its complete page again returned 42 candidates, including FUCQ-334 updated `2026-11-25T11:24:06.201-0600` (17:24Z), before the UTC watermark. Strict returned-timestamp filtering retained FUCQ-549, FUCQ-551, FUCQ-556, FUCQ-520 and FUCQ-595. The attachment partitions matched those five: zero empty, five non-empty, 21 attachments and seven typed issue links.
+- **Cause/uncertainty:** as in the prior observation, evidence does not establish how Jira interpreted the unqualified date literal or why the stale candidate recurred.
+- **Action/outcome:** excluded FUCQ-334 by its returned timestamp, then ran the ordinary pull with the five retained issues. It imported/updated zero and reported one claimed-story change/notification for FUCQ-595 (acceptance and decided among eight changed Jira-owned fields); its local Result remains partial with AC4 unchecked. No reconciliation query, Jira write or product-map edit ran.
+- **Framework follow-up:** preserve the literal, returned timestamp and UTC cutoff in receipts, and investigate interpretation before changing the query or parser. No helper/query change or new gate was applied.
