@@ -305,6 +305,8 @@ test('FUCQ-550: live Java/OIDC screen refresh and frozen status presentation', {
     });
 
     await group('AC2: public acceptance then presenter action updates an already-open order screen and announces once', async () => {
+      await employee.goto(`${suite.origins.web}/gcsp${offerPath(state.offer)}`, { waitUntil: 'domcontentloaded' });
+      await settled(employee, 'Your offer', '.gcsp-offer-body');
       orderPage = await suite.newPage('orders', 'demo-paula', 'orders');
       await orderPage.getByRole('heading', { name: 'No orders to track', exact: true }).waitFor();
       const url = orderPage.url();
@@ -345,7 +347,7 @@ test('FUCQ-550: live Java/OIDC screen refresh and frozen status presentation', {
         assert.equal(semantic(silence.rows.at(-1).body.value), semantic(evidence.orderChange.actual));
         evidence.orderChange.unchanged = { status: 'real unchanged reread is silent', asOf: silence.rows.at(-1).body.value.asOf };
       } finally { await silence.stop(); }
-      const asOfOnly = watchReads(orderPage, suite.apiBase, orderSections);
+      const clockChange = watchReads(orderPage, suite.apiBase, orderSections);
       try {
         const before = good(await suite.call(presenter, 'GET', '/presenter/clock'), 'Clock before time-only advance');
         const summary = presenter.getByText('Advanced clock controls', { exact: true });
@@ -357,15 +359,24 @@ test('FUCQ-550: live Java/OIDC screen refresh and frozen status presentation', {
           clock = good(await suite.call(presenter, 'GET', '/presenter/clock'), 'Clock after time-only advance');
           return Number(clock.clockVersion) > Number(before.clockVersion);
         }, 'Public time-only advance completes without a tick');
-        await until(() => orderSections.every((route) => asOfOnly.rows.some((row) => row.path === route)),
+        await until(() => orderSections.every((route) => clockChange.rows.some((row) => row.path === route)),
           'Time-only presenter action re-reads all four actual order producers');
-        await asOfOnly.flush(); await settled(orderPage, 'Order progress', '.orders-screen');
-        const after = Object.fromEntries(orderSections.map((route) => [route, asOfOnly.rows.findLast((row) => row.path === route).body]));
-        assert.equal(semantic(after), semantic(evidence.orderChange.sections), 'Only producer asOf fields change after time advances without a tick');
-        assert.notEqual(after['/orders/progress'].value.asOf, evidence.orderChange.sections['/orders/progress'].value.asOf);
-        assert.equal((await orderPage.locator('.order-feedback').innerText()).trim(), '', 'An actual asOf-only reread remains silent');
-        evidence.orderChange.asOfOnly = { before: evidence.orderChange.sections, after, clock, announcement: '' };
-      } finally { await asOfOnly.stop(); }
+        await clockChange.flush(); await settled(orderPage, 'Order progress', '.orders-screen');
+        const after = Object.fromEntries(orderSections.map((route) => [route, clockChange.rows.findLast((row) => row.path === route).body]));
+        evidence.orderChange.clockChange = { before: evidence.orderChange.sections, after, clock,
+          announcement: (await orderPage.locator('.order-feedback').innerText()).trim(),
+          scope: 'A real one-second clock advance. Documents now also changes and stages has no asOf; this does not supply an asOf-only scenario. Named focused order specs retain that boundary.' };
+        assert.equal(Date.parse(clock.now) - Date.parse(before.now), 1000);
+        assert.equal(orderPage.url(), url);
+        for (const route of orderSections) {
+          const row = clockChange.rows.findLast((item) => item.path === route);
+          assert.ok(row.status === 200 && row.body.status === 'ok'
+            || route === '/appointments' && row.status === 503 && row.body.status === 'unavailable'
+              && row.body.code === 'appointments-provider-not-configured', `${route}: actual clock-change read retains its contract`);
+        }
+        assert.equal(after['/orders/progress'].value.orderUuid, state.offer.orderUuid);
+        assert.equal(after['/orders/progress'].value.runId, suite.receipt.composition.runId);
+      } finally { await clockChange.stop(); }
       await employee.close(); employee = null;
       await readerMatrix(suite, orderPage, presenter, { name: 'orders', heading: 'Order progress', root: '.orders-screen',
         paths: ['/orders/progress/all', ...orderSections], unavailablePaths: ['/appointments'], assertView: async () => {
