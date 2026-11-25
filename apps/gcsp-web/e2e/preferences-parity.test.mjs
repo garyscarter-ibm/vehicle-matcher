@@ -25,7 +25,12 @@ async function readbacks(suite, page) {
 
 async function capture(suite, page, name) {
   const destination = path.join(process.env.GCSP_E2E_OUTPUT, 'f552', `${name}.png`);
-  await page.waitForFunction(() => [...document.images].every((image) => image.complete), null, { timeout: 15000 });
+  // Off-screen lazy images deliberately have no response yet. Wait for the actual visible/eager images;
+  // keep the full-page capture honest rather than changing loading policy or replacing image responses.
+  await page.waitForFunction(() => [...document.images].filter((image) => {
+    const box = image.getBoundingClientRect();
+    return image.loading !== 'lazy' || box.bottom > 0 && box.top < innerHeight && box.right > 0 && box.left < innerWidth;
+  }).every((image) => image.complete), null, { timeout: 15000 });
   await page.screenshot({ path: destination, fullPage: true });
   suite.receipt.screenshots.push({ name, path: destination, viewport: page.viewportSize() });
   return destination;
@@ -49,10 +54,18 @@ async function accountSurface(page) {
   }));
 }
 
-async function accountChecks(page) {
+async function accountChecks(page, readEditor) {
   const root = page.locator('.gcsp-prefs').first();
-  const tile = root.locator('.gcsp-prefs-open').filter({ hasText: 'Sportiness' });
-  await tile.focus(); await page.keyboard.press('Enter');
+  // The frozen compact editor saves an unset stopped category's openDefault on open. Exercise the
+  // same public actions on both engines and await their actual saves before comparing their state.
+  for (const [key, label] of [['comfort', 'Comfort'], ['sportiness', 'Sportiness']]) {
+    const tile = root.locator('.gcsp-prefs-open').filter({ hasText: label });
+    await tile.focus(); await page.keyboard.press('Enter');
+    await until(async () => (await readEditor()).initial.accountPreferences.categories[key]?.state === 'considered',
+      `${label} default must reach the actual saved editor`);
+    await until(async () => await root.locator('.gcsp-understanding.is-pending').count() === 0,
+      `${label} save must finish rendering`);
+  }
   const slider = root.locator('.gcsp-prefs-panel:not([hidden]) input[type="range"]'); await slider.waitFor();
   assert.ok(Number(await slider.getAttribute('step')) > 1, 'The compact range moves between the source stops');
   const surface = await accountSurface(page);
@@ -100,17 +113,26 @@ test('FUCQ-552: source preferences, real preview, keyboard and accepted exits', 
   const suite = await startComposition({ caseId: 'f552' });
   t.after(() => suite.close());
   let completed = 0;
+  const check = (name, action) => t.test(name, async () => {
+    try { await action(); }
+    catch (error) {
+      suite.receipt.failure ??= { group: name, name: error.name, message: error.message.slice(0, 1000) };
+      throw error;
+    }
+  });
   try {
     const employee = await suite.newPage('employee', 'demo-paula', 'account');
     const presenter = await suite.newPage('presenter', 'demo-presenter', 'presenter');
     const state = await suite.releaseMainOffer(employee, presenter);
-    const before = await readbacks(suite, employee);
-    suite.receipt.preferences = { before, parity: 'pending human review; automated comparison is engineering evidence' };
+    let before = await readbacks(suite, employee);
+    suite.receipt.preferences = { initial: before, parity: 'pending human review; automated comparison is engineering evidence' };
     await employee.reload({ waitUntil: 'domcontentloaded' });
 
-    await t.test('AC1–3: source tiles, stopped slider, segmented mode/help and labelled meter at 1280', async () => {
+    await check('AC1–3: source tiles, stopped slider, segmented mode/help and labelled meter at 1280', async () => {
       await employee.setViewportSize({ width: 1280, height: 800 });
-      suite.receipt.preferences.account = await accountChecks(employee);
+      suite.receipt.preferences.account = await accountChecks(employee, async () =>
+        good(await suite.call(employee, 'GET', '/brief/editor'), 'Actual compact save readback'));
+      before = await readbacks(suite, employee); suite.receipt.preferences.before = before;
       await capture(suite, employee, 'angular-account-sportiness-1280');
       const root = employee.locator('.gcsp-prefs').first();
       await root.getByRole('button', { name: 'Done', exact: true }).click();
@@ -130,7 +152,7 @@ test('FUCQ-552: source preferences, real preview, keyboard and accepted exits', 
     });
 
     let angularEditor;
-    await t.test('AC4/5: editor chips, two axes, end labels and actual decision-card preview', async () => {
+    await check('AC4/5: editor chips, two axes, end labels and actual decision-card preview', async () => {
       await openEditor(employee, `${suite.origins.web}/gcsp/preferences`);
       const response = employee.waitForResponse((value) => value.request().method() === 'POST'
         && new URL(value.url()).pathname.endsWith('/brief/preview'));
@@ -151,8 +173,13 @@ test('FUCQ-552: source preferences, real preview, keyboard and accepted exits', 
       completed++;
     });
 
-    await t.test('AC7 engineering pair: frozen live account/editor use the same actual brief, account and clock', async () => {
-      const replay = await suite.visitFrozenNode({ ...state, finalAccount: state.account }, async ({ page, origin, runtime, employee: sourceEmployee }) => {
+    await check('AC7 engineering pair: frozen live account/editor use the same actual brief, account and clock', async () => {
+      const replay = await suite.visitFrozenNode({ ...suite.receipt.offer, hold: state.hold, clock: state.clock,
+        finalAccount: state.account }, async ({ page, origin, runtime, employee: sourceEmployee }) => {
+        await page.goto(`${origin}/gcsp-account.html`, { waitUntil: 'domcontentloaded' });
+        const sourceAccount = await accountChecks(page, async () => {
+          const actual = await runtime.editor.readEditor(sourceEmployee); assert.equal(actual.status, 'ok'); return actual.value;
+        });
         const sourceBrief = await runtime.brief.readCurrent(sourceEmployee);
         assert.equal(sourceBrief.status, 'ok');
         assert.deepEqual(project(sourceBrief.value.brief, briefKeys), project(before['/brief'].brief, briefKeys), 'Actual saved brief inputs match across engines');
@@ -165,8 +192,6 @@ test('FUCQ-552: source preferences, real preview, keyboard and accepted exits', 
         for (const key of ['preferences', 'essentials', 'practicalQuestions', 'slider', 'accountPreferences']) {
           assert.deepEqual(sourceEditorRead.value.context[key], before['/brief/editor'].context[key], `Actual editor context ${key}`);
         }
-        await page.goto(`${origin}/gcsp-account.html`, { waitUntil: 'domcontentloaded' });
-        const sourceAccount = await accountChecks(page);
         assert.deepEqual(sourceAccount, suite.receipt.preferences.account, 'Same actual categories, mode, importance and completeness');
         const accountCapture = await capture(suite, page, 'node-account-sportiness-1280');
         await openEditor(page, `${origin}/gcsp-brief-live.html`);
@@ -182,16 +207,19 @@ test('FUCQ-552: source preferences, real preview, keyboard and accepted exits', 
       completed++;
     });
 
-    await t.test('AC1/2/4: 390px keyboard controls retain input and leave the saved brief unchanged', async () => {
+    await check('AC1/2/4: 390px keyboard controls retain input and leave the saved brief unchanged', async () => {
       await employee.setViewportSize({ width: 390, height: 844 });
       const question = employee.locator('.gcsp-brief-question').first();
       const no = question.getByRole('radio', { name: 'No', exact: true });
       await no.focus(); await employee.keyboard.press('Space');
-      assert.equal(await no.getAttribute('aria-checked'), 'true'); assert.equal(await focused(no), true);
+      await until(async () => await no.getAttribute('aria-checked') === 'true', 'No renders after keyboard activation');
+      assert.equal(await focused(no), true);
       const yes = question.getByRole('radio', { name: 'Yes', exact: true });
-      await yes.focus(); await employee.keyboard.press('Enter'); assert.equal(await yes.getAttribute('aria-checked'), 'true');
+      await yes.focus(); await employee.keyboard.press('Enter');
+      await until(async () => await yes.getAttribute('aria-checked') === 'true', 'Yes renders after keyboard activation');
       const unknown = question.getByRole('radio', { name: 'Not sure yet', exact: true });
-      await unknown.focus(); await employee.keyboard.press('Enter'); assert.equal(await unknown.getAttribute('aria-checked'), 'true');
+      await unknown.focus(); await employee.keyboard.press('Enter');
+      await until(async () => await unknown.getAttribute('aria-checked') === 'true', 'Not sure yet renders after keyboard activation');
       const range = employee.locator('input[id^="preference-"][type="range"]').first();
       await range.focus(); await employee.keyboard.press('Home'); const minimum = await range.inputValue();
       await employee.keyboard.press('ArrowRight'); assert.ok(Number(await range.inputValue()) > Number(minimum));
@@ -201,7 +229,8 @@ test('FUCQ-552: source preferences, real preview, keyboard and accepted exits', 
       assert.deepEqual(project(good(await suite.call(employee, 'GET', '/brief'), 'Saved brief after draft keyboard input').brief, briefKeys),
         project(before['/brief'].brief, briefKeys), 'Keyboard drafts never save implicitly');
       await employee.goto(`${suite.origins.web}/gcsp/account`, { waitUntil: 'domcontentloaded' });
-      await accountChecks(employee); await capture(suite, employee, 'angular-account-sportiness-390');
+      await accountChecks(employee, async () => good(await suite.call(employee, 'GET', '/brief/editor'), 'Actual narrow compact readback'));
+      await capture(suite, employee, 'angular-account-sportiness-390');
       assert.equal(await employee.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true, 'Narrow tiles and stopped slider fit the viewport');
       const custom = employee.getByRole('radio', { name: 'Set my preferences', exact: true });
       await custom.focus(); await employee.keyboard.press('Space');
@@ -209,9 +238,15 @@ test('FUCQ-552: source preferences, real preview, keyboard and accepted exits', 
       completed++;
     });
 
-    await t.test('AC6: explicit save opens Activity; actual acceptance opens order progress', async () => {
+    await check('AC6: explicit save opens Activity; actual acceptance opens order progress', async () => {
       await employee.setViewportSize({ width: 1280, height: 800 });
       await openEditor(employee, `${suite.origins.web}/gcsp/preferences`);
+      await employee.getByRole('button', { name: 'Refresh and review', exact: true }).click();
+      await employee.getByRole('button', { name: 'Replace draft with saved preferences', exact: true }).click();
+      await employee.getByRole('heading', { name: 'Your preferences', exact: true, level: 1 }).waitFor();
+      assert.deepEqual(project(good(await suite.call(employee, 'GET', '/brief'), 'Actual saved brief after explicit draft replacement').brief, briefKeys),
+        project(before['/brief'].brief, briefKeys), 'Draft replacement preserves the saved baseline');
+      await employee.getByRole('radio', { name: 'Engage Buddy', exact: true }).check();
       await employee.getByRole('button', { name: 'Save your preferences', exact: true }).click();
       const activity = employee.getByRole('link', { name: 'See your buddy at work', exact: true }); await activity.waitFor();
       await activity.focus(); await employee.keyboard.press('Enter');
@@ -248,6 +283,6 @@ test('FUCQ-552: source preferences, real preview, keyboard and accepted exits', 
     assert.equal(completed, 5, 'All five connected acceptance groups completed');
     suite.receipt.checks.f552 = true;
   } catch (error) {
-    suite.receipt.failure = { name: error.name, message: error.message.slice(0, 1000) }; throw error;
+    suite.receipt.failure ??= { name: error.name, message: error.message.slice(0, 1000) }; throw error;
   }
 });
