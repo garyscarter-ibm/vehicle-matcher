@@ -70,6 +70,10 @@ test('FUCQ-553: source stock, choices and gallery reservation handover', { timeo
   const evidence = suite.receipt.stockChoices = { humanAcceptance: 'pending human review of original same-state 1280 pending/failed pairs',
     provider: 'Existing Java remote claim-stock contract over controlled HTTPS; fictional acknowledgements, real persisted custody and signed commands',
     groups: [] };
+  async function capture(page, name) {
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await suite.screenshot(page, name, { fullPage: true });
+  }
   async function check(name, work) {
     let failure;
     await t.test(name, async () => { const item = { name, state: 'running' }; evidence.groups.push(item);
@@ -90,9 +94,9 @@ test('FUCQ-553: source stock, choices and gallery reservation handover', { timeo
     await employee.goto(`${suite.origins.web}/gcsp/stock`);
     await employee.getByRole('button', { name: 'View your offer', exact: true }).waitFor();
     assert.ok(await employee.locator('.vm-card.vm-card-explicit.gcsp-card').count() > 0);
-    await suite.screenshot(employee, 'angular-held-offer-stock-1280', { fullPage: true });
+    await capture(employee, 'angular-held-offer-stock-1280');
     await employee.setViewportSize({ width: 375, height: 812 }); await noOverflow(employee);
-    await suite.screenshot(employee, 'angular-held-offer-stock-375', { fullPage: true });
+    await capture(employee, 'angular-held-offer-stock-375');
     await employee.getByRole('button', { name: 'View your offer', exact: true }).focus();
     await employee.getByRole('button', { name: 'View your offer', exact: true }).press('Enter');
     await employee.waitForURL(url => url.pathname.endsWith(`/offers/${offerId}`));
@@ -111,9 +115,9 @@ test('FUCQ-553: source stock, choices and gallery reservation handover', { timeo
     await employee.getByText('Contact driver support to correct driver or licence details. No request has been sent.', { exact: true }).waitFor();
     await employee.getByRole('button', { name: 'Save choices', exact: true }).click();
     await employee.getByText(/Availability refreshed \([0-9]+ eligible cars\)/).waitFor();
-    await suite.screenshot(employee, 'angular-choices-1280', { fullPage: true });
+    await capture(employee, 'angular-choices-1280');
     await employee.setViewportSize({ width: 375, height: 812 }); await noOverflow(employee);
-    await suite.screenshot(employee, 'angular-choices-375', { fullPage: true });
+    await capture(employee, 'angular-choices-375');
     await employee.getByRole('button', { name: 'Find a car', exact: true }).click();
     await employee.waitForURL(url => url.pathname.endsWith('/stock'));
     await employee.setViewportSize({ width: 1280, height: 800 });
@@ -133,7 +137,7 @@ test('FUCQ-553: source stock, choices and gallery reservation handover', { timeo
     const count = await employee.locator('.vm-card').count(); await button.click();
     await employee.getByRole('heading', { name: 'This car is no longer available', exact: true }).waitFor();
     assert.equal(await employee.locator('.vm-card').count(), count, 'One car refusal retains the browsed list');
-    await suite.screenshot(employee, 'angular-car-taken-1280', { fullPage: true });
+    await capture(employee, 'angular-car-taken-1280');
     const refreshed = employee.waitForResponse(response => new URL(response.url()).pathname.endsWith('/manual/stock'));
     await employee.getByRole('button', { name: 'Refresh availability', exact: true }).click(); await refreshed;
     assert.equal(await employee.getByRole('heading', { name: 'This car is no longer available', exact: true }).count(), 0);
@@ -151,21 +155,21 @@ test('FUCQ-553: source stock, choices and gallery reservation handover', { timeo
     await employee.getByText('Your reservation is still being checked. Check its status before choosing another car.', { exact: true }).waitFor();
     evidence.pending = good(await suite.call(employee, 'GET', '/manual/claim'), 'Actual persisted pending claim');
     assert.equal(evidence.pending.state, 'claim-pending'); assert.equal(evidence.pending.hold.orderUuid, selected);
-    await suite.screenshot(employee, 'angular-reservation-pending-1280', { fullPage: true });
+    await capture(employee, 'angular-reservation-pending-1280');
     const before = claimPosts(employee).length;
     await employee.getByRole('button', { name: 'Check status', exact: true }).click();
     await until(async () => await employee.getByRole('button', { name: 'Check status', exact: true }).isEnabled(), 'Status read completed');
     assert.equal(claimPosts(employee).length, before, 'Check status sends no browser POST');
     await employee.setViewportSize({ width: 375, height: 812 }); await noOverflow(employee);
-    await suite.screenshot(employee, 'angular-reservation-pending-375', { fullPage: true });
+    await capture(employee, 'angular-reservation-pending-375');
     suite.claims.rejectPending(); await employee.getByRole('button', { name: 'Check status', exact: true }).click();
     await employee.getByText('Your previous reservation has ended. Availability has been refreshed.', { exact: true }).waitFor();
     evidence.failed = good(await suite.call(employee, 'GET', '/manual/claim'), 'Actual refused custody');
     assert.equal(evidence.failed.state, 'claim-failed'); assert.equal(evidence.failed.pendingOperation, null);
     await employee.setViewportSize({ width: 1280, height: 800 });
-    await suite.screenshot(employee, 'angular-reservation-failed-1280', { fullPage: true });
+    await capture(employee, 'angular-reservation-failed-1280');
     await employee.setViewportSize({ width: 375, height: 812 }); await noOverflow(employee);
-    await suite.screenshot(employee, 'angular-reservation-failed-375', { fullPage: true });
+    await capture(employee, 'angular-reservation-failed-375');
     await employee.setViewportSize({ width: 1280, height: 800 });
   });
   await check('fresh pins, explicit identical retry after a lost request, held review without another reserve', async () => {
@@ -190,7 +194,7 @@ test('FUCQ-553: source stock, choices and gallery reservation handover', { timeo
     assert.equal(evidence.held.state, 'quoted'); assert.equal(evidence.held.hold.orderUuid, command.orderUuid);
     assert.equal(claimPosts(employee).length, before + 1, 'Opening review performs no second reserve');
     await employee.setViewportSize({ width: 375, height: 812 }); await noOverflow(employee);
-    await suite.screenshot(employee, 'angular-held-review-375', { fullPage: true });
+    await capture(employee, 'angular-held-review-375');
   });
   await check('frozen same-custody-state pending and failed 1280 pairs for human review', async () => {
     const replay = await suite.visitFrozenNode({ ...suite.receipt.offer, hold: released.hold, clock: released.clock,
@@ -211,11 +215,11 @@ test('FUCQ-553: source stock, choices and gallery reservation handover', { timeo
       await page.getByRole('button', { name: 'Check status', exact: true }).waitFor();
       receipt.stockGallery.pending = await runtime.manualClaims.readClaim(principal);
       assert.equal(receipt.stockGallery.pending.status, 'pending');
-      await suite.screenshot(page, 'node-reservation-pending-1280', { fullPage: true });
+      await capture(page, 'node-reservation-pending-1280');
       galleryClaims.rejectPending(); await page.getByRole('button', { name: 'Check status', exact: true }).click();
       await until(async () => (await runtime.manualClaims.readClaim(principal)).value?.state === 'claim-failed', 'Node real custody failure');
       receipt.stockGallery.failed = await runtime.manualClaims.readClaim(principal);
-      await suite.screenshot(page, 'node-reservation-failed-1280', { fullPage: true });
+      await capture(page, 'node-reservation-failed-1280');
       return { stockChoicesParity: { pending: 'Captured actual pending operation', failed: 'Captured actual terminal claim-failed', humanAcceptance: 'pending' } };
     });
     assert.equal(replay.state, 'matched', 'The frozen reference must actually run');
