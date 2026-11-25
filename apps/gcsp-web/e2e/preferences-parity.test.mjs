@@ -170,6 +170,7 @@ test('FUCQ-552: source preferences, real preview, keyboard and accepted exits', 
     const employee = await suite.newPage('employee', 'demo-paula', 'account');
     const presenter = await suite.newPage('presenter', 'demo-presenter', 'presenter');
     const state = await suite.releaseMainOffer(employee, presenter);
+    await presenter.close();
     let before = await readbacks(suite, employee);
     suite.receipt.preferences = { initial: before, parity: 'pending human review; automated comparison is engineering evidence' };
     await employee.reload({ waitUntil: 'domcontentloaded' });
