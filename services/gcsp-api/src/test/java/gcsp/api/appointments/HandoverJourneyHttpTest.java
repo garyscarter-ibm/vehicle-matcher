@@ -276,6 +276,8 @@ class HandoverJourneyHttpTest {
         Assumptions.assumeTrue(persistence.active(), "GCSP_TEST_DATABASE_URL is not set");
         ownedSchema = schema;
         http = new ApptHttp(signingJwk);
+        JsonNode actualAccount = body(http.as("paula").get(BASE + "/manual/account")).get("value");
+        ReturnJourneySteps.prepareCollectionWindows(dataSource.get(), persistence, actualAccount);
         collectionDateBoundaries(body(http.as("paula").get(BASE + "/manual/account")).get("value"));
 
         // The lifecycle ports resolve to the real adapters: no test alternative stands in for any of them.
