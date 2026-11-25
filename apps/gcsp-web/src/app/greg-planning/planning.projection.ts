@@ -77,8 +77,8 @@ function learnedModel(answer: PlanningRecord, p: PlanningRecord): LearnedModelVi
     const m = field(overall, key);
     return number(m['logLoss']) && number(m['brier']) ? [{ label, value: `Log loss ${m['logLoss'].toFixed(4)}, Brier ${m['brier'].toFixed(4)}` }] : [];
   };
-  const pair = (r: PlanningRecord) => ({ baseline: count(r['baseline']), learned: count(r['learned']), difference: signed(r['delta']) });
-  const money = (r: PlanningRecord) => ({ baseline: pounds(r['baseline']), learned: pounds(r['learned']), difference: pounds(r['delta'], true) });
+  const pair = (r: PlanningRecord) => ({ baseline: count(r['baseline']), learned: count(r['learned']), difference: signed(r['delta']), changed: Number.isFinite(r['delta']) && r['delta'] !== 0 });
+  const money = (r: PlanningRecord) => ({ baseline: pounds(r['baseline']), learned: pounds(r['learned']), difference: pounds(r['delta'], true), changed: Number.isFinite(r['delta']) && r['delta'] !== 0 });
   const comparable = diff['comparable'];
   return {
     modelFacts: [['Model reference', model['artifactId']], ['Model version', model['modelVersion']], ['Feature version', model['featureVersion']],
@@ -92,7 +92,7 @@ function learnedModel(answer: PlanningRecord, p: PlanningRecord): LearnedModelVi
     limitations: strings(forecast['limitations']),
     differences: { comparable, note: comparable ? null : 'The learned and baseline plans cannot be compared, because one of them has no feasible order.',
       rows: !comparable ? [] : [...LEARNED_MEASURES.map(([label, key]) => ({ label, ...(key === 'spendMinor' ? money(field(diff, key)) : pair(field(diff, key))) })),
-        ...rows(diff['derivatives']).filter(d => d['changed'] === true).map(d => ({ label: nameOf(p, 'derivative', d['derivativeId']), ...pair(d) }))] },
+        ...rows(diff['derivatives']).filter(d => d['changed'] === true).map(d => ({ label: nameOf(p, 'derivative', d['derivativeId']), ...pair(d), changed: d['changed'] === true }))] },
   };
 }
 function lines(v: unknown, presentation: PlanningRecord): PlanningLine[] {
