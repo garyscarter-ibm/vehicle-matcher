@@ -11025,7 +11025,7 @@
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-025",
       "id": "FUCQ-550",
-      "observed_at": "2026-11-25T05:32:53Z",
+      "observed_at": "2026-11-25T05:51:12Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -11050,16 +11050,16 @@
           "title": "Shared presenter signal integration"
         },
         {
-          "evidence": "Real Java/OIDC/PostgreSQL release/open-account, acceptance/order announcement, unchanged silence, all five readers on four triggers and actual 29,994-30,004 ms polls proved across explicit 4526da931/cb7e5049a scopes. Listener events remain synthetic; native hide/BFCache and live asOf-only input are unproved. Named focused regression reused; all original AC boxes and shared batch remain open. Retained sorrel-f550-20261125/connected-summary.json.",
+          "evidence": "Original validate (trigger/store specs plus two-tab release/update) supports technical AC1–4 across recorded 4526da931/cb7e5049a scopes and matching service/spec evidence. All five readers cover four triggers and actual 29,994-30,004 ms polls. Native hide/BFCache and live asOf-only input remain unexecuted coverage limits, not new gates. Combined human-connected slice stays in progress; AC5 review/shared batch remain. Retained sorrel-f550-20261125/connected-summary.json.",
           "id": "connected-validation",
-          "observed_at": "2026-11-25T05:32:53Z",
+          "observed_at": "2026-11-25T05:51:12Z",
           "status": "in-progress",
           "title": "Real composition refresh validation"
         },
         {
-          "evidence": "Actual 1280px full-page no-input release pair and frozen account/outbox captured; actual current-offer chip label/icon/style match. Human publication/review pending. Preserve recovery banner (cause unknown) and scroll reset. Frozen two rows versus Angular one includes extra renewal-case-update; no whole-outbox equality. Retained browser-4526da931/f550/; original five AC boxes remain unticked.",
+          "evidence": "Actual 1280px full-page no-input release pair and frozen account/outbox captured; current-offer chip technical AC4 has exact label/icon/style evidence. Technical AC1–4 are recorded separately; AC5 human publication/review stays unchecked. Preserve recovery banner (cause unknown), scroll reset and frozen two rows versus Angular one (extra renewal-case-update); no whole-outbox equality. Retained browser-4526da931/f550/.",
           "id": "parity-review",
-          "observed_at": "2026-11-25T05:32:53Z",
+          "observed_at": "2026-11-25T05:51:12Z",
           "status": "in-progress",
           "title": "Same-state 1280px evidence and human review"
         }
