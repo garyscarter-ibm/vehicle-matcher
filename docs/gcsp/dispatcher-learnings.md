@@ -3557,3 +3557,19 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-25 01:23 UTC · usget-sorrel · DL-20261124-F555-07 · Existing window limitation reproduced on25November
 
 - Canonical Java@b5 failed193reported/10fail/0errors/skips in appointments; all10reproduced once alone on freshDBs. Rocky traced the same existing F583 cause: packaged Paula/Alex latestCollectionDate1Dec and canonical7daylead leave no admissible date from25Nov. Account correctly returns ordering-closed; two missing-draft failures cascade from setup. F583's prior Result already recorded the25Nov limitation and earlier23→24ruling; that history stays valid. F562 changed neither affected tests/account/policy/fixtures nor clock initialisation, so chronology is not regression attribution. Existing openF583 owns follow-up; later full-suite groups remain unrun. Proposed improvement: retain a keyed owner for a documented future-date test limitation before it becomes the next batch failure.
+
+### 2026-11-25 02:16 UTC · usget-sorrel · DL-20261125-SORREL-05 · Reuse the single reservation at the nested boundary
+
+- F583 admission again requested the same2.5GiB at outer/inner layers and waited62.866s before Maven. Lead stopped/joined that unrun attempt, retained the existing outer reservation and set innerjava-test --ram-gib0. The unchanged six-class focused set then passed all11cases in44.607s; owned allocations were removed. This verifies the same launch-only mitigation for this run, not a helper repair or lower acceptance bar. Proposed improvement remains explicit inherited budget semantics.
+
+### 2026-11-25 02:16 UTC · usget-sorrel · DL-20261125-SORREL-07 · Preserve the complete proven browser environment
+
+- Full browser batch first failed before interaction because the default1223 executable was absent; selecting installedChromium159 allowed interaction but frozenNodepg import failed (12pass/6fail). The documented browser-path and pg-module overrides from the successfulF552 run were verified together; one final registered run then passed18/18 in162.03s, all3families, with DB/scratch/process/link cleanup. No product failure or assertion repair was established. Applied mitigation is the complete existing launch environment; propose retaining that environment alongside the normal suite command, without new test machinery or an acceptance gate.
+
+### 2026-11-25 02:16 UTC · usget-sorrel · DL-20261117-GCC-013 · Preserve native facts through importer discrepancies
+
+- Current Jira pull initially lacked attachment metadata on232rows. Bulk native key/version reads gave12explicit arrays and220 exact-version empty witnesses; corrected pull reported0failures. The custom importer still madeF561 origin unresolved although the same2540-character native description already namesF450 and its basis. NativeF450 Story/F432, introducingcommit7b190aa4d and the frozen presenter contract independently verify the origin; Pugh restored only that factual intake metadata, leaving all7AC intact. No native description edit, obsolete comment, parser fix or completed modern audit is claimed. ExpectedRejectedskips still prevent reconciliation-version completion;14evidence-download requests require cache resolution. Proposed improvement: preserve supported rich-text/field shapes and distinguish malformed input from missing native content.
+
+### 2026-11-25 02:16 UTC · usget-sorrel · DL-20261124-F555-08 · Claim attribution omission recurred
+
+- F583 claim e50edf678 was pushed by the normal helper without the literalCodex trailer; source/Result/refresh/merge commits carry it. Published history is preserved. The future claim launch adapter will pass the trailer through the existing named-path helper call; no source-tool repair or retroactive attribution claim.
