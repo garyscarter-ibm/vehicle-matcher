@@ -3521,3 +3521,15 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-25 00:03 UTC · usget-sorrel · DL-20261117-GCC-013 · New audit protocol meets an older custom helper
 
 - Native Jira audit query completed3pages/277issues in Rapunzel’s startup folder. The preserved project-owned jira_sync.py rejects new --plan/--complete flags; its supported audit function only prints in-memory parenting results and has no completeness/cache-watermark contract. No fabricated payload, helper rewrite or completed-audit claim. Complete raw pages remain local for supported continuation; product work continues on unchanged verified F552native7AC. Push snapshot exposes2076historical operations, still being checked against actual native state, not blanket-applied. Proposed framework improvement: advertise own-helper capabilities and keep incomplete upgrade reconciliation explicit.
+
+### 2026-11-25 00:23 UTC · usget-sorrel · DL-20261123-F555-13 · Approved isolated reconciliation completed
+
+- Russell approved the one-off direct isolated merge after supported refresh repeatedly aborted the same overlaps. Lead completed db4654b72; root verified both 9aeb18dcd and 4168b4115 are ancestors. Both histories survive and product delivery resumed under normal helpers. This consumes that specific exception; it does not establish a general bypass or prove a helper conflict-resolution fix.
+
+### 2026-11-25 00:23 UTC · usget-sorrel · DL-20261117-GCC-013 · Supported legacy audit and bounded sync completed
+
+- Rapunzel ran the supported read-only audit on the complete retained native query: 268 checked, 9 exempt, 0 fetch, 0 set-parent and 0 parent mismatches; 6 needs-epic and 29 origin-unknown findings remain. No Jira parenting edits were indicated. Modern plan/completeness/cache-watermark support remains unavailable in the custom helper. Existing native branch comments verified 328 link operations; 52 unmatched historical links were preserved rather than backfilled. Current F562 adoption is handled separately. The helper snapshot took about 50 seconds holding its own checkout mutex; serialising it avoided repeating failed concurrent commit attempts. Proposed improvement: explicit custom-helper capabilities and shorter read-only scan locking.
+
+### 2026-11-25 00:23 UTC · usget-sorrel · DL-20261125-SORREL-04 · Queue readiness disagrees with static story validation
+
+- Metadata-only triage covered all 49 previously ready cards (31993090e, 5231f662c), preserving original contracts. Current check-story rejects 40: 19 lack a ui component declaration and 21 lack required sections; queue still lists them as nominally ready. Root confirmed the first four queue cards fail the ui declaration check, while F562 passes and was claimed. Several cards also retain already-delivered or retired-source work. These are intake/lifecycle discrepancies, not product regressions or authority to rebuild retired code. No new gate or helper change was added. Proposed improvement: keep queue eligibility and static intake validation consistent, and reconcile native/local lifecycle without losing pending human acceptance.
