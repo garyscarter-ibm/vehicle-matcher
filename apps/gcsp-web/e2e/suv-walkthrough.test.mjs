@@ -71,8 +71,11 @@ async function prepare(suite, employee, variant, record) {
   if (variant === 'suv') {
     const group = employee.locator('#preference-body');
     const suv = group.getByRole('checkbox', { name: 'SUV', exact: true });
-    await suv.focus(); await employee.keyboard.press('Enter');
-    await group.getByRole('checkbox', { name: 'Estate', exact: true }).press('Enter');
+    await suv.focus(); await employee.keyboard.press('Space');
+    await until(async () => await suv.getAttribute('aria-checked') === 'true', 'SUV renders selected after keyboard activation');
+    const estate = group.getByRole('checkbox', { name: 'Estate', exact: true });
+    await estate.press('Space');
+    await until(async () => await estate.getAttribute('aria-checked') === 'false', 'Estate renders deselected after keyboard activation');
     assert.equal(await suv.getAttribute('aria-checked'), 'true');
     await suv.focus(); assert.equal(await suv.evaluate((node) => node === document.activeElement), true);
   }
