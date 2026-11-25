@@ -12648,6 +12648,61 @@
       ],
       "native_observed_at": "2026-11-24T02:45:43.439Z",
       "evidence": "_dev/in-progress/DEV-2026-11-25-sorrel-001.md Result; .claude/poller/sorrel-f583-20261125/result.json; source a5ab249c865947677245c8d9f33aec8a45928bed"
+    },
+    {
+      "id": "FUCQ-592",
+      "title": "Ordering HTTP journey fixtures exhaust their collection window as the run date advances",
+      "type": "Bug",
+      "status": "In Review",
+      "original_status": "In Progress",
+      "branch": "dev/DEV-2026-11-24-001",
+      "unsliced": false,
+      "note": "Local development complete: lead-reviewed source 66ea33614 and three original signed-OIDC/native-PG17 journeys 3/3 green. Dispatcher covering batch and collaborator acceptance remain separate.",
+      "workers": [
+        {
+          "name": "The Brain",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-25T03:09:22.036503+00:00",
+          "expires_at": "2026-11-25T03:09:22.036503+00:00",
+          "source": "Native task /root/the_brain; retained gpt-6.1-sol/high, delivery GO at cdc3c09b3",
+          "status": "Completed scoped handoff; no active worker after delivery"
+        },
+        {
+          "name": "Toothless",
+          "role": "mechanic",
+          "harness": "codex",
+          "observed_at": "2026-11-25T03:09:22.036503+00:00",
+          "expires_at": "2026-11-25T03:09:22.036503+00:00",
+          "source": "Native task /root/the_brain/toothless; requested/selected gpt-6-luna/high, no fallback",
+          "status": "Completed scoped handoff; no active worker after delivery"
+        }
+      ],
+      "observed_at": "2026-11-25T03:10:46Z",
+      "slices": [
+        {
+          "id": "fixture-inputs",
+          "status": "complete",
+          "title": "Initial synthetic collection windows in both ordering builders",
+          "observed_at": "2026-11-25T03:09:22Z",
+          "evidence": "Lead reviewed exact two-file diff against both original ACs. Three complete original signed-OIDC/native-PG17 journeys passed 3/3 with zero failures/errors/skips on 25 November; source 66ea33614 and sorrel-f592-20261125/result.json. Dispatcher covering acceptance stays separate."
+        },
+        {
+          "id": "regression-callers",
+          "status": "complete",
+          "title": "Three original signed OIDC native PostgreSQL journeys",
+          "observed_at": "2026-11-25T03:09:22Z",
+          "evidence": "Lead reviewed exact two-file diff against both original ACs. Three complete original signed-OIDC/native-PG17 journeys passed 3/3 with zero failures/errors/skips on 25 November; source 66ea33614 and sorrel-f592-20261125/result.json. Dispatcher covering acceptance stays separate."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Lead review and scoped delivery; covering acceptance remains separate",
+          "observed_at": "2026-11-25T03:09:22Z",
+          "evidence": "Lead reviewed exact two-file diff against both original ACs. Three complete original signed-OIDC/native-PG17 journeys passed 3/3 with zero failures/errors/skips on 25 November; source 66ea33614 and sorrel-f592-20261125/result.json. Dispatcher covering acceptance stays separate."
+        }
+      ],
+      "evidence": "_dev/in-progress/DEV-2026-11-24-001.md Result; .claude/poller/sorrel-f592-20261125/result.json; source 66ea3361475d7524e683090342b79c4da055548e"
     }
   ]
 }
