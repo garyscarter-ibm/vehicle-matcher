@@ -12950,17 +12950,17 @@
       "slices": [
         {
           "id": "console-panels",
-          "status": "in-progress",
-          "title": "Basic console, release, suitability and captured mail (AC1\u20135)",
-          "observed_at": "2026-11-25T19:54:17Z",
-          "evidence": "Actual registered d55365b37 local behavior subtests pass; inspected1280/375 Basic/release/suitability: AC1/2/3/5 evidenced. AC4 real feed/drawer works but desktop iframe captured before paint and narrow mail car image broken; settle/image diagnostics prepared, unrun. Per-tick summary remains disclosed separately, not an added AC1 requirement. See F561 Result."
+          "status": "complete",
+          "title": "Basic console, release, suitability and captured mail (AC1–5)",
+          "observed_at": "2026-11-25T21:12:58Z",
+          "evidence": "AC1–5 evidenced: final registered f561 at12e6e9486 passes7/7 reported; inspected1280/375 Basic/release/suitability/feed/mail. Actual captured image paints; narrow iframe clips right side. Retained Angular409/static147/native86; root source/security and final helper review. See F561 Result and local browser-12e6e9486-chromium159 receipts."
         },
         {
           "id": "integration",
           "status": "in-progress",
-          "title": "Connected Main, actual hosted cue and human pair (AC6\u20137)",
-          "observed_at": "2026-11-25T19:54:18Z",
-          "evidence": "Published d55365b37 frozen comparison fails only exact prepared Main policyVersion: Node +offer-journey-v1 vs Java base. Separate verified F594 parentF433/RelatesF479 records real Java adoption/order pin defect; no equality relaxed. AC6 hosted still old mechanics/no cue at17:55UTC; AC7 pair/human verdict pending. Suite20.08s/2134949888B peakRSS; PG/process/scratch cleanup verified."
+          "title": "Connected Main, actual hosted cue and human pair (AC6–7)",
+          "observed_at": "2026-11-25T21:12:58Z",
+          "evidence": "Strict Main policy/brief/consent/clock/full-release comparison and same-scenario1280 pair now pass after separately mergedF594; final f5617/7 at12e6e9486. AC6 actual hosted probe17:55UTC still no future cue/action unrun; AC7 human verdict remains pending. Actual peakRSS2509602816B/scratch130718688B; DB/process/scratch cleanup verified. Partial5/7; no human acceptance inferred."
         }
       ],
       "unsliced": false
