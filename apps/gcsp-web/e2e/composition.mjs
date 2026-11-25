@@ -63,7 +63,7 @@ function identity(pid) {
 }
 
 export async function startComposition({ caseId = 'f548', ordering = 'synthetic' } = {}) {
-  assert.ok(['f548', 'f549', 'f552', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain'].includes(caseId));
+  assert.ok(['f548', 'f549', 'f550', 'f552', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain'].includes(caseId));
   assert.ok(['synthetic', 'rejected', 'unknown-then-rejected'].includes(ordering));
   const scratch = local(process.env.SCRATCH ?? '');
   assert.ok(scratch.startsWith('/private/tmp/'), 'The supervisor must own /private/tmp scratch');
@@ -508,10 +508,10 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
         fixtureAuthority: 'BuddyJourneySeed initial input pattern; explicit FUCQ-548 parent authorization; no derived state seeded' };
       return actual;
     }
-    async function screenshot(page, name) {
+    async function screenshot(page, name, { fullPage = false } = {}) {
       const destination = path.join(output, `${name}.png`);
-      await page.screenshot({ path: destination, fullPage: false });
-      receipt.screenshots.push({ name, path: destination, viewport: page.viewportSize() });
+      await page.screenshot({ path: destination, fullPage });
+      receipt.screenshots.push({ name, path: destination, viewport: page.viewportSize(), fullPage });
       return destination;
     }
     function readActualHold(offer) {
