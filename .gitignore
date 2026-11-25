@@ -26,3 +26,5 @@ node_modules/
 /docs/gcsp/evidence/**
 !/docs/gcsp/evidence/**/
 !/docs/gcsp/evidence/**/*.md
+# Original FUCQ-552 pairs are required by its existing human parity criterion.
+!/docs/gcsp/evidence/preferences-parity-2026-11-25/*.png

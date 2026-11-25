@@ -20,6 +20,7 @@ import test_resources as resources
 
 CASES = {
     'f548': 'apps/gcsp-web/e2e/notification-bell.test.mjs',
+    'f552': 'apps/gcsp-web/e2e/preferences-parity.test.mjs',
     'f555': 'apps/gcsp-web/e2e/offer-parity.test.mjs',
 }
 
@@ -151,7 +152,7 @@ def main():
     # Node session itself, so its RSS monitor covers that session rather than just the queue wrapper.
     if not os.environ.get("GCSP_HEAVY_SLOT"):
         return subprocess.call([sys.executable, "-B", str(ROOT / "_tools/test_stack.py"), "heavy", "--label", "gcsp-web-e2e",
-                                "--ram-gib", "3", "--", sys.executable, "-B", str(Path(__file__).resolve()), *sys.argv[1:]], cwd=ROOT)
+                                "--ram-gib", "3.5", "--", sys.executable, "-B", str(Path(__file__).resolve()), *sys.argv[1:]], cwd=ROOT)
     run_id = "web-e2e-" + time.strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:6]
     common = local_path(ROOT / git_value("rev-parse", "--git-common-dir"))
     retained = local_path(os.environ.get("GCSP_E2E_OUTPUT", str(common.parent / ".claude/test-runs/web-e2e" / run_id)))
@@ -160,7 +161,8 @@ def main():
     retained.mkdir(parents=True, exist_ok=True)
     policy = resources.Policy({
         "local_scratch_reason": "Explicit human restriction: no OneDrive access; bounded local browser scratch only.",
-        "output_root": str(retained), "chunk_scratch_mib": 2048, "chunk_ram_mib": 3072,
+        # Measured parity composition exceeded 3 GiB by 39 MiB; above-3-GiB runs remain night/CI work.
+        "output_root": str(retained), "chunk_scratch_mib": 2048, "chunk_ram_mib": 3584,
         "chunk_seconds": 600, "log_mib": 2,
     })
     receipt = {"schema": "gcsp-browser-suite/1", "run": run_id, "started": time.time(),
@@ -183,7 +185,7 @@ def main():
                 if remaining <= 0:
                     raise resources.ResourceError('The owned ten-minute chunk is exhausted before ' + label)
                 result = resources.run_process(command, ROOT, env, log, scratch, policy,
-                                               2 * resources.GIB, 3 * resources.GIB, remaining)
+                                               2 * resources.GIB, 3.5 * resources.GIB, remaining)
                 receipt['chunks'].append({'label': label, **result})
                 if result['rc'] or result['issue']:
                     raise resources.ResourceError(label + ' failed; inspect ' + str(log))
@@ -227,7 +229,7 @@ def main():
                 # The database helper is itself a measured, joined child, with a cleanup reserve.
                 dropped = resources.run_process([sys.executable, '-B', '_tools/test_stack.py', 'pg', 'db', 'drop', '--run', run_id],
                                                 ROOT, env, retained / 'pg-drop.log', scratch, policy,
-                                                2 * resources.GIB, 3 * resources.GIB, 30)
+                                                2 * resources.GIB, 3.5 * resources.GIB, 30)
                 receipt['chunks'].append({'label': 'pg-drop', **dropped})
                 receipt['database_dropped'] = dropped['rc'] == 0 and not dropped['issue']
                 database_created = not receipt['database_dropped']
