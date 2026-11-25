@@ -10825,34 +10825,34 @@
       "assignee": "usget",
       "branch": "dev/DEV-2026-11-22-vesper-024",
       "id": "FUCQ-549",
-      "observed_at": "2026-11-23T12:14:51Z",
+      "observed_at": "2026-11-25T04:44:53Z",
       "slices": [
         {
-          "evidence": "Component/source boundary reviewed at64271c5ef;183 pinned source/caller tests,124 ratchet checks,4 inline/boundary checks and production build passed. Actual integration remains separate/incomplete; lead-review.md and story Result.",
+          "evidence": "Source65e5f210c: actual dual-role Greg root landed Next order after bounded landingFor repair; composed rail/presenter precedence unchanged.42 covering policy/guard/shell/Greg specs and registered7/7 navigation proof pass. Lead Result25Nov.",
           "id": "shared-navigation",
-          "observed_at": "2026-11-22T22:05:23Z",
+          "observed_at": "2026-11-25T04:44:53Z",
           "status": "complete",
           "title": "Shared navigation, landing and breadcrumbs"
         },
         {
-          "evidence": "Allocated preferences Activity action source/state test reviewed at64271c5ef. F548 bell/F551 Buddy surfaces and actual click-through remain in integration slice; no original AC ticked.",
+          "evidence": "Source65e5f210c registered proof: real public Account choices meet unchanged minimum, saved-draft review/Engage/Save returns200 and visible See your buddy at work reaches /gcsp/activity. Literal original AC1 drawer/timeline/bell wording remains pending in integration.",
           "id": "employee-entry",
-          "observed_at": "2026-11-22T22:05:24Z",
+          "observed_at": "2026-11-25T04:44:53Z",
           "status": "complete",
           "title": "Preferences Activity link"
         },
         {
-          "evidence": "lead-review.md, lead-pinned-source-callers/ratchet/targeted-boundaries/production-build receipts pass; source hashes unchanged.21 Scratch roots absent,21 groups stopped. Scoped source validation only.",
+          "evidence": "42 scoped policy/guard/shell/Greg tests; final registered f5497/7 at65e5f210c with strict live frozen account/clock/input replay, syntax/diff checks. Red evidence retained. Eight scratch roots absent,3 DBs dropped, no owned processes. Full suites deferred to root batch.",
           "id": "validation",
-          "observed_at": "2026-11-22T22:05:24Z",
+          "observed_at": "2026-11-25T04:44:53Z",
           "status": "complete",
           "title": "Focused checks, build and review"
         },
         {
-          "evidence": "F548 CSS/bell/browser harness unmerged; F551 Buddy surface missing; F562/F564 prerequisite authorization unanswered. Persistent navigation cases, actual signed click-through,1280px pairs/attachments and human review unrun.",
+          "evidence": "Original AC2/3 actual journeys and1280 employee/Greg frozen pairs captured/lead-inspected at65e5f210c; registered7/7. AC1 authored wording needs collaborator ruling; human AC4/attachments pending. Employee account recovery banner/body differences disclosed. Old blanket prerequisites superseded; no acceptance inferred.",
           "id": "integration",
-          "observed_at": "2026-11-22T22:05:24Z",
-          "status": "blocked",
+          "observed_at": "2026-11-25T04:44:53Z",
+          "status": "in-progress",
           "title": "Connected navigation and screenshot pairs"
         }
       ],
