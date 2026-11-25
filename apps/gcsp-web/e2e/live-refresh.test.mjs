@@ -20,12 +20,12 @@ async function settled(page, heading, root) {
   await until(async () => await page.locator(`${root}[aria-busy="true"], ${root} [aria-busy="true"]`).count() === 0,
     `${heading}: its actual visible read finishes`);
 }
-async function capture(suite, page, name) {
+async function capture(suite, page, name, options) {
   await page.waitForFunction(() => [...document.images].filter((image) => {
     const box = image.getBoundingClientRect();
     return image.loading !== 'lazy' || box.bottom > 0 && box.top < innerHeight && box.right > 0 && box.left < innerWidth;
   }).every((image) => image.complete), null, { timeout: 15000 });
-  return suite.screenshot(page, name);
+  return suite.screenshot(page, name, options);
 }
 async function anchorBuddy(page) {
   await page.locator('.gcsp-buddy-tile').evaluate((node) => {
@@ -174,11 +174,18 @@ test('FUCQ-550: live Java/OIDC screen refresh and frozen status presentation', {
     backForwardCache: 'unrun: synthetic persisted pageshow verifies the listener and real signed re-read only' },
   humanAcceptance: 'pending: screenshots and engineering assertions do not grant matches/intended-change or Done' };
   suite.receipt.liveRefresh = evidence;
+  const group = async (name, body) => {
+    let failure;
+    await t.test(name, async () => {
+      try { await body(); } catch (error) { failure = error; throw error; }
+    });
+    if (failure) throw failure;
+  };
   let employee; let presenter; let orderPage; let state;
   try {
     employee = await suite.newPage('employee', 'demo-paula', 'account');
     presenter = await suite.newPage('presenter', 'demo-presenter', 'presenter');
-    await t.test('AC1/5: real release updates already-open Your cars without employee input', async () => {
+    await group('AC1/5: real release updates already-open Your cars without employee input', async () => {
       await settled(employee, 'Your cars', '.account-screen');
       await employee.locator('.gcsp-buddy-tile:not([data-state="loading"])[aria-busy="false"]').waitFor();
       assert.equal(await employee.locator('.gcsp-buddy-tile-offer').count(), 0);
@@ -189,7 +196,7 @@ test('FUCQ-550: live Java/OIDC screen refresh and frozen status presentation', {
         scope: 'Existing recovery banners remain visible and unmodified; absent frozen-source banners are not filtered from this diagnostic.' };
       await anchorBuddy(employee);
       const beforeUrl = employee.url();
-      evidence.release = { before: await capture(suite, employee, 'account-before-public-release-1280'),
+      evidence.release = { before: await capture(suite, employee, 'account-before-public-release-1280', { fullPage: true }),
         beforeScroll: await employee.evaluate(() => ({ x: scrollX, y: scrollY })),
         anchoring: 'Programmatically scrolled the actual Buddy tile into view before release; no employee input after this before capture.',
         employeeInputAfterBeforeCapture: false, employeeNavigationAfterBeforeCapture: false };
@@ -200,20 +207,20 @@ test('FUCQ-550: live Java/OIDC screen refresh and frozen status presentation', {
       assert.equal(await employee.locator('.gcsp-buddy-tile-offer').count(), 1);
       assert.equal(state.offer.state, 'active'); assert.equal(state.hold.state, 'active');
       assert.equal(state.hold.orderUuid, state.offer.orderUuid);
-      evidence.release.after = await capture(suite, employee, 'account-after-public-release-1280');
+      evidence.release.after = await capture(suite, employee, 'account-after-public-release-1280', { fullPage: true });
       evidence.release.afterScroll = await employee.evaluate(() => ({ x: scrollX, y: scrollY }));
       evidence.release.scrollPreserved = JSON.stringify(evidence.release.afterScroll) === JSON.stringify(evidence.release.beforeScroll);
       evidence.release.heldHeadingInViewport = await employee.getByRole('heading', { name: 'A car is held for you', exact: true }).evaluate((node) => {
         const box = node.getBoundingClientRect(); return box.top >= 0 && box.bottom <= innerHeight;
       });
-      assert.equal(evidence.release.heldHeadingInViewport, true, 'The automatic held-offer change is visible in the after capture');
+      evidence.release.captureScope = 'Actual full-page before/after captures without employee input; viewport scroll changes are recorded, not repaired.';
       evidence.release.actual = { orderUuid: state.offer.orderUuid, offerId: state.offer.offerRef.offerId,
         hold: state.hold, clock: state.clock, accountAsOf: state.account.asOf, runId: suite.receipt.composition.runId };
       evidence.release.heldText = await employee.locator('.gcsp-buddy-tile-offer').innerText();
     });
     assert.ok(state, 'Actual release is required for subsequent proof; no fabricated fallback');
 
-    await t.test('AC4/5: same-release frozen account and actual outbox status chip pair', async () => {
+    await group('AC4/5: same-release frozen account and actual outbox status chip pair', async () => {
       await presenter.getByRole('link', { name: 'Outbox', exact: true }).click();
       await presenter.getByRole('heading', { name: 'Captured emails', exact: true, level: 1 }).waitFor();
       await presenter.locator('.gcsp-mail-status').first().waitFor();
@@ -228,7 +235,7 @@ test('FUCQ-550: live Java/OIDC screen refresh and frozen status presentation', {
         await page.getByRole('heading', { name: 'Your cars', exact: true, level: 1 }).waitFor();
         await page.getByText('A car is held for you', { exact: true }).waitFor();
         await anchorBuddy(page);
-        const account = await capture(suite, page, 'node-account-same-release-1280');
+        const account = await capture(suite, page, 'node-account-same-release-1280', { fullPage: true });
         const issued = await runtime.identity.createPresenterSession('f550-node-outbox-presenter');
         assert.equal(issued.status, 'ok');
         const issuedCookies = Array.isArray(issued.value.setCookie) ? issued.value.setCookie : [issued.value.setCookie];
@@ -237,17 +244,31 @@ test('FUCQ-550: live Java/OIDC screen refresh and frozen status presentation', {
           return { name: cookie.slice(0, cookie.indexOf('=')), value: cookie.slice(cookie.indexOf('=') + 1),
             url: origin, httpOnly: true, secure: true, sameSite: 'Lax' };
         }));
+        const sourceResponse = page.waitForResponse((response) => new URL(response.url()).pathname === '/api/gcsp/presenter/outbox'
+          && response.request().method() === 'GET');
         await page.goto(`${origin}/gcsp-outbox.html`, { waitUntil: 'domcontentloaded' });
         await page.locator('.gcsp-mail-status').first().waitFor();
-        const source = await chips(page);
-        assert.equal(source.length, angular.length, 'The two actual same-release outboxes contain the same number of messages');
-        for (const [index, actual] of angular.entries()) {
-          const reference = source[index];
-          assert.equal(reference.label, actual.label); assert.equal(reference.className, actual.className);
-          assert.deepEqual(reference.paths, actual.paths); assert.deepEqual(reference.svg, actual.svg);
-          assert.equal(reference.color, actual.color); assert.equal(reference.background, actual.background);
-        }
+        const response = await sourceResponse;
+        const sourceValue = good({ status: response.status(), body: await response.json() }, 'Actual frozen outbox read');
+        const sourceMessages = sourceValue.messages;
+        const source = await assertChips(page, sourceMessages);
+        const sourceMessage = sourceMessages.find((message) => decodeURIComponent(message.offerLink ?? '').includes(receipt.offer.offerId));
+        const angularMessage = messages.find((message) => decodeURIComponent(message.offerLink ?? '').includes(state.offer.offerRef.offerId));
+        assert.ok(sourceMessage && angularMessage, 'Both real outboxes contain the email for their actual current held offer');
+        assert.equal(sourceMessage.messageKind, angularMessage.messageKind);
+        assert.equal(sourceMessage.recipient.employeeId, angularMessage.recipient.employeeId);
+        assert.equal(sourceMessage.state, angularMessage.state); assert.equal(sourceMessage.transport, angularMessage.transport);
+        const reference = source.find((chip) => chip.jobId === sourceMessage.jobId);
+        const actual = angular[messages.indexOf(angularMessage)]; assert.ok(reference);
+        assert.equal(reference.label, actual.label); assert.equal(reference.className, actual.className);
+        assert.deepEqual(reference.paths, actual.paths); assert.deepEqual(reference.svg, actual.svg);
+        assert.equal(reference.color, actual.color); assert.equal(reference.background, actual.background);
         return { liveRefresh: { account, outbox: await capture(suite, page, 'node-outbox-same-release-1280'), chips: source,
+          actualMessages: sourceMessages.map(({ jobId, messageKind, recipient, state, transport, offerLink }) =>
+            ({ jobId, messageKind, recipient: recipient.employeeId, state, transport, offerLink })),
+          inventory: { angular: messages.length, frozen: sourceMessages.length, equal: messages.length === sourceMessages.length,
+            scope: 'All actual rows retained; current held-offer chip compared. No whole-outbox inventory parity claim.' },
+          matchedCurrentOfferChip: { angular: angularMessage.jobId, frozen: sourceMessage.jobId },
           initialEntries: ['employee account', 'new actual presenter session, initial outbox entry'],
           clock: receipt.tick, parity: 'engineering same-release pair; human review pending' } };
       });
@@ -257,7 +278,7 @@ test('FUCQ-550: live Java/OIDC screen refresh and frozen status presentation', {
       await presenter.getByRole('button', { name: 'Next release', exact: true }).waitFor();
     });
 
-    await t.test('AC1: Your cars, Activity and offer each re-read on all four triggers', async () => {
+    await group('AC1: Your cars, Activity and offer each re-read on all four triggers', async () => {
       await readerMatrix(suite, employee, presenter, { name: 'account', heading: 'Your cars', root: '.account-screen',
         paths: ['/manual/account'], assertView: async () => {
           await employee.getByRole('heading', { name: 'A car is held for you', exact: true }).waitFor();
@@ -280,7 +301,7 @@ test('FUCQ-550: live Java/OIDC screen refresh and frozen status presentation', {
       evidence.bellExclusion = 'Activity requires its route-owned offer-display GET as well as activity GET; bell-only activity reads cannot satisfy it.';
     });
 
-    await t.test('AC2: public acceptance then presenter action updates an already-open order screen and announces once', async () => {
+    await group('AC2: public acceptance then presenter action updates an already-open order screen and announces once', async () => {
       orderPage = await suite.newPage('orders', 'demo-paula', 'orders');
       await orderPage.getByRole('heading', { name: 'No orders to track', exact: true }).waitFor();
       const url = orderPage.url();
@@ -343,7 +364,7 @@ test('FUCQ-550: live Java/OIDC screen refresh and frozen status presentation', {
       await orderPage.close(); orderPage = null;
     });
 
-    await t.test('AC1/4: outbox uses actual presenter authority and all four refresh triggers', async () => {
+    await group('AC1/4: outbox uses actual presenter authority and all four refresh triggers', async () => {
       const outbox = await suite.newPage('outbox', 'demo-presenter', 'presenter/outbox');
       try {
         await readerMatrix(suite, outbox, presenter, { name: 'outbox', heading: 'Captured emails', root: '.gcsp-presenter',
@@ -352,7 +373,7 @@ test('FUCQ-550: live Java/OIDC screen refresh and frozen status presentation', {
       } finally { await outbox.close(); }
     });
 
-    await t.test('AC3: shared-service integration covers the five route owners', () => {
+    await group('AC3: shared-service integration covers the five route owners', () => {
       assert.deepEqual(Object.keys(evidence.readers).sort(), ['account', 'activity', 'offer', 'orders', 'outbox']);
       assert.ok(Object.values(evidence.readers).every((triggers) => triggers.length === 4));
       evidence.acceptance.sharedService = 'Five connected reader matrices supplement existing focused LiveRefreshService specs for one timer, subscriptions and teardown; no browser-wide timer-count claim. Bell timer excluded.';

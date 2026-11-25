@@ -508,10 +508,10 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
         fixtureAuthority: 'BuddyJourneySeed initial input pattern; explicit FUCQ-548 parent authorization; no derived state seeded' };
       return actual;
     }
-    async function screenshot(page, name) {
+    async function screenshot(page, name, { fullPage = false } = {}) {
       const destination = path.join(output, `${name}.png`);
-      await page.screenshot({ path: destination, fullPage: false });
-      receipt.screenshots.push({ name, path: destination, viewport: page.viewportSize() });
+      await page.screenshot({ path: destination, fullPage });
+      receipt.screenshots.push({ name, path: destination, viewport: page.viewportSize(), fullPage });
       return destination;
     }
     function readActualHold(offer) {
