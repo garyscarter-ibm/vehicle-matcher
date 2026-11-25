@@ -48,7 +48,7 @@ export class StockComponent {
   readonly availabilityRefresh = output<void>();
   readonly checkReservation = output<void>(); readonly retryReservation = output<void>(); readonly viewOffer = output<string>();
   readonly offerId = computed(() => { const value = this.store.projection()?.source?.heldOffer?.['offerId']; return typeof value === 'string' && value ? value : null; });
-  readonly carTaken = computed(() => this.reservation()?.failure === 'car-taken');
+  readonly carTaken = computed(() => this.reservation()?.failure === 'car-taken' || !!this.reservation()?.takenIds?.length);
   readonly reservationMessage = computed(() => ({ checking: 'Checking your current reservation.', claiming: 'Reserving this exact car for review.',
     pending: 'Your reservation is still being checked. Check its status before choosing another car.',
     uncertain: 'The reservation status is unavailable. Check its status before choosing another car.',
@@ -143,6 +143,10 @@ export class StockComponent {
   eligibility(car: StockCar): string {
     return car.gateStatus === 'eligible' ? 'Eligible' : car.gateStatus === 'ineligible' ? 'Not eligible' : 'Needs confirmation';
   }
+  reviewReason(car: StockCar): string | null {
+    return car.reviewDisabledReason || this.reviewUnavailableReason()
+      || (this.reservation()?.takenIds?.includes(car.id) ? 'This car is no longer available.' : null);
+  }
   setControls(patch: Partial<StockControls>): void { this.store.setControls(patch); this.publish(); }
   sort(value: string): void { this.setControls({ sort: value as StockSort }); }
   clearFilters(): void { this.setControls({ query: '', series: '', body: '' }); this.focus(() => this.document.getElementById('stock-query')); }
@@ -154,7 +158,7 @@ export class StockComponent {
   activate(event: VehicleCardAction): void {
     const car = this.store.allCars().find(car => car.id === event.memberId);
     if (!car) return;
-    if (event.action === 'review') { if (car.reviewAvailable && !this.reviewUnavailableReason()) this.review.emit(car.review); return; }
+    if (event.action === 'review') { if (car.reviewAvailable && !this.reviewReason(car)) this.review.emit(car.review); return; }
     this.store.openDetail(car.id); this.publish();
     this.focus(() => this.host.nativeElement.querySelector<HTMLElement>('[data-detail-heading]'));
   }
@@ -165,7 +169,7 @@ export class StockComponent {
       ?? this.host.nativeElement.querySelector<HTMLElement>('#stock-query'));
   }
   async reload(): Promise<void> { this.availabilityRefresh.emit(); await this.store.reload(); }
-  reviewDetail(): void { const car = this.store.selectedCar(); if (car?.reviewAvailable && !this.reviewUnavailableReason()) this.review.emit(car.review); }
+  reviewDetail(): void { const car = this.store.selectedCar(); if (car?.reviewAvailable && !this.reviewReason(car)) this.review.emit(car.review); }
   private publish(): void {
     const snapshot = this.store.navigationSnapshot();
     this.lastNavigation = JSON.stringify(snapshot);

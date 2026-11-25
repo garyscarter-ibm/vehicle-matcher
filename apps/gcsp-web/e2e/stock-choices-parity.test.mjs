@@ -137,6 +137,7 @@ test('FUCQ-553: source stock, choices and gallery reservation handover', { timeo
     const count = await employee.locator('.vm-card').count(); await button.click();
     await employee.getByRole('heading', { name: 'This car is no longer available', exact: true }).waitFor();
     assert.equal(await employee.locator('.vm-card').count(), count, 'One car refusal retains the browsed list');
+    assert.equal(await employee.locator(`.vm-card [data-review-id="${id}"]`).isDisabled(), true, 'The refused exact car stays unavailable until refresh');
     await capture(employee, 'angular-car-taken-1280');
     const refreshed = employee.waitForResponse(response => new URL(response.url()).pathname.endsWith('/manual/stock'));
     await employee.getByRole('button', { name: 'Refresh availability', exact: true }).click(); await refreshed;
@@ -163,8 +164,12 @@ test('FUCQ-553: source stock, choices and gallery reservation handover', { timeo
     assert.equal(claimPosts(employee).length, before, 'Check status sends no browser POST');
     await employee.setViewportSize({ width: 375, height: 812 }); await noOverflow(employee);
     await capture(employee, 'angular-reservation-pending-375');
+    const stockReload = employee.waitForResponse(response => new URL(response.url()).pathname.endsWith('/manual/stock'));
     suite.claims.rejectPending(); await employee.getByRole('button', { name: 'Check status', exact: true }).click();
     await employee.getByText('Your previous reservation has ended. Availability has been refreshed.', { exact: true }).waitFor();
+    assert.equal((await stockReload).status(), 200, 'Terminal recovery actually reloads authoritative stock');
+    await employee.locator('.vm-card [data-review-id]:enabled').first().waitFor();
+    assert.equal(await employee.getByRole('heading', { name: 'Loading released cars', exact: true }).count(), 0);
     evidence.failed = good(await suite.call(employee, 'GET', '/manual/claim'), 'Actual refused custody');
     assert.equal(evidence.failed.state, 'claim-failed'); assert.equal(evidence.failed.pendingOperation, null);
     await employee.setViewportSize({ width: 1280, height: 800 });
@@ -216,7 +221,10 @@ test('FUCQ-553: source stock, choices and gallery reservation handover', { timeo
       const account = sourceGood(await runtime.manualRead.readAccount(principal), 'Node actual manual account');
       sourceGood(await runtime.manualRead.saveDraft(principal, { commandId: randomUUID(), expectedDraftVersion: 0,
         expectedContextVersion: account.contextVersion, choices: completeChoices(account) }), 'Node actual complete draft');
-      await page.goto(`${origin}/gcsp-manual-gallery.html`);
+      const entryPage = await page.goto(`${origin}/gcsp-account.html`);
+      assert.equal(entryPage.status(), 200, 'The frozen host serves its actual account entry point');
+      await page.getByRole('button', { name: 'Carry on', exact: true }).click();
+      await page.getByRole('button', { name: 'Continue', exact: true }).click();
       await page.locator('.vm-card [data-review-id]:enabled').first().waitFor();
       galleryClaims.pending(); await page.locator('.vm-card [data-review-id]:enabled').first().click();
       await page.getByRole('button', { name: 'Check status', exact: true }).waitFor();

@@ -78,6 +78,22 @@ describe('released stock screen', () => {
     button(root, 'Back to your choices').click(); expect(back).not.toHaveBeenCalled();
     expect(root.querySelector('.gcsp-stock.vm.gcsp-gallery-body')).not.toBeNull();
   });
+  it('keeps a refused exact car unavailable in its card, detail and direct action while other cars remain selectable', async () => {
+    const { root, fixture, component } = await screen(); const review = vi.fn(); component.review.subscribe(review);
+    fixture.componentRef.setInput('reservation', { state: 'failed', blocked: false, selection: null, claim: null,
+      failure: 'car-taken', takenIds: ['stock-1'], refresh: 0 });
+    fixture.detectChanges();
+    const taken = root.querySelector<HTMLElement>('[data-member-id="stock-1"]')!;
+    expect(button(taken, 'Review this car').disabled).toBe(true); expect(taken.textContent).toContain('This car is no longer available.');
+    expect(button(root.querySelector<HTMLElement>('[data-member-id="stock-4"]')!, 'Review this car').disabled).toBe(false);
+    component.activate({ memberId: 'stock-1', action: 'review' }); expect(review).not.toHaveBeenCalled();
+    component.activate({ memberId: 'stock-1', action: 'details' }); fixture.detectChanges();
+    expect(button(root.querySelector<HTMLElement>('[aria-label="Selected vehicle"]')!, 'Review this car').disabled).toBe(true);
+    component.reviewDetail(); expect(review).not.toHaveBeenCalled();
+    fixture.componentRef.setInput('reservation', { state: 'ready', blocked: false, selection: null, claim: null,
+      failure: null, takenIds: [], refresh: 0 }); fixture.detectChanges(); component.reviewDetail();
+    expect(review).toHaveBeenCalledExactlyOnceWith(component.store.selectedCar()!.review);
+  });
   it('filters through existing store from native search/sort and shows a clear-filter recovery', async () => {
     const { root, fixture, component } = await screen(); const search = root.querySelector<HTMLInputElement>('#stock-query')!;
     search.value = 'missing model'; search.dispatchEvent(new Event('input', { bubbles: true })); fixture.detectChanges();

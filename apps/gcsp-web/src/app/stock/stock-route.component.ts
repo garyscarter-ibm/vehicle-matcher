@@ -17,9 +17,10 @@ export type GalleryReservationState = 'checking' | 'ready' | 'claiming' | 'pendi
 export interface GalleryReservation {
   readonly state: GalleryReservationState; readonly blocked: boolean; readonly selection: ManualHandoff | null;
   readonly claim: ManualClaim | null; readonly failure: string | null; readonly refresh: number;
+  readonly takenIds: readonly string[];
 }
 interface GalleryAttempt { readonly selection: ManualHandoff; readonly command: ManualClaimCommand; receipt: ManualResult<ManualClaim> | null }
-const initialReservation = (): GalleryReservation => ({ state: 'checking', blocked: true, selection: null, claim: null, failure: null, refresh: 0 });
+const initialReservation = (): GalleryReservation => ({ state: 'checking', blocked: true, selection: null, claim: null, failure: null, refresh: 0, takenIds: [] });
 const definitive = (r: ManualResult<ManualClaim> | null): boolean => !!r && ['conflict', 'invalid', 'forbidden', 'not-found'].includes(r.status);
 const nonoccupying = (r: ManualResult<ManualClaim>): r is { status: 'ok'; value: ManualClaim } => r.status === 'ok'
   && ['released', 'expired', 'claim-failed'].includes(r.value.state) && r.value.pendingOperation === null
@@ -68,10 +69,10 @@ export class GalleryReservationController {
     this.active = true; return this.run(false);
   }
   checkStatus(): Promise<void> { return this.active ? this.run(false) : this.load(); }
-  dismissFailure(): void { if (!this.state().blocked) this.publish('ready', false, { failure: null }); }
+  dismissFailure(): void { if (!this.state().blocked) this.publish('ready', false, { failure: null, takenIds: [] }); }
   reserve(selection: ManualHandoff): Promise<void> {
     if (this.operation) return this.operation;
-    if (!this.active || this.state().blocked || !selection.claimInput) return Promise.resolve();
+    if (!this.active || this.state().blocked || this.state().takenIds.includes(selection.orderUuid) || !selection.claimInput) return Promise.resolve();
     this.attempt = { selection: structuredClone(selection), command: { ...structuredClone(selection.claimInput), commandId: crypto.randomUUID() }, receipt: null };
     return this.run(true);
   }
@@ -104,6 +105,10 @@ export class GalleryReservationController {
         && sameGallerySelection(claim, attempt.selection)) attempt.receipt = { status: 'ok', value: claim };
       if (attempt && claim && confirmedGalleryClaim(claim, attempt.selection, attempt.receipt)) {
         this.publish('confirmed', true, { claim, failure: null });
+      } else if (attempt && definitive(attempt.receipt) && galleryFailure(attempt.receipt) === 'car-taken'
+        && (result.status === 'not-found' || nonoccupying(result))) {
+        this.attempt = null; this.publish('failed', false, { claim, failure: 'car-taken',
+          takenIds: [...new Set([...this.value().takenIds, attempt.selection.orderUuid])] });
       } else if (nonoccupying(result) && (!attempt || definitive(attempt.receipt) || attempt.receipt?.status === 'ok'
         && attempt.receipt.value.hold.holdId === result.value.hold.holdId && attempt.receipt.value.quote.quoteId === result.value.quote.quoteId
         && result.value.hold.orderUuid === attempt.selection.orderUuid && result.value.quote.configurationId === attempt.selection.configurationId)) {

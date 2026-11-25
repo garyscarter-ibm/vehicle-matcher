@@ -191,8 +191,8 @@ describe('gallery reservation command ownership', () => {
   const pending = { status: 'pending', code: 'claim-pending', operationId: 'operation-1', retryable: false } as const;
   const api = { context: () => context(), readClaim: vi.fn(), claim: vi.fn() };
   let controller: GalleryReservationController;
-  const selected = () => {
-    const car = decision(1);
+  const selected = (id = 1) => {
+    const car = decision(id);
     return { orderUuid: car.orderUuid, orderNumber: car.orderNumber, configurationId: car.configurationId,
       candidateKey: car.candidateKey, facts: car.snapshot.facts, snapshot: car.snapshot, terms: car.terms,
       draftVersion: car.draftVersion, versions: stock().versions, decisionVersions: car.versions, claimInput: car.claimInput ?? null };
@@ -257,20 +257,30 @@ describe('gallery reservation command ownership', () => {
       await controller.load(); api.claim.mockResolvedValueOnce({ status: 'conflict', retryable: false, ...failure });
       await controller.reserve(selected()); expect(controller.state().state).toBe('failed');
       expect(controller.state().failure).toBe('car-taken'); expect(controller.state().refresh).toBe(0);
+      expect(controller.state().takenIds).toEqual(['stock-1']);
+      await controller.reserve(selected()); expect(api.claim).toHaveBeenCalledTimes(1);
     });
   it('dismisses a resolved single-car notice for explicit refresh without clearing an unresolved attempt', async () => {
     await controller.load(); api.claim.mockResolvedValueOnce({ status: 'conflict', code: 'stock-unavailable', retryable: false });
     await controller.reserve(selected()); controller.dismissFailure();
-    expect(controller.state().state).toBe('ready'); expect(controller.state().failure).toBeNull();
+    expect(controller.state().state).toBe('ready'); expect(controller.state().failure).toBeNull(); expect(controller.state().takenIds).toEqual([]);
     await controller.reserve(selected()); expect(controller.state().state).toBe('retry-available');
     controller.dismissFailure(); expect(controller.state().state).toBe('retry-available'); expect(controller.state().blocked).toBe(true);
+  });
+  it('retains each refused exact car without reloading even when the previous terminal claim remains readable', async () => {
+    await controller.load(); api.claim.mockResolvedValue({ status: 'conflict', code: 'stock-unavailable', retryable: false });
+    api.readClaim.mockResolvedValue(ok(terminal('previous-hold')));
+    await controller.reserve(selected()); await controller.reserve(selected(4));
+    expect(controller.state().failure).toBe('car-taken'); expect(controller.state().takenIds).toEqual(['stock-1', 'stock-4']);
+    expect(controller.state().refresh).toBe(0); expect(controller.state().blocked).toBe(false);
   });
   it('clears the old single-car refusal when a new deliberate reservation begins', async () => {
     await controller.load(); api.claim.mockResolvedValueOnce({ status: 'conflict', code: 'stock-unavailable', retryable: false });
     await controller.reserve(selected()); expect(controller.state().failure).toBe('car-taken');
     let finish!: (value: ManualResult<ManualClaim>) => void;
     api.claim.mockReturnValueOnce(new Promise(resolve => { finish = resolve; }));
-    const next = controller.reserve(selected()); expect(controller.state().failure).toBeNull();
+    const next = controller.reserve(selected(4)); expect(controller.state().failure).toBeNull();
+    expect(controller.state().takenIds).toEqual(['stock-1']);
     finish(unknown); await next;
   });
   it('does not resolve a newer uncertain command from an old terminal hold', async () => {
