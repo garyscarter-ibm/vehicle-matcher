@@ -89,19 +89,9 @@ class CanonicalCandidatesPgTest {
     @Test
     void laterClockReevaluationKeepsAConfirmedClaimWhoseTermsBasisIsUnchanged() throws Exception {
         Request request = seed();
-        remote.onExecute(ScriptedRemote.lost());
-        allocate(request, "canonical-later-instant");
-        String operation = f.text("SELECT operation_id FROM pending_operations WHERE operation_type = 'buddy-claim'");
-        assertEquals("pending", f.text("SELECT state FROM pending_operations WHERE operation_id = ?", operation));
-        assertEquals("claim-pending", f.text("SELECT state FROM custody_holds"));
-        assertEquals(0, f.count("SELECT count(*) FROM buddy_offers"));
+        String operation = lostClaim(request, "canonical-later-instant");
         JsonNode original = AllocationFixture.json(f.text("SELECT quote::text FROM buddy_quotes"));
-        Car first = request.cars().get(0);
-        Car held = new Car(first.orderUuid(), first.configurationId(),
-                f.count("SELECT version FROM stock_cars WHERE order_uuid = ?", first.orderUuid()), first.attributes());
-        Instant later = request.asOf().plusSeconds(1);
-        Request reevaluation = new Request(request.environmentId(), request.runId(), request.policyVersion(), later,
-                request.clockVersion() + 1, request.subject(), List.of(held));
+        Request reevaluation = later(request, request.subject(), 1);
         EligibleCandidates.Decision recalculated = first(reevaluation);
         assertEquals("eligible", recalculated.gateStatus());
         assertEquals(original.get("snapshot"), recalculated.quote().get("snapshot"));
@@ -122,6 +112,89 @@ class CanonicalCandidatesPgTest {
         assertEquals(0, f.count("SELECT count(*) FROM pending_operations WHERE operation_type = 'buddy-release'"));
         assertEquals(original, AllocationFixture.json(f.text("SELECT quote::text FROM buddy_quotes")));
         assertEquals(List.of("execute:buddy-claim", "reconcile:buddy-claim"), remote.calls);
+        assertEquals(1, f.count("SELECT count(*) FROM outbox_events WHERE event_type = 'notification.offer.v1'"));
+
+        // A repeated drive replays the settled claim: no second offer, notification or remote call.
+        DriveResult.Settled replay = assertInstanceOf(DriveResult.Settled.class,
+                new BuddyRemoteLifecycle(f.pool(), policy, candidates, remote).drive(scope(reevaluation), operation));
+        assertEquals("acknowledged", replay.state());
+        assertEquals("offered", replay.outcome().path("state").asText());
+        assertEquals(1, f.count("SELECT count(*) FROM buddy_offers"));
+        assertEquals(1, f.count("SELECT count(*) FROM outbox_events WHERE event_type = 'notification.offer.v1'"));
+        assertEquals(List.of("execute:buddy-claim", "reconcile:buddy-claim"), remote.calls);
+    }
+
+    @Test
+    void laterClockReevaluationWithAGenuinelyChangedAllowanceStillReleasesAsPrerequisitesChanged() throws Exception {
+        Request request = seed();
+        String operation = lostClaim(request, "canonical-changed-terms");
+        JsonNode original = AllocationFixture.json(f.text("SELECT quote::text FROM buddy_quotes"));
+        // A grade fact change (same employee version) moves the allowance, so the terms basis really differs.
+        f.update("UPDATE employees SET attributes = jsonb_set(attributes, '{gradeId}', '\"G8-10\"')");
+        Subject s = request.subject();
+        ObjectNode regraded = ((ObjectNode) s.employeeAttributes().deepCopy()).put("gradeId", "G8-10");
+        Request reevaluation = later(request, new Subject(s.employeeId(), s.slotId(), s.employeeVersion(), regraded,
+                s.accountRecord(), s.briefVersion(), s.briefContent()), 1);
+        EligibleCandidates.Decision recalculated = first(reevaluation);
+        assertEquals("eligible", recalculated.gateStatus());
+        assertEquals(original.get("snapshot"), recalculated.quote().get("snapshot"));
+        assertNotEquals(original.path("terms").get("allowanceInputs"), recalculated.quote().path("terms").get("allowanceInputs"));
+
+        remote.onReconcile(ScriptedRemote.confirmed());
+        DriveResult.Settled result = assertInstanceOf(DriveResult.Settled.class,
+                new BuddyRemoteLifecycle(f.pool(), policy, candidates, remote).drive(scope(reevaluation), operation));
+
+        assertEquals("acknowledged", result.state());
+        assertEquals("release-pending", result.outcome().path("state").asText());
+        assertEquals("release-pending|prerequisites-changed",
+                f.text("SELECT state || '|' || (attributes->>'releaseReason') FROM custody_holds"));
+        assertEquals(1, f.count("SELECT count(*) FROM pending_operations WHERE operation_type = 'buddy-release'"));
+        assertEquals(0, f.count("SELECT count(*) FROM buddy_offers"));
+        assertEquals(0, f.count("SELECT count(*) FROM outbox_events WHERE event_type = 'notification.offer.v1'"));
+        assertEquals(original, AllocationFixture.json(f.text("SELECT quote::text FROM buddy_quotes")));
+    }
+
+    @Test
+    void acknowledgementAtThePinnedQuoteExpiryReleasesAsBuddyExpired() throws Exception {
+        Request request = seed();
+        String operation = lostClaim(request, "canonical-expired");
+        JsonNode original = AllocationFixture.json(f.text("SELECT quote::text FROM buddy_quotes"));
+        Instant validUntil = Instant.parse(original.path("terms").path("validUntil").asText());
+        Request reevaluation = later(request, request.subject(), validUntil.getEpochSecond() - request.asOf().getEpochSecond());
+        assertEquals(validUntil, reevaluation.asOf());
+
+        remote.onReconcile(ScriptedRemote.confirmed());
+        DriveResult.Settled result = assertInstanceOf(DriveResult.Settled.class,
+                new BuddyRemoteLifecycle(f.pool(), policy, candidates, remote).drive(scope(reevaluation), operation));
+
+        assertEquals("acknowledged", result.state());
+        assertEquals("release-pending", result.outcome().path("state").asText());
+        assertEquals("release-pending|buddy-expired",
+                f.text("SELECT state || '|' || (attributes->>'releaseReason') FROM custody_holds"));
+        assertEquals(1, f.count("SELECT count(*) FROM pending_operations WHERE operation_type = 'buddy-release'"));
+        assertEquals(0, f.count("SELECT count(*) FROM buddy_offers"));
+        assertEquals(0, f.count("SELECT count(*) FROM outbox_events WHERE event_type = 'notification.offer.v1'"));
+        assertEquals(original, AllocationFixture.json(f.text("SELECT quote::text FROM buddy_quotes")));
+    }
+
+    /** Allocates with a lost remote response, leaving one durable pending claim and its pinned quote. */
+    private String lostClaim(Request request, String event) throws Exception {
+        remote.onExecute(ScriptedRemote.lost());
+        allocate(request, event);
+        String operation = f.text("SELECT operation_id FROM pending_operations WHERE operation_type = 'buddy-claim'");
+        assertEquals("pending", f.text("SELECT state FROM pending_operations WHERE operation_id = ?", operation));
+        assertEquals("claim-pending", f.text("SELECT state FROM custody_holds"));
+        assertEquals(0, f.count("SELECT count(*) FROM buddy_offers"));
+        return operation;
+    }
+
+    /** The same held car evaluated a fixed number of seconds after the allocation, one clock version on. */
+    private Request later(Request request, Subject subject, long seconds) throws Exception {
+        Car first = request.cars().get(0);
+        Car held = new Car(first.orderUuid(), first.configurationId(),
+                f.count("SELECT version FROM stock_cars WHERE order_uuid = ?", first.orderUuid()), first.attributes());
+        return new Request(request.environmentId(), request.runId(), request.policyVersion(),
+                request.asOf().plusSeconds(seconds), request.clockVersion() + 1, subject, List.of(held));
     }
 
     private AllocationResult.Completed allocate(Request request, String event) throws Exception {
