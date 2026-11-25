@@ -87,7 +87,7 @@ Actual connected Node/Angular pairs were captured on 25 November at 1280×800, b
 | Greg navigation, same no-new-order outcome | `angular-greg-navigation-1280.png` — attachment `1647050` | `node-greg-navigation-1280.png` — attachment `1647051` |
 | Employee navigation, before deliberate preference changes | `angular-employee-navigation-1280.png` — attachment `1647052` | `node-employee-navigation-1280.png` — attachment `1647053` |
 
-The pairs evidence role/account headers, rails, the selected Greg tab and breadcrumbs; body presentation differs. Angular's employee view shows an offers/orders recovery banner absent in Node alongside a `/manual/order` 404; the banner cause remains unknown, and F551 AC3 owns the no-false-error boundary. AC2/3 engineering criteria are met. AC1's control/Activity wording decision remains unresolved, and AC4 human review remains unchecked. No account/body repair or parity acceptance is inferred.
+The pairs evidence role/account headers, rails, the selected Greg tab and breadcrumbs; body presentation differs. Angular's employee view shows a generic preview banner absent in Node alongside a `/manual/order` 404. The F549 capture retained statuses without bodies, so it did not establish the cause; the later F551 diagnosis tracks the no-false-error boundary. AC2/3 engineering criteria are met. AC1's control/Activity wording decision remains unresolved, and AC4 human review remains unchecked. No account/body repair or parity acceptance is inferred.
 
 ### F550 — live release/update — source `4526da931` — AC5
 
@@ -101,7 +101,7 @@ The actual public release updated the original open Your cars tab without employ
 | Angular outbox after release; supporting current-chip comparison only | `outbox-after-public-release-1280.png` — `1647062` |
 | Frozen Node outbox, same release; supporting current-chip comparison only | `node-outbox-same-release-1280.png` — `1647063` |
 
-Engineering evidence at `4526da931` is 5/5 reported selected groups; unchanged account/Activity/offer matrices are reused from `cb7e5049a`. This does not claim one full-family green run. The account recovery banner is visible but its cause is unknown; `/manual/order` 404 alone does not establish it. The frozen Node outbox has two observed rows versus Angular's one, including an extra historical `renewal-case-update` at 22 November 09:30; its exact pre-release creation boundary was not observed. Only the current-offer chip's label/class/SVG/colour match is established, not full outbox inventory or layout parity. The image-framing difference remains under F551's existing repair scope. F550 AC5 human review remains pending; no acceptance is claimed. These are preserved observations, not added F550 gates.
+Engineering evidence at `4526da931` is 5/5 reported tests (four selected groups plus parent); unchanged account/Activity/offer matrices are reused from `cb7e5049a`. This does not claim one full-family green run. The account recovery banner is visible. Its cause was unestablished at this capture; `/manual/order` 404 alone did not establish it. The later F551 diagnosis is recorded separately. The frozen Node outbox has two observed rows versus Angular's one, including an extra historical `renewal-case-update` at 22 November 09:30; its exact pre-release creation boundary was not observed. Only the current-offer chip's label/class/SVG/colour match is established, not full outbox inventory or layout parity. F551 retains the image-source/framing difference for human review and any necessary scoped producer proposal; no framing repair is claimed. F550 AC5 human review remains pending; no acceptance is claimed. These are preserved observations, not added F550 gates.
 
 ## Human verdict ledger
 
@@ -111,10 +111,9 @@ Status: **human review pending; combined review resumed on 25 November.** One re
 | --- | --- | --- | --- | --- | --- | --- |
 | Offer — F555 AC8 | Pending held Main X2, 1280 | Top and lower table pairs above | | | | |
 | Employee bell — F548 AC6 | Open with one active Main X2, 1280 | Bell pair above | | | | |
-| F549 — AC1 | Control/Activity wording decision, original state remains unresolved | Current control/Activity evidence and pending ruling described in F549 section | | | | FUCQ-549; comment 5067204; source 65e5f210c |
-| F549 — AC4 | Greg navigation, same no-new-order outcome, 1280×800 | Greg pair in F549 evidence section | | | | FUCQ-549; comment 5067204; source 65e5f210c |
-| F549 — AC4 | Employee navigation before preference changes, 1280×800 | Employee pair in F549 evidence section | | | | FUCQ-549; comment 5067204; source 65e5f210c |
-| F550 — AC5 | Open Your cars tab across public release, 1280-wide full page | Angular before/after plus frozen Node same-release captures in F550 evidence section; outbox pair is supporting chip evidence only | | | | FUCQ-550; comment 5067240; source 4526da931 |
+| F549 — AC4 | Greg navigation, same no-new-order outcome, 1280×800 | Greg pair in F549 evidence section | | | | |
+| F549 — AC4 | Employee navigation before preference changes, 1280×800 | Employee pair in F549 evidence section | | | | |
+| F550 — AC5 | Open Your cars tab across public release, 1280-wide full page | Angular before/after plus frozen Node same-release captures in F550 evidence section; outbox pair is supporting chip evidence only | | | | |
 
 
 ## Preferences — F552 AC7 — 25 November review addition
