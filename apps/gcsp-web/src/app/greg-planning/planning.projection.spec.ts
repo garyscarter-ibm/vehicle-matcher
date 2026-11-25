@@ -101,10 +101,23 @@ describe('planning display projection', () => {
       expect(m.evaluation.some(f => String(f.value).includes('Estate'))).toBe(true);
       expect(m.limitations).toEqual(['Synthetic-trained; not validated on BMW employee choices.']);
       expect(m.differences.comparable).toBe(true);
-      expect(m.differences.rows.map(r => r.label)).toEqual(['Acceptable coverage', 'Vehicles ordered', 'Spend', 'Unmet needs', '3 Series 320i']);
-      expect(m.differences.rows[2]).toEqual({ label: 'Spend', baseline: '£83,457', learned: '£90,000', difference: '+£6,543', changed: true });
-      expect(m.differences.rows[4]).toEqual({ label: '3 Series 320i', baseline: '2', learned: '3', difference: '+1', changed: true });
+      expect(m.differences.rows.map(r => r.label)).toEqual(['3 Series 320i', 'd2', 'Vehicles ordered', 'Employees covered', 'Unmet needs', 'Spend']);
+      expect(m.differences.rows[5]).toEqual({ label: 'Spend', baseline: '£83,457', learned: '£90,000', difference: '+£6,543', changed: true });
+      expect(m.differences.rows[0]).toEqual({ label: '3 Series 320i', baseline: '2', learned: '3', difference: '+1', changed: true });
       expect(v.planId).toBe('order-plan-1'); expect(v.canSubmit).toBe(true);
+    });
+    it('keeps every derivative before source-ordered metrics, sorting changed then positive rows and retaining neutral zeroes', () => {
+      const answer = available(); answer.differences.derivatives = [
+        { derivativeId: 'unchanged-zero', baseline: 0, learned: 0, delta: 0, changed: false },
+        { derivativeId: 'unchanged-positive', baseline: 2, learned: 2, delta: 0, changed: false },
+        { derivativeId: 'changed-zero', baseline: 0, learned: 0, delta: 0, changed: true },
+        { derivativeId: 'd1', baseline: 2, learned: 3, delta: 1, changed: true },
+      ];
+      const rows = project(answer).learnedModel!.differences.rows;
+      expect(rows.map(row => row.label)).toEqual(['3 Series 320i', 'changed-zero', 'unchanged-positive', 'unchanged-zero', 'Vehicles ordered', 'Employees covered', 'Unmet needs', 'Spend']);
+      expect(rows[2]).toEqual({ label: 'unchanged-positive', baseline: '2', learned: '2', difference: '0', changed: false });
+      expect(rows[3]).toEqual({ label: 'unchanged-zero', baseline: '0', learned: '0', difference: '0', changed: false });
+      expect(answer.differences.derivatives.map(row => row.derivativeId)).toEqual(['unchanged-zero', 'unchanged-positive', 'changed-zero', 'd1']);
     });
     it('says the plans cannot be compared and lists no rows when not comparable', () => {
       const a = available(); a.differences = { comparable: false } as never;
