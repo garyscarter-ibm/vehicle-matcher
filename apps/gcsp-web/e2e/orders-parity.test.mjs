@@ -279,6 +279,8 @@ test('FUCQ-556: real Orders tracker, tasks, handover keyboard booking and missed
       assert.equal(stages.orderUuid, current.stages.orderUuid); assert.equal(stages.runId, current.stages.runId);
       assert.deepEqual(stages.stages.map(({ stage, state }) => ({ stage, state })), current.stages.stages.map(({ stage, state }) => ({ stage, state })), 'Actual Node and Java sent-to-ordering approval states agree');
       assert.equal(stages.currentStage, current.stages.currentStage); assert.equal(stages.outcome, current.stages.outcome);
+      const vehicleResponse = source.page.waitForResponse((response) => response.request().method() === 'GET'
+        && new URL(response.url()).pathname.endsWith('/manual/order'));
       await source.page.goto(`${source.origin}/gcsp-order-progress-live.html?orderUuid=${encodeURIComponent(orderUuid)}`, { waitUntil: 'domcontentloaded' });
       await source.page.locator('.gcsp-stage-list').waitFor();
       source.receipt.ordersTracker = await tracker(source.page, stages);
@@ -297,11 +299,17 @@ test('FUCQ-556: real Orders tracker, tasks, handover keyboard booking and missed
       assert.deepEqual(nodeAppointment.offeredSlots, current.appointment.offeredSlots, 'Same actual offered handover choices on both engines');
       await source.page.locator('section.gcsp-task-list').waitFor();
       assert.ok(await source.page.locator('ul.gcsp-slot-picker button').count() > 0);
-      const sourceOrder = nodeGood(await source.runtime.manualOrder.readOrder(source.employee), 'Frozen actual selected vehicle snapshot');
+      const immutableOrder = nodeGood(await source.runtime.manualOrder.readOrder(source.employee), 'Frozen immutable selected vehicle snapshot');
+      const actualVehicleResponse = await vehicleResponse;
+      assert.equal(actualVehicleResponse.status(), 200);
+      const sourceOrder = nodeGood(await actualVehicleResponse.json(), 'Frozen authenticated selected vehicle response used by the page');
       assert.equal(sourceOrder.selection.stock.orderUuid, orderUuid);
       const sourceDisplay = sourceOrder.selection.stock.facts.display;
+      assert.equal(sourceDisplay.name, immutableOrder.selection.stock.facts.display.name, 'Frozen HTTP retains the immutable selected name');
       assert.equal(sourceDisplay.name, selectedDisplay.name, 'The actual frozen and Java selected vehicle names agree');
-      source.receipt.ordersVehicleDisplay = { orderUuid, display: sourceDisplay };
+      source.receipt.ordersVehicleDisplay = { orderUuid, immutableDisplay: immutableOrder.selection.stock.facts.display,
+        authenticatedResponseDisplay: sourceDisplay,
+        imageProjection: 'The frozen HTTP boundary maps the registered retained asset to its image-service route; raw URLs remain distinct.' };
       source.receipt.ordersScreenshots = await screenshots(suite, source.page, 'node-ordering', [1280, 390], async (width) => {
         suite.receipt.orders.vehicleSummary.node[width] = await vehicleSummary(source.page, sourceDisplay, {
           nameSelector: '.gcsp-order-car-name', imageSelector: '.gcsp-order-media img', readImage: (image) => source.images.read(image) });
