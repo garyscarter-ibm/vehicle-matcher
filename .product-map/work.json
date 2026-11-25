@@ -11025,7 +11025,7 @@
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-025",
       "id": "FUCQ-550",
-      "observed_at": "2026-11-23T12:28:17Z",
+      "observed_at": "2026-11-25T05:32:53Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -11043,24 +11043,24 @@
           "title": "Shared visibility restore and polling with order announcement"
         },
         {
-          "evidence": "F548 owns unmerged subscribePresenterActions(Document) and successful presenter publication/globalCSS; integration withheld. No copy or no-op hook added.",
+          "evidence": "Canonical F548 presenter/actions integration verified by 186 current focused checks and actual public actions across all five readers in matching scoped compositions. Executed proof 4526da931 and reused cb7e5049a boundaries; no product change. See latest connected Result in _dev/in-progress/DEV-2026-11-22-vesper-025.md.",
           "id": "presenter-integration",
-          "observed_at": "2026-11-22T22:43:30Z",
-          "status": "blocked",
+          "observed_at": "2026-11-25T05:32:53Z",
+          "status": "complete",
           "title": "Shared presenter signal integration"
         },
         {
-          "evidence": "No new connected run authorised; pending F562/F564 prerequisite scope decision and F548/549 integration. Native trigger tests are synthetic source handling only; no actual hidden/BFCache/two-tab proof.",
+          "evidence": "Real Java/OIDC/PostgreSQL release/open-account, acceptance/order announcement, unchanged silence, all five readers on four triggers and actual 29,994-30,004 ms polls proved across explicit 4526da931/cb7e5049a scopes. Listener events remain synthetic; native hide/BFCache and live asOf-only input are unproved. Named focused regression reused; all original AC boxes and shared batch remain open. Retained sorrel-f550-20261125/connected-summary.json.",
           "id": "connected-validation",
-          "observed_at": "2026-11-22T22:43:30Z",
-          "status": "blocked",
+          "observed_at": "2026-11-25T05:32:53Z",
+          "status": "in-progress",
           "title": "Real composition refresh validation"
         },
         {
-          "evidence": "Same-state1280px live Node/Java Angular release pair, attachment, human ledger review remain absent; no human matches/intended-change acceptance.",
+          "evidence": "Actual 1280px full-page no-input release pair and frozen account/outbox captured; actual current-offer chip label/icon/style match. Human publication/review pending. Preserve recovery banner (cause unknown) and scroll reset. Frozen two rows versus Angular one includes extra renewal-case-update; no whole-outbox equality. Retained browser-4526da931/f550/; original five AC boxes remain unticked.",
           "id": "parity-review",
-          "observed_at": "2026-11-22T22:43:30Z",
-          "status": "blocked",
+          "observed_at": "2026-11-25T05:32:53Z",
+          "status": "in-progress",
           "title": "Same-state 1280px evidence and human review"
         }
       ],
