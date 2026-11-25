@@ -116,8 +116,8 @@ describe('preferences screen over the Java brief goldens', () => {
     const legends = Array.from(root(fixture).querySelectorAll('fieldset.full-preference legend')).map((l) => l.textContent?.trim());
     expect(legends).toEqual(Object.values(java['context']['preferences']).map((p: any) => p.label));
     const body = java['context']['preferences']['body']['values'] as string[];
-    const boxes = Array.from(root(fixture).querySelectorAll<HTMLInputElement>('#preference-body input'));
-    expect(boxes.map((b) => b.checked)).toEqual(body.map((v) => v === java['initial']['brief']['preferences']['body']['value']));
+    const boxes = Array.from(root(fixture).querySelectorAll<HTMLButtonElement>('#preference-body button[role=checkbox]'));
+    expect(boxes.map((b) => b.getAttribute('aria-checked') === 'true')).toEqual(body.map((v) => v === java['initial']['brief']['preferences']['body']['value']));
     const [engage, disengage] = Array.from(root(fixture).querySelectorAll<HTMLInputElement>('input[name=buddy-engagement]'));
     expect(java['initial']['buddy']['state']).toBe('disengaged'); expect(engage.checked).toBe(false); expect(disengage.checked).toBe(true);
     expect(root(fixture).textContent).not.toMatch(/\bEligible\b|Not eligible/);
@@ -127,8 +127,8 @@ describe('preferences screen over the Java brief goldens', () => {
   it('a full save from the screen controls sends the Java requests and shows the server saved version', async () => {
     const fixture = await render('editor-after-save', 'draft-save', 'confirm-with-consent', 'editor-confirmed');
     const values = value('editor-after-save')['context']['preferences']['body']['values'] as string[];
-    const estate = root(fixture).querySelectorAll<HTMLInputElement>('#preference-body input')[values.indexOf('estate')];
-    estate.checked = true; estate.dispatchEvent(new Event('change'));
+    const estate = root(fixture).querySelectorAll<HTMLButtonElement>('#preference-body button[role=checkbox]')[values.indexOf('estate')];
+    estate.click();
     const economy = root(fixture).querySelector<HTMLInputElement>('#preference-economy')!;
     economy.value = '50'; economy.dispatchEvent(new Event('input'));
     const engage = root(fixture).querySelector<HTMLInputElement>('input[name=buddy-engagement]')!;
