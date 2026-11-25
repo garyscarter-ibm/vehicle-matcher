@@ -40,7 +40,10 @@ async function readbacks(suite, page) {
 
 async function capture(suite, page, name, anchor) {
   const destination = path.join(process.env.GCSP_E2E_OUTPUT, 'f552', `${name}.png`);
-  if (anchor) await anchor.evaluate((node) => node.scrollIntoView({ block: 'start', inline: 'nearest' }));
+  if (anchor) await anchor.evaluate((node) => {
+    const header = document.querySelector('.gcsp-header')?.getBoundingClientRect().height ?? 0;
+    window.scrollTo({ top: scrollY + node.getBoundingClientRect().top - header - 16, behavior: 'instant' });
+  });
   // Off-screen lazy images deliberately have no response yet. Wait for the actual visible/eager images;
   // capture the named viewport state without changing loading policy or replacing image responses.
   await page.waitForFunction(() => [...document.images].filter((image) => {
@@ -208,8 +211,22 @@ test('FUCQ-552: source preferences, real preview, keyboard and accepted exits', 
           project(before['/context'], ['runId', 'employeeId', 'policyVersion']), 'Actual contexts map only the isolated environment');
         const sourceAccountRead = await runtime.account.readAccount(sourceEmployee); assert.equal(sourceAccountRead.status, 'ok');
         sourceReceipt.preferences.actualAccount = sourceAccountRead.value;
-        assert.deepEqual(timestampInstants(project(sourceAccountRead.value, ['state', 'asOf', 'account', 'drivers', 'contracts', 'currentContract', 'contractState', 'choices', 'allowance', 'versions'])),
-          timestampInstants(project(before['/manual/account'], ['state', 'asOf', 'account', 'drivers', 'contracts', 'currentContract', 'contractState', 'choices', 'allowance', 'versions'])), 'Actual accounts and clocks match');
+        assert.deepEqual(timestampInstants(project(sourceAccountRead.value, ['state', 'asOf', 'account', 'drivers', 'contracts', 'currentContract', 'contractState', 'choices', 'allowance'])),
+          timestampInstants(project(before['/manual/account'], ['state', 'asOf', 'account', 'drivers', 'contracts', 'currentContract', 'contractState', 'choices', 'allowance'])), 'Actual account business inputs and clocks match');
+        // shared-contracts.md:13 requires local monotonic versions, not equal row-write counts.
+        // Node's hold claim CASes the slot (2→3); Java checks its version without writing it (2).
+        // Both raw counters stay in the receipt; preferences must preserve each release baseline.
+        const nodeVersions = sourceAccountRead.value.versions; const javaVersions = before['/manual/account'].versions;
+        sourceReceipt.preferences.versionComparison = { node: nodeVersions, java: javaVersions,
+          reason: 'Node hold uses an empty slot CAS; Java custody-hold creation does not write the slot. Compare business inputs and each engine\'s actual release baseline.' };
+        for (const versions of [nodeVersions, javaVersions]) {
+          for (const key of ['employee', 'slot']) assert.ok(Number.isInteger(versions[key]) && versions[key] > 0, `${key} is a positive local row version`);
+          assert.match(String(versions.clock), /^[1-9]\d*$/, 'Clock has a positive local version');
+        }
+        const versionMetadata = (versions) => Object.fromEntries(Object.entries(versions).filter(([key]) => !['employee', 'slot', 'clock'].includes(key)));
+        assert.deepEqual(timestampInstants(versionMetadata(nodeVersions)), timestampInstants(versionMetadata(javaVersions)), 'Policy, record set and source metadata match');
+        assert.deepEqual(nodeVersions, sourceReceipt.finalClockComparison.actualFinalAccount.versions, 'Node preference actions preserve actual release versions');
+        assert.deepEqual(javaVersions, state.account.versions, 'Java preference actions preserve actual release versions');
         const sourceEditorRead = await runtime.editor.readEditor(sourceEmployee); assert.equal(sourceEditorRead.status, 'ok');
         sourceReceipt.preferences.actualEditor = sourceEditorRead.value;
         for (const key of ['preferences', 'essentials', 'practicalQuestions', 'slider', 'accountPreferences']) {
