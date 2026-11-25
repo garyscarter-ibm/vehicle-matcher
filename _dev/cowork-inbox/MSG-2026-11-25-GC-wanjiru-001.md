@@ -9,6 +9,8 @@ depth: 0
 status: awaiting-reply
 opened: 2026-11-25
 counter_questions_used: 0
+acks: usget-velko 2026-11-25T17:19
+lease: usget-velko until 2026-11-25T21:19:29Z
 spawned: none
 subject: Complete required Jira headings so queued stories pass check-story
 
