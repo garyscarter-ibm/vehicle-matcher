@@ -10933,117 +10933,6 @@
     },
     {
       "assignee": "Russell Gowers",
-      "branch": "dev/DEV-2026-11-22-vesper-027",
-      "evidence": "Source-only checkpoint 1134d1ea8; independent 76/76 caller specs, 124/124 ratchet, targeted boundaries and clean production build passed. Result in _dev/in-progress/DEV-2026-11-22-vesper-027.md. All seven original ACs unticked; In Progress/unmerged.",
-      "id": "FUCQ-552",
-      "observed_at": "2026-11-25T00:12:17Z",
-      "original_status": "In Progress",
-      "slices": [
-        {
-          "evidence": "Source-only delivery at 1134d1ea8: source category icons/states/bin/stopped controls plus independent 76/76 callers and lead review. AC1 remains unticked pending F548 CSS and rendered integration.",
-          "id": "category-port",
-          "observed_at": "2026-11-22T22:58:56Z",
-          "status": "complete",
-          "title": "Source category icons, importance, bin and stopped controls (AC1)"
-        },
-        {
-          "id": "mode-meter-port",
-          "status": "complete",
-          "title": "Source mode choice, help and completeness meter (AC2/3)",
-          "observed_at": "2026-11-22T22:58:56Z",
-          "evidence": "Source-only delivery at 1134d1ea8: mode/help and segmented completeness ports with focused regressions/lead review. AC2/3 remain unticked; integrate F548 CSS and migrate mode help to F551 canonical shared helpTip."
-        },
-        {
-          "id": "editor-controls",
-          "status": "in-progress",
-          "title": "Source editor chips and labelled axes (AC4)",
-          "observed_at": "2026-11-25T00:12:17Z",
-          "evidence": "Original Bug resumed after shared UI integration db4654b72; source and final scoped validation in progress."
-        },
-        {
-          "id": "preview-cards",
-          "status": "in-progress",
-          "title": "Source decision-card preview composition (AC5)",
-          "observed_at": "2026-11-25T00:12:17Z",
-          "evidence": "Original Bug resumed after shared UI integration db4654b72; source and final scoped validation in progress."
-        },
-        {
-          "id": "navigation-integration",
-          "status": "in-progress",
-          "title": "Reuse F549 and accepted-order links (AC6)",
-          "observed_at": "2026-11-25T00:12:17Z",
-          "evidence": "Original Bug resumed after shared UI integration db4654b72; source and final scoped validation in progress."
-        },
-        {
-          "id": "source-validation",
-          "status": "in-progress",
-          "title": "Lead review, focused regressions, ratchet, boundaries and build",
-          "observed_at": "2026-11-25T00:12:17Z",
-          "evidence": "Original Bug resumed after shared UI integration db4654b72; source and final scoped validation in progress."
-        },
-        {
-          "id": "connected-parity",
-          "status": "not-started",
-          "title": "Integrated real OIDC/state browser cases and reviewed 1280 pairs (all ACs/AC7)",
-          "observed_at": "2026-11-25T00:12:17Z",
-          "evidence": "Connected checks authorized against integrated shared source; registered F552 family in progress. Final-commit browser and human 1280 pair verdict remain."
-        }
-      ],
-      "status": "In Progress",
-      "title": "Angular preferences category tiles, mode, completeness and editor parity",
-      "type": "Bug",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-552",
-      "workers": [
-        {
-          "expires_at": "2026-11-22T22:58:56Z",
-          "harness": "codex",
-          "name": "Mr Potato Head",
-          "observed_at": "2026-11-22T22:58:56Z",
-          "role": "story-lead",
-          "source": "Lead final source Result/cleanup handoff; no running source worker claimed",
-          "status": "source checkpoint complete; partial handoff"
-        },
-        {
-          "expires_at": "2026-11-22T22:48:32Z",
-          "harness": "codex",
-          "name": "The Brain",
-          "observed_at": "2026-11-22T22:48:32Z",
-          "role": "implementer",
-          "source": "Implementer final resource-audit.json; source committed by lead; no descendants",
-          "status": "completed source allocation"
-        },
-        {
-          "name": "Shaggy",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-25T00:12:17.158953+00:00",
-          "expires_at": "2026-11-25T02:12:17.158953+00:00",
-          "source": "Native continuation after db4654b72: lead coordinates; Road Runner product; Timone F552 browser family. Requested/selected Sol high lead, medium implementers.",
-          "status": "active"
-        },
-        {
-          "name": "Road Runner",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-25T00:12:17.158953+00:00",
-          "expires_at": "2026-11-25T02:12:17.158953+00:00",
-          "source": "Native continuation after db4654b72: lead coordinates; Road Runner product; Timone F552 browser family. Requested/selected Sol high lead, medium implementers.",
-          "status": "active"
-        },
-        {
-          "name": "Timone",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-25T00:12:17.158953+00:00",
-          "expires_at": "2026-11-25T02:12:17.158953+00:00",
-          "source": "Native continuation after db4654b72: lead coordinates; Road Runner product; Timone F552 browser family. Requested/selected Sol high lead, medium implementers.",
-          "status": "active"
-        }
-      ]
-    },
-    {
-      "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-029",
       "evidence": "Published merge de454757f of918263482 verified; first production build passes. Covering web batch green1499/86files, initial resource-incomplete attempt excluded; all10attempt/chunk roots/groups and batch worktree/ref/link/lease removed. Source composition and actual live pair pending.",
       "id": "FUCQ-556",
@@ -12603,6 +12492,117 @@
           "observed_at": "2026-11-25T00:25:40.115787Z",
           "expires_at": "2026-11-25T00:46:15.813497Z",
           "source": "Codex native active observation; Pugh"
+        }
+      ]
+    },
+    {
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-22-vesper-027",
+      "evidence": "Engineering source070904ed0: final24/24 covering specs, earlier91/91 focused,135/135ratchet,0drift,7/7scopedboundaries,6/6browser entries/all5groups. Four actual1280pairs inspected/committed; humanAC7pending; In Progress/original13points retained.",
+      "id": "FUCQ-552",
+      "observed_at": "2026-11-25T01:15:24Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "Actual1280/390icons,importance,bin,stoppedslider and focus pass; inspected final pairs.",
+          "id": "category-port",
+          "observed_at": "2026-11-25T01:15:24.347086+00:00",
+          "status": "complete",
+          "title": "Source category icons, importance, bin and stopped controls (AC1)"
+        },
+        {
+          "id": "mode-meter-port",
+          "status": "complete",
+          "title": "Source mode choice, help and completeness meter (AC2/3)",
+          "observed_at": "2026-11-25T01:15:24.347086+00:00",
+          "evidence": "Canonical sharedhelp, segmentedmode and6/11 labelledmeter pass actualkeyboard flow."
+        },
+        {
+          "id": "editor-controls",
+          "status": "complete",
+          "title": "Source editor chips and labelled axes (AC4)",
+          "observed_at": "2026-11-25T01:15:24.347086+00:00",
+          "evidence": "Verified frozen registry/question order; sourcechips/axes/endlabels and24/24covering regression pass."
+        },
+        {
+          "id": "preview-cards",
+          "status": "complete",
+          "title": "Source decision-card preview composition (AC5)",
+          "observed_at": "2026-11-25T01:15:24.347086+00:00",
+          "evidence": "Bothactual100unique candidates/configs/gates/titles match;42eligible ordered; eachDOM follows ownactualresponse."
+        },
+        {
+          "id": "navigation-integration",
+          "status": "complete",
+          "title": "Reuse F549 and accepted-order links (AC6)",
+          "observed_at": "2026-11-25T01:15:24.347086+00:00",
+          "evidence": "Actual save→Activity→heldofferacceptance→read-onlypreferences→Orders passes."
+        },
+        {
+          "id": "source-validation",
+          "status": "complete",
+          "title": "Lead review, focused regressions, ratchet, boundaries and build",
+          "observed_at": "2026-11-25T01:15:24.347086+00:00",
+          "evidence": "Lead source review,91/91prior +24/24final covering,135ratchet,0drift,7scopedCSP,productionbuild pass."
+        },
+        {
+          "id": "connected-parity",
+          "status": "in-progress",
+          "title": "Integrated real OIDC/state browser cases and reviewed 1280 pairs (all ACs/AC7)",
+          "observed_at": "2026-11-25T01:15:24.347086+00:00",
+          "evidence": "ActualJava/OIDC/PG+frozenNode final6/6/all5groups pass; four1280pairs independently inspected and committed; originalhumanAC7 and coveringbatch remain."
+        }
+      ],
+      "status": "In Progress",
+      "title": "Angular preferences category tiles, mode, completeness and editor parity",
+      "type": "Bug",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-552",
+      "workers": [
+        {
+          "expires_at": "2026-11-22T22:58:56Z",
+          "harness": "codex",
+          "name": "Mr Potato Head",
+          "observed_at": "2026-11-22T22:58:56Z",
+          "role": "story-lead",
+          "source": "Lead final source Result/cleanup handoff; no running source worker claimed",
+          "status": "source checkpoint complete; partial handoff"
+        },
+        {
+          "expires_at": "2026-11-22T22:48:32Z",
+          "harness": "codex",
+          "name": "The Brain",
+          "observed_at": "2026-11-22T22:48:32Z",
+          "role": "implementer",
+          "source": "Implementer final resource-audit.json; source committed by lead; no descendants",
+          "status": "completed source allocation"
+        },
+        {
+          "name": "Shaggy",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-25T01:15:24.347086+00:00",
+          "expires_at": "2026-11-25T01:15:24.347086+00:00",
+          "source": "Final actual070904ed0 proof/cleanup and Result; no active worker inferred from commits. Sol/high lead, Sol/medium implementers; no fallback.",
+          "status": "completed engineering allocation; human parity handoff remains"
+        },
+        {
+          "name": "Road Runner",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-25T01:15:24.347086+00:00",
+          "expires_at": "2026-11-25T01:15:24.347086+00:00",
+          "source": "Final actual070904ed0 proof/cleanup and Result; no active worker inferred from commits. Sol/high lead, Sol/medium implementers; no fallback.",
+          "status": "completed engineering allocation; human parity handoff remains"
+        },
+        {
+          "name": "Timone",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-25T01:15:24.347086+00:00",
+          "expires_at": "2026-11-25T01:15:24.347086+00:00",
+          "source": "Final actual070904ed0 proof/cleanup and Result; no active worker inferred from commits. Sol/high lead, Sol/medium implementers; no fallback.",
+          "status": "completed engineering allocation; human parity handoff remains"
         }
       ]
     }
