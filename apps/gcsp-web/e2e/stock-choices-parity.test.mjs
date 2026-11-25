@@ -209,6 +209,8 @@ test('FUCQ-553: source stock, choices and gallery reservation handover', { timeo
     await capture(employee, 'angular-held-review-375');
   });
   await check('frozen same-custody-state pending and failed 1280 pairs for human review', async () => {
+    await suite.context.close();
+    evidence.angularContextClosedBeforeFrozenReplay = true;
     const replay = await suite.visitFrozenNode({ ...suite.receipt.offer, hold: released.hold, clock: released.clock,
       finalAccount: released.account, stockGallery: true }, async ({ page, origin, runtime, employee: principal, offer, galleryClaims, receipt }) => {
       const selector = { runId: principal.runId, offerId: offer.offerRef?.offerId ?? offer.offerId };
