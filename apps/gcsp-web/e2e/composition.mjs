@@ -22,7 +22,7 @@ async function until(check, message, timeout = 12000) {
   assert.fail(message);
 }
 export async function showAdvanced(page) {
-  const advanced = page.getByRole('button', { name: 'Advanced', exact: true });
+  const advanced = page.locator('.gcsp-console-mode');
   if (await advanced.getAttribute('aria-pressed') === 'false') await advanced.click();
   assert.equal(await advanced.getAttribute('aria-pressed'), 'true');
 }
