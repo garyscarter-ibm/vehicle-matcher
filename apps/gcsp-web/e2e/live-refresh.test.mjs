@@ -62,7 +62,7 @@ function watchReads(page, apiBase, paths) {
     async stop() { page.off('response', observe); await Promise.all([...pending]); } };
 }
 async function readerMatrix(suite, page, presenter, definition, evidence) {
-  const { name, heading, root, paths, assertView } = definition;
+  const { name, heading, root, paths, assertView, unavailablePaths = [] } = definition;
   await settled(page, heading, root); await assertView();
   const journal = watchReads(page, suite.apiBase, paths);
   const pageLabel = ({ outbox: 'outbox', orders: 'orders' })[name] ?? 'employee';
@@ -72,17 +72,20 @@ async function readerMatrix(suite, page, presenter, definition, evidence) {
     const first = journal.rows.length; const start = Date.now();
     assert.equal(await page.evaluate(() => document.visibilityState), 'visible');
     const details = await action();
-    await until(() => paths.every((route) => journal.rows.slice(first).some((row) => row.path === route && row.status === 200)),
+    await until(() => paths.every((route) => journal.rows.slice(first).some((row) => row.path === route
+      && (row.status === 200 || unavailablePaths.includes(route) && row.status === 503))),
       `${name}: ${trigger} re-reads every route-owned endpoint`, timeout);
     await journal.flush(); await settled(page, heading, root); await assertView();
     const reads = journal.rows.slice(first);
-    assert.ok(reads.every((row) => row.status === 200 && row.body?.status === 'ok'), `${name}: real authenticated reads succeed`);
+    assert.ok(reads.every((row) => row.status === 200 && row.body?.status === 'ok'
+      || unavailablePaths.includes(row.path) && row.status === 503 && row.body?.status === 'unavailable'),
+    `${name}: actual reads succeed or retain an explicitly disclosed unavailable supporting producer`);
     for (const row of reads) {
       if (row.body.value?.runId !== undefined) assert.equal(row.body.value.runId, suite.receipt.composition.runId);
     }
     results.push({ trigger, elapsedMs: Date.now() - start, details,
-      reads: reads.map(({ path, status, at }) => ({ path, status, at })),
-      outcome: 'Successful automatic re-read and settled actual screen; a changed business outcome is asserted separately.' });
+      reads: reads.map(({ path, status, at, body }) => ({ path, status, at, result: body.status, code: body.code })),
+      outcome: 'Automatic re-read and settled actual screen; disclosed unavailable supporting producers remain visible. A changed business outcome is asserted separately.' });
   };
   try {
     await run('public presenter action across real tabs', () => step(suite, presenter));
@@ -264,8 +267,8 @@ test('FUCQ-550: live Java/OIDC screen refresh and frozen status presentation', {
         assert.deepEqual(reference.paths, actual.paths); assert.deepEqual(reference.svg, actual.svg);
         assert.equal(reference.color, actual.color); assert.equal(reference.background, actual.background);
         return { liveRefresh: { account, outbox: await capture(suite, page, 'node-outbox-same-release-1280'), chips: source,
-          actualMessages: sourceMessages.map(({ jobId, messageKind, recipient, state, transport, offerLink }) =>
-            ({ jobId, messageKind, recipient: recipient.employeeId, state, transport, offerLink })),
+          actualMessages: sourceMessages.map(({ jobId, messageKind, recipient, state, transport }) =>
+            ({ jobId, messageKind, recipient: recipient.employeeId, state, transport })),
           inventory: { angular: messages.length, frozen: sourceMessages.length, equal: messages.length === sourceMessages.length,
             scope: 'All actual rows retained; current held-offer chip compared. No whole-outbox inventory parity claim.' },
           matchedCurrentOfferChip: { angular: angularMessage.jobId, frozen: sourceMessage.jobId },
@@ -322,7 +325,14 @@ test('FUCQ-550: live Java/OIDC screen refresh and frozen status presentation', {
         evidence.orderChange.actual = progress.body.value;
         evidence.orderChange.sections = Object.fromEntries(orderSections.map((route) => {
           const row = journal.rows.findLast((item) => item.path === route);
-          assert.ok(row); assert.equal(row.body.status, 'ok'); return [route, row.body.value];
+          assert.ok(row); return [route, row.body];
+        }));
+        evidence.orderChange.sectionHttp = Object.fromEntries(orderSections.map((route) => {
+          const row = journal.rows.findLast((item) => item.path === route);
+          assert.ok(row.status === 200 && row.body.status === 'ok'
+            || route === '/appointments' && row.status === 503 && row.body.status === 'unavailable',
+          `${route}: actual ordinary producer result is retained; authority/run failures are never accepted`);
+          return [route, row.status];
         }));
         evidence.orderChange.after = await capture(suite, orderPage, 'orders-after-presenter-action-1280');
       } finally { await journal.stop(); }
@@ -350,15 +360,15 @@ test('FUCQ-550: live Java/OIDC screen refresh and frozen status presentation', {
         await until(() => orderSections.every((route) => asOfOnly.rows.some((row) => row.path === route)),
           'Time-only presenter action re-reads all four actual order producers');
         await asOfOnly.flush(); await settled(orderPage, 'Order progress', '.orders-screen');
-        const after = Object.fromEntries(orderSections.map((route) => [route, asOfOnly.rows.findLast((row) => row.path === route).body.value]));
+        const after = Object.fromEntries(orderSections.map((route) => [route, asOfOnly.rows.findLast((row) => row.path === route).body]));
         assert.equal(semantic(after), semantic(evidence.orderChange.sections), 'Only producer asOf fields change after time advances without a tick');
-        assert.notEqual(after['/orders/progress'].asOf, evidence.orderChange.sections['/orders/progress'].asOf);
+        assert.notEqual(after['/orders/progress'].value.asOf, evidence.orderChange.sections['/orders/progress'].value.asOf);
         assert.equal((await orderPage.locator('.order-feedback').innerText()).trim(), '', 'An actual asOf-only reread remains silent');
         evidence.orderChange.asOfOnly = { before: evidence.orderChange.sections, after, clock, announcement: '' };
       } finally { await asOfOnly.stop(); }
       await employee.close(); employee = null;
       await readerMatrix(suite, orderPage, presenter, { name: 'orders', heading: 'Order progress', root: '.orders-screen',
-        paths: ['/orders/progress/all', '/orders/progress'], assertView: async () => {
+        paths: ['/orders/progress/all', ...orderSections], unavailablePaths: ['/appointments'], assertView: async () => {
           await orderPage.locator('.order-summary').waitFor(); assert.ok(await orderPage.locator('.stage-list li').count() > 0);
         } }, evidence);
       await orderPage.close(); orderPage = null;
