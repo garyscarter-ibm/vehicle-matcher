@@ -6,6 +6,15 @@
     @if (model(); as options) {
       <p class="gcsp-note">Choose your driver, contract and collection details.</p>
       @if (options.allowance !== null) { <p>Monthly allowance <strong>{{ options.allowance.toLocaleString('en-GB') }} points</strong></p> }
+      @if (options.allowance === null) {
+        <button gcspButton presentation="source" variant="ghost" type="button" (click)="requestSupport('scheme-support')">Get scheme help</button>
+      }
+      <details class="gcsp-details">
+        <summary>Employee details</summary>
+        <p class="gcsp-field-hint">Employee facts are read-only. Contact details below are editable.</p>
+        <gcsp-fact-list presentation="source" [rows]="options.employeeFacts" />
+        <button gcspButton presentation="source" variant="ghost" type="button" (click)="requestSupport('hr-support')">Correct employee details</button>
+      </details>
       <gcsp-error-summary [errors]="summary()" />
       @if (failure()) { <p role="alert" class="gcsp-field-error">{{ failureMessage() }}</p> }
       @if (notice()) { <p role="status">{{ notice() }}</p> }
@@ -31,6 +40,15 @@
                 @for (option of options.drivers; track option.id) { <option [value]="option.id" [selected]="chosen.driverId === option.id" [disabled]="option.disabled">{{ option.label }}{{ option.reason ? ': ' + option.reason : '' }}</option> }
               </select>
             </gcsp-labelled-field>
+            <div class="choices-driver-facts">
+              <div class="gcsp-setup-source">
+                @if (options.driverFacts.length) {
+                  <p class="gcsp-field-hint">Driver and licence facts are read-only.</p>
+                  <gcsp-fact-list presentation="source" [rows]="options.driverFacts" />
+                }
+              </div>
+              <button gcspButton presentation="source" variant="ghost" type="button" (click)="requestSupport('driver-support')">Get help with drivers and licences</button>
+            </div>
             <gcsp-labelled-field controlId="choices-contractOptionId" label="Contract length and annual mileage" [error]="error('contractOptionId')">
               <select id="choices-contractOptionId" [value]="chosen.contractOptionId" [attr.aria-invalid]="!!error('contractOptionId')" [attr.aria-describedby]="error('contractOptionId') ? 'choices-contractOptionId-error' : null" (change)="update('contractOptionId', value($event))">
                 <option value="">Choose a contract</option>
@@ -67,7 +85,11 @@
           <gcsp-labelled-field controlId="choices-specialRequirements" label="Special requirements" [hint]="options.maximumText === null ? '' : 'Up to ' + options.maximumText + ' characters'" [error]="error('specialRequirements')">
             <textarea id="choices-specialRequirements" rows="3" [value]="chosen.specialRequirements" [attr.maxlength]="options.maximumText" [attr.aria-invalid]="!!error('specialRequirements')" [attr.aria-describedby]="(options.maximumText === null ? '' : 'choices-specialRequirements-hint') + (error('specialRequirements') ? ' choices-specialRequirements-error' : '')" (input)="update('specialRequirements', value($event))"></textarea>
           </gcsp-labelled-field>
+          @if (eligibleCount() !== null) {
+            <p class="gcsp-note" role="status">Availability refreshed ({{ eligibleCount() }} eligible cars)</p>
+          }
           <div class="gcsp-actions choices-actions">
+            <button gcspButton variant="ghost" type="button" [disabled]="reviewRequired()" (click)="save(false, false)">Save choices</button>
             <button gcspButton type="submit" [disabled]="reviewRequired()">Find a car</button>
             <button gcspButton variant="ghost" type="button" [disabled]="reviewRequired()" (click)="save(false)">Save and return</button>
           </div>

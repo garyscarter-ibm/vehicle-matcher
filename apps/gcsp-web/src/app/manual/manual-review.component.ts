@@ -196,11 +196,10 @@ export class ManualReviewComponent {
   readonly projection = input.required<ManualProjection>();
   readonly selection = input<ManualHandoff | null>(null);
   readonly busy = input(false);
-  readonly canClaim = input(false);
   readonly detailsDraft = input<ManualEditableDetails | null>(null);
   readonly detailsDirty = input(false); readonly canSaveDetails = input(false);
   readonly detailsChange = output<ManualEditableDetails>(); readonly saveDetails = output<void>();
-  readonly claim = output<void>(); readonly continue = output<void>(); readonly resume = output<void>();
+  readonly continue = output<void>(); readonly resume = output<void>();
   readonly edit = output<void>(); readonly browse = output<void>(); readonly check = output<void>();
   readonly vehicle = computed(() => manualVehicle(this.projection().claim?.quote ?? null, this.projection().claim ? null : this.selection()));
   readonly quoted = computed(() => !!this.projection().claim);

@@ -134,3 +134,12 @@ describe('manual Java projection', () => {
     }
   });
 });
+
+
+it('accepts the Java claim-failed terminal and exposes stock recovery without review authority', () => {
+  const c = claim(); const terminal: ManualClaim = { ...c, state: 'claim-failed', hold: { ...c.hold, state: 'claim-failed' },
+    view: { ...c.view, state: 'claim-failed', action: 'browse-stock' } };
+  expect(isManualClaim(terminal)).toBe(true);
+  const projection = projectManual({ claim: { status: 'ok', value: terminal } });
+  expect(projection.state).toBe('released'); expect(projection.canReview).toBe(false); expect(projection.canSubmit).toBe(false);
+});

@@ -36,12 +36,12 @@ describe('manual selected-car review composition', () => {
     expect(text()).toContain('No image available for this car'); expect(text()).toContain('Car name not supplied');
     expect(manualVehicle(null).rows.every((row) => row.value === null)).toBe(true);
   });
-  it('emits only an intentional reservation or review action', () => {
-    const reserve = vi.fn(); const next = vi.fn(); fixture.componentInstance.claim.subscribe(reserve); fixture.componentInstance.continue.subscribe(next);
-    expect(reserve).not.toHaveBeenCalled(); expect(next).not.toHaveBeenCalled(); button('Continue to order review').click(); expect(next).toHaveBeenCalledOnce();
+  it('reviews the held car and never offers a second reservation', () => {
+    const next = vi.fn(); fixture.componentInstance.continue.subscribe(next);
+    expect(text()).not.toContain('Reserve this car to review'); expect(next).not.toHaveBeenCalled(); button('Continue to order review').click(); expect(next).toHaveBeenCalledOnce();
     fixture.componentRef.setInput('projection', { ...projection(), claim: null, state: 'selection-ready', canReview: false });
     fixture.componentRef.setInput('selection', { orderUuid: 'selected', snapshot: { display: {} } } as unknown as ManualHandoff);
-    fixture.componentRef.setInput('canClaim', true); fixture.detectChanges(); button('Reserve this car to review').click(); expect(reserve).toHaveBeenCalledOnce();
+    fixture.detectChanges(); expect(text()).not.toContain('Reserve this car to review'); expect(button('Continue to order review').disabled).toBe(true);
   });
   it('requires a deliberate recovery action and blocks review/release while unresolved', () => {
     const resume = vi.fn(); fixture.componentInstance.resume.subscribe(resume);

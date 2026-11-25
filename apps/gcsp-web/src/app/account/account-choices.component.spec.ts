@@ -46,6 +46,7 @@ describe('native account choices form', () => {
     const fixture = await form(); const next = vi.fn(); fixture.componentInstance.continueToStock.subscribe(next);
     await fixture.componentInstance.save(true);
     expect(next).not.toHaveBeenCalled(); expect(fixture.componentInstance.reviewRequired()).toBe(true); expect(saveDraft).not.toHaveBeenCalled();
+    expect(fixture.componentInstance.eligibleCount()).toBeNull();
   });
   it('retains edits after an uncertain save and requires explicit refresh/review', async () => {
     saveDraft.mockResolvedValue({ status: 'uncertain' });
@@ -72,4 +73,54 @@ describe('native account choices form', () => {
     resolve({ status: 'ok', value: savedDraft({ choices: complete(), draftStage: 'complete', draftVersion: 4 }) }); await saving;
     expect(next).not.toHaveBeenCalled(); expect(readStock).not.toHaveBeenCalled();
   });
+  it('restores the closed employee disclosure and read-only selected driver/licence facts', async () => {
+    const fixture = await form(); const root: HTMLElement = fixture.nativeElement;
+    const disclosure = root.querySelector<HTMLDetailsElement>('details');
+    expect(disclosure?.open).toBe(false);
+    expect(disclosure?.querySelector('summary')?.textContent).toBe('Employee details');
+    expect(disclosure?.textContent).toContain('Employee facts are read-only. Contact details below are editable.');
+    expect(disclosure?.textContent).toContain('Paula Mason'); expect(disclosure?.textContent).toContain('E749057');
+    expect(disclosure?.querySelector('input, select, textarea')).toBeNull();
+    const facts = () => root.querySelector('.gcsp-setup-source');
+    expect(facts()?.textContent).toContain('Self'); expect(facts()?.textContent).toContain('MASON900000PM9XX');
+    expect(facts()?.textContent).toContain('car'); expect(facts()?.textContent).toContain('2010-01-01');
+    fixture.componentInstance.update('driverId', 'nominated:employee-paula'); await fixture.whenStable();
+    expect(facts()?.textContent).toContain('spouse'); expect(facts()?.textContent).toContain('WARD9900000CW9XX');
+    expect(facts()?.textContent).not.toContain('MASON900000PM9XX');
+    fixture.componentInstance.update('driverId', ''); await fixture.whenStable();
+    expect(facts()?.textContent?.trim() ?? '').toBe('');
+    expect(root.querySelector<HTMLInputElement>('#choices-phone')?.readOnly).toBe(false);
+  });
+  it('provides the canonical support routes without submitting choices or inventing a request', async () => {
+    const fixture = await form(); const root: HTMLElement = fixture.nativeElement;
+    const support = vi.fn(); root.addEventListener('gcsp:support', support);
+    const account = accountSnapshot(); fixture.componentRef.setInput('account', { ...account, allowance: null }); await fixture.whenStable();
+    for (const [route, label, message] of [
+      ['hr-support', 'Correct employee details', 'Contact HR support to correct employee details. No request has been sent.'],
+      ['driver-support', 'Get help with drivers and licences', 'Contact driver support to correct driver or licence details. No request has been sent.'],
+      ['scheme-support', 'Get scheme help', 'Contact scheme support to confirm your ordering details. No request has been sent.'],
+    ]) {
+      const button = Array.from(root.querySelectorAll('button')).find((node) => node.textContent?.trim() === label);
+      expect(button, route).toBeTruthy(); button?.click(); await fixture.whenStable();
+      expect((support.mock.calls.at(-1)?.[0] as CustomEvent).detail).toEqual({ route });
+      expect(root.textContent).toContain(message);
+    }
+    expect(saveDraft).not.toHaveBeenCalled(); expect(readStock).not.toHaveBeenCalled();
+  });
+  it('keeps Save choices on screen with the authoritative refreshed eligible count and invalidates it on edits', async () => {
+    readStock.mockImplementation(async () => ({ status: 'ok', value: { total: 3, decisions: [], carIds: ['a', 'b', 'c'],
+      versions: { draft: current.draftVersion, context: current.contextVersion } } }));
+    const fixture = await form(); const root: HTMLElement = fixture.nativeElement;
+    const back = vi.fn(); const next = vi.fn(); fixture.componentInstance.back.subscribe(back); fixture.componentInstance.continueToStock.subscribe(next);
+    fixture.componentInstance.update('specialRequirements', 'Call on arrival'); await fixture.whenStable();
+    const save = Array.from(root.querySelectorAll('button')).find((node) => node.textContent?.trim() === 'Save choices');
+    expect(save).toBeTruthy(); save?.click(); await fixture.whenStable();
+    expect(saveDraft).toHaveBeenCalledTimes(1); expect(readStock).toHaveBeenCalledTimes(1); expect(back).not.toHaveBeenCalled(); expect(next).not.toHaveBeenCalled();
+    expect(root.textContent).toContain('Availability refreshed (3 eligible cars)');
+    fixture.componentInstance.updateContact('phone', '01632 960001'); await fixture.whenStable();
+    expect(root.textContent).not.toContain('Availability refreshed');
+    state.set({ status: 'signed-out' }); await fixture.whenStable();
+    expect(root.textContent).not.toContain('Paula Mason'); expect(root.textContent).not.toContain('WARD');
+  });
+
 });

@@ -6,7 +6,7 @@ export const manualPositive = (v: unknown): v is number => Number.isSafeInteger(
 const instant = (v: unknown): v is string => manualText(v) && Number.isFinite(Date.parse(v)) && /(?:Z|[+-]\d\d:\d\d)$/.test(v);
 const nullableText = (v: unknown): boolean => v === null || manualText(v);
 const fields = (v: ManualRecord, keys: readonly string[]): boolean => keys.every((k) => manualText(v[k]));
-const states = ['active', 'released', 'expired', 'allocated', 'claim-pending', 'release-pending', 'selection-pending'];
+const states = ['active', 'released', 'expired', 'allocated', 'claim-pending', 'claim-failed', 'release-pending', 'selection-pending'];
 const approvalStages = (v: unknown): boolean => JSON.stringify(v) === JSON.stringify(['sales-manager approval', 'sent to ordering'])
   || JSON.stringify(v) === JSON.stringify(['HR approval', 'sales-manager approval', 'sent to ordering']);
 function manualSelection(h: ManualRecord, q: ManualRecord): boolean {
@@ -181,7 +181,7 @@ export function projectManual(input: ManualProjectionInput): ManualProjection {
   else if (failure) state = manualFailureState(failure);
   else if (claim) {
     if (claim.pendingOperation) state = 'pending';
-    else if (claim.state === 'released') state = 'released';
+    else if (claim.state === 'released' || claim.state === 'claim-failed') state = 'released';
     else if (claim.state === 'expired') state = 'expired';
     else if (claim.state !== 'quoted') state = 'stale';
     else if (Date.parse(claim.hold.expiresAt) <= Date.parse(claim.now) || Date.parse(claim.quote.validUntil) <= Date.parse(claim.now)) state = 'expired';

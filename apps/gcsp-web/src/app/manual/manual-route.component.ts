@@ -43,10 +43,10 @@ const copy: Partial<Record<ManualState, readonly [string, string]>> = {
         (declarationChange)="store.setDeclaration($event.id, $event.checked)" (resume)="store.confirmResume()"
         (edit)="edit()" (browse)="browse()" (check)="store.checkStatus()" (orders)="orders()" (help)="help()" />
     } @else if (hasBody()) {
-      <gcsp-manual-review [projection]="store.projection()" [selection]="store.handoff()" [busy]="store.loading()" [canClaim]="store.canClaim()"
+      <gcsp-manual-review [projection]="store.projection()" [selection]="store.handoff()" [busy]="store.loading()"
         [detailsDraft]="store.detailsDraft()" [detailsDirty]="store.detailsDirty()" [canSaveDetails]="store.canSaveReviewDetails()"
         (detailsChange)="store.setReviewDetails($event)" (saveDetails)="store.saveReviewDetails()"
-        (claim)="store.claimSelection()" (continue)="store.beginReview()" (resume)="store.confirmResume()" (edit)="edit()" (browse)="browse()" (check)="store.checkStatus()" />
+        (continue)="store.beginReview()" (resume)="store.confirmResume()" (edit)="edit()" (browse)="browse()" (check)="store.checkStatus()" />
     }
   `,
 })

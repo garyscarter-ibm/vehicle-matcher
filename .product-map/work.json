@@ -13041,6 +13041,43 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "id": "FUCQ-553",
+      "type": "Bug",
+      "title": "Restore Angular stock gallery and order choices source parity",
+      "status": "Unknown",
+      "branch": "dev/DEV-2026-11-22-vesper-034",
+      "component_ids": [
+        "manual-journey",
+        "shared-experience"
+      ],
+      "note": "Local F553 delivery plan only; no current native tracker observation was supplied. Original five acceptance criteria and 13 points retained; human pending/failed1280 pairs and shared batch remain required.",
+      "observed_at": "2026-11-25T22:29:45Z",
+      "slices": [
+        {
+          "id": "notices-and-choices-facts",
+          "status": "in-progress",
+          "title": "Restore offer/car-taken notices and read-only employee/driver/licence facts (3 points)",
+          "observed_at": "2026-11-25T22:29:45Z",
+          "evidence": "Actual signed-OIDC/nativePG producers2/2; child focused choices19/19; parent rerun and composition pending."
+        },
+        {
+          "id": "VehicleCard-source-parity",
+          "status": "in-progress",
+          "title": "Port frozen explicit matchCard structure and eligibility (3 points)",
+          "observed_at": "2026-11-25T22:29:45Z",
+          "evidence": "Child source-card12/12; parent covering rerun and same-state visual review pending."
+        },
+        {
+          "id": "gallery-claim-held-review-and-integration",
+          "status": "in-progress",
+          "title": "Restore reservation status/retry and confirmed held review; connected and human parity evidence (7 points)",
+          "observed_at": "2026-11-25T22:29:45Z",
+          "evidence": "Controller scoped25/26 pass (all12new reservation cases); remaining existing gallery caption expectation reconciled with incoming F559 table. Connected/human parity pending."
+        }
+      ],
+      "unsliced": false
     }
   ]
 }

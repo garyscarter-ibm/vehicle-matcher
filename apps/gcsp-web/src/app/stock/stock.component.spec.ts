@@ -52,7 +52,26 @@ describe('released stock screen', () => {
     expect(root.textContent).toContain('Your allowance: 1,000 points a month'); expect(root.textContent).toContain('No image for this car yet');
     expect(new Set(component.store.allCars().map(car => car.identity.configurationId)).size).toBe(1);
     expect(root.querySelector('[data-member-id="stock-2"]')?.textContent).toContain('Not eligible');
-    expect(root.querySelector<HTMLButtonElement>('[data-member-id="stock-3"] .gcsp-actions button')?.disabled).toBe(true);
+    expect(root.querySelector<HTMLButtonElement>('[data-member-id="stock-3"] .vm-card-actions button')?.disabled).toBe(true);
+  });
+  it('restores the held-offer action and car-taken refresh notice above the retained cards', async () => {
+    client.readStock.mockResolvedValue({ status: 'ok', value: { ...stock(), heldOffer: { offerId: 'offer/1', runId: 'run-1' } } });
+    const { root, fixture, component } = await screen(); const view = vi.fn(); component.viewOffer.subscribe(view);
+    button(root, 'View your offer').click(); expect(view).toHaveBeenCalledExactlyOnceWith('offer/1');
+    expect(root.querySelectorAll('gcsp-vehicle-card')).toHaveLength(6);
+    fixture.componentRef.setInput('reservation', { state: 'failed', blocked: false, selection: null, claim: null, failure: 'car-taken', refresh: 0 });
+    fixture.detectChanges(); expect(root.textContent).toContain('This car is no longer available');
+    expect(root.querySelectorAll('gcsp-vehicle-card')).toHaveLength(6);
+    button(root, 'Refresh availability').click(); await fixture.whenStable(); expect(client.readStock).toHaveBeenCalledTimes(2);
+  });
+  it('exposes only deliberate status/retry actions and blocks back while reservation custody is unresolved', async () => {
+    const { root, fixture, component } = await screen(); const check = vi.fn(); const retry = vi.fn(); const back = vi.fn();
+    component.checkReservation.subscribe(check); component.retryReservation.subscribe(retry); component.back.subscribe(back);
+    fixture.componentRef.setInput('reservation', { state: 'retry-available', blocked: true, selection: null, claim: null, failure: null, refresh: 0 });
+    fixture.detectChanges(); button(root, 'Check status').click(); button(root, 'Retry this reservation').click();
+    expect(check).toHaveBeenCalledOnce(); expect(retry).toHaveBeenCalledOnce();
+    button(root, 'Back to your choices').click(); expect(back).not.toHaveBeenCalled();
+    expect(root.querySelector('.gcsp-stock.vm.gcsp-gallery-body')).not.toBeNull();
   });
   it('filters through existing store from native search/sort and shows a clear-filter recovery', async () => {
     const { root, fixture, component } = await screen(); const search = root.querySelector<HTMLInputElement>('#stock-query')!;

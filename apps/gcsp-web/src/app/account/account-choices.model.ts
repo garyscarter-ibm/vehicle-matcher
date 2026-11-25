@@ -1,3 +1,4 @@
+import { FactRow } from '../kit/fact-list.component';
 import { AccountDriver, AccountProjection, EvidenceRecord, JourneyIntent, ManualChoices, ManualDraft } from './account.types';
 
 const record = (value: unknown): EvidenceRecord => value !== null && typeof value === 'object' && !Array.isArray(value) ? value as EvidenceRecord : {};
@@ -50,6 +51,7 @@ export interface ManualChoicesModel {
   readonly drivers: readonly ChoiceOption[]; readonly contracts: readonly ChoiceOption[]; readonly locations: readonly ChoiceOption[];
   readonly brands: readonly string[]; readonly minDate: string | null; readonly maxDate: string | null;
   readonly errors: Readonly<Record<string, string>>; readonly valid: boolean; readonly allowance: number | null;
+  readonly employeeFacts: readonly FactRow[]; readonly driverFacts: readonly FactRow[];
   readonly maximumText: number | null; readonly maximumMileage: number | null;
 }
 
@@ -70,7 +72,7 @@ export function deriveManualChoices(account: AccountProjection, choices: ManualC
     && allowance['schemeId'] === choices.schemeId && allowance['companyId'] === account.account?.companyId && allowance['gradeId'] === account.account?.gradeId;
   const selectedDriver = account.drivers?.find((driver) => driver.driverId === choices.driverId);
   const drivers = rows(supplied?.['drivers']).map((driver) => { const reason = driverReason(account.drivers?.find((source) => source.driverId === driver['driverId']), choices.requestedCollectionDate, account.asOf);
-    return { id: text(driver['driverId']), label: text(driver['name']) || 'Name not supplied', disabled: !!reason, reason }; });
+    return { id: text(driver['driverId']), label: `${driver['kind'] === 'employee' ? 'You' : 'Nominated'}: ${text(driver['name']) || 'Not supplied'}`, disabled: !!reason, reason }; });
   const contractRows = rows(supplied?.['contractOptions']);
   const contracts = contractRows.map((option) => {
     const reason = !selectedDriver ? 'Choose a driver first.' : !strings(option['schemeIds']).includes(choices.schemeId)
@@ -111,7 +113,16 @@ export function deriveManualChoices(account: AccountProjection, choices: ManualC
   else if (typeof maximumMileage === 'number' && choices.expectedReturnMileage! > maximumMileage) errors['expectedReturnMileage'] = `Enter a mileage of up to ${maximumMileage.toLocaleString('en-GB')} miles.`;
   if (typeof choices.specialRequirements !== 'string' || typeof maximumText !== 'number' || choices.specialRequirements.length > maximumText
     || /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(choices.specialRequirements)) errors['specialRequirements'] = `Use at most ${typeof maximumText === 'number' ? maximumText : 0} characters.`;
-  return { drivers, contracts, locations, brands: strings(supplied?.['brands']), minDate, maxDate, errors, valid: !Object.keys(errors).length,
+  const identity = account.account; const licence = record(selectedDriver?.licence);
+  const employeeFacts: FactRow[] = [{ label: 'Name', value: identity?.name },
+    ...(identity?.company ? [{ label: 'Company', value: identity.company }] : []),
+    { label: 'Grade', value: identity?.gradeId }, { label: 'Employee number', value: identity?.employeeNumber }];
+  const driverFacts: FactRow[] = selectedDriver ? [
+    { label: 'Relationship', value: text(selectedDriver['relationship'] ?? (selectedDriver.kind === 'employee' ? 'Self' : null)) },
+    { label: 'Licence number', value: text(licence['displayNumber']) }, { label: 'Categories', value: strings(licence['categories']).join(', ') },
+    { label: 'Valid from', value: text(licence['validFrom']) }, { label: 'Valid until', value: text(licence['validUntil']) },
+  ] : [];
+  return { employeeFacts, driverFacts, drivers, contracts, locations, brands: strings(supplied?.['brands']), minDate, maxDate, errors, valid: !Object.keys(errors).length,
     allowance: allowanceReady ? allowance!['monthlyPoints'] as number : null,
     maximumText: typeof maximumText === 'number' ? maximumText : null, maximumMileage: typeof maximumMileage === 'number' ? maximumMileage : null };
 }
