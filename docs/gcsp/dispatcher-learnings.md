@@ -3595,3 +3595,13 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-25 03:04 UTC · usget-sorrel · DL-20261117-GCC-013 · Preserve the incremental cursor during one-issue intake
 
 - Supported one-issue pull --issues with --now retained the existing24Nov19:50cursor and unset reconciliation state. That same argument minted an old-dateDEV ID and requested date; mintedDEV-2026-11-24-001 stays stable, while requested was corrected to native25Nov. All14 emitted evidence requests matched already-resolved cache metadata:14ready/0missing/no downloads. No global audit or completed modern watermark was inferred. Proposed improvement: separate observation cursor time from intake/request dates in the helper interface.
+
+### 2026-11-25 03:17 UTC · usget-sorrel · DL-20261125-SORREL-10 · Scoped ordering repair merged
+
+- F592 source66ea33614 reused existing guarded input preparation once in each initial seedStock; remote prepare(who), shared helper, original assertions and production inputs remain unchanged. TheBrain reviewed Toothless's actual two-file diff and independently ran all3complete signed-OIDC/nativePG17 journeys:3/3green,0failure/error/skip,52.275s. Owned allocations removed; no full-suite claim. Normal metadata-only refresh653cf17e2 and merge92c3936a3 are pushed; archive has durable pending cleanup. Existing18casebrowser proof is explicitly reused because runtime sources/inputs/harness are unchanged; F561 remains separate/unmerged. Canonical31groupJava remains pending.
+
+- Lead Result initially omitted explicit status and reported default data strategy despite the specified Java/PostgreSQL/provider brief. Root read the Result, sent only those doubts to its owner, and metadata-only6bd33dd0e corrected both; valid source proof was reused without receipt/hash/test duplication. Proposed improvement: populate existing Result fields correctly at handoff, without a new product gate.
+
+### 2026-11-25 03:17 UTC · usget-sorrel · DL-20261117-GCC-013 · Mail publication recovered after the shared mutex
+
+- The ordinary dev-mail open created MSG-2026-11-25-sorrel-003 but its auto-commit reported another scaffold command running during the current-item Jira scan. No thread was reopened/reworded. Root committed only the existing named thread at209b3577e and pushed it after the mutex was free. Existing scan-lock limitation remains; this is a recovered mail publication, not a helper fix. Earlier cleanup-note push5030895c1 was remotely rejected after a clean secrets scan; fetch showed0remote-ahead/1local-ahead and one ordinary retry succeeded. Remote rejection cause is unverified; no force or lost work.
