@@ -61,7 +61,8 @@ export function observeImageResponses(page, { origins, records, label }) {
   };
 }
 
-export function assertImageParity(node, angular, { dimensions = { width: 84, height: 56 } } = {}) {
+export function assertImageParity(node, angular, { dimensions = { width: 84, height: 56 }, nodeRoute = 'display-api' } = {}) {
+  assert.ok(['display-api', 'retained-asset'].includes(nodeRoute), 'Use an explicit supported Node image route');
   for (const [name, image] of [['Node', node], ['Angular', angular]]) {
     assert.equal(image.response.status, 200, `${name}: actual displayed image response succeeded`);
     assert.match(image.response.sha256 ?? '', /^[a-f0-9]{64}$/, `${name}: actual response bytes were hashed`);
@@ -76,11 +77,17 @@ export function assertImageParity(node, angular, { dimensions = { width: 84, hei
   const images = [...catalogue.configurations.map((row) => row.image), ...Object.values(catalogue.variants), ...Object.values(catalogue.models)];
   const nodePath = new URL(node.actualUrl).pathname; const angularPath = new URL(angular.actualUrl).pathname;
   const registration = images.find((image) => `/${image.asset}` === angularPath
-    && `/api/gcsp/vehicle-images/${image.imageId}.webp` === nodePath);
+    && (nodeRoute === 'retained-asset' ? `/${image.asset}` : `/api/gcsp/vehicle-images/${image.imageId}.webp`) === nodePath);
   assert.ok(registration, 'Actual Node route and Angular asset belong to the same reviewed image registration');
   assert.equal(angular.response.sha256, registration.sha256, 'Actual Angular bytes match the registered retained image');
   assert.equal(angular.response.bytes, registration.bytes);
   assert.equal(angular.naturalWidth, registration.width); assert.equal(angular.naturalHeight, registration.height);
+  if (nodeRoute === 'retained-asset') {
+    assert.equal(node.response.sha256, registration.sha256, 'Actual Node bytes match the registered retained image');
+    assert.equal(node.response.bytes, registration.bytes, 'Actual Node byte count matches the registered retained image');
+    assert.equal(node.naturalWidth, registration.width, 'Actual Node natural width matches the registered retained image');
+    assert.equal(node.naturalHeight, registration.height, 'Actual Node natural height matches the registered retained image');
+  }
   for (const image of [node, angular]) {
     if (dimensions) {
       assert.equal(image.renderedWidth, dimensions.width); assert.equal(image.renderedHeight, dimensions.height);

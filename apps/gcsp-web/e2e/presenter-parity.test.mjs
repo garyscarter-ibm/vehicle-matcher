@@ -264,10 +264,10 @@ test('FUCQ-561: presenter console follows the actual signed-in release, inspecti
         await until(() => page.locator('.gcsp-release-grid img').evaluateAll((list) =>
           list.length > 0 && list.every((image) => image.complete && image.naturalWidth > 0)), 'Frozen release images must load');
         const image = await images.read(page.locator('.gcsp-release-grid img').first());
-        assertImageParity(image, angularImage, { dimensions: null });
         const destination = path.join(path.dirname(suite.receipt.screenshots[0].path ?? suite.receipt.screenshots[0]),
           'presenter-node-after-release-1280.png');
         await page.screenshot({ path: destination, fullPage: false });
+        assertImageParity(image, angularImage, { dimensions: null, nodeRoute: 'retained-asset' });
         return { presenterPair: { node: destination, angular: suite.receipt.screenshots.find((item) =>
           (item.path ?? item).includes('presenter-after-release-1280')), viewport: '1280x800',
         semanticRelease: true, firstCarImage: image, humanVerdict: 'pending; engineering precheck is not acceptance' } };
