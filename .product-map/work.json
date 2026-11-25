@@ -12453,6 +12453,49 @@
       "evidence": "Canonical Java 45353840595 completed successfully at 08:35:45 UTC on 24 November: 371 reports/2296 cases, 2294 passed, zero failures/errors, two original opt-in skips, all31 groups and zero unrun. Root audit04d8b7b4 and cleanup79481ad1; covering batch d4ce61cb7. Full API tree6a6c1049 equals the final c13e Chromium/WEB candidate and integrated source. Reviewed delivery/merge records remain authoritative; session stopped with no new pickup."
     },
     {
+      "id": "FUCQ-562",
+      "title": "Restore Java Main successful journey scenario reset",
+      "status": "In Progress",
+      "type": "Bug",
+      "branch": "dev/DEV-2026-11-22-vesper-037",
+      "observed_at": "2026-11-25T00:46:16Z",
+      "slices": [
+        {
+          "id": "loader",
+          "status": "complete",
+          "title": "Main start loader and capability availability (8 points)",
+          "observed_at": "2026-11-25T00:46:15Z",
+          "evidence": "Lead reviewed source/callers; scenario+clock82 and MainHTTP4 pass; Result in DEV-2026-11-22-vesper-037"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "OIDC/PostgreSQL reset, allocation and boundary proof (5 points)",
+          "observed_at": "2026-11-25T00:46:16Z",
+          "evidence": "Lead selected176unique passing cases incl OIDC/PostgreSQL Main/recovery/release and56startup/wiring; independent persisted-state correction review passed"
+        }
+      ],
+      "unsliced": false,
+      "workers": [
+        {
+          "id": "Maximus the Horse",
+          "name": "Maximus the Horse",
+          "role": "implementer",
+          "observed_at": "2026-11-25T00:25:40.115787Z",
+          "expires_at": "2026-11-25T00:46:15.813497Z",
+          "source": "Codex native active observation; Pugh"
+        },
+        {
+          "id": "Doc Hudson",
+          "name": "Doc Hudson",
+          "role": "implementer",
+          "observed_at": "2026-11-25T00:25:40.115787Z",
+          "expires_at": "2026-11-25T00:46:15.813497Z",
+          "source": "Codex native active observation; Pugh"
+        }
+      ]
+    },
+    {
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-027",
       "evidence": "Source-only checkpoint 1134d1ea8; independent 76/76 caller specs, 124/124 ratchet, targeted boundaries and clean production build passed. Result in _dev/in-progress/DEV-2026-11-22-vesper-027.md. All seven original ACs unticked; In Progress/unmerged.",
