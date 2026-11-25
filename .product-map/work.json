@@ -12494,6 +12494,31 @@
           "source": "Codex native active observation; Pugh"
         }
       ]
+    },
+    {
+      "id": "FUCQ-563",
+      "title": "Preserve NULL brief predecessor on Java reload",
+      "status": "In Progress",
+      "type": "Bug",
+      "branch": "dev/DEV-2026-11-22-vesper-038",
+      "observed_at": "2026-11-25T01:28:44Z",
+      "slices": [
+        {
+          "id": "decoder",
+          "status": "complete",
+          "title": "JDBC NULL predecessor repair and regression (3 points)",
+          "observed_at": "2026-11-25T01:28:44Z",
+          "evidence": "009a5adfe: lead reviewed JDBC NULL capture; native SQL NULL/1 red and green repository/service regression; validation-summary.json in .claude/poller/sorrel-f563-20261125."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Native PostgreSQL/OIDC round-trip and existing controls proof",
+          "observed_at": "2026-11-25T01:28:44Z",
+          "evidence": "191 distinct scoped cases green:186 unchanged plus final5-case repository rerun; signed-OIDC Phase1/Phase2 restart, original auth/stale-writer controls and ten mandated startup/wiring classes; full suite deferred to batch."
+        }
+      ],
+      "unsliced": false
     }
   ]
 }
