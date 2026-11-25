@@ -1,7 +1,7 @@
 {
   "version": 1,
   "project": {
-    "name": "Vehicle matcher \u00b7 GCSP"
+    "name": "Vehicle matcher · GCSP"
   },
   "components": [
     {
@@ -453,7 +453,8 @@
         "FUCQ-564",
         "FUCQ-585",
         "FUCQ-584",
-        "FUCQ-562"
+        "FUCQ-562",
+        "FUCQ-594"
       ],
       "references": [
         "FUCQ-75",
