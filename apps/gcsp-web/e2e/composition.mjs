@@ -63,7 +63,7 @@ function identity(pid) {
 }
 
 export async function startComposition({ caseId = 'f548', ordering = 'synthetic' } = {}) {
-  assert.ok(['f548', 'f549', 'f550', 'f552', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-declined', 'f556-blocked'].includes(caseId));
+  assert.ok(['f548', 'f549', 'f550', 'f552', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked'].includes(caseId));
   assert.ok(['synthetic', 'rejected', 'unknown-then-rejected'].includes(ordering));
   const scratch = local(process.env.SCRATCH ?? '');
   assert.ok(scratch.startsWith('/private/tmp/'), 'The supervisor must own /private/tmp scratch');
@@ -265,7 +265,6 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       return file;
     };
     if (caseId === 'f556') ordersProviders.GCSP_RETURNS_POLICY_FILE = casePolicy('lifecycle.return.outcome.v1', { enabled: true, outcome: 'missed' });
-    if (caseId === 'f556-declined') ordersProviders.GCSP_APPROVALS_POLICY_FILE = casePolicy('lifecycle.approval.declineScenario.v1', { enabled: true });
     const apiEnv = {
       PATH: process.env.PATH, HOME: process.env.HOME, JAVA_HOME: javaHome, LANG: 'en_GB.UTF-8',
       QUARKUS_HTTP_SSL_PORT: String(ports.api), QUARKUS_HTTP_INSECURE_REQUESTS: 'disabled',

@@ -117,11 +117,13 @@ Saved follow-up readbacks retain their actual timestamps; a clock discrepancy is
 Five-flow duration and peak allocation must be measured on the final run. The 3 GiB/2 GiB/600-second limits still
 apply; a resource stop leaves the exact incomplete cases visible for a separately bounded continuation.
 
-FUCQ-556 selects three sequential Orders compositions with `--case f556`: the synthetic lifecycle, declined
-approvals and provider-none blocked approval. It uses actual signed public commands and readbacks for ordering,
+FUCQ-556 selects the synthetic Orders lifecycle and provider-none blocked approval with `--case f556`; the
+declined connected case is explicitly skipped because its existing file seam lacks a supported composed-policy
+input. It uses actual signed public commands and readbacks for ordering,
 grouped document acknowledgement, keyboard handover booking, no-show/rebooking/history and return outcomes.
-Only this family enables its existing lifecycle providers. Case-owned policy copies change only the existing
-missed-return outcome fields or approval-decline enable flag, with source/fixture hashes and deltas in the receipt.
+Only this family enables its existing lifecycle providers. Its case-owned return policy copy changes only the
+existing missed-return outcome fields, with source/fixture hashes and deltas in the receipt. The supported return
+seam pins its own file policy version; the approvals seam instead requires the accepted order's composed version.
 The ordering state has one actual frozen Node/Angular pair at 1280 and 390. Proposed-handover connected proof is
 unavailable with the bundled `proposeChange=false` policy and remains an explicit original acceptance gap;
 component proof does not close it. Screenshots still need human review and full suites remain in the shared batch.
