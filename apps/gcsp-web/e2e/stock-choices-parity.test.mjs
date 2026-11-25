@@ -39,9 +39,10 @@ async function saveActualDraft(suite, employee) {
   const account = good(await suite.call(employee, 'GET', '/manual/account'), 'Actual account');
   const prior = await suite.call(employee, 'GET', '/manual/draft');
   assert.ok([200, 404].includes(prior.status));
+  assert.ok(['ok', 'not-found'].includes(prior.body.status), 'Actual draft is saved or authoritatively absent');
   const choices = completeChoices(account);
   const draft = good(await suite.call(employee, 'POST', '/manual/draft', { commandId: randomUUID(),
-    expectedDraftVersion: prior.status === 200 ? prior.body.value.draftVersion : 0,
+    expectedDraftVersion: prior.body.status === 'ok' ? prior.body.value.draftVersion : 0,
     expectedContextVersion: account.contextVersion, choices }), 'Actual complete draft');
   return { account, draft, choices };
 }
