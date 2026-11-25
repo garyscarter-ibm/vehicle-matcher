@@ -8,6 +8,10 @@ Russell is available for questions until **19:10 Europe/London on 25 November 20
 
 Intent: keep delivery moving while Russell is unavailable. It does not lower scope, acceptance, safety or resource requirements. Use the normal `tiers spawn` routing for this new session; the old 22 November session's routing override is historical.
 
+## Further human direction — 25 November, approximately18:00 UK time
+
+Russell answered the concrete F340 resolution question: **“Yes - there are no approvals required from me this run - do what you need to do. Just follow any instructions/notes left by Gary's decisions earlier today”.** Apply the prepared F340 integration after refreshing it to current base, run its focused integration checks and merge when safe. Proceed with mechanical integration resolutions for owned work without further approval requests this run. Follow Gary’s recorded decisions and preserve peer changes, original scope, access restrictions and actual acceptance evidence. This instruction does not supply missing human visual verdicts or turn unrun checks into passes; continue the work and report those facts accurately. It supersedes the earlier unanswered F340 exception and further approval questions for this run, ending with the run.
+
 ## Resume from existing work
 
 Read `.claude/poller/sorrel.md`, especially its first 46 lines, and the later peer update `docs/gcsp/poller-handover-2026-11-25-wanjiru.md`. Preserve the existing Angular gap run, related authorised repairs, original criteria and claims. Resume existing work before fresh pickup.
