@@ -128,7 +128,7 @@ test('FUCQ-559: intentional planning and role-separated Production responses use
       assert.equal(states.confirmed.requests.find(row => row.requestId === confirmed.requestId).supplies[0].eligibleFrom, null);
       await greg.getByRole('table', { name: 'Requested, confirmed and released cars', exact: true })
         .getByText('Confirmed: 1 awaiting release queue; arrival date pending', { exact: true }).waitFor();
-      assert.equal(await greg.locator('[data-order-result]').getByText('Requested. Production has not confirmed any of this yet.', { exact: true }).count(), 0,
+      assert.equal(await greg.locator('[data-order-result]').count(), 0,
         'A fresh confirmed projection clears the stale manual-request acknowledgement');
       screenshots.confirmed = await capture(suite, greg, 'production-confirmed');
       await until(() => controls.getByLabel('Request', { exact: true }).isEnabled(), 'Confirmation readback settles');
