@@ -4398,13 +4398,64 @@
     {
       "assignee": "",
       "id": "FUCQ-340",
-      "observed_at": "2026-11-10T11:32:23Z",
+      "observed_at": "2026-11-25T05:21:19Z",
       "original_status": "To Do",
-      "status": "To Do",
+      "status": "In Progress",
       "title": "Prepare a repeatable second walkthrough where Paula requests an SUV",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-340"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-340",
+      "branch": "dev/DEV-2026-11-10-GC-021",
+      "workers": [
+        {
+          "name": "Mary-Sue Walton",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-25T05:21:19.241711+00:00",
+          "expires_at": "2026-11-25T05:21:19.241711+00:00",
+          "source": "Lead completion observation from actual worker reports and owned cleanup; no active F340 work remains in this claim."
+        },
+        {
+          "name": "Marvin the Martian",
+          "harness": "codex",
+          "role": "browser-runner",
+          "observed_at": "2026-11-25T05:21:19.241711+00:00",
+          "expires_at": "2026-11-25T05:21:19.241711+00:00",
+          "source": "Lead completion observation from actual worker reports and owned cleanup; no active F340 work remains in this claim."
+        },
+        {
+          "name": "Scooby Doo",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-25T05:21:19.241711+00:00",
+          "expires_at": "2026-11-25T05:21:19.241711+00:00",
+          "source": "Lead completion observation from actual worker reports and owned cleanup; no active F340 work remains in this claim."
+        },
+        {
+          "name": "Barnyard Dawg",
+          "harness": "codex",
+          "role": "visual-reviewer",
+          "observed_at": "2026-11-25T05:21:19.241711+00:00",
+          "expires_at": "2026-11-25T05:21:19.241711+00:00",
+          "source": "Lead completion observation from actual worker reports and owned cleanup; no active F340 work remains in this claim."
+        }
+      ],
+      "slices": [
+        {
+          "id": "preparation",
+          "status": "complete",
+          "title": "Bounded SUV inputs and actual run instructions (AC1-3)",
+          "observed_at": "2026-11-25T05:21:19Z",
+          "evidence": "Lead original AC1-3 checks complete: exact whole-window inputs, Node11/11, actual 17d413999 reset/replay evidence, b9086e0a4 manual startup/stop exit0, runbook and independent critique reconciled in DEV-2026-11-10-GC-021 Result. No human acceptance inferred."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Reset/replay browser proof and independent rendered critique (AC1-4)",
+          "observed_at": "2026-11-25T05:21:19Z",
+          "evidence": "Lead AC1-4 delivery: 17d413999 real journey5/5 and20 captures reused for exact matching case/composition/product inputs; manual-only b9086e0a4 delta6CLI/default tests and actual OIDC readiness/stop exit0; Barnyard critique/lifecycle PASS. Final merged shared-runner check is explicitly pending in Result; no original AC unmet."
+        }
+      ]
     },
     {
       "assignee": "Russell Gowers",
@@ -10761,7 +10812,7 @@
       "native_status_observed_at": "2026-11-23T19:37:24.986Z",
       "native_updated_at": "2026-11-23T09:45:31.059-0600",
       "note": "Former clock blocker resolved by F564; final five bell leaves pass. Original6AC unchanged. One prepared batch has independent pending F548AC6 bell/F555AC8 offer human rows. WEB1948/117/12 GREEN; Node observed RED/investigating; Java pending; physical visibility/BFCache/Safari limits retained. Native status observed19:37:24.986Z, not inferred from this local record update.",
-      "observed_at": "2026-11-23T19:58:26Z",
+      "observed_at": "2026-11-25T18:15:20Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10779,10 +10830,10 @@
           "title": "Native notification bell and refresh source (5 points)"
         },
         {
-          "evidence": "Final3dd/defaultboth193939: five bell leaves + parent pass, actual active/expired/count/note/keyboard/polling and source1280pair. Root cleanup exit0/owned resources absent. Lead+Pluto critique no scoped finding; F566375clipping and synthetic lifecycle/platform limits explicit. OriginalAC6 human row and Node/Java covering pending. docs/gcsp/evidence/offer-and-bell-parity-2026-11-23.md",
+          "evidence": "Original AC1-5 validated in the final retained source/connected result; AC6 Gary 2026-11-25 15:57 says bell matches, recorded in the latest Story Result and docs/gcsp/evidence/offer-and-bell-parity-2026-11-23.md. Matching WEB/browser/Java batch coverage is retained. Preserve the exact 37 F555-only Node report-only RED qualification, F548 WebKit RED checks, actual Safari and synthetic lifecycle limits; no cross-engine green.",
           "id": "integration",
-          "observed_at": "2026-11-23T19:51:32.452250+00:00",
-          "status": "in-progress",
+          "observed_at": "2026-11-25T18:15:20Z",
+          "status": "complete",
           "title": "Connected browser suite, screenshot pairs and critique (3 points)"
         }
       ],

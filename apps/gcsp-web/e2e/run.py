@@ -6,10 +6,13 @@ import contextlib
 import os
 from pathlib import Path
 import shutil
+import shlex
 import signal
 import subprocess
 import sys
 import time
+import threading
+from urllib.parse import urlsplit
 import uuid
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -19,6 +22,7 @@ import scaffold_git
 import test_resources as resources
 
 CASES = {
+    'f340': 'apps/gcsp-web/e2e/suv-walkthrough.test.mjs',
     'f548': 'apps/gcsp-web/e2e/notification-bell.test.mjs',
     'f549': 'apps/gcsp-web/e2e/navigation-parity.test.mjs',
     'f550': 'apps/gcsp-web/e2e/live-refresh.test.mjs',
@@ -29,12 +33,72 @@ CASES = {
 }
 
 
-def selected_cases(argv):
+def parse_options(argv):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--case', action='append', choices=tuple(CASES), dest='cases',
                         help='Run this registered case family; repeat to combine. Default: all registered cases.')
+    parser.add_argument('--manual', action='store_true',
+                        help='Hold only --case f340 for a person to operate, within the existing ten-minute run budget.')
     options = parser.parse_args(argv)
-    return list(dict.fromkeys(options.cases or CASES))
+    options.cases = list(dict.fromkeys(options.cases or CASES))
+    if options.manual and options.cases != ['f340']:
+        parser.error('--manual requires --case f340 alone')
+    return options
+
+
+def selected_cases(argv):
+    return parse_options(argv).cases
+
+
+def suite_command(node, selected, manual=False):
+    if manual:
+        return [str(node), 'apps/gcsp-web/e2e/suv-walkthrough.manual.mjs']
+    return [str(node), '--test', '--test-concurrency=1', *[CASES[name] for name in selected]]
+
+
+def manual_ready(record, retained, run_id, source):
+    if not isinstance(record, dict) or any(record.get(key) != value for key, value in
+            [('state', 'ready'), ('run', run_id), ('sourceRevision', source),
+             ('stopFile', str(retained / 'f340' / ('manual-stop-' + run_id)))]):
+        return False
+    origins = record.get('origins', {})
+    if not isinstance(origins, dict):
+        return False
+    for name, host in [('web', 'gcsp-web.localhost'), ('api', 'gcsp-api.localhost')]:
+        try:
+            origin = urlsplit(origins.get(name, ''))
+            if (origin.scheme != 'https' or origin.hostname != host or not origin.port
+                    or origin.username or origin.password or origin.path or origin.query or origin.fragment):
+                return False
+        except (TypeError, ValueError):
+            return False
+    return record.get('links') == {'presenter': origins['web'] + '/gcsp/presenter',
+                                   'paula': origins['web'] + '/gcsp/preferences'}
+
+
+def observe_manual_session(retained, run_id, source, stop):
+    while not stop.wait(.2):
+        record = resources.read_json(retained / 'f340' / 'manual-session.json')
+        if manual_ready(record, retained, run_id, source):
+            print('F340 manual session ready. Open these links and sign in separately:\n'
+                  'Presenter: ' + record['links']['presenter'] + '\nPaula: ' + record['links']['paula']
+                  + '\nAPI certificate check: ' + record['origins']['api'] + '/api/gcsp/v1/context'
+                  + '\nStop this session: touch -- ' + shlex.quote(record['stopFile'])
+                  + '\nThe existing ten-minute startup/run budget still applies; Ctrl+C cancels and cleans up.', flush=True)
+            return
+
+
+@contextlib.contextmanager
+def manual_readiness(retained, run_id, source):
+    stop = threading.Event()
+    observer = threading.Thread(target=observe_manual_session, args=(retained, run_id, source, stop),
+                                name='f340-manual-readiness')
+    observer.start()
+    try:
+        yield
+    finally:
+        stop.set()
+        observer.join()
 
 
 def local_path(value):
@@ -150,7 +214,8 @@ def owned_scratch(retained, policy):
 
 
 def main():
-    selected = selected_cases(sys.argv[1:])
+    options = parse_options(sys.argv[1:])
+    selected = options.cases
     os.environ.setdefault("SCAFFOLDING_HARNESS", "codex")
     # Enter the shared slot before allocating/building. The inner supervisor launches the actual
     # Node session itself, so its RSS monitor covers that session rather than just the queue wrapper.
@@ -171,8 +236,12 @@ def main():
     })
     receipt = {"schema": "gcsp-browser-suite/1", "run": run_id, "started": time.time(),
                "source_revision": git_value("rev-parse", "HEAD"), "scope": "Registered browser cases, real Java/OIDC/PostgreSQL",
-               "selected_cases": selected, "test_files": [CASES[name] for name in selected],
+               "mode": "manual" if options.manual else "automated", "selected_cases": selected,
+               "test_files": [] if options.manual else [CASES[name] for name in selected],
                "full_suites": "deferred to dispatcher batch", "retained": str(retained)}
+    if options.manual:
+        receipt.update(scope='Held F340 manual walkthrough; startup sign-in probes only, no automated journey tests',
+                       manual_entrypoint='apps/gcsp-web/e2e/suv-walkthrough.manual.mjs')
     scratch = None
     database_created = False
     try:
@@ -225,9 +294,10 @@ def main():
             env.update(json.loads(db))
             # One owned session contains Node, Java and Playwright's browser descendants.
             # Java is spawned without detached:true so the outer group finalizer also covers cancellation.
-            command = [str(node), "--test", "--test-concurrency=1", *receipt['test_files']]
+            command = suite_command(node, selected, options.manual)
             try:
-                bounded(command, 'suite')
+                with manual_readiness(retained, run_id, receipt['source_revision']) if options.manual else contextlib.nullcontext():
+                    bounded(command, 'manual' if options.manual else 'suite')
                 receipt["result"] = receipt['chunks'][-1]
             finally:
                 # The database helper is itself a measured, joined child, with a cleanup reserve.
