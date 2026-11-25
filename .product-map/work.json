@@ -12967,6 +12967,46 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "id": "FUCQ-515",
+      "type": "Bug",
+      "title": "Java planning compares wall-stamped manual hold expiry against run time",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-515",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "branch": "dev/DEV-2026-11-22-vesper-010",
+      "note": "Reconciliation Bug: cause repaired by 123327f69 (reader) and 93e94bec5 (writer); this branch adds evidence only.",
+      "workers": [
+        {
+          "name": "Pumbaa",
+          "role": "story-lead",
+          "harness": "claude-code",
+          "observed_at": "2026-11-25T21:38:00Z",
+          "expires_at": "2026-11-26T00:00:00Z",
+          "status": "Completed handoff; no active worker",
+          "source": "Story-lead self-report for poller garyscarter-ibm-aurelio; not inferred from commits"
+        }
+      ],
+      "observed_at": "2026-11-25T21:55:16Z",
+      "slices": [
+        {
+          "id": "reconcile",
+          "status": "complete",
+          "title": "Reconcile existing repairs with advanced/unchanged clock and faulty-composition control",
+          "observed_at": "2026-11-25T21:55:16Z",
+          "evidence": "Base e95685ec7 tree fb98e37e: 123327f69+93e94bec5 meet AC; 5 classes 39/0/0 native PG; faulty-composition control fails journey 503 planning-held-stock-unresolved (3 fails/26); lead review"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Story-level producer-consumer integration on native PostgreSQL",
+          "observed_at": "2026-11-25T21:55:16Z",
+          "evidence": "GregOrderPlanJourneyHttpTest 8/0/0 OIDC+native PG real POST /manual/claim then Greg plan at run+2d; ClaimRunClockHttpTest 3/0/0 unchanged/ahead/unreadable; no code change, full suite deferred to batch"
+        }
+      ],
+      "unsliced": false
     }
   ]
 }
