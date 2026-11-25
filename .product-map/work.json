@@ -12901,6 +12901,41 @@
       ],
       "workers": [],
       "observed_at": "2026-11-25T08:29:49Z"
+    },
+    {
+      "id": "FUCQ-594",
+      "title": "Java Main reset confirms its brief before adopting the run's reviewed policy",
+      "status": "In Progress",
+      "type": "Bug",
+      "branch": "dev/DEV-2026-11-25-003",
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "policy-binding",
+          "title": "Required Main policy adoption, brief binding and recovery",
+          "status": "in-progress",
+          "observed_at": "2026-11-25T20:43:26.243753Z",
+          "evidence": "Code independently reviewed; native scoped validation is running, no pass claimed."
+        },
+        {
+          "id": "integration",
+          "title": "Focused signed OIDC/native PostgreSQL and strict F561 comparison",
+          "status": "not-started",
+          "observed_at": "2026-11-25T20:43:26.243753Z",
+          "evidence": "Original AC3 remains open until refreshed F561 runs its unchanged strict comparison."
+        }
+      ],
+      "workers": [
+        {
+          "id": "Doc Hudson",
+          "name": "Doc Hudson",
+          "role": "implementer",
+          "observed_at": "2026-11-25T20:43:26.243753Z",
+          "expires_at": "2026-11-25T21:43:26.243753Z",
+          "source": "Root observed native F594 owner chunk launch; requested/selected Sol medium."
+        }
+      ],
+      "observed_at": "2026-11-25T20:43:26Z"
     }
   ]
 }
