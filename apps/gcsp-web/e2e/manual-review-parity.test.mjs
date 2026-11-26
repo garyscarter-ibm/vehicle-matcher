@@ -171,7 +171,11 @@ test('FUCQ-554: authoritative manual review, six-card summary and safe navigatio
       details: { ...current.details, contact: { ...current.details.contact, phone: '07700 900997' } } }), 'Actual concurrent details save');
     const conflict = employee.waitForResponse(row => row.request().method() === 'POST' && new URL(row.url()).pathname.endsWith('/manual/review-details'));
     await button(employee, 'Save review details').click(); assert.equal((await conflict).status(), 409, 'Stale details actually conflict');
-    await settled(employee); await refresh(employee);
+    await settled(employee);
+    for (const [width, height] of [[1280, 800], [375, 812]]) {
+      await employee.setViewportSize({ width, height }); await capture(suite, employee, `angular-review-conflict-dirty-${width}`);
+    }
+    await employee.setViewportSize({ width: 1280, height: 800 }); await refresh(employee);
     assert.equal(await phone.inputValue(), '07700 900998', 'Authoritative refresh retains the dirty local phone');
     const afterRead = journal.writes.length; await button(employee, 'Discard local edits').click();
     await until(async () => await phone.inputValue() === newer.details.contact.phone, 'Discard accepts the latest saved details');
@@ -214,7 +218,9 @@ test('FUCQ-554: authoritative manual review, six-card summary and safe navigatio
     for (const [name, selector, value] of [['Change contact or requirements', '#manual-contact-phone', '07700 900997'],
       ['Change return mileage', '#manual-return-mileage', '20001']]) {
       await employee.locator('[id^="manual-declaration-"]').first().check();
-      await button(employee, name).click(); await employee.locator(selector).waitFor();
+      const edit = button(employee, name); await edit.focus();
+      assert.equal(await edit.evaluate(node => node === document.activeElement), true, `${name} receives native keyboard focus`);
+      await edit.press('Enter'); await employee.locator(selector).waitFor();
       await employee.locator(selector).fill(value); await saveDetails(employee); await continueReview(employee, 'Return to order review');
       assert.equal(await employee.locator('[id^="manual-declaration-"]:checked').count(), 0, 'Editing details invalidates all declarations');
       const current = good(await suite.call(employee, 'GET', '/manual/claim'), 'Actual retained summary hold');
