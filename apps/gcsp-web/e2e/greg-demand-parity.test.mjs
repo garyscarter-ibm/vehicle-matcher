@@ -107,10 +107,16 @@ async function keyboard(page, root) {
   assert.equal(await region.evaluate(node => document.activeElement === node), true);
   const demand = page.getByRole('tab', { name: 'Demand and supply', exact: true });
   await demand.focus(); await demand.press('ArrowRight');
-  assert.equal(await page.getByRole('tab', { name: 'Policy', exact: true }).evaluate(node => document.activeElement === node), true);
-  await page.keyboard.press('ArrowLeft');
-  await until(async () => await demand.getAttribute('aria-selected') === 'true', 'Keyboard returns to the demand tab');
-  assert.equal(await demand.evaluate(node => document.activeElement === node), true);
+  const policy = page.getByRole('tab', { name: 'Policy', exact: true });
+  // Focus moves synchronously; the existing route owns selection after async NavigationEnd.
+  // Wait for both before the next key so a still-active dashboard cannot discard the return selection.
+  await until(async () => await policy.getAttribute('aria-selected') === 'true'
+    && await policy.evaluate(node => document.activeElement === node), 'Keyboard selects and focuses the Policy tab');
+  await policy.press('ArrowLeft');
+  await until(async () => await demand.getAttribute('aria-selected') === 'true'
+    && await demand.evaluate(node => document.activeElement === node), 'Keyboard selects and focuses the demand tab');
+  await root.waitFor({ state: 'visible' });
+  return { policySelectedAndFocused: true, demandSelectedAndFocused: true, panelVisible: true };
 }
 async function signInFrozenGreg(replay) {
   const reference = process.env.GCSP_NODE_REFERENCE;
@@ -175,7 +181,7 @@ test('FUCQ-558: Greg demand tiles and composition after the same actual release,
       evidence.angularStructure = await composition(greg, root);
       evidence.angularCounts = await displayedCounts(root, demand);
       evidence.screenshots.angular = await capture(suite, greg, 'angular-demand-post-release');
-      await keyboard(greg, root);
+      evidence.angularKeyboard = await keyboard(greg, root);
     });
     await t.test('AC3 evidence: live frozen Node has matching public facts and the same 1280/375 dashboard', async () => {
       const replay = await suite.visitFrozenNode({ clock: released.clock, orderUuid: released.offer.orderUuid,
@@ -196,8 +202,8 @@ test('FUCQ-558: Greg demand tiles and composition after the same actual release,
         const counts = await displayedCounts(nodeRoot, value);
         assert.deepEqual(counts, evidence.angularCounts);
         const screenshots = await capture(suite, page, 'node-demand-post-release');
-        await keyboard(page, nodeRoot);
-        return { gregDemand: { response, structure, counts, screenshots, realGregLogin: true } };
+        const keyboardState = await keyboard(page, nodeRoot);
+        return { gregDemand: { response, structure, counts, screenshots, keyboard: keyboardState, realGregLogin: true } };
       });
       assert.equal(replay.state, 'matched', 'Frozen live runtime is required; absence is never a parity pass');
       evidence.node = replay.gregDemand;
