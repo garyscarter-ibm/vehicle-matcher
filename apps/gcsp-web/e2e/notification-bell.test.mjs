@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import path from 'node:path';
 import test from 'node:test';
 import { showAdvanced, startComposition } from './composition.mjs';
 
@@ -15,6 +16,20 @@ const panel = (page) => page.locator('.gcsp-bell-panel');
 const isOpen = (page) => bell(page).getAttribute('aria-expanded');
 const waitOpen = (page, open) => until(async () => await isOpen(page) === String(open),
   `The actual bell disclosure must render ${open ? 'open' : 'closed'}`);
+async function insideViewport(page, locator, label) {
+  const box = await locator.boundingBox(); const viewport = page.viewportSize();
+  assert.ok(box, `${label} must be rendered`);
+  assert.ok(box.x >= 0 && box.y >= 0 && box.x + box.width <= viewport.width + 1 && box.y + box.height <= viewport.height + 1,
+    `${label} must fit ${viewport.width}×${viewport.height}: ${JSON.stringify(box)}`);
+  return box;
+}
+async function captureViewport(suite, page, name) {
+  const output = process.env.GCSP_E2E_OUTPUT;
+  assert.ok(output, 'The registered FUCQ-548 runner supplies its output directory');
+  const destination = path.join(output, `${name}.png`);
+  await page.screenshot({ path: destination, fullPage: false });
+  suite.receipt.screenshots.push({ name, path: destination, viewport: page.viewportSize(), fullPage: false });
+}
 
 test('FUCQ-548: employee bell follows actual Java offers on the started signed-in composition', { timeout: 480000 }, async (t) => {
   const suite = await startComposition();
@@ -103,6 +118,37 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
     assert.ok(sourceCars.some((car) => car.orderUuid === offer.orderUuid), 'The held car comes from the exact retained Node input');
     suite.receipt.offer = { orderUuid: offer.orderUuid, offerId: offer.offerRef.offerId, state: offer.state, expiresAt: offer.expiresAt };
     suite.readActualHold(offer);
+    const accountName = employee.locator('.gcsp-account-name');
+    const actualAccountName = await accountName.textContent();
+    const stressAccountName = 'Alexandra Cartwright-Llewellyn';
+    const noteViews = [];
+    let noteFailure;
+    try {
+      await accountName.evaluate((node, value) => { node.textContent = value; }, stressAccountName);
+      const note = employee.locator('.gcsp-bell-note');
+      const desktopNote = await note.boundingBox(); const desktopBell = await employee.locator('.gcsp-bell').boundingBox();
+      assert.ok(desktopNote && desktopBell && Math.abs(desktopNote.x + desktopNote.width - desktopBell.x - desktopBell.width - 8) <= 1,
+        'F566 preserves desktop note placement beside the bell');
+      await captureViewport(suite, employee, 'f566-note-1280');
+      noteViews.push({ width: 1280, note: desktopNote });
+      for (const width of [375, 390]) {
+        await employee.setViewportSize({ width, height: 812 });
+        await note.waitFor({ state: 'visible' });
+        const noteBox = await insideViewport(employee, note, `F566 ${width}px one-off note`);
+        const titleBox = await insideViewport(employee, note.locator('strong'), `F566 ${width}px note title`);
+        const textBox = await insideViewport(employee, note.locator('span'), `F566 ${width}px note text`);
+        assert.equal(await note.locator('strong').innerText(), 'Your buddy found a car');
+        assert.match(await note.locator('span').innerText(), /BMW X2 M35i in Black Sapphire/);
+        await captureViewport(suite, employee, `f566-note-${width}`);
+        noteViews.push({ width, note: noteBox, title: titleBox, text: textBox });
+      }
+    } catch (error) {
+      noteFailure = error;
+    } finally {
+      await accountName.evaluate((node, value) => { node.textContent = value; }, actualAccountName);
+      await employee.setViewportSize({ width: 1280, height: 800 });
+    }
+    suite.receipt.f566Responsive = { accountNameStress: stressAccountName, noteViews };
     await suite.screenshot(employee, 'new-offer-note-1280');
     await bell(employee).click();
     await panel(employee).getByRole('heading', { name: 'Notifications', exact: true }).waitFor();
@@ -130,6 +176,7 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
     await until(() => activityRequests(suite).length > before, 'New offer reread reaches Java');
     assert.equal(await employee.locator('.gcsp-bell-note').isVisible(), false, 'The same offer is not announced again');
     suite.receipt.checks.realOfferAndOneOffNote = true;
+    if (noteFailure) throw noteFailure;
   });
 
   await t.test('AC1/5: keyboard, account disclosure, outside close, narrow layout and offer navigation preserve count', async (caseContext) => {
@@ -199,6 +246,43 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
     await employee.goto(`${suite.origins.web}/gcsp/account`);
     await bell(employee).waitFor();
     suite.receipt.checks.keyboardNarrowAndCount = true;
+    const accountName = employee.locator('.gcsp-account-name');
+    const actualAccountName = await accountName.textContent();
+    const stressAccountName = 'Alexandra Cartwright-Llewellyn';
+    const panelViews = [];
+    try {
+      await accountName.evaluate((node, value) => { node.textContent = value; }, stressAccountName);
+      await bell(employee).click();
+      await waitOpen(employee, true);
+      const heading = panel(employee).getByRole('heading', { name: 'Notifications', exact: true });
+      const image = panel(employee).locator('img.gcsp-bell-thumb');
+      const car = panel(employee).locator('.gcsp-bell-copy p').nth(1);
+      const action = panel(employee).getByRole('link', { name: 'View your offer', exact: true });
+      for (const width of [1280, 375, 390]) {
+        if (width !== 1280) await employee.setViewportSize({ width, height: 812 });
+        const panelBox = await insideViewport(employee, panel(employee), `F566 ${width}px open panel`);
+        const headingBox = await insideViewport(employee, heading, `F566 ${width}px heading`);
+        const imageBox = await insideViewport(employee, image, `F566 ${width}px offer image`);
+        const carBox = await insideViewport(employee, car, `F566 ${width}px exact car`);
+        const actionBox = await insideViewport(employee, action, `F566 ${width}px primary action`);
+        assert.equal(await heading.innerText(), 'Notifications');
+        assert.equal((await car.innerText()).trim(), 'BMW X2 M35i in Black Sapphire');
+        assert.equal(await action.innerText(), 'View your offer');
+        assert.equal(await image.evaluate((node) => node.complete && node.naturalWidth > 0), true);
+        if (width === 1280) {
+          const bellBox = await employee.locator('.gcsp-bell').boundingBox();
+          assert.ok(bellBox && Math.abs(panelBox.x + panelBox.width - bellBox.x - bellBox.width - 8) <= 1,
+            'F566 preserves desktop panel placement beside the bell');
+        }
+        await captureViewport(suite, employee, `f566-panel-${width}`);
+        panelViews.push({ width, panel: panelBox, heading: headingBox, image: imageBox, car: carBox, action: actionBox });
+      }
+      suite.receipt.f566Responsive = { ...(suite.receipt.f566Responsive ?? {}), accountNameStress: stressAccountName, panelViews };
+    } finally {
+      await accountName.evaluate((node, value) => { node.textContent = value; }, actualAccountName);
+      await employee.setViewportSize({ width: 1280, height: 800 });
+      if (await isOpen(employee) === 'true') await bell(employee).click();
+    }
   });
 
   await t.test('AC4: actual interval requests, visibility handler and restored-page handler', async () => {
