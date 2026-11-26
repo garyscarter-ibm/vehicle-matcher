@@ -28,3 +28,10 @@ gcsp-status-screen + gcsp-status-screen, gcsp-gallery > section, gcsp-gallery > 
 .gcsp-error-summary { margin-top: var(--gcsp-space-5); padding: var(--gcsp-space-4); border: 2px solid var(--gcsp-danger); }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 }
+
+@layer kit {
+@media (max-width: 600px) {
+.gcsp-header .gcsp-bell { position: static; }
+.gcsp-header .gcsp-bell-note, .gcsp-header .gcsp-bell-panel { right: var(--gcsp-space-2); }
+}
+}
