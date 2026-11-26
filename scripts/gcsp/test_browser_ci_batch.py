@@ -10,6 +10,7 @@ import sys
 import tempfile
 import unittest
 from unittest.mock import patch
+from types import SimpleNamespace
 
 SCRIPT = Path(__file__).with_name('browser-ci-batch.py')
 SPEC = importlib.util.spec_from_file_location('browser_ci_batch', SCRIPT)
@@ -128,6 +129,151 @@ class ReceiptTest(unittest.TestCase):
                     result = batch.family_result(output, 'f340', 'a' * 40)
                     self.assertEqual(result['complete'], expected)
                     self.assertEqual(result['green'], expected)
+
+
+class BrowserTempsTest(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.base = Path(self.directory.name).resolve()
+        self.output = self.base / 'output'
+        self.family = self.output / 'f340'
+        self.outer = self.base / 'outer'
+        self.inner = self.outer / ('test-stamp-shard-' + 'b' * 32)
+        self.inner.mkdir(parents=True)
+        batch.resources.atomic_json(self.family / 'ownership' / ('b' * 32 + '.json'),
+            {'version': 1, 'token': 'b' * 32, 'root': str(self.inner), 'state': 'active'})
+        self.source = 'a' * 40
+        self.open_files = patch.object(batch.subprocess, 'run',
+            return_value=SimpleNamespace(returncode=1, stdout=b'', stderr=b''))
+        self.open_files.start()
+        self.addCleanup(self.open_files.stop)
+
+    def allocation(self, token='c' * 32, **changes):
+        root = self.base / ('gcsp-b-' + token)
+        root.mkdir()
+        (root / 'payload').write_bytes(b'x' * 9000)
+        item = root.lstat()
+        record = {'schema': 'gcsp-browser-temp/1', 'token': token, 'root': str(root),
+                  'base': str(self.base), 'scratch': str(self.inner), 'source_revision': self.source,
+                  'run_id': 'web-e2e-test', 'owner_pid': 987654321, 'state': 'active',
+                  'device': item.st_dev, 'inode': item.st_ino, 'peak_bytes': 0, **changes}
+        manifest = self.family / 'f340' / 'browser-temp-ownership' / (token + '.json')
+        batch.resources.atomic_json(manifest, record)
+        return root, manifest, record
+
+    def tracker(self):
+        self.assertTrue(callable(getattr(batch, 'BrowserTemps', None)), 'owned browser temp accounting is missing')
+        return batch.BrowserTemps(self.output, self.source, self.base, self.outer)
+
+    def cleanup_evidence(self, remaining=None):
+        batch.resources.atomic_json(self.family / 'process-cleanup.json', {'remaining': remaining or []})
+
+    def test_multiple_external_roots_are_added_to_existing_aggregate_sample(self):
+        roots = [self.allocation(token)[0] for token in ['c' * 32, 'd' * 32]]
+        tracker = self.tracker()
+        scratch = SimpleNamespace(sample=lambda: 1234, record={'peak': 0})
+        expected = 1234 + sum(batch.resources.allocated_bytes(root) for root in roots)
+        with tracker.account(scratch):
+            self.assertEqual(scratch.sample(), expected)
+            self.assertEqual(scratch.record['peak'], expected)
+        self.assertEqual(scratch.sample(), 1234)
+
+    def test_dead_owner_is_recovered_only_after_verified_process_cleanup(self):
+        root, manifest, _ = self.allocation()
+        self.cleanup_evidence()
+        with patch.object(batch.resources, 'process_alive', return_value=False):
+            result = self.tracker().finalize()
+        self.assertTrue(result['complete'])
+        self.assertFalse(os.path.lexists(root))
+        self.assertEqual(json.loads(manifest.read_text())['state'], 'removed')
+        self.assertEqual(result['allocations'][0]['cleanup'], 'recovered')
+
+    def test_live_owner_or_unverified_child_cleanup_preserves_root(self):
+        root, _, _ = self.allocation()
+        self.cleanup_evidence()
+        with patch.object(batch.resources, 'process_alive', return_value=True):
+            result = self.tracker().finalize()
+        self.assertFalse(result['complete'])
+        self.assertTrue(root.exists())
+        self.assertIn('owner', result['leftovers'][0]['reason'])
+        (self.family / 'process-cleanup.json').unlink()
+        with patch.object(batch.resources, 'process_alive', return_value=False):
+            self.assertFalse(self.tracker().finalize()['complete'])
+        self.assertTrue(root.exists())
+
+    def test_unjournalled_browser_users_or_unknown_open_files_preserve_root(self):
+        root, manifest, _ = self.allocation()
+        self.cleanup_evidence()
+        for outcome in [SimpleNamespace(returncode=0, stdout=b'12345\n', stderr=b''),
+                        SimpleNamespace(returncode=1, stdout=b'', stderr=b'unknown'),
+                        OSError('lsof unavailable'), subprocess.TimeoutExpired('lsof', 5)]:
+            with self.subTest(outcome=str(outcome)), patch.object(batch.resources, 'process_alive', return_value=False), \
+                    patch.object(batch.subprocess, 'run', side_effect=outcome if isinstance(outcome, Exception) else None,
+                                 return_value=outcome):
+                result = self.tracker().finalize()
+            self.assertFalse(result['complete'])
+            self.assertTrue(root.exists())
+            self.assertEqual(json.loads(manifest.read_text())['state'], 'cleanup-pending')
+
+    def test_invalid_metadata_is_rejected_before_root_inspection(self):
+        root, manifest, record = self.allocation()
+        for changes in [{'root': '/Users/example/OneDrive/unowned'}, {'source_revision': 'e' * 40},
+                        {'token': '../unowned'}, {'scratch': str(self.outer / 'unregistered')},
+                        {'root': str(self.base / 'unowned')}, {'owner_pid': True}]:
+            with self.subTest(changes=changes):
+                batch.resources.atomic_json(manifest, {**record, **changes})
+                with patch.object(batch, 'browser_root_stat', side_effect=AssertionError('root inspected')):
+                    result = self.tracker().finalize()
+                self.assertFalse(result['complete'])
+                self.assertTrue(root.exists())
+
+    def test_symlink_or_changed_identity_is_preserved(self):
+        root, manifest, record = self.allocation()
+        self.cleanup_evidence()
+        for changes in [{'inode': record['inode'] + 1}, {'device': record['device'] + 1}]:
+            batch.resources.atomic_json(manifest, {**record, **changes})
+            with patch.object(batch.resources, 'process_alive', return_value=False):
+                self.assertFalse(self.tracker().finalize()['complete'])
+            self.assertTrue(root.exists())
+        batch.resources.atomic_json(manifest, record)
+        saved = root.with_name('saved-owned-root')
+        root.rename(saved)
+        root.symlink_to(saved, target_is_directory=True)
+        with patch.object(batch.resources, 'process_alive', return_value=False):
+            self.assertFalse(self.tracker().finalize()['complete'])
+        self.assertTrue(root.is_symlink())
+        self.assertTrue((saved / 'payload').exists())
+
+    def test_already_removed_and_zero_allocation_are_truthful(self):
+        self.assertEqual(self.tracker().finalize(), {'complete': True, 'allocations': [], 'leftovers': []})
+        root, manifest, record = self.allocation()
+        for file in root.iterdir():
+            file.unlink()
+        root.rmdir()
+        batch.resources.atomic_json(manifest, {**record, 'state': 'removed'})
+        result = self.tracker().finalize()
+        self.assertTrue(result['complete'])
+        self.assertEqual(result['allocations'][0]['cleanup'], 'removed')
+
+    def test_native_base_is_captured_before_outer_environment_rewrite(self):
+        self.assertTrue(callable(getattr(batch, 'native_temp_base', None)), 'native temp capture is missing')
+        env = {'TMPDIR': str(self.base)}
+        with patch.object(batch.tempfile, 'gettempdir', return_value=str(self.base)):
+            captured = batch.native_temp_base(env)
+        env['TMPDIR'] = str(self.outer)
+        self.assertEqual(captured, self.base)
+        for key in ['TMPDIR', 'TMP', 'TEMP']:
+            with self.subTest(key=key), patch.object(batch.tempfile, 'gettempdir', side_effect=AssertionError('probed')):
+                with self.assertRaises(ValueError):
+                    batch.native_temp_base({key: '/Users/example/OneDrive/tmp'})
+
+    def test_native_temp_symlink_is_rejected_before_tempfile_can_probe_it(self):
+        alias = self.base / 'innocent-temp-alias'
+        alias.symlink_to('/Users/example/OneDrive/forbidden', target_is_directory=True)
+        with patch.object(batch.tempfile, 'gettempdir', side_effect=AssertionError('forbidden target probed')):
+            with self.assertRaisesRegex(ValueError, 'forbidden'):
+                batch.native_temp_base({'TMPDIR': str(alias)})
 
 
 if __name__ == '__main__':
