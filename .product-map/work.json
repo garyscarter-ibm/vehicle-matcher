@@ -13599,51 +13599,6 @@
       "unsliced": false
     },
     {
-      "id": "FUCQ-542",
-      "title": "Returns use the active run clock independent of supply",
-      "type": "Bug",
-      "status": "In Progress",
-      "branch": "dev/DEV-2026-11-22-vesper-018",
-      "workers": [
-        {
-          "name": "Pugh",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-26T07:21:19.221758+00:00",
-          "expires_at": "2026-11-26T07:21:19.221758+00:00",
-          "source": "native thread01a21686-f074-7bc0-a051-83806cb63766",
-          "status": "waiting: scoped205/205 delivered; root-coordinated refresh/full Java pending"
-        },
-        {
-          "name": "Lord Business",
-          "harness": "codex",
-          "role": "mechanic",
-          "observed_at": "2026-11-26T07:16:56.971678+00:00",
-          "expires_at": "2026-11-26T07:16:56.971678+00:00",
-          "source": "native thread01a21698-34fb-7a61-8709-0a3dbe950ae7; requested/selected gpt-6-luna/high",
-          "status": "stopped: source66bb592d pushed; lead205/205 verified"
-        }
-      ],
-      "observed_at": "2026-11-26T08:04:17Z",
-      "slices": [
-        {
-          "id": "repair",
-          "status": "complete",
-          "title": "Provider-independent return clock and regression",
-          "observed_at": "2026-11-26T07:16:57Z",
-          "evidence": "Lead reviewed six-file diff; independent final205/205 on source66bb592d with real OIDC/native PG none-supply plan/progress. Result in DEV-2026-11-22-vesper-018; strict targeted code_key5ecee2ac."
-        },
-        {
-          "id": "integration",
-          "status": "complete",
-          "title": "Lead validation and matching Java support gate",
-          "observed_at": "2026-11-26T08:04:17Z",
-          "evidence": "Required canonical Java CI45775454699 at75e1d539e982b048642da345b92f41ff470814fe passed clean verify:2340cases/2337executed/0fail/0error/3explicit unrelated environmentgatedskips; all106returns and actual none-supply/clock/startupwiring passed. Reports/collector/cleanup valid; peak4174303232B/scratch102187008B. Finalmetadatarefresh3f4e27447 Java/Nodeparity/fixture/workflow objectidentities equal CI. Root reviewed fullsixfiledelta. Sharedbrowserbatch/native reconciliation pending."
-        }
-      ],
-      "unsliced": false
-    },
-    {
       "id": "FUCQ-544",
       "title": "Hide active deadline on terminal refused offers",
       "status": "In Progress",
@@ -13694,6 +13649,51 @@
           "title": "Final-composition-proof-and-reconciliation",
           "observed_at": "2026-11-26T08:08:29Z",
           "evidence": "Mergedb1d19fc18; root reviewed2module delta/syntax and independent165/165; final6/6registered f555 allzero timing across receipt/current signedreread/restart1280/390. Nativecomment5069096 readback plus exact receipt1280=1647965,receipt390=1647966,restart390=1647968 verified at08:01:06.724Z; alloriginalACs met/no productpatch. Shared18-familybrowserbatch pending overnight/CI; separateF555acceptance unchanged. Ownedcleanupverified."
+        }
+      ],
+      "unsliced": false
+    },
+    {
+      "id": "FUCQ-542",
+      "title": "Returns use the active run clock independent of supply",
+      "type": "Bug",
+      "status": "In Progress",
+      "branch": "dev/DEV-2026-11-22-vesper-018",
+      "workers": [
+        {
+          "name": "Pugh",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-26T08:09:08.766Z",
+          "expires_at": "2026-11-26T08:09:08.766Z",
+          "source": "native thread01a21686-f074-7bc0-a051-83806cb63766",
+          "status": "stopped: F542 original AC/scoped205/fullcanonical Java passed and merged8bee; browserbatch pending. Lead now assigned separate F538 increment."
+        },
+        {
+          "name": "Lord Business",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-26T07:16:56.971678+00:00",
+          "expires_at": "2026-11-26T07:16:56.971678+00:00",
+          "source": "native thread01a21698-34fb-7a61-8709-0a3dbe950ae7; requested/selected gpt-6-luna/high",
+          "status": "stopped: source66bb592d pushed; lead205/205 verified"
+        }
+      ],
+      "observed_at": "2026-11-26T08:10:28Z",
+      "slices": [
+        {
+          "id": "repair",
+          "status": "complete",
+          "title": "Provider-independent return clock and regression",
+          "observed_at": "2026-11-26T07:16:57Z",
+          "evidence": "Lead reviewed six-file diff; independent final205/205 on source66bb592d with real OIDC/native PG none-supply plan/progress. Result in DEV-2026-11-22-vesper-018; strict targeted code_key5ecee2ac."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Lead validation and matching Java support gate",
+          "observed_at": "2026-11-26T08:10:28Z",
+          "evidence": "Merged/pushed8bee4b3c7 from5801ccfaa. Canonical Java CI45775454699 captured75e1d539:2337executed/0fail/errors/3explicit unrelated conditionalskips; exact relevant inputobjects equal finalmerge. Original none-supply OIDC/PG AC and106returns/startupwiring pass; rootread reports/cleanup. CoveringJava recorded d2d85eaa4; browser18family pending overnight/CI. Nativecomment5069102 provenance corrected/readback08:09:08.766Z; InProgress/Russell3/start26Nov/parent433/origin473 preserved."
         }
       ],
       "unsliced": false

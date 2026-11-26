@@ -4233,3 +4233,7 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 ### 2026-11-26 08:08 UTC · usget-velko · DL-20261125-SORREL-15 · F544 publication role corrected
 
 - Native readback now shows the requested narrow restart102021B as1647968, added once after reconciling existing valid receipt1647965/1647966. Comment5069096 explicitly labels receipt1280,receipt390,restart390 and separates signed handler reread from physical visibility; exact text read back. Native08:01:06.724Z remains In Progress. This verifies the filename-role correction without deleting valid evidence or rerunning tests; the earlier mismatch remains recorded.
+
+### 2026-11-26 08:10 UTC · usget-velko · DL-20261126-VELKO-23 · Native CI/source provenance clarified
+
+- Native F542 comment5069102 initially called CI source75e1d539 the final integration head. Root caught the label mismatch in readback: actual final branch5801ccfaa/merge8bee4b3c7 have identical relevant Java/Node-parity/fixture/workflow objects, while CI executed75e. The same comment now states those roles exactly, read back at08:09:08.766Z; all other fields remain InProgress/Russell/3/start26Nov/parent433/origin473/Low. This corrects provenance wording, not a failed test or changed runtime; no duplicate run/comment was created.
