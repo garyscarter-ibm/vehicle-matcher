@@ -1,0 +1,30 @@
+{
+  "identity": "7d6586da34211f16964dc9d5e74036fff8e653d9649a8713db0a4c51a0a3a2b2",
+  "base": "1bb1b5af1d0a5a410bc35a6bc6c9ef9481ac15a3",
+  "changed_paths": [
+    "apps/gcsp-web/src/app/cases/case-queue.component.html",
+    "apps/gcsp-web/src/app/cases/case-queue.component.spec.ts",
+    "apps/gcsp-web/src/app/cases/case-queue.component.ts",
+    "apps/gcsp-web/src/app/cases/case.projection.ts",
+    "apps/gcsp-web/src/app/help/help.component.html",
+    "apps/gcsp-web/src/app/help/help.component.spec.ts",
+    "apps/gcsp-web/src/app/help/help.component.ts",
+    "apps/gcsp-web/src/app/help/help.store.spec.ts",
+    "apps/gcsp-web/src/app/help/help.store.ts"
+  ],
+  "regression": "sort order/focus/exact case id; actual charging-unconfirmed label; retain same-context failed-read case info and clear access loss; card skeleton",
+  "tests": {
+    "command": "npx -y -p node@24.22.3 -p npm@11.19.1 npm test -- --include=src/app/cases/case-queue.component.spec.ts --include=src/app/cases/case-queue.store.spec.ts --include=src/app/cases/case.client.spec.ts --include=src/app/cases/case.projection.spec.ts --include=src/app/help/help-route.spec.ts --include=src/app/help/help.component.spec.ts --include=src/app/help/help.projection.spec.ts --include=src/app/help/help.store.spec.ts",
+    "red": "4 expected failures;68 passed;10.8s;RSS1244921856",
+    "green": "198/198;8 files;11.46s;RSS1261649920"
+  },
+  "boundaries": "CaseClient unchanged; HelpStore HTTP read/write behavior tests included; no backend/schema/fixture contract edit; browser delegated parent",
+  "excluded": "full suite deferred to batch; final rendered1280/375 and human pair pending",
+  "drift_rc": 0,
+  "resources": {
+    "scratch_bytes_at_completion": 8815668,
+    "angular_cache_bytes": 0,
+    "node_cache": "shared hit a02ca099d6a226bc2eda2055; link retained for parent",
+    "children": "subprocess.run joined on each chunk"
+  }
+}
