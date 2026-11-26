@@ -4305,3 +4305,15 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 
 - Wile E. Coyote (FUCQ-546) sent a "final" hand-back while its implementer Dibble was still building AC2; the stall check showed it `waiting`. Dibble's AC2 report was then delivered to the dispatcher, not the lead. Mitigation: the dispatcher relayed it with SendMessage and the lead finished (built, merged 73b493c42). Proposed improvement: a lead should not hand back while a child runs; child reports should route to their spawner.
 - Separately, widening the merged-tree story set to all of `gcsp.api.supply` OOMed at java-test's default 1g test heap after 344/0; `--heap 2g` ran 419/0. Not a code defect.
+
+### 2026-11-26 12:09 UTC · usget-velko · DL-20261126-VELKO-20 · Linux fix verified while F597 stays partial
+
+- FUCQ-597 remains In Progress at 2 points. Its actual CI attempt 2 is RED with 1 failure and 17 unrun families; factual Jira comment 5069399 was posted and read back. FUCQ-598 is a separate item, also In Progress at 2 points, assigned to Russell. Its five adoption operations (status, assignee, estimate, labels, branch comment and Start date) were applied and read back; `jira_sync.py push --json` shows no pending F598 operation.
+- At corrected source 4d2fca8b498a3b3fa3323a53e3d2b34457f6210d, root independently passed 70 scoped checks. Actual Ubuntu CI45814486813 selected only f340 and passed 5/5; Dibble verified cleanup from the retained artifact, so no repeat ran. This verifies that selected F598 path, not all 18 families and not F597's original red attempt. No merge/integration or F597 acceptance is claimed here.
+- The two issues and the test result remain distinct through adoption: F598's green selected run does not erase F597's recorded RED/17-unrun result or grant batch/browser clearance. Proposed improvement: preserve issue key, selected family, test counts and cleanup evidence together at handoff, and keep adoption status separate from verification state. No new gate or product scope.
+
+### 2026-11-26 12:09 UTC · usget-velko · DL-20261117-GCC-009 · Six merged Bug cards archived and cleaned
+
+- Reused the retained merge/lease evidence for FUCQ-568/569/573/575/579/580 rather than rerunning tests or repeating cleanup. Archive commit6710b99ac moved DEV-2026-11-23-vesper-002/003/006/008/012/013 from in-progress to done; cleanup commit e7cc7ccfb records all six as complete for client cc1d4cb62c7a. Each keeps its `claimed_by: usget` and `claimed_poller: vesper` facts and existing Story link. Recorded merge tips: F568 b5529a191; F569 4f3cfd27e; F573 70e11d85e; F575 4e3d132e3; F579 cd5a23c2c; F580 4e3d132e3.
+- Outcome: all six historical cards are archived with cleanup complete; no new source, tests, claim or cleanup action was needed. This follow-up does not measure the release-to-native-start latency from the original F443 observation, so it does not establish that the earlier resume-reading proposal improved launch time. Proposed framework improvement remains to reuse matching prior evidence on resume and measure actual release-to-native-start time.
+
