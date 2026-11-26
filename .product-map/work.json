@@ -11267,57 +11267,6 @@
       "native_start_date": "2026-11-26"
     },
     {
-      "assignee": "",
-      "branch": "dev/DEV-2026-11-23-001",
-      "id": "FUCQ-565",
-      "observed_at": "2026-11-23T16:17:14Z",
-      "original_status": "In Progress",
-      "slices": [
-        {
-          "evidence": "Lead complete-source review + Pluto consolidated source/security PASS; final allocation83 and all35offersclasses176 confirm immutable local/remote/follow-up pin/DTO paths. Main/restart retained in integration slice.",
-          "id": "quote-snapshot",
-          "observed_at": "2026-11-23T16:17:14Z",
-          "status": "complete",
-          "title": "Pin immutable source facts at quote creation"
-        },
-        {
-          "evidence": "Final14 pure cases include frozen states, malformed/owner/privacy/date/type/text limits/ECMAScript whitespace; all176offers checks pass. Lead/Pluto final review PASS; stored evidence preserved and safe public contract restored.",
-          "id": "safe-projection",
-          "observed_at": "2026-11-23T16:17:14Z",
-          "status": "complete",
-          "title": "Expose allowlisted local/remote/follow-up comparisons"
-        },
-        {
-          "evidence": "Final consolidated source321/321: allocation83, exhaustive35offersclasses176 in17/18chunks, callers/wiring62. Zero failures/errors/skips; source identity a6f15cb4a2d0d69fa5422b552ad1e380406f9a2209e8216f5534f5c3b50b7c45. Owned resources cleaned; final-summary.json retained.",
-          "id": "validation",
-          "observed_at": "2026-11-23T16:17:14Z",
-          "status": "complete",
-          "title": "Focused Java/OIDC source-change, privacy and idempotency proof"
-        },
-        {
-          "id": "integration",
-          "status": "not-started",
-          "title": "Merged registered browser and covering batch proof"
-        }
-      ],
-      "status": "In Progress",
-      "title": "Java Buddy quotes omit the pinned current-car comparison and points saving",
-      "type": "Bug",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-565",
-      "workers": [
-        {
-          "expires_at": "2026-11-23T16:17:14.849812+00:00",
-          "harness": "codex",
-          "name": "Speedy Gonzales",
-          "observed_at": "2026-11-23T16:17:14.849812+00:00",
-          "role": "story-lead",
-          "source": "lead final321 checks/review passed; root original integrated acceptance pending",
-          "status": "handoff-ready"
-        }
-      ]
-    },
-    {
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-23-vesper-001",
       "id": "FUCQ-567",
@@ -13697,6 +13646,77 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "assignee": "",
+      "branch": "dev/DEV-2026-11-23-001",
+      "id": "FUCQ-565",
+      "observed_at": "2026-11-26T09:27:32Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "Lead complete-source review + Pluto consolidated source/security PASS; final allocation83 and all35offersclasses176 confirm immutable local/remote/follow-up pin/DTO paths. Main/restart retained in integration slice.",
+          "id": "quote-snapshot",
+          "observed_at": "2026-11-23T16:17:14Z",
+          "status": "complete",
+          "title": "Pin immutable source facts at quote creation"
+        },
+        {
+          "evidence": "Final14 pure cases include frozen states, malformed/owner/privacy/date/type/text limits/ECMAScript whitespace; all176offers checks pass. Lead/Pluto final review PASS; stored evidence preserved and safe public contract restored.",
+          "id": "safe-projection",
+          "observed_at": "2026-11-23T16:17:14Z",
+          "status": "complete",
+          "title": "Expose allowlisted local/remote/follow-up comparisons"
+        },
+        {
+          "evidence": "Final consolidated source321/321: allocation83, exhaustive35offersclasses176 in17/18chunks, callers/wiring62. Zero failures/errors/skips; source identity a6f15cb4a2d0d69fa5422b552ad1e380406f9a2209e8216f5534f5c3b50b7c45. Owned resources cleaned; final-summary.json retained.",
+          "id": "validation",
+          "observed_at": "2026-11-23T16:17:14Z",
+          "status": "complete",
+          "title": "Focused Java/OIDC source-change, privacy and idempotency proof"
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Merged registered browser and covering batch proof",
+          "observed_at": "2026-11-26T09:26:13Z",
+          "evidence": "Later actual registered f555 source 6518669087 passed 6/6, including Main 1100/800/300 at 1280/390 and literal JVM restart on unchanged repair product files. Current canonical Java/final integrated 18-family browser batch and human parity remain root-owned pending."
+        }
+      ],
+      "status": "In Progress",
+      "title": "Java Buddy quotes omit the pinned current-car comparison and points saving",
+      "type": "Bug",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-565",
+      "workers": [
+        {
+          "expires_at": "2026-11-23T16:17:14.849812+00:00",
+          "harness": "codex",
+          "name": "Speedy Gonzales",
+          "observed_at": "2026-11-23T16:17:14.849812+00:00",
+          "role": "story-lead",
+          "source": "lead final321 checks/review passed; root original integrated acceptance pending",
+          "status": "handoff-ready"
+        },
+        {
+          "name": "Pugh",
+          "harness": "codex",
+          "role": "story-lead: retained evidence reconciliation",
+          "status": "completed",
+          "observed_at": "2026-11-26T09:26:13Z",
+          "expires_at": "2026-11-26T09:26:13Z",
+          "source": "Read actual proof source and retained Main surfaces; product-source compatibility verified; no runtime work or product changes"
+        },
+        {
+          "name": "Hippety Hopper",
+          "harness": "codex",
+          "role": "read-only evidence scoper",
+          "status": "completed",
+          "observed_at": "2026-11-26T09:26:13Z",
+          "expires_at": "2026-11-26T09:26:13Z",
+          "source": "Native title verified; executed six-case result/restart/source scope reconciled, no tests/writes"
+        }
+      ]
     }
   ]
 }

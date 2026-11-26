@@ -83,9 +83,10 @@ pin; existing authority, custody, expected-version, clock, policy and duplicate-
 
 Implementation allocation: `CurrentCarComparison`, `allocation/Claim`, `FollowupComparison`, `OfferPresentation`
 and `OfferFollowups`; focused pure and existing allocation/local/remote/decline journey tests cover the contract.
-The final merged F555 real Main offer supplies current1100 versus offered800 and the existing Angular 300 saving,
-comparison/highlights and same-offer1280/390 proof. That connected result, the shared covering Java batch and human
-1280 screenshot verdict remain separate evidence; this contract note does not claim their completion.
+The later registered F555 retained-Main flow supplied current 1100 versus offered 800 and the existing Angular 300-point
+saving, comparison/highlights and same-offer 1280/390 evidence, including literal JVM stop/relaunch with the same
+immutable quote and pin. See the 26 November evidence reconciliation below. Current covering batches and the human
+screenshot verdict remain separate; technical execution does not supply human acceptance.
 
 The public comparison also respects the existing Angular scalar contract: observed timestamps use the frozen
 reader's UTC `Z` form (whole seconds or three fractional digits), and text contains no ASCII control characters.
@@ -100,5 +101,24 @@ new gate because this repairs the existing DTO contract without configuration or
 
 Independent source/security review found and then closed the timestamp/control-text issues. Two literal
 regressions failed before repair and passed afterwards (10/10 pure tests); the final allocation package also
-passed 83/83 on the repaired source. Remaining final package/caller runs and the integrated Main/browser/restart
-result are recorded in the Story Result rather than inferred from this contract note.
+passed 83/83 on the repaired source. The final 321 package/caller checks and the later integrated Main/browser/restart result are recorded in the Story
+Result rather than inferred from this contract note.
+
+
+## Retained Main and literal restart evidence — 26 November 2026
+
+The existing registered `f555` family already executes the original F565 AC1/AC3 boundaries. Its actual run
+`web-e2e-20261126-072530-df5e00`, source `6518669087d475096ff67487fc6b846a72a56d04`, passed all six cases with no
+failures/skips in 74.38 s. The retained root is `/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f544-20261126/browser-attempt3`.
+`run-receipt.json` identifies the source, selected family/file and successful database/scratch teardown;
+`f555-pending/offer-surface-comparison.json` records current 1100/offered 800 and 300 saving at 1280/390;
+`f555-pending/browser-receipt.json` retains the before/after quote, hold, offer and pin across an actual JVM
+stop/join/relaunch. The proof uses retained Main input through the selected tranche-plan and real signed
+release/allocation services; it does not claim a public generated-provider Main reset or hosted execution.
+
+All five F565 product files are unchanged between this executed source, the reviewed repair and current
+`b2fb05677`; a later test-file delta is not relabelled as complete tree identity. The existing 321 scoped variant,
+source-change, remote-replay and follow-up checks combine with this actual Main/restart evidence. No further
+product or registered-family assertion change was indicated. Root's canonical Java result and the already-required
+final 18-family browser batch on integrated source remain to be recorded; the original human parity verdict stays
+blank until a collaborator supplies it. No duplicate local connected campaign was run for this reconciliation.
