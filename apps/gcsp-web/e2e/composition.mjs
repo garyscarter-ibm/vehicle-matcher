@@ -69,7 +69,7 @@ function identity(pid) {
 }
 
 export async function startComposition({ caseId = 'f548', ordering = 'synthetic', claims = 'local', scenarioId = null } = {}) {
-  assert.ok(['f340', 'f548', 'f549', 'f550', 'f551', 'f552', 'f553', 'f554', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked', 'f561', 'f520', 'f521', 'f595', 'f559', 'f559-learned'].includes(caseId));
+  assert.ok(['f340', 'f548', 'f549', 'f550', 'f551', 'f552', 'f553', 'f554', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked', 'f557', 'f561', 'f520', 'f521', 'f595', 'f559', 'f559-learned'].includes(caseId));
   assert.ok(['synthetic', 'rejected', 'unknown-then-rejected'].includes(ordering));
   assert.ok(['local', 'controlled'].includes(claims));
   assert.ok(scenarioId === null || (caseId === 'f521' && ['normal-success', 'durable-pending'].includes(scenarioId)));
@@ -806,7 +806,44 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
         assert.equal(fault.confirmationsAfterFault[0].queuedAt, null);
       };
     }
-    return { context, receipt, origins, apiBase, input, plan, newPage, call, prepareInitialBrief, releaseMainOffer,
+    function prepareCaseHelpSource() {
+      assert.equal(caseId, 'f557', 'Only F557 installs this bounded second renewal input');
+      const clone = value => {
+        if (Array.isArray(value)) return value.map(clone);
+        if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).map(([key, item]) =>
+          [key, key === 'contractEndDate' || key === 'latestCollectionDate' ? '2026-12-15' : clone(item)]));
+        return typeof value === 'string' ? value.replaceAll('employee-paula', 'employee-alex').replaceAll('slot-paula', 'slot-alex')
+          .replaceAll('Paula Mason', 'Alex Brennan') : value;
+      };
+      const account = input.account; const initial = input.initialBrief.brief;
+      const record = clone(initial.knownFacts.contract.value.manualContext);
+      const slot = clone(account.slots[0]);
+      const membership = { name: 'Alex Brennan', companyId: account.account.companyId, schemeId: account.account.schemeId,
+        gradeId: account.account.gradeId, entitlementSlotId: slot.entitlementSlotId };
+      const attributes = Object.fromEntries(Object.entries(slot).filter(([key]) =>
+        !['employeeId', 'entitlementSlotId', 'capacity', 'runId', 'version', 'createdAt', 'updatedAt', 'ordering'].includes(key)));
+      assert.equal(Number(sql(`SELECT count(*) FROM renewal_cases WHERE environment_id=${literal(envId)}
+        AND run_id=${literal(runId)} AND employee_id='employee-alex';`).split('\n').at(-1)), 0,
+      'Install source inputs before creating Alex cases');
+      sql(`BEGIN;
+        INSERT INTO employees(environment_id,run_id,employee_id,attributes,version)
+          VALUES(${literal(envId)},${literal(runId)},'employee-alex',${literal(JSON.stringify(membership))}::jsonb,${account.versions.employee})
+          ON CONFLICT(environment_id,run_id,employee_id) DO UPDATE SET attributes=excluded.attributes,version=excluded.version;
+        INSERT INTO employee_account_records(environment_id,run_id,employee_id,record_set_id,record,version)
+          VALUES(${literal(envId)},${literal(runId)},'employee-alex',${literal(record.recordSetId)},${literal(JSON.stringify(record))}::jsonb,${account.versions.employee})
+          ON CONFLICT(environment_id,run_id,employee_id) DO UPDATE SET record_set_id=excluded.record_set_id,record=excluded.record,version=excluded.version;
+        INSERT INTO entitlement_slots(environment_id,run_id,slot_id,employee_id,capacity,attributes,version,created_at,updated_at)
+          VALUES(${literal(envId)},${literal(runId)},${literal(slot.entitlementSlotId)},'employee-alex',${slot.capacity},
+          ${literal(JSON.stringify(attributes))}::jsonb,${slot.version},${literal(slot.createdAt)}::timestamptz,${literal(slot.updatedAt)}::timestamptz)
+          ON CONFLICT(environment_id,run_id,slot_id) DO UPDATE SET capacity=excluded.capacity,attributes=excluded.attributes,version=excluded.version;
+        COMMIT;`);
+      return receipt.caseHelpSource = { employeeId: 'employee-alex', entitlementSlotId: slot.entitlementSlotId,
+        renewalDeadline: '2026-12-15', sourceSha256: sha(JSON.stringify(record)),
+        authority: 'F557 bounded source-input fixture cloned from the captured Main account; public case commands derive all case state.',
+        strategy: 'Existing relational source/account/slot tables in the owned local composition; no schema or query change.',
+        piHeld: 'Fictional demo employee/account source only; no client PI.' };
+    }
+    return { context, receipt, origins, apiBase, input, plan, newPage, call, prepareInitialBrief, releaseMainOffer, prepareCaseHelpSource,
       readImage: (page, locator) => imageObservers.get(page).read(locator),
       readActualHold, readOfferPersistence, restartApi, screenshot, compareFrozenNode, visitFrozenNode, failProductionQueueWrites, appointments,
       claims: { requests: claimRequests, pending() { claimMode = 'unknown'; }, rejectPending() { claimMode = 'rejected'; }, confirm() { claimMode = 'confirmed'; } },

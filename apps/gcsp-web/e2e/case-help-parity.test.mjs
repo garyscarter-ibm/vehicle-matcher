@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { createHash } from 'node:crypto';
+import { performance } from 'node:perf_hooks';
 import { startComposition } from './composition.mjs';
 
 const retainedNote = 'Previously loaded case information is shown below. Refresh to check its current state.';
@@ -17,8 +18,8 @@ const serviceGood = (response, label) => {
   return response.value;
 };
 async function until(check, message) {
-  const end = Date.now() + 15000;
-  while (Date.now() < end) {
+  const end = performance.now() + 15000;
+  while (performance.now() < end) {
     if (await check()) return;
     await new Promise(resolve => setTimeout(resolve, 100));
   }
