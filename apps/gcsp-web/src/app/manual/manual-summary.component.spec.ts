@@ -32,6 +32,13 @@ describe('manual final review and actual outcome composition', () => {
     expect(text()).not.toContain('dated-terms'); expect(text()).not.toContain('Terms valid until');
     expect(root.querySelectorAll('.gcsp-summary-section[data-card] button')).toHaveLength(6);
   });
+  it('shows no cash contribution for the actual pinned employee-scheme null value', () => {
+    fixture.componentRef.setInput('projection', { ...projection(), claim: { ...claim, quote: { ...claim.quote,
+      terms: { kind: 'employee-scheme', contribution: null } } } }); fixture.detectChanges();
+    const card = (fixture.nativeElement as HTMLElement).querySelector('[data-card="points"]')!;
+    const label = Array.from(card.querySelectorAll('dt')).find((entry) => entry.textContent?.trim() === 'Cash contribution')!;
+    expect(label.nextElementSibling?.textContent?.trim()).toBe('None');
+  });
   it('offers finish and printing for an actual saved outcome without exposing its internal car key', () => {
     fixture.componentRef.setInput('projection', { ...projection(), order: order('pending'), claim: null }); fixture.detectChanges();
     expect(text()).toContain('Next steps'); expect(text()).toContain('Finish'); expect(text()).toContain('Print order');

@@ -5,7 +5,7 @@ import type { ManualProjection } from './manual.types';
 const projection = (): ManualProjection => ({ claim: { state: 'quoted', now: '2026-11-23T11:30:00Z',
   hold: { holdId: 'hold-secret', phase: 'preview', expiresAt: '2026-11-23T11:32:00Z', mode: 'replacement' },
   quote: { driverId: 'driver-secret', draftVersion: 2, contextVersion: 'context-secret', timing: { previewSeconds: 120, reviewSeconds: 600 },
-    terms: { points: { value: 0, unit: 'points' }, allowanceInputs: { allowance: { value: 1300, unit: 'points' } }, contribution: { amount: 0 } } } },
+    terms: { kind: 'employee-scheme', points: { value: 0, unit: 'points' }, allowanceInputs: { allowance: { value: 1300, unit: 'points' } }, contribution: null } } },
   reviewDetails: { binding: { employeeId: 'employee', runId: 'run', entitlementSlotId: 'slot' }, mode: 'replacement', oldContractId: 'contract-secret',
     now: '2026-11-23T11:30:00Z', contract: { months: 6, annualMileage: 8000, mileageUnit: 'mi/year' },
     requestedCollection: { date: '2026-11-30', locationId: 'location-secret' }, currentContract: { model: 'BMW 3 Series', registration: 'AB12 CDE' },
@@ -24,6 +24,10 @@ describe('manual authoritative presentation readback', () => {
     expect(cards.find((card) => card.key === 'return')?.rows.at(-1)?.value).toBe(0);
     expect(manualContextRows(projection(), source()).map((row) => row.label)).toEqual(['Journey', 'Requested collection', 'Contract term', 'Returning car']);
     expect(JSON.stringify(manualContextRows(projection(), source()))).not.toContain('secret');
+  });
+  it('reads the pinned employee-scheme null contribution as no cash contribution', () => {
+    const cards = manualReadbackCards(projection(), source());
+    expect(cards.find((card) => card.key === 'points')?.rows.find((row) => row.label === 'Cash contribution')?.value).toBe('None');
   });
   it.each(['employee', 'draft', 'context', 'slot', 'driver', 'return'] as const)('rejects a mismatched %s join instead of leaking another private readback', (field) => {
     const value = source();

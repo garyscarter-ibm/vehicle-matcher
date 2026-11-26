@@ -57,7 +57,7 @@ export function manualReadbackCards(projection: ManualProjection, source: Manual
       row('Valid from', manualDate(licence['validFrom'])), row('Valid until', manualDate(licence['validUntil']))], edit: 'choices', label: 'Change order choices', hint: choicesHint },
     { key: 'points', title: 'Points and contract', rows: [row('Points cost', points(terms['points']), 'points a month'),
       row('Monthly allowance', points(allowance['allowance']), 'points a month'),
-      row('Cash contribution', record(terms['contribution'])['amount'] === 0 ? 'None' : null),
+      row('Cash contribution', terms['contribution'] === null || record(terms['contribution'])['amount'] === 0 ? 'None' : null),
       row('Contract term', number(contract['months'] ?? contract['termMonths']), 'months'), row('Annual mileage', number(contract['annualMileage']), text(contract['mileageUnit']) ?? undefined)],
       edit: 'choices', label: 'Change order choices', hint: choicesHint },
     { key: 'collection', title: 'Collection', rows: [row('Requested collection date', manualDate(d?.requestedCollection.date)),

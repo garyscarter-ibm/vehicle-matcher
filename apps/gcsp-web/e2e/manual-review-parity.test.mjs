@@ -164,8 +164,11 @@ test('FUCQ-554: authoritative manual review, six-card summary and safe navigatio
       details: { ...current.details, contact: { ...current.details.contact, phone: '07700 900997' } } }), 'Actual concurrent details save');
     const conflict = employee.waitForResponse(row => row.request().method() === 'POST' && new URL(row.url()).pathname.endsWith('/manual/review-details'));
     await button(employee, 'Save review details').click(); assert.equal((await conflict).status(), 409, 'Stale details actually conflict');
-    await settled(employee); await button(employee, 'Discard local edits').click();
+    await settled(employee); await refresh(employee);
+    assert.equal(await phone.inputValue(), '07700 900998', 'Authoritative refresh retains the dirty local phone');
+    const afterRead = journal.writes.length; await button(employee, 'Discard local edits').click();
     await until(async () => await phone.inputValue() === newer.details.contact.phone, 'Discard accepts the latest saved details');
+    assert.equal(journal.writes.length, afterRead, 'Discard after conflict sends no command');
     evidence.savedDetails = newer.details;
   });
   await saveDetails(employee); await continueReview(employee);
