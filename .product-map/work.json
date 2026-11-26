@@ -13544,6 +13544,39 @@
         "kind:ui"
       ],
       "native_updated": "2026-11-25T18:44:07.379-0600"
+    },
+    {
+      "id": "FUCQ-542",
+      "title": "Returns use the active run clock independent of supply",
+      "type": "Bug",
+      "status": "In Progress",
+      "branch": "dev/DEV-2026-11-22-vesper-018",
+      "workers": [
+        {
+          "name": "Pugh",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-26T06:42:01.376200+00:00",
+          "expires_at": "2026-11-26T07:42:01.376200+00:00",
+          "source": "native thread01a21686-f074-7bc0-a051-83806cb63766",
+          "status": "active: F542 delivery"
+        }
+      ],
+      "observed_at": "2026-11-26T06:42:01Z",
+      "slices": [
+        {
+          "id": "repair",
+          "status": "in-progress",
+          "title": "Provider-independent return clock and regression",
+          "observed_at": "2026-11-26T06:42:01Z"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Lead validation and matching Java support gate"
+        }
+      ],
+      "unsliced": false
     }
   ]
 }
