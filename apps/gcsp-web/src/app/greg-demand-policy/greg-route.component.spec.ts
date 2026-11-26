@@ -58,6 +58,20 @@ describe('Greg route integration and lifetime', () => {
     expect(root().querySelector('h1')!.textContent).toBe('Demand and supply'); expect(root().querySelectorAll('[role=tabpanel]')).toHaveLength(6);
     expect(root().querySelector('[role=tab][aria-selected=true]')!.textContent).toBe('Demand and supply'); expect(client.publish).not.toHaveBeenCalled();
   });
+  it('keeps the ported demand kit panels inside the existing source-order route without duplicate reads', async () => {
+    const value = demand(); client.loadDemand.mockResolvedValue(ok({ ...value, demand: { ...value.demand,
+      byModelLine: [{ key: 'G21', label: 'G21', count: value.demand.activeBriefs.count, versions: value.versions }] } }));
+    const route = await open(); await vi.waitFor(() => expect(route.store.view().demandState).toBe('ready')); await settle();
+    const tiles = Array.from(root().querySelectorAll('.gcsp-greg-headline .gcsp-tile'));
+    expect(tiles).toHaveLength(4); expect(root().querySelectorAll('.gcsp-greg-tiles .gcsp-tile-standard')).toHaveLength(5);
+    expect(root().querySelectorAll('.gcsp-greg-body .gcsp-table')).toHaveLength(7);
+    const policyTab = Array.from(root().querySelectorAll<HTMLButtonElement>('[role=tab]')).find(tab => tab.textContent === 'Policy')!;
+    const demandTab = Array.from(root().querySelectorAll<HTMLButtonElement>('[role=tab]')).find(tab => tab.textContent === 'Demand and supply')!;
+    policyTab.click(); await settle(); demandTab.click(); await settle();
+    expect(Array.from(root().querySelectorAll('.gcsp-greg-headline .gcsp-tile'))).toEqual(tiles);
+    expect(demandTab.getAttribute('aria-selected')).toBe('true');
+    expect(client.loadDemand).toHaveBeenCalledOnce(); expect(client.readPolicy).toHaveBeenCalledOnce(); expect(client.publish).not.toHaveBeenCalled();
+  });
   it('keeps draft controls and values on keyboard tab changes without reloading or publishing', async () => {
     const route = await open(); const tabs = Array.from(root().querySelectorAll<HTMLButtonElement>('[role=tab]')).filter(tab => ['Demand and supply', 'Policy'].includes(tab.textContent!));
     tabs[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })); await settle(); expect(tabs[1].getAttribute('aria-selected')).toBe('true');

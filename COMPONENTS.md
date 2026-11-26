@@ -1063,7 +1063,7 @@ Frozen source: `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`. The assembled global 
 | `media-gallery-examples` (`blocks/gcsp/kit/media-gallery-examples.js`) | none (gallery composition) | | not yet | pending |
 | `media-gallery` (`blocks/gcsp/kit/media-gallery.js`) | `.gcsp-media-gallery` | `apps/gcsp-web/src/app/kit/media-gallery.component.ts` | ported | yes |
 | messageList.statusChip (subcomposition only) | `.gcsp-mail-status` | `apps/gcsp-web/src/app/kit/mail-status-chip.component.ts` | ported | yes: source span host, SVG/label children and all four tone classes |
-| `metric-tile` (`blocks/gcsp/kit/metric-tile.js`) | `.gcsp-tile` | | not yet | pending |
+| `metric-tile` (`blocks/gcsp/kit/metric-tile.js`) | `.gcsp-tile` | `MetricTileComponent` (`apps/gcsp-web/src/app/kit/metric-tile.component.ts`), standalone `gcsp-metric-tile`; label/value/size/note inputs preserve source DOM and shared `readValue` privacy semantics; used by Greg demand headline and offers | ported | FUCQ-558 source port; connected and human parity evidence are tracked separately in the Story Result |
 | `notification-bell` (`blocks/gcsp/kit/notification-bell.js`) | `.gcsp-bell` | `apps/gcsp-web/src/app/kit/notification-bell.component.ts` | ported | yes |
 | `order-identity` (`blocks/gcsp/kit/order-identity.js`) | none (utility) | `apps/gcsp-web/src/app/kit/order-identity.ts` | ported | yes |
 | `plain-copy` (`blocks/gcsp/kit/plain-copy.js`) | none (utility) | | not yet | pending |
