@@ -11285,12 +11285,12 @@
       ]
     },
     {
-      "assignee": "",
+      "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-23-vesper-001",
       "id": "FUCQ-567",
       "jira_observed_at": "2026-11-23T15:50:39.579953+00:00",
-      "observed_at": "2026-11-23T16:11:18Z",
-      "original_status": "To Do",
+      "observed_at": "2026-11-26T00:09:10Z",
+      "original_status": "In Progress",
       "slices": [
         {
           "evidence": "Lead reviewed full source and Angular route/consumers; final63 pass includes actual producer href, explicit encoded ID/run and active/expired; Pluto independent source/security PASS. AC3 retained separately.",
@@ -11312,7 +11312,7 @@
           "title": "Merged registered bell navigation and covering batch"
         }
       ],
-      "status": "To Do",
+      "status": "In Progress",
       "title": "Java activity offer links point to a route the Angular app does not support",
       "type": "Bug",
       "unsliced": false,
@@ -11327,7 +11327,8 @@
           "source": "native observed /root/speedy_gonzales",
           "status": "running"
         }
-      ]
+      ],
+      "evidence": "All 3 original ACs evidenced; native In Progress/all 3 checked read back2026-11-26T00:09:10Z with existing comment5068529. Exact registered f548 6/6 at9e7a6b301; merged4fbfaad73. Covering shared browser batch pending; no human acceptance inferred."
     },
     {
       "branch": "dev/DEV-2026-11-23-vesper-002",
