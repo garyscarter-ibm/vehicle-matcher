@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { readFileSync } from 'node:fs';
-import { startComposition } from './composition.mjs';
+import { showAdvanced, startComposition } from './composition.mjs';
 
 const input = JSON.parse(readFileSync(new URL('../../../server/gcsp/fixtures/scenarios/suv-walkthrough-v1.json', import.meta.url)));
 const good = (response, name) => {
@@ -29,6 +29,7 @@ async function resetMain(suite, presenter, runIds, name) {
   assert.equal(main?.availability.available, true, 'Main must actually be available for reset');
   assert.equal(main.fixtureVersion, input.reset.fixtureVersion);
   const before = good(await suite.call(presenter, 'GET', '/presenter/controls'), 'Before reset');
+  await showAdvanced(presenter);
   await presenter.getByRole('combobox', { name: 'Scenario', exact: true }).selectOption(main.scenarioId);
   const reset = presenter.getByRole('button', { name: 'Reset scenario', exact: true });
   await reset.focus(); await presenter.keyboard.press('Enter');
@@ -106,6 +107,7 @@ async function release(suite, employee, presenter, record) {
   const target = input.stock.releaseAt;
   const beforeTick = new Date(Date.parse(target) - clock.controls.step.value * 1000).toISOString();
   assert.ok(Date.parse(clock.now) < Date.parse(beforeTick));
+  await showAdvanced(presenter);
   await presenter.getByText('Advanced clock controls', { exact: true }).click();
   await presenter.getByLabel('Advance by', { exact: true }).selectOption('to');
   await presenter.getByLabel('Named time or instant', { exact: true }).fill(beforeTick);
