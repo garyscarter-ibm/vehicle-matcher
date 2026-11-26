@@ -2,7 +2,7 @@
 target: FUCQ-557 case queue and Help parity repair
 total_score: 28
 max_score: 40
-na_heuristics: 
+na_heuristics:
 p0_count: 0
 p1_count: 0
 timestamp: 2026-11-26T04-37-39Z
