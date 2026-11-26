@@ -723,9 +723,24 @@ native fields, declarations and buttons at employee-guarded `manual/review` and
 `manual/summary`. Stock passes its exact supplied selection through the scoped in-memory
 `ManualStore`; navigation history carries no quote or command authority. Leaving an open
 claim waits for actual release. Saved orders use the existing order-progress destination.
-The current Java response lacks the frozen contact/return details and review version,
-so final submission stays unavailable. This composition adds no shared primitive;
+**Historical FUCQ-443 checkpoint:** the then-current Java response lacked the frozen contact/return details and review version,
+so final submission stayed unavailable at that checkpoint. This composition adds no shared primitive;
 connected and rendered acceptance remains open.
+
+**FUCQ-554 current composition, 26 November 2026:** Java review-details now supplies
+saved contact/return details, their revision, plain collection/contract context and the
+server clock. `manual.readback.ts` projects the pinned reservation countdown and six
+summary cards using the frozen source classes and existing media/fact/button/stage kit.
+`ManualStore` joins existing `AccountClient.readAccount/readDraft` reads only within the
+current subject/run/employee and exact draft/slot/quote-driver binding; private joins
+clear on disposal or scope change. `LiveRefreshService` triggers read-only reconciliation;
+dirty same-binding details and unknown command identities remain in custody. Contact and
+return-mileage edits keep the review hold, discard restores only the latest saved local
+details, and Back/Change/Cancel retain distinct release reasons. The actual ordering
+projection supplies Next steps, stages, Finish and Print order; fresh account data is
+never shown as frozen submitted-order facts. No shared primitive or backend field added.
+Final connected/rendered evidence and the original human screenshot-pair verdict remain
+separate from this implementation description.
 
 ### Angular employee order progress (FUCQ-446)
 

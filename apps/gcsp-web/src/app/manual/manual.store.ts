@@ -1,4 +1,6 @@
 import { computed, DestroyRef, effect, inject, Injectable, signal, untracked } from '@angular/core';
+import { AccountClient } from '../account/account.client';
+import { manualCountdown, manualReadbackMatches, ManualReadbackSource } from './manual.readback';
 import { AuthPort } from '../auth/auth.port';
 import { ManualClient } from './manual.client';
 import { completeManualDetails, editableManualDetails, isManualReviewDetails, manualDetailsMatchClaim, projectManual, sameManualDetails,
@@ -17,6 +19,11 @@ const failed = <T>(result: ManualResult<T>): ManualFailure | null => result.stat
 export class ManualStore {
   private readonly auth = inject(AuthPort);
   private readonly client = inject(ManualClient);
+  private readonly accountClient = inject(AccountClient);
+  private readonly readbackValue = signal<ManualReadbackSource | null>(null);
+  private readonly announced = new Set<string>();
+  private readonly announcementValue = signal('');
+  readonly announcement = this.announcementValue.asReadonly();
   readonly scope = computed(() => { const context = this.client.context(); return context ? JSON.stringify(context) : null; });
   private readonly owner = signal<string | null>(null);
   private readonly active = signal(false);
@@ -59,6 +66,20 @@ export class ManualStore {
       && (!p.failure || p.failure.status === 'invalid') && (this.detailsDirty() || details.reviewDetailsVersion === 0)
       && completeManualDetails(draft, details.mode, details.constraints);
   });
+  readonly readback = computed(() => this.owned() && manualReadbackMatches(this.projection(), this.readbackValue()) ? this.readbackValue() : null);
+  readonly canDiscardLocalEdits = computed(() => this.owned() && !this.busy() && !this.resume() && !this.unknownAttempt()
+    && this.orderValue()?.status === 'not-found' && !!this.projection().reviewDetails?.editable && this.detailsDirty());
+  discardLocalEdits(): void {
+    if (!this.canDiscardLocalEdits()) return;
+    const saved = this.projection().reviewDetails!;
+    this.draftValue.set(editableManualDetails(saved)); this.ticks.set({});
+    if (this.failureValue()?.status === 'invalid' || this.failureValue()?.code === 'stale-review-details') this.failureValue.set(null);
+  }
+  beginDetailsEdit(): boolean {
+    if (!this.owned() || this.busy() || this.resume() || this.unknownAttempt() || this.projection().order
+      || !this.projection().reviewDetails?.editable) return false;
+    this.ticks.set({}); return true;
+  }
   readonly canClaim = computed(() => this.owned() && !this.busy() && !this.unknownAttempt()
     && this.orderValue()?.status === 'not-found' && this.claimValue()?.status === 'not-found' && !!this.handoffValue()?.claimInput);
   private controller = new AbortController();
@@ -70,6 +91,14 @@ export class ManualStore {
   constructor() {
     inject(DestroyRef).onDestroy(() => { this.destroyed = true; this.clear(); });
     effect(() => {
+      const countdown = manualCountdown(this.projection());
+      untracked(() => {
+        if (countdown?.announcementId && !this.announced.has(countdown.announcementId)) {
+          this.announced.add(countdown.announcementId); this.announcementValue.set(countdown.announcement);
+        }
+      });
+    });
+    effect(() => {
       const scope = this.scope(); const recovery = this.auth.recovery();
       untracked(() => {
         if (this.owner() !== scope) this.clear();
@@ -80,7 +109,7 @@ export class ManualStore {
   private cancel(): void { this.epoch++; this.controller.abort(); this.controller = new AbortController(); this.operation = null; this.busy.set(false); }
   private clear(): void {
     this.cancel(); this.owner.set(null); this.active.set(false); this.claimValue.set(null); this.orderValue.set(null); this.termsValue.set(null);
-    this.detailsValue.set(null); this.draftValue.set(null);
+    this.detailsValue.set(null); this.draftValue.set(null); this.readbackValue.set(null); this.announced.clear(); this.announcementValue.set('');
     this.failureValue.set(null); this.handoffValue.set(null); this.ticks.set({}); this.resume.set(false); this.unknownAttempt.set(null); this.commands.clear();
   }
   /** Re-entry always reads the existing order first; a supplied stock record does not cause a POST. */
@@ -93,7 +122,7 @@ export class ManualStore {
     return this.refresh();
   }
   /** Ends this route's reads; retains attempted identities until account/run change so re-entry cannot replay a write. */
-  dispose(): void { this.cancel(); this.active.set(false); this.resume.set(true); this.ticks.set({}); this.handoffValue.set(null); }
+  dispose(): void { this.cancel(); this.active.set(false); this.resume.set(true); this.ticks.set({}); this.handoffValue.set(null); this.readbackValue.set(null); this.announced.clear(); this.announcementValue.set(''); }
   refresh(): Promise<void> {
     if (!this.owned() || this.destroyed) return Promise.resolve();
     if (this.operation) return this.operation;
@@ -105,7 +134,7 @@ export class ManualStore {
         if (order.status === 'ok' || order.status === 'pending') {
           this.unknownAttempt.set(order.status === 'pending' || order.value?.status === 'pending' ? { lane: 'submit', pending: true } : null);
           this.claimValue.set(null); this.termsValue.set(null); this.ticks.set({});
-          this.detailsValue.set(null); this.draftValue.set(null);
+          this.detailsValue.set(null); this.draftValue.set(null); this.readbackValue.set(null);
         }
         return;
       }
@@ -125,6 +154,7 @@ export class ManualStore {
         if (claim.value.state === 'quoted') {
           const details = await this.client.readReviewDetails(options); if (!valid()) return;
           this.acceptDetails(details);
+          await this.loadReadback(valid, options);
         } else { this.detailsValue.set(null); this.draftValue.set(null); }
       } else { this.termsValue.set(null); this.detailsValue.set(null); this.draftValue.set(null); }
     });
@@ -242,10 +272,20 @@ export class ManualStore {
         if (lane === 'claim') this.resume.set(false);
         if (lane !== 'release') {
           const terms = await this.client.readTerms(options); if (!valid()) return; this.termsValue.set(terms);
-          const details = await this.client.readReviewDetails(options); if (valid()) this.acceptDetails(details);
+          const details = await this.client.readReviewDetails(options); if (!valid()) return; this.acceptDetails(details);
+          await this.loadReadback(valid, options);
         } else { this.detailsValue.set(null); this.draftValue.set(null); }
       }
     });
+  }
+  private async loadReadback(valid: () => boolean, options: { signal: AbortSignal }): Promise<void> {
+    this.readbackValue.set(null);
+    try {
+      const [account, draft] = await Promise.all([this.accountClient.readAccount(options), this.accountClient.readDraft(options)]);
+      if (!valid() || account.status !== 'ok' || draft.status !== 'ok') return;
+      const source = { account: account.value, draft: draft.value };
+      if (manualReadbackMatches(this.projection(), source)) this.readbackValue.set(source);
+    } catch { if (valid()) this.readbackValue.set(null); }
   }
   private acceptDetails(result: ManualResult<ManualReviewDetails>, saved = false): void {
     const old = this.detailsValue(); const dirty = this.detailsDirty();

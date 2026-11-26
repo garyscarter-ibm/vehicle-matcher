@@ -5,6 +5,7 @@ import { FactListComponent, FactRow } from '../kit/fact-list.component';
 import { LabelledFieldComponent } from '../kit/labelled-field.component';
 import { MediaGalleryComponent, MediaGalleryImage } from '../kit/media-gallery.component';
 import { ScreenIntroComponent } from '../kit/screen-intro.component';
+import { manualContextRows, manualCountdown, ManualReadbackSource } from './manual.readback';
 import { manualObject } from './manual.projection';
 import type { ManualEditableDetails, ManualHandoff, ManualProjection, ManualQuote, ManualRecord } from './manual.types';
 
@@ -49,7 +50,7 @@ export function manualVehicle(quote: ManualQuote | null, handoff: ManualHandoff 
   { label: 'Contribution', value: manualObject(contribution) && typeof contribution['amount'] === 'number'
     && text(contribution['currency']) ? `${contribution['amount']} ${contribution['currency']}${text(contribution['period']) ? ` / ${contribution['period']}` : ''}` : null }];
   const orderNumber = quote ? shown(facts['orderNumber']) : handoff?.orderNumber;
-  return { name, images, rows, termRows, identity: orderNumber ? `Car order ${orderNumber}` : `Car ID ${quote?.orderUuid ?? handoff?.orderUuid ?? 'not supplied'}` };
+  return { name, images, rows, termRows, identity: orderNumber ? `Car order ${orderNumber}` : '' };
 }
 
 const detailControls: Readonly<Record<string, string>> = {
@@ -62,9 +63,9 @@ const detailControls: Readonly<Record<string, string>> = {
   imports: [ButtonDirective, ErrorSummaryComponent, FactListComponent, LabelledFieldComponent],
   template: `
     <section class="manual-details" aria-labelledby="manual-details-title">
-      <h2 id="manual-details-title">Contact and collection</h2>
+      <h2 id="manual-details-title">Contact and return details</h2>
       @if (projection().reviewDetails; as snapshot) {
-        <gcsp-fact-list [rows]="contextRows()" />
+        @if (showContext()) { <gcsp-fact-list [rows]="contextRows()" /> }
         <p id="manual-details-status" role="status">{{ snapshot.frozen ? 'These review details are frozen.' : detailsDirty() ? 'You have unsaved changes. Save your details before placing your order.' : snapshot.reviewDetailsVersion > 0 ? 'Your saved review details are shown below.' : 'Complete and save your review details before placing your order.' }}</p>
         @if (detailsDraft(); as draft) {
           @if (!snapshot.frozen) {
@@ -93,6 +94,7 @@ const detailControls: Readonly<Record<string, string>> = {
               </gcsp-labelled-field>
             </fieldset>
             @if (!snapshot.frozen) { <button gcspButton type="submit" [disabled]="!editable() || !canSaveDetails()">Save review details</button> }
+            <button gcspButton variant="ghost" type="button" [disabled]="!canDiscard()" (click)="discard.emit()">Discard local edits</button>
           </form>
           }
         }
@@ -109,7 +111,10 @@ const detailControls: Readonly<Record<string, string>> = {
 export class ManualReviewDetailsComponent {
   readonly projection = input.required<ManualProjection>();
   readonly detailsDraft = input<ManualEditableDetails | null>(null);
+  readonly showContext = input(true);
   readonly detailsDirty = input(false); readonly canSaveDetails = input(false);
+  readonly readback = input<ManualReadbackSource | null>(null); readonly canDiscard = input(false);
+  readonly discard = output<void>();
   readonly busy = input(false); readonly resumeRequired = input(false);
   readonly detailsChange = output<ManualEditableDetails>(); readonly saveDetails = output<void>();
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
@@ -126,34 +131,11 @@ export class ManualReviewDetailsComponent {
     return Array.from(errors, ([controlId, messages]) => ({ controlId, message: messages.join(' ') }));
   });
   readonly mileageHint = computed(() => `From 0 to ${this.projection().reviewDetails?.constraints.maximumReturnMileage} miles.`);
-  readonly requirementsHint = computed(() => `Maximum ${this.projection().reviewDetails?.constraints.maximumSpecialRequirements} UTF-16 code units. Requests do not change released stock.`);
-  readonly contextRows = computed<readonly FactRow[]>(() => {
-    const snapshot = this.projection().reviewDetails;
-    if (!snapshot) return [];
-    const contract: ManualRecord = snapshot.contract ?? {}; const current: ManualRecord = snapshot.currentContract ?? {};
-    return [
-      { label: 'Journey', value: snapshot.mode === 'replacement' ? 'Replacement' : 'New order' },
-      { label: 'Car order number', value: snapshot.orderNumber },
-      { label: 'Requested collection date', value: shown(snapshot.requestedCollection.date) },
-      { label: 'Collection location', value: shown(snapshot.requestedCollection.locationId) },
-      { label: 'Contract option', value: shown(contract['contractOptionId']) },
-      { label: 'Contract months', value: shown(contract['months']) },
-      { label: 'Annual mileage', value: shown(contract['annualMileage']), unit: text(contract['mileageUnit']) ?? undefined },
-      ...(snapshot.mode === 'replacement' ? [
-        { label: 'Returning contract', value: snapshot.oldContractId },
-        { label: 'Current car', value: shown(current['model']) },
-        { label: 'Current registration', value: shown(current['registration']) },
-        { label: 'Current contract ends', value: shown(current['contractEndDate']) },
-      ] : []),
-      { label: 'Quote', value: snapshot.quote.quoteId },
-      { label: 'Draft version', value: snapshot.binding.expectedDraftVersion },
-      { label: 'Reservation', value: snapshot.hold.holdId },
-      { label: 'Reservation version', value: snapshot.binding.expectedHoldVersion },
-    ];
-  });
+  readonly requirementsHint = computed(() => `Maximum ${this.projection().reviewDetails?.constraints.maximumSpecialRequirements} characters. Requests do not change released stock.`);
+  readonly contextRows = computed(() => manualContextRows(this.projection(), this.readback()));
   readonly savedRows = computed<readonly FactRow[]>(() => {
     const snapshot = this.projection().reviewDetails; if (!snapshot || snapshot.reviewDetailsVersion < 1) return [];
-    return [{ label: 'Saved review version', value: snapshot.reviewDetailsVersion },
+    return [
       { label: 'Contact telephone', value: snapshot.details.contact.phone ?? null },
       { label: 'Contact email', value: snapshot.details.contact.email ?? null },
       ...(snapshot.mode === 'replacement' ? [{ label: 'Expected return mileage', value: snapshot.details.expectedReturnMileage == null ? null : `${snapshot.details.expectedReturnMileage} mi` }] : []),
@@ -195,20 +177,19 @@ export class ManualReviewDetailsComponent {
 export class ManualReviewComponent {
   readonly projection = input.required<ManualProjection>();
   readonly selection = input<ManualHandoff | null>(null);
+  readonly editingSummary = input(false);
   readonly busy = input(false);
   readonly detailsDraft = input<ManualEditableDetails | null>(null);
   readonly detailsDirty = input(false); readonly canSaveDetails = input(false);
+  readonly readback = input<ManualReadbackSource | null>(null); readonly canDiscard = input(false);
+  readonly discard = output<void>();
   readonly detailsChange = output<ManualEditableDetails>(); readonly saveDetails = output<void>();
   readonly continue = output<void>(); readonly resume = output<void>();
   readonly edit = output<void>(); readonly browse = output<void>(); readonly check = output<void>();
+  readonly back = output<void>(); readonly cancel = output<void>(); readonly announcement = input('');
+  readonly countdown = computed(() => manualCountdown(this.projection()));
+  readonly contextRows = computed(() => manualContextRows(this.projection(), this.readback()));
   readonly vehicle = computed(() => manualVehicle(this.projection().claim?.quote ?? null, this.projection().claim ? null : this.selection()));
   readonly quoted = computed(() => !!this.projection().claim);
   readonly hasVehicle = computed(() => this.quoted() || !!this.selection());
-  readonly reservation = computed(() => {
-    const claim = this.projection().claim;
-    if (!claim) return 'Choosing a car does not place an order.';
-    return claim.state === 'quoted' && ['preview', 'review', 'resume-required'].includes(this.projection().state)
-      ? `Reserved until ${new Date(claim.hold.expiresAt).toLocaleString('en-GB', { timeZoneName: 'short' })}. Continuing does not place an order.`
-      : 'Check the current reservation before continuing.';
-  });
 }

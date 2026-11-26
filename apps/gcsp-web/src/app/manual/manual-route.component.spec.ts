@@ -18,7 +18,7 @@ describe('manual route command and navigation boundary', () => {
   const projection = signal(empty()); const loading = signal(false); const signIn = vi.fn(); const scope = signal<string | null>('employee-scope');
   const detailsDraft = signal<ManualEditableDetails | null>(null); const detailsDirty = signal(false); const canSaveReviewDetails = signal(false);
   const store = { projection, loading, scope, state: computed(() => projection().state), handoff: signal(null), declarations: signal({}), resumeRequired: signal(false), canClaim: signal(false),
-    detailsDraft, detailsDirty, canSaveReviewDetails, setReviewDetails: vi.fn(), saveReviewDetails: vi.fn(),
+    detailsDraft, detailsDirty, canSaveReviewDetails, readback: signal(null), announcement: signal(''), canDiscardLocalEdits: signal(false), discardLocalEdits: vi.fn(), beginDetailsEdit: vi.fn(), refresh: vi.fn(), setReviewDetails: vi.fn(), saveReviewDetails: vi.fn(),
     enter: vi.fn(), dispose: vi.fn(), release: vi.fn(), checkStatus: vi.fn(), claimSelection: vi.fn(), beginReview: vi.fn(), confirmResume: vi.fn(), setDeclaration: vi.fn(), submit: vi.fn() };
   beforeEach(async () => {
     projection.set(empty()); scope.set('employee-scope'); loading.set(false); detailsDraft.set(null); detailsDirty.set(false); canSaveReviewDetails.set(false); signIn.mockReset();
@@ -42,6 +42,19 @@ describe('manual route command and navigation boundary', () => {
     expect(store.setReviewDetails).not.toHaveBeenCalled(); expect(store.saveReviewDetails).not.toHaveBeenCalled(); expect(store.submit).not.toHaveBeenCalled();
     child.detailsChange.emit(draft); child.saveDetails.emit(); expect(store.setReviewDetails).toHaveBeenCalledExactlyOnceWith(draft); expect(store.saveReviewDetails).toHaveBeenCalledExactlyOnceWith();
     if (child instanceof ManualSummaryComponent) { child.submit.emit(); expect(store.submit).toHaveBeenCalledExactlyOnceWith(); }
+  });
+  it('maps back, change and cancel to distinct confirmed release intents', async () => {
+    store.release.mockResolvedValue(true);
+    await fixture.componentInstance.back(); await fixture.componentInstance.changeCar(); await fixture.componentInstance.cancel();
+    expect(store.release.mock.calls).toEqual([['back'], ['change'], ['cancel']]);
+    expect(navigate.mock.calls.map((args: unknown[]) => args[0])).toEqual(['/stock', '/stock', '/account']);
+  });
+  it('reopens details and returns to the same summary without releasing or restarting the review', () => {
+    projection.set({ ...empty(), state: 'review', claim: { hold: { phase: 'order-review' } } as ManualClaim,
+      reviewDetails: { editable: true, reviewDetailsVersion: 1 } as ManualProjection['reviewDetails'] });
+    store.beginDetailsEdit.mockReturnValue(true); fixture.componentInstance.editDetails(); expect(fixture.componentInstance.showSummary()).toBe(false);
+    fixture.componentInstance.continueReview(); expect(fixture.componentInstance.showSummary()).toBe(true);
+    expect(store.release).not.toHaveBeenCalled(); expect(store.beginReview).not.toHaveBeenCalled(); expect(store.submit).not.toHaveBeenCalled();
   });
   it('waits for a successful release before edit or browse navigation', async () => {
     projection.set({ ...empty(), state: 'preview', claim: { state: 'quoted', hold: { phase: 'preview', mode: 'replacement', expiresAt: '2026-11-16T18:00:00Z' },

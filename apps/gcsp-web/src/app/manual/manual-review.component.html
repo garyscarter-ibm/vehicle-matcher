@@ -1,20 +1,26 @@
-<section class="manual-review" [attr.aria-busy]="busy()">
+<section class="manual-review gcsp-review-body" [attr.aria-busy]="busy()">
   <gcsp-screen-intro title="Review your car" />
   @if (hasVehicle()) {
-    <div class="manual-layout">
+        <section class="gcsp-review-time">
+          <p class="gcsp-review-countdown" data-testid="manual-reservation-timer">{{ countdown()?.label ?? 'Reservation time unavailable' }}</p>
+          <p class="gcsp-note">{{ countdown()?.consequence ?? 'Check the current reservation before continuing.' }}</p>
+          <p class="gcsp-review-announcement gcsp-vh" role="status" aria-live="polite" aria-atomic="true">{{ announcement() }}</p>
+        </section>
+
+    <div class="manual-layout gcsp-review-layout">
+      <div class="gcsp-review-column">
       <section class="gcsp-panel manual-vehicle" aria-labelledby="manual-car-name">
         <gcsp-media-gallery [name]="vehicle().name" [images]="vehicle().images" placeholder="No image available for this car" />
-        <p class="gcsp-note">{{ vehicle().identity }}</p>
+        @if (projection().reviewDetails?.orderNumber || vehicle().identity) { <p class="gcsp-note">{{ projection().reviewDetails?.orderNumber ? 'Car order ' + projection().reviewDetails?.orderNumber : vehicle().identity }}</p> }
         <h2 id="manual-car-name">{{ vehicle().name }}</h2>
         <gcsp-fact-list [rows]="vehicle().termRows" />
         <details><summary>Car facts</summary><gcsp-fact-list [rows]="vehicle().rows" hideMissing="More details not supplied" /></details>
       </section>
-      <section class="gcsp-panel manual-choice" aria-labelledby="manual-review-title">
-        <h2 id="manual-review-title">Your selection</h2>
-        <p class="gcsp-note">{{ reservation() }}</p>
+      <section class="gcsp-review-context" aria-labelledby="manual-review-title"><h2 id="manual-review-title">Your selection</h2><gcsp-fact-list [rows]="contextRows()" /></section>
+      </div>
+      <section class="manual-choice gcsp-review-form">
         @if (projection().claim; as claimValue) {
-          <gcsp-fact-list [rows]="[{label:'Journey',value:claimValue.hold.mode === 'replacement' ? 'Replacement' : 'New order'}, {label:'Quote valid until',value:claimValue.quote.validUntil}]" />
-          <gcsp-manual-review-details [projection]="projection()" [detailsDraft]="detailsDraft()" [detailsDirty]="detailsDirty()"
+          <gcsp-manual-review-details [showContext]="false" [readback]="readback()" [canDiscard]="canDiscard()" (discard)="discard.emit()" [projection]="projection()" [detailsDraft]="detailsDraft()" [detailsDirty]="detailsDirty()"
             [canSaveDetails]="canSaveDetails()" [busy]="busy()" [resumeRequired]="projection().state === 'resume-required'"
             (detailsChange)="detailsChange.emit($event)" (saveDetails)="saveDetails.emit()" />
         }
@@ -22,9 +28,11 @@
           <p>Review this unfinished selection before continuing.</p>
           <button gcspButton type="button" [disabled]="busy()" (click)="resume.emit()">Continue reviewing this selection</button>
         } @else {
-          <button gcspButton type="button" [disabled]="!projection().canReview || busy()" (click)="continue.emit()">Continue to order review</button>
+          <button gcspButton type="button" [disabled]="busy() || (editingSummary() ? detailsDirty() || !projection().reviewDetails?.editable || !projection().reviewDetails?.reviewDetailsVersion : !projection().canReview)" (click)="continue.emit()">{{ editingSummary() ? 'Return to order review' : 'Continue to order review' }}</button>
         }
         <div class="gcsp-actions">
+          <button gcspButton variant="ghost" type="button" [disabled]="!projection().canRelease || busy()" (click)="back.emit()">Back</button>
+          <button gcspButton variant="ghost" type="button" [disabled]="!projection().canRelease || busy()" (click)="cancel.emit()">Cancel review</button>
           <button gcspButton variant="ghost" type="button" [disabled]="!projection().canRelease || busy()" (click)="edit.emit()">Edit choices</button>
           <button gcspButton variant="ghost" type="button" [disabled]="quoted() ? !projection().canRelease || busy() : busy()" (click)="browse.emit()">Change car</button>
         </div>
