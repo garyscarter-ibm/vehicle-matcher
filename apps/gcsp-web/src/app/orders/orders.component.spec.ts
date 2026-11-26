@@ -344,6 +344,32 @@ describe('native employee order progress screen', () => {
     expect((fixture.nativeElement as HTMLElement).querySelector('[aria-labelledby="handover-title"] .order-state')?.textContent).toBe('Not requested');
     expect(text()).toContain('Waiting for confirmation of your update'); expect(client.execute).toHaveBeenCalledOnce();
   });
+  it('offers fresh review after authoritative recovery from a proven no-effect refusal without replaying the request', async () => {
+    const available = ok({ ...appointment(), version: 0 });
+    client.readAppointment.mockResolvedValue(available).mockResolvedValueOnce(available)
+      .mockResolvedValueOnce({ status: 'unavailable', code: 'offer-unavailable', retryable: true });
+    client.execute.mockResolvedValueOnce({ status: 'unavailable', code: 'offer-unavailable', httpStatus: 503,
+      retryable: true, reason: 'Handover times are temporarily unavailable.' });
+    const request = () => (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('[aria-labelledby="handover-title"] [aria-label^="Request "]')!;
+    await render(); request().click(); fixture.detectChanges(); await fixture.whenStable();
+    expect(document.activeElement?.classList.contains('order-review')).toBe(true);
+    button('Confirm').click(); await commandSettled();
+    expect(text()).toContain('Handover times are temporarily unavailable.');
+    expect(client.execute).toHaveBeenCalledOnce();
+    const first = client.execute.mock.calls[0][0].commandId;
+    button('Refresh status').click(); await settled();
+    expect(client.execute).toHaveBeenCalledOnce();
+    expect(request().disabled).toBe(false);
+    request().click(); fixture.detectChanges(); await fixture.whenStable();
+    expect(document.activeElement?.classList.contains('order-review')).toBe(true);
+    expect(client.execute).toHaveBeenCalledOnce();
+    button('Confirm').click(); await commandSettled();
+    expect(client.execute).toHaveBeenCalledTimes(2);
+    expect(client.execute.mock.calls[1][0]).toMatchObject({ kind: 'request-appointment', expectedVersion: 0 });
+    expect(client.execute.mock.calls[1][0].commandId).not.toBe(first);
+    expect(text()).toContain('op-123');
+    expect(request().disabled).toBe(true);
+  });
   it('rereads native visibility changes without an order command or focus change', async () => {
     vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
     await render(); const focus = vi.spyOn(HTMLElement.prototype, 'focus');

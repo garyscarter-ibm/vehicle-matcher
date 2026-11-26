@@ -22,6 +22,7 @@ export class OrdersActions {
   private reviewedContext = '';
   private reviewedLock = '';
   private readonly sent = new Set<string>();
+  private readonly noEffect = new Map<string, OrdersProjection>();
   private abort = new AbortController();
   private generation = 0;
   private disposed = false;
@@ -32,7 +33,18 @@ export class OrdersActions {
   locked(resource: 'documents' | 'appointment' | 'return'): boolean {
     const state = this.read(); const p = state.projection; const c = this.context();
     const version = resource === 'documents' ? p?.documents.value?.documentsRevision : resource === 'appointment' ? p?.appointment.value?.version : p?.returnPlan.value?.version;
-    return !!c && this.sent.has(JSON.stringify([key(c), p?.selection.order?.orderUuid, resource, version]));
+    return !!c && this.isLocked(JSON.stringify([key(c), p?.selection.order?.orderUuid, resource, version]), state);
+  }
+  private isLocked(lock: string, state: OrdersControllerState): boolean {
+    if (!this.sent.has(lock)) return false;
+    const refusedAt = this.noEffect.get(lock); const p = state.projection; const c = this.context();
+    // Only a new successful authoritative read can release this exact no-effect attempt.
+    if (refusedAt && p && p !== refusedAt && state.phase === 'settled' && c && state.context
+      && key(c) === key(state.context) && p.appointment.state === 'ok' && !p.appointment.value?.pending
+      && p.actions.appointment.requestSlotIds.length > 0) {
+      this.sent.delete(lock); this.noEffect.delete(lock); return false;
+    }
+    return true;
   }
   refreshing(): void { if (!this.value.busy) this.update(initial()); }
   private update(state: OrdersActionState): void { this.value = state; this.changed(state); }
@@ -73,7 +85,7 @@ export class OrdersActions {
       resource = 'return'; version = r.version;
     }
     const lock = JSON.stringify([key(c), base.orderUuid, resource, version]);
-    if (this.sent.has(lock)) return false;
+    if (this.isLocked(lock, state)) return false;
     this.reviewedContext = key(c); this.reviewedProjection = p; this.reviewedLock = lock;
     this.update({ review: { command: Object.freeze(command), title, detail }, busy: false, result: null }); return true;
   }
@@ -92,6 +104,13 @@ export class OrdersActions {
     catch { result = { status: 'uncertain', code: 'lifecycle-command-interrupted', retryable: false }; }
     if (this.disposed || generation !== this.generation) return;
     if (!this.context() || key(this.context()!) !== this.reviewedContext) { this.contextChanged(); return; }
+    // This appointment request refusal precedes the Java appointment/intent transaction.
+    // Generic unavailable, malformed responses and provider write refusals may follow a write.
+    if (review.command.kind === 'request-appointment' && result.status === 'unavailable'
+      && result.code === 'offer-unavailable' && result.httpStatus === 503 && result.retryable === true
+      && result.operationId === undefined && result.value == null && this.reviewedProjection) {
+      this.noEffect.set(this.reviewedLock, this.reviewedProjection);
+    }
     this.update({ review: null, busy: false, result });
   }
   contextChanged(): void {

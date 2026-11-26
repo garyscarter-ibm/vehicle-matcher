@@ -2,8 +2,13 @@
 import contextlib
 import importlib.util
 import io
+import os
 from pathlib import Path
+import signal
+import subprocess
+import tempfile
 import threading
+import time
 import unittest
 from unittest.mock import Mock, patch
 
@@ -89,6 +94,93 @@ class ManualReadinessTest(unittest.TestCase):
             thread.join(timeout=1)
             self.assertFalse(thread.is_alive())
             read.assert_not_called()
+
+
+class ProcessOwnershipTest(unittest.TestCase):
+    def record(self):
+        return {'name': 'api-f521-host', 'caseId': 'f521', 'pid': 12345, 'pgid': 12345,
+                'start': 'Thu Nov 26 12:00:00 2026', 'executable': '/bin/sh',
+                'execTransition': {'kind': 'f521-maven-to-java', 'expectedExecutable': '/owned/jdk/bin/java'}}
+
+    def test_only_the_explicit_f521_java_transition_preserves_ownership(self):
+        record = self.record()
+        java = {**record, 'executable': '/owned/jdk/bin/java'}
+        self.assertTrue(runner.same_identity(record, record))
+        self.assertTrue(runner.same_identity(record, java))
+        for field, wrong in [('pid', 2), ('pgid', 2), ('start', 'another start'), ('executable', '/other/bin/java')]:
+            with self.subTest(field=field):
+                self.assertFalse(runner.same_identity(record, {**java, field: wrong}))
+        for changed in [{'caseId': 'f555-pending'}, {'name': 'api'}, {'execTransition': None},
+                        {'pgid': 9}, {'execTransition': {'kind': 'unexpected', 'expectedExecutable': '/owned/jdk/bin/java'}}]:
+            with self.subTest(changed=changed):
+                self.assertFalse(runner.same_identity({**record, **changed}, java))
+        ordinary = {**record, 'caseId': 'f548'}
+        self.assertTrue(runner.same_identity(ordinary, ordinary))
+        self.assertFalse(runner.same_identity(ordinary, java))
+
+    def test_exec_group_is_counted_and_stopped_by_the_supervisor(self):
+        with tempfile.TemporaryDirectory(prefix='f521-exec-', dir=os.environ.get('TMPDIR')) as directory:
+            owned = Path(directory).resolve()
+            executable = Path('/bin/sleep')
+            process = subprocess.Popen(['/bin/sh', '-c', 'read -r ready; exec "$1" 30', 'f521-fixture', str(executable)],
+                                       stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                                       start_new_session=True, text=True)
+            reaper = threading.Thread(target=process.wait, daemon=True)
+            reaper.start()
+            try:
+                record = {**self.record(), **runner.identity(process.pid)}
+                record['execTransition'] = {'kind': 'f521-maven-to-java', 'expectedExecutable': str(executable)}
+                self.assertEqual(record['pid'], record['pgid'])
+                process.stdin.write('go\n')
+                process.stdin.flush()
+                deadline = time.monotonic() + 5
+                while time.monotonic() < deadline:
+                    current = runner.identity(process.pid)
+                    if current and current['executable'] == str(executable):
+                        break
+                    time.sleep(.02)
+                self.assertTrue(runner.same_identity(record, current), 'The real exec preserves the registered ownership')
+                self.assertNotEqual(current['executable'], record['executable'])
+                scratch = Mock()
+                scratch.record = {}
+                scratch.manifest = owned / 'manifest.json'
+                scratch.__enter__ = Mock(return_value=scratch)
+                scratch.__exit__ = Mock()
+                with patch.object(runner.resources, 'Scratch', return_value=scratch), \
+                     patch.object(runner, 'journal_records', return_value=[record]), \
+                     patch.object(runner.resources, 'group_rss', return_value=7) as rss, \
+                     patch.object(runner.resources, 'atomic_json') as saved:
+                    with runner.owned_scratch(owned, Mock()):
+                        self.assertEqual(runner.resources.group_rss(os.getpgrp()), 14)
+                        self.assertCountEqual([call.args[0] for call in rss.call_args_list], [os.getpgrp(), process.pid])
+                    cleanup = saved.call_args.args[1]
+                    self.assertEqual(cleanup['remaining'], [])
+                    self.assertTrue(cleanup['signals'], f'The owned fixture must be alive until supervisor teardown; exit={process.poll()}')
+                    self.assertEqual(cleanup['signals'][0]['identity']['executable'], str(executable))
+                reaper.join(timeout=2)
+                self.assertFalse(reaper.is_alive())
+                self.assertIsNone(runner.identity(process.pid))
+                self.assertFalse(runner.resources.group_has_live_members(process.pid))
+            finally:
+                if process.poll() is None:
+                    try:
+                        os.killpg(process.pid, signal.SIGKILL)
+                    except ProcessLookupError:
+                        pass
+                process.wait(timeout=5)
+                reaper.join(timeout=2)
+                process.stdin.close()
+
+    def test_leaderless_group_is_reported_unverified_without_signalling(self):
+        record = self.record()
+        with patch.object(runner, 'journal_records', return_value=[record]), \
+             patch.object(runner, 'identity', return_value=None), \
+             patch.object(runner.resources, 'group_has_live_members', return_value=True), \
+             patch.object(runner.resources, 'atomic_json'), patch.object(runner.os, 'killpg') as kill:
+            evidence = runner.stop_recorded(Path('/owned/retained'))
+        kill.assert_not_called()
+        self.assertEqual(evidence['signals'], [])
+        self.assertEqual(evidence['remaining'][0]['reason'], 'leader absent; group state uncertain')
 
 
 if __name__ == '__main__':
