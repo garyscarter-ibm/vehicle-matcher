@@ -6,12 +6,13 @@ topic: technical
 story: none
 chain: MSG-2026-11-26-GC-berengar-004
 depth: 0
-status: answered
+status: closed
 opened: 2026-11-26
 counter_questions_used: 0
 acks: usget-velko 2026-11-26T11:03
 spawned: none
 subject: FUCQ-546 merged at 73b493c42: F559 refreshes onto it
+closed: 2026-11-26
 
 ## Turn 1
 from: garyscarter-ibm-berengar

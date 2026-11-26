@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-26T11:14:11.941490Z",
+  "observed_at": "2026-11-26T12:08:01Z",
   "version": 1,
   "stories": [
     {
@@ -13650,11 +13650,11 @@
     },
     {
       "id": "FUCQ-544",
-      "title": "Hide active deadline on terminal refused offers",
-      "status": "In Progress",
+      "title": "Angular offer screen still shows an active offer deadline after a definitive ordering refusal",
+      "status": "In Review",
       "type": "Bug",
       "branch": "dev/DEV-2026-11-22-vesper-020",
-      "observed_at": "2026-11-26T08:08:29Z",
+      "observed_at": "2026-11-26T12:08:01Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-544",
       "workers": [
         {
@@ -13701,7 +13701,9 @@
           "evidence": "Mergedb1d19fc18; root reviewed2module delta/syntax and independent165/165; final6/6registered f555 allzero timing across receipt/current signedreread/restart1280/390. Nativecomment5069096 readback plus exact receipt1280=1647965,receipt390=1647966,restart390=1647968 verified at08:01:06.724Z; alloriginalACs met/no productpatch. Shared18-familybrowserbatch pending overnight/CI; separateF555acceptance unchanged. Ownedcleanupverified."
         }
       ],
-      "unsliced": false
+      "unsliced": false,
+      "original_status": "In Review",
+      "assignee": "Russell Gowers"
     },
     {
       "id": "FUCQ-542",
