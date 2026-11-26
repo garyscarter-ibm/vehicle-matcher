@@ -74,10 +74,11 @@ async function notice(page, expected) {
   await until(() => message.evaluate((node) => node === document.activeElement), 'The outcome notice receives keyboard focus');
 }
 
-test('FUCQ-521: only a proven no-effect refusal permits deliberate retry; uncertain durable writes stay locked', { timeout: 480000 }, async () => {
-  const suite = await startComposition({ caseId: 'f521' });
+for (const scenarioId of ['normal-success', 'durable-pending']) test(`FUCQ-521: recovered deliberate confirmation, ${scenarioId}`, { timeout: 480000 }, async () => {
+  const suite = await startComposition({ caseId: 'f521', scenarioId });
   suite.receipt.noEffectRetry = { reads: [], refusals: [], recovered: [], transportFault: null,
-    coverageLimits: ['The browser receives a malformed acknowledgement after the genuine pending202; direct pending-acknowledgement UI and generic unavailable classification are covered by the focused Orders specs.'] };
+    coverageLimits: scenarioId === 'durable-pending'
+      ? ['The browser receives a malformed acknowledgement after the genuine pending202; direct pending-acknowledgement UI and generic unavailable classification are covered by the focused Orders specs.'] : [] };
   try {
     assert.ok(suite.appointments, 'The scoped test-only appointment host is required');
     const employee = await suite.newPage('employee', 'demo-paula', 'account');
@@ -139,6 +140,32 @@ test('FUCQ-521: only a proven no-effect refusal permits deliberate retry; uncert
       await capture(suite, employee, `no-effect-recovered-${width}`);
     }
     assert.equal(posts(suite).length, 2, 'Two deliberate refusals and no automatic replay');
+    if (scenarioId === 'normal-success') {
+      const success = await confirm(suite, employee, await review(suite, employee));
+      suite.receipt.noEffectRetry.success = success;
+      assert.equal(success.status, 200); assert.equal(success.body.status, 'ok');
+      assert.ok(!commandIds.includes(success.sent.commandId), 'Recovered confirmation has a fresh commandId');
+      assert.equal(success.sent.expectedVersion, 0); assert.equal(success.sent.slotId, original.offeredSlots[0].slotId);
+      const requested = await read(suite, employee, appointmentPath(orderUuid), 'Authoritative successful recovered request');
+      assert.equal(requested.state, 'requested'); assert.equal(requested.booked, false); assert.equal(requested.pending, null);
+      assert.equal(requested.requestedSlot.slotId, original.offeredSlots[0].slotId); assert.ok(requested.version > original.version);
+      const persisted = suite.appointments.persistence(orderUuid);
+      assert.equal(persisted.appointments, 1); assert.equal(persisted.pendingIntents, 1);
+      await notice(employee, /Update recorded\. Refresh to read the latest provider status\./);
+      for (const width of [1280, 375]) {
+        await employee.setViewportSize({ width, height: width === 1280 ? 800 : 844 });
+        await refresh(suite, employee);
+        const handover = employee.locator('section[aria-labelledby="handover-title"]');
+        assert.match(await handover.innerText(), /Requested .*Not booked yet\./);
+        assert.equal(await employee.locator('.order-review').count(), 0);
+        assert.equal(await handover.getByRole('button', { name: /^Request/ }).count(), 0);
+        assert.equal(posts(suite).length, 3, 'Successful recovery and refresh never repeat a command');
+        await capture(suite, employee, `recovered-request-success-${width}`);
+      }
+      assert.deepEqual(suite.receipt.consoleErrors, []);
+      suite.receipt.checks.noEffectRetry = true;
+      return;
+    }
     suite.appointments.configure(orderUuid, { writePending: true });
     const panel = await review(suite, employee);
     const requestUrl = `${suite.apiBase}/appointments/request`;

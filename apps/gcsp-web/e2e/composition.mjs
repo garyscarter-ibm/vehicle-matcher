@@ -68,16 +68,19 @@ function identity(pid) {
     ? { pid: Number(parts[0]), pgid: Number(parts[1]), start: parts.slice(2, 7).join(' '), executable: parts.slice(7).join(' ') } : null;
 }
 
-export async function startComposition({ caseId = 'f548', ordering = 'synthetic', claims = 'local' } = {}) {
+export async function startComposition({ caseId = 'f548', ordering = 'synthetic', claims = 'local', scenarioId = null } = {}) {
   assert.ok(['f340', 'f548', 'f549', 'f550', 'f551', 'f552', 'f553', 'f554', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked', 'f561', 'f520', 'f521', 'f595', 'f559', 'f559-learned'].includes(caseId));
   assert.ok(['synthetic', 'rejected', 'unknown-then-rejected'].includes(ordering));
   assert.ok(['local', 'controlled'].includes(claims));
+  assert.ok(scenarioId === null || (caseId === 'f521' && ['normal-success', 'durable-pending'].includes(scenarioId)));
   const scratch = local(process.env.SCRATCH ?? '');
   assert.ok(scratch.startsWith('/private/tmp/'), 'The supervisor must own /private/tmp scratch');
   const runOutput = local(process.env.GCSP_E2E_OUTPUT ?? '');
-  const output = caseId === 'f548' ? runOutput : path.join(runOutput, caseId);
+  const caseOutput = caseId === 'f548' ? runOutput : path.join(runOutput, caseId);
+  const output = scenarioId === null ? caseOutput : path.join(caseOutput, scenarioId);
   mkdirSync(output, { recursive: true });
-  const work = path.join(scratch, 'browser-suite', caseId);
+  const caseWork = path.join(scratch, 'browser-suite', caseId);
+  const work = scenarioId === null ? caseWork : path.join(caseWork, scenarioId);
   const dirs = Object.fromEntries(['certs', 'static', 'logs', 'tmp'].map((name) => [name, path.join(work, name)]));
   for (const dir of Object.values(dirs)) mkdirSync(dir, { recursive: true });
   const envId = 'e2e-' + randomUUID().slice(0, 12);
@@ -152,7 +155,7 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
   const orderingRequests = [];
   let rejectPending = false;
   const receipt = { schema: 'gcsp-notification-browser/1', sourceRevision: process.env.PROOF_SOURCE_REVISION,
-    reference: input.reference, caseId, composition: { origins, issuer, environmentId: envId, runId, database: database[3], ordering, claims,
+    reference: input.reference, caseId, ...(scenarioId === null ? {} : { scenarioId }), composition: { origins, issuer, environmentId: envId, runId, database: database[3], ordering, claims,
       identity: 'started Java demo issuer, code/PKCE and signed bearer validation', supply: 'tranche-plan over exact retained Node input' },
     input: { stockPlan: input.stockPlan, scenario: input.scenario, clock: input.clock },
     ...(walkthroughPreparation ? { walkthroughPreparation } : {}),
