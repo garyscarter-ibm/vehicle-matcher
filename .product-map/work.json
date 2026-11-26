@@ -13560,9 +13560,18 @@
           "expires_at": "2026-11-26T07:42:01.376200+00:00",
           "source": "native thread01a21686-f074-7bc0-a051-83806cb63766",
           "status": "active: F542 delivery"
+        },
+        {
+          "name": "Lord Business",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-26T06:43:51.201426+00:00",
+          "expires_at": "2026-11-26T07:43:51.201426+00:00",
+          "source": "native thread01a21698-34fb-7a61-8709-0a3dbe950ae7; requested/selected gpt-6-luna/high",
+          "status": "active: repair slice"
         }
       ],
-      "observed_at": "2026-11-26T06:42:01Z",
+      "observed_at": "2026-11-26T06:43:51Z",
       "slices": [
         {
           "id": "repair",
