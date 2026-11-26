@@ -1,5 +1,7 @@
 # Codex poller restart — 25 November 2026
 
+**Stopped 2026-11-26 12:49 UTC by Russell: “Stop the poller when ready.”** The browser lease was released before dispatch. Resume only on an explicit collaborator restart; see [the stop handover](poller-handover-2026-11-26-velko.md). The earlier running directives below are history for this stopped run.
+
 Russell explicitly requested “Start the dev poller please” at approximately 17:10 UK time. This resumes delivery after the 08:34 restart pause in `.claude/poller/sorrel.md`; the earlier stopped-run notices are historical. The new native root is `01a213af-901c-7841-9ea6-74441515265a`, poller `usget-velko`, integration branch `gcsp-poc-dev`.
 
 ## Current human directive
