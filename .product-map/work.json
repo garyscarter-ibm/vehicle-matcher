@@ -13551,7 +13551,7 @@
       "status": "In Progress",
       "type": "Bug",
       "branch": "dev/DEV-2026-11-22-vesper-020",
-      "observed_at": "2026-11-26T07:36:31Z",
+      "observed_at": "2026-11-26T07:43:29Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-544",
       "workers": [
         {
@@ -13594,8 +13594,8 @@
           "id": "integration",
           "status": "complete",
           "title": "Final-composition-proof-and-reconciliation",
-          "observed_at": "2026-11-26T07:36:31Z",
-          "evidence": "Real refused receipt/current signed refresh/literal API restart at 1280/390 all show zero active timing; accepted/allocated/handoff-failed identity preserved, one ordering POST, old JVM absent/new ready, owned cleanup verified. Refreshed to 660770092 with unchanged F544 paths; root 165 rerun passes; shared batch remains dispatcher-owned."
+          "observed_at": "2026-11-26T07:43:29Z",
+          "evidence": "Merged/pushedb1d19fc18. Root read full two-module diff, Node24syntaxchecks passed, independently165/165directtests on refreshedcd297ae3; finalmetadata84b310a27 preserved all executable identities. Lead6/6registeredf555 with realPG/OIDC receipt/currentsignedreread/restart1280/390 shows zero active timing, accepted/allocated/handoff-failed and one orderingPOST. Ownedcleanup verified. Shared18familybatch pending; F555 acceptance separate. docs/gcsp/evidence/fucq544/terminal-deadline-2026-11-26.md"
         }
       ],
       "unsliced": false
@@ -13627,7 +13627,7 @@
           "source": "/root/sulley/captain_flack"
         }
       ],
-      "observed_at": "2026-11-26T07:05:20Z",
+      "observed_at": "2026-11-26T07:43:29Z",
       "slices": [
         {
           "id": "dataset",
@@ -13647,8 +13647,8 @@
           "id": "integration",
           "status": "complete",
           "title": "Real-composition-and-final-validation",
-          "observed_at": "2026-11-26T07:03:59.113233+00:00",
-          "evidence": "Lead reviewed final diff; independent 73/73 Java across four learning and ten required startup classes, zero skips/failures, 27.84 s; strict Node activation stamp 5/5; unchanged 31 Node tests reused. Actual fixed-database absence and target/TMP/dependency cleanup verified. Full suites deferred to batch; hosted deployment unverified."
+          "observed_at": "2026-11-26T07:43:29Z",
+          "evidence": "Merged/pushed9488df8f9. Root reviewed final diff and independently passed36/36Node and17/17Java; unchanged lead73/73Java includes mandatory startup/wiring. Actual nativePG17/OIDC pinned-policy dated successor activation and hatch/unseen-cohort outcomes verified. Scratch/DB/process/link cleanup verified. Hosted unverified; canonical default inactive; shared covering batches still pending. docs/gcsp/models/fucq320-result.md"
         }
       ],
       "unsliced": false
