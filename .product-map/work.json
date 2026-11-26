@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-25T23:50:05Z",
+  "observed_at": "2026-11-26T03:09:51Z",
   "version": 1,
   "stories": [
     {
@@ -13338,6 +13338,21 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "id": "FUCQ-596",
+      "title": "F340 and F550 browser callers omit the explicit Presenter Advanced toggle",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Bug",
+      "observed_at": "2026-11-26T03:09:51Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-596",
+      "unsliced": true,
+      "branch": "dev/DEV-2026-11-26-velko-001",
+      "native_parent": "FUCQ-432",
+      "native_observed_at": "2026-11-26T03:09:51Z",
+      "note": "Native In Review observed 2026-11-26T03:09:51Z; all five original acceptance items evidenced. Registered f340/f550 passed 12/12 at 6e9f1f54d; integrated da5354e51. Shared covering browser batch remains pending. No human acceptance or active source worker inferred."
     }
   ]
 }
