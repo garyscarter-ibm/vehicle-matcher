@@ -97,8 +97,8 @@ async function refresh(page) {
   const response = page.waitForResponse(row => row.request().method() === 'GET' && new URL(row.url()).pathname.endsWith('/manual/claim'));
   await button(page, 'Check current claim').click(); await response; await settled(page);
 }
-async function continueReview(page) {
-  await button(page, 'Continue to order review').click();
+async function continueReview(page, label = 'Continue to order review') {
+  await button(page, label).click();
   await page.getByRole('heading', { name: 'Review your order', exact: true, level: 1 }).waitFor();
   await settled(page);
 }
@@ -205,7 +205,7 @@ test('FUCQ-554: authoritative manual review, six-card summary and safe navigatio
       ['Change return mileage', '#manual-return-mileage', '20001']]) {
       await employee.locator('[id^="manual-declaration-"]').first().check();
       await button(employee, name).click(); await employee.locator(selector).waitFor();
-      await employee.locator(selector).fill(value); await saveDetails(employee); await continueReview(employee);
+      await employee.locator(selector).fill(value); await saveDetails(employee); await continueReview(employee, 'Return to order review');
       assert.equal(await employee.locator('[id^="manual-declaration-"]:checked').count(), 0, 'Editing details invalidates all declarations');
       const current = good(await suite.call(employee, 'GET', '/manual/claim'), 'Actual retained summary hold');
       assert.equal(current.hold.holdId, summary.hold.holdId); assert.equal(current.hold.expiresAt, summary.hold.expiresAt);
