@@ -1,0 +1,51 @@
+{
+  "story": "FUCQ-596",
+  "observed": "2026-11-26T02:55:34.065482+00:00",
+  "source": "6e9f1f54d0029458f52f666c880461a5800bf631",
+  "identityKind": "git-blob",
+  "files": {
+    "apps/gcsp-web/e2e/suv-walkthrough.test.mjs": "02dd41aa34d2559ed90776625645d63dfaf11511",
+    "apps/gcsp-web/e2e/live-refresh.test.mjs": "e9703a3cccc9613ccf8616ef9cc7e01dc3a72426",
+    "apps/gcsp-web/e2e/composition.mjs": "64a59db457f2439b5e19329d27de504eaf7c38a4",
+    "apps/gcsp-web/e2e/run.py": "4e9f99fe335dbe5229d2666c62b7b82fe1fb33fa",
+    "server/gcsp/fixtures/scenarios/suv-walkthrough-v1.json": "da9d7383af6169eedf5e90d2739b9566b08e69b8",
+    "apps/gcsp-web/src/app/presenter/presenter.component.ts": "5d76ddc6b06705713af8ebd6ef2c95b1086a478b",
+    "apps/gcsp-web/src/app/presenter/presenter.component.html": "eb3f256c89235ed273f1d0a7dd05f69d505c50ed"
+  },
+  "map": {
+    "suv-walkthrough.test.mjs/resetMain and release post-reset Advanced entry": [
+      "registered f340: baseline and SUV at 1280 and 390; four actual resets; existing replay/model/fit/terms assertions"
+    ],
+    "live-refresh.test.mjs/Presenter return readiness and Advanced entry": [
+      "registered f550: full refresh/account/chip/outbox/Step assertions; pathname/mode/loaded-time before-after evidence"
+    ],
+    "composition.mjs/showAdvanced (read-only)": [
+      "f340 and f550 deliberately opt into the unchanged helper"
+    ],
+    "run.py/CASES f340+f550 (read-only)": [
+      "existing registered selected-family runner"
+    ],
+    "suv-walkthrough-v1.json (read-only)": [
+      "f340 real reset/seed/replay inputs"
+    ],
+    "PresenterComponent advanced=false and explicit toggle (read-only)": [
+      "unchanged product identity; final F550 before false/after true observation"
+    ]
+  },
+  "checks": [
+    "both caller node --check commands passed",
+    "exact two-path test_drift: 0 hits, 0 list errors, 4 configured categories",
+    "registered f340/f550: 12 passed, 0 failed/cancelled/skipped"
+  ],
+  "runReceipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f596-20261126/browser-6e9f1f54d-chromium159/run-receipt.json",
+  "metrics": {
+    "suiteSeconds": 347.323677,
+    "runnerSeconds": 347.748926,
+    "peakRssBytes": 2342240256,
+    "peakScratchBytes": 228408928,
+    "databaseDropped": true,
+    "scratchRemoved": true
+  },
+  "boundary": "Scoped caller setup repair only. Existing assertions and inputs retained. Full suite deferred to shared batch; no function/line instrumentation or human parity verdict claimed.",
+  "causeLimit": "F340 fresh post-reset Basic entry is evidenced. F550 first failed mode attribute/click was not recorded; synchronized success does not prove an absent-attribute race."
+}
