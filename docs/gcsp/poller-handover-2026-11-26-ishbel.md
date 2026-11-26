@@ -1,4 +1,4 @@
-# Poller hand-over: ishbel, 26 November 2026, 22:00 UTC
+# Poller hand-over: ishbel, 26 November 2026, 23:05 UTC (updated)
 
 Gary's Claude dev poller, registered as `garyscarter-ibm-ishbel` (lease until 2026-11-27T08:46Z). Retiring at about
 310k tokens of context. Russell's `usget-baymax` (Codex) had a live poller lease to 21:06Z and held no batch or
@@ -10,17 +10,28 @@ Run the dev poller per the `scaffolding:dev-inbox` skill: the generic `reference
 steps in `docs/dev-inbox-ext/`. Read `AGENTS.md` first (OneDrive ban, Story test set, Shared local test stack). The
 shared checkout stays on `gcsp-poc-dev`.
 
-## In flight: do not touch until ishbel reports it retired
+## Owned and waiting: the successor takes it over
 - **DEV-2026-11-19-GC-ishbel-001 = FUCQ-599** (C; skeleton loading on every Angular GCSP screen). Claimed at 8 points
   (triage: horse, by The Brain, cdf4a97b3). Jira: In Progress, assignee Gary, 8 points, start 2026-11-26, labels and
-  branch comment, all read back. Story-lead **Heihei** (ishbel's own subagent) is building it on
-  `dev/DEV-2026-11-19-GC-ishbel-001` in `.claude/worktrees/DEV-2026-11-19-GC-ishbel-001`. At 21:36Z it had 3 commits.
-  Ishbel merges, closes and does Jira for it, then retires. If ishbel's session is gone and the story has no
-  `## Result`, resume it with a fresh story-lead on the same branch.
-- Scope rulings given to Heihei: screens with no Node skeleton still get one, reusing page, console or section (no new
-  layout). Sub-panel loading text is out of scope and is listed under "not done" for a collaborator to raise.
-- Its browser cases run under `heavy` (3.5 GiB) on the final commit, so after 00:00 GMT on the new base, sharing the
-  slot with the web-e2e batch below. Heihei was told to `refresh` onto d768ac4b2 before that final run.
+  branch comment, all read back. Story-lead Heihei reported **`waiting`** at 23:00Z: code `ce29de193`, Result
+  `f62a86be0`, in `.claude/worktrees/DEV-2026-11-19-GC-ishbel-001`. Specs: 74 files, 1423 passed on pinned Node 24.22.3;
+  `check:boundaries` passes; drift 0 new. Layouts: shell, state page, stock and manual route use `page`; Your cars
+  `feature`; activity and orders `timeline`; preferences `form`; case queue, Greg demand/policy, order plan,
+  comparison, outbox and presenter `console`; production status `section`. `LoadingSkeletonComponent` is reused
+  unchanged.
+- **The branch is not pushed** (only in this clone's worktree). The subagent's permission classifier refused the
+  explicit branch push, and `scaffold_git.py push` pushes only the base branch. The worktree's claim is ours
+  (`cleanup_client: 516ca3553159`), so do not drop it.
+- **Left to make it built:** run the 11 browser cases (f549, f551, f552, f553, f554, f556, f557, f558, f559, f560,
+  f561; f551 also has the reduced-motion check) on the merging commit, after 00:00 GMT (3.5 GiB, kit night window),
+  under `heavy`. Not alongside the web-e2e batch: heavy serialises them. First `refresh --id` onto the current base,
+  rerun the spec set, then run the cases. Most cases need `GCSP_NODE_REFERENCE`, a clean checkout of `e44ed08a`, which
+  this Mac lacks (make one as a git worktree at that commit). Set `GCSP_E2E_PG_MODULE` to
+  `server/node_modules/pg/lib/index.js` and TMPDIR under `/tmp` (the temp-path tests fail under the default macOS
+  TMPDIR). `node link` is still in place in the worktree; `node unlink` before the worktree is removed. The subagent's
+  classifier also refused starting `run.py`, so Gary may need to approve it (learning DL-20261126-ISHBEL-02).
+- Scope rulings: screens with no Node skeleton still get one (no new layout). Sub-panel loading text is out of scope
+  and listed under "not done" for a collaborator to raise.
 
 ## For the successor
 - **web-e2e is due and unleased.** Last line at 68eacb337. Uncovered matching merges: 73b493c42 (FUCQ-546),
