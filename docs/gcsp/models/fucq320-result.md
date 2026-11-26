@@ -1,6 +1,6 @@
-# FUCQ-320 dataset and offline evaluation
+# FUCQ-320 retraining, local activation and evaluation
 
-26 November 2026. Dataset slice only; application activation and Java integration remain with the story lead.
+26 November 2026. All four original acceptance items are proved on the actual local composition. Hosted deployment remains unverified; the canonical default stays inactive.
 
 Data strategy: specified — existing offline synthetic data → digest-pinned artifact → dated PolicyService `choice.model.reference` publication/readback. PI held: none. No store, schema, eligibility, forecasting rule or model math changes.
 
@@ -73,7 +73,7 @@ That reproduction test failed before a one-line repair: the offline baseline rep
 
 Prior setup evidence: missing `pg` prevented the first load; shared cache links resolved it without installation. Before reviewed decline-reason adoption the actual trainer returned `baseline-unavailable/FUCQ-99.readDemand`; that first raw failure log was overwritten, so only its observed code/field is retained. With decline reasons adopted but original needs, it returned `baseline-unavailable/FUCQ-99.exact-body-count`: the training population had saloon 19 / estate 22 / SUV 18 / hatchback 0. The approved isolated hatchback assumption resolved that source gap without weakening baseline refusal.
 
-Resource supervisor used one worker, 120-second chunks, 1 GiB RAM target and 64 MiB scratch bound. Final generation: 1.17 s, peak RSS 237,207,552 bytes; full forecast file: 21.35 s, 317,014,016 bytes; full model file: 2.42 s, 305,299,456 bytes. Peak sampled disposable data was 10,546,684 bytes. Every owned command joined; `captain-flack-scratch` was removed and absence verified. The root and `server/` shared dependency links created for this slice were unlinked and their absence verified; no database, browser, Java, OneDrive access or full suite ran. Full suite: deferred to batch. No new screenshots: this changes offline data/provenance and preserves the existing response presentation contract.
+The dataset-slice resource supervisor used one worker, 120-second chunks, 1 GiB RAM target and 64 MiB scratch bound. Final generation: 1.17 s, peak RSS 237,207,552 bytes; full forecast file: 21.35 s, 317,014,016 bytes; full model file: 2.42 s, 305,299,456 bytes. Peak sampled disposable data was 10,546,684 bytes. Every owned command joined; `captain-flack-scratch` was removed and absence verified. The root and `server/` shared dependency links created for this slice were unlinked and their absence verified; no database, browser, Java, OneDrive access or full suite ran. Full suite: deferred to batch. No new screenshots: this changes offline data/provenance and preserves the existing response presentation contract.
 
 Tested checkout: story branch `dev/DEV-2026-11-16-029`; final committed source identity is recorded by the parent’s story result. The following are selected source hashes, not a complete transitive source closure:
 
@@ -87,4 +87,79 @@ Tested checkout: story branch `dev/DEV-2026-11-16-029`; final committed source i
 | `server/gcsp/policy/reviewed/offer-decline-reasons-v1.json` | `1f1b632be83ddef1a5656288b4e40c0378736cda5c21fcf03de68544dfbe688f` |
 | `server/gcsp/predict/model/baselines.js` | `25685d4067d5ea187130e31bcb5ea5af9d3dbf387f3a44788a7501e05cf195ce` |
 
-Agents: Captain Flack, requested/selected Sol (`gpt-6.1-sol`) / medium, no fallback or descendants. Title verified. Parent owns activation decision/publication, Java/OIDC/PG integration, independent review and commits; this report does not mark those acceptance obligations complete.
+Dataset-slice agents: Captain Flack, requested/selected Sol (`gpt-6.1-sol`) / medium, no fallback or descendants. Title verified. The lead subsequently completed activation review and independent Java/OIDC/PostgreSQL verification, recorded below.
+
+## Local activation and integration — 26 November 2026
+
+The local activation decision follows Gary’s 9 November option A and the reviewed actual learned-versus-baseline results above, retaining iteration-limit, thin-class and wait-only holdout limitations. No numerical activation cutoff was added. Canonical defaults remain inactive; the reviewed placeholder and historical artifact/reference are unchanged. Hosted activation and deployment are unverified and were not changed.
+
+`server/test/gcsp-choice-model-activation.test.js` passes 5/5. Its actual memory PolicyService reviewed adoption and dated publications show the old reference before `2026-11-26T09:00:04.000Z`, the new digest at that instant in a distinct version, and the old artifact under a retained old pin. Existing historical positive activation/default-unavailable checks remain.
+
+The Java proof uses actual PostgreSQL 17 in a private schema, real RS256 tokens verified through the test JWKS/OIDC provider, actual PolicyAdoption/PolicyService, and the real PostgreSQL demand/supply adapters. The class-owned profile configures OIDC to the distinct `fucq320-hatchback-reference-v1` policy before requests. Normal reviewed adoption creates the historical `gcsp-policy-v1+learned-model-v1` row. A separately dated, explicitly test-only catalogue precursor (`fucq320-test-coupe-catalog-v1`, `2026-11-26T09:00:03.999Z`) changes one existing G20 Saloon 320i configuration’s body to a hypothetical coupe, preserving its eligibility key and terms. The following reference-only publication then takes effect at `09:00:04.000Z`; actual activated-policy and artifact readers verify it, and the complete historical policy snapshot remains structurally equal.
+
+This proves configured successor/restart semantics. It does not claim an existing OIDC principal hot-switches policy: `OidcIdentity` intentionally retains its configured policy version and that contract was preserved. The unchanged `LearnedPlanJourneyHttpTest` covers historical configured startup in the lead’s covering run. The new profile creates no model at startup and makes no HTTP call until its configured successor has actually been published.
+
+Under that same pinned successor, real employee preferences/draft/confirm routes first save a hatchback brief with an essential `modelLine = F70 Sports Hatch`. The real prepared prediction input has a nonempty permitted hatchback choice, and Greg’s actual HTTP learned section is available with digest `e5205f65966d87d6895509bda13fa861e87476d843aabecce7bd76bf0e4fffc2`, the correct activation version/date, nonempty aggregate and later evaluation support 153; it remains `recommended: false`, `submittable: false`, beside the expressed-demand baseline. A subsequent actual confirmed brief with essential `modelLine = G20 Saloon` permits the hypothetical coupe. Its real prediction input is asserted nonempty before Greg’s HTTP result returns whole-cohort `fallback / outside-coverage`, identifying `coupe` and supplying no learned forecast. No response, gate result or refusal is cloned or preselected.
+
+The exact successfully executed reference command is retained below. Replaying it assumes the isolated run and precursor from the test setup; the test publishes through `PolicyService.publishPolicyVersion(principal, command, actualRunClockNow)`, preserving the caller-owned clock pin used by Greg’s existing publication path.
+
+```json
+{
+  "commandId": "cmd-learnj-beddfa16-653b-4a4d-a321-b18923543cfa",
+  "expectedActiveVersion": "fucq320-test-coupe-catalog-v1",
+  "policyVersion": "fucq320-hatchback-reference-v1",
+  "effectiveFrom": "2026-11-26T09:00:04.000Z",
+  "changes": [
+    {
+      "table": "assumptions",
+      "key": "choice.model.reference",
+      "patch": {
+        "value": {
+          "artifactId": "sha256:e5205f65966d87d6895509bda13fa861e87476d843aabecce7bd76bf0e4fffc2",
+          "featureVersion": "vehicle-preference-v1",
+          "schemaVersion": 1
+        },
+        "status": "assumed",
+        "basis": "Synthetic-trained engineering artifact. Optimizer status: iteration-limit. Retained evaluation and limitations apply. No BMW calibration.",
+        "source": "docs/gcsp/models/artifacts/e5205f65966d87d6895509bda13fa861e87476d843aabecce7bd76bf0e4fffc2.json",
+        "sourceDate": "2026-11-26"
+      }
+    }
+  ]
+}
+```
+
+`LearnedModelActivation.reference` now sources metadata from the exact immutable digest path. It reports the artifact’s actual optimizer status (unknown when absent), retains evaluation/limitations and makes no BMW-calibration claim. Valid `trainingSettings.policyRead.asOf` supplies sourceDate (6 November for the historical artifact, 26 November for its successor). A missing/invalid training instant uses the observed adoption date and explicitly states that the training date is unavailable; it does not add an artifact refusal. Existing stored rows, replay guard, off/configuration guards and old artifact remain unchanged. A meaningful red captured the former hardcoded FUCQ-115 report path; the corrected direct tests cover old/new metadata, unavailable dates/status and a different actual converged status.
+
+Validation commands executed in the story worktree:
+
+```sh
+node --test --test-concurrency=1 server/test/gcsp-choice-model-activation.test.js
+python3 -B _tools/test_stack.py java-test --worktree /Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-16-029 --run fucq320-activation -- '-Dtest=gcsp.api.learning.LearnedHatchbackHttpTest,gcsp.api.learning.LearnedModelActivationTest'
+```
+
+Final narrow results: Node 5/5; Java 9/9 (one real composition case and eight activation/metadata cases), zero skipped/errors/failures. Java elapsed 11.91 s; `/usr/bin/time -l` single-command maximum RSS 615,759,872 bytes. The shared heavy slot reserved 3 GiB; aggregate descendant RSS was not measured by this supervisor. Peak sampled target plus disposable scratch was 28,052,519 bytes within the 128 MiB bound. No chunk overran or needed termination. The lead owns final covering/startup verification; this slice did not run the full suite or repeat those covering classes.
+
+Intermediate fixture errors remain explicit: the initial release tick made a fixed 09:00:04 clock target move backwards; a publication using wall time resolved an earlier base instead of the advanced run; the subsequent real HTTP call correctly retained its configured historical pin. The accepted proof now uses the distinct successor configuration, actual run-clock publication and retained historical reader checks. A second brief initially reused an obsolete version after consented autosave; the helper now rereads the actual editor versions between writes. None of these corrections weakened application assertions or changed auth/planning runtime behavior.
+
+All owned command handles completed and joined. Disposable `captain-flack-activation-scratch` is absent. Parent-owned root/server dependency links were preserved. The initially absent Maven target is explicitly transferred to Sulley for immediate independent verification and final deletion; its device/inode/bytes and transfer are recorded in the local `captain-flack-activation-ownership.json`. Compact logs, receipts and the actual command packet remain in `captain-flack-activation-output`. No OneDrive, hosted database, browser or deployment was accessed. Metadata-only behavior has no layout change; actual HTTP presentation fields provide the relevant response evidence.
+
+## Lead review and final scoped validation
+
+Sulley reviewed the complete product/test delta against the four unchanged acceptance items, retained historical pins and source contracts. The only runtime changes are the offline repository clock-port injection and artifact-derived activation provenance. Coverage, eligibility, held-out cohorts, model mathematics, configured policy pinning and baseline-only recommendation/submission remain unchanged. The activation decision retains the honest learned-versus-baseline comparison above and follows Gary’s authorised option A; no extra numeric gate was invented.
+
+Independent lead checks on the final product/test source passed: 31/31 model and forecast tests (reused unchanged after dataset checkpoint `1336d4c76`), 5/5 activation tests through strict targeted validation, and 73/73 Java tests in the four learning classes plus all ten project-required startup/wiring classes. All had zero failures and skips. Full suite: deferred to batch; acceptance awaits the dispatcher’s covering batch line.
+
+```sh
+node --test --test-concurrency=1 server/test/gcsp-choice-model.test.js server/test/gcsp-demand-forecast.test.js
+python3 -B _tools/test_stamp.py --targeted e1a0a69ec1b1dae03eedd235e37356ffd51db699 --reason 'FUCQ-320 explicit activation module; unchanged model/forecast evidence reused; Java owning/startup checks separately verified' --command 'node --test --test-concurrency=1 server/test/gcsp-choice-model-activation.test.js'
+python3 -B _tools/test_stack.py java-test --worktree /Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-16-029 --run f320-covering --running -- '-Dtest=gcsp.api.learning.LearnedHatchbackHttpTest,gcsp.api.learning.LearnedModelActivationTest,gcsp.api.learning.LearnedPlanJourneyHttpTest,gcsp.api.learning.LearnedPlanDefaultHttpTest,gcsp.api.DefaultProfileTest,gcsp.api.OidcContextTest,gcsp.api.OidcIdentityTest,gcsp.api.IdentitySelectionTest,gcsp.api.persistence.PersistenceWiringTest,gcsp.api.persistence.NotConfiguredReadinessTest,gcsp.api.claims.ClaimWiringTest,gcsp.api.notify.NotificationDrainWiringTest,gcsp.api.appointments.AppointmentsWiringTest,gcsp.api.ordering.RemoteOrderingStartupTest'
+```
+
+The final Java command ran inside the shared heavy slot and a supervisor that measured the aggregate process-group RSS, bounded owned target plus TMP, and joined the group before cleanup: 27.84 seconds, peak RSS 1,837,318,144 bytes, peak target/TMP 34,219,968 bytes, within 3 GiB/128 MiB/600-second bounds. The transferred Maven target and owned TMP were deleted and absence verified; actual SQL confirmed both fixed test databases absent while the heavy slot was still held. Parent-owned root/server dependency links were unlinked through the shared-stack tool and their absence verified; dependency caches and the shared cluster were preserved. Node activation peak RSS was 320,733,184 bytes, wall 1.63 seconds; its scratch was removed. No owned process remains.
+
+The targeted evidence is `/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-73cb07876f45a23954143b63aa688b12e196c7bac1c9678ee1f0e2147d861afe-default-1795676446152783000.json` (variant `default`, code key `73cb07876f45a23954143b63aa688b12e196c7bac1c9678ee1f0e2147d861afe`, base `e1a0a69ec1b1dae03eedd235e37356ffd51db699`). It records the tested source before final documentation/map/cleanup commits; product and test bytes remain unchanged. Java receipt and bounded output are under `/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f320-20261126/java-final-review`; dataset review, activation checkpoint and cleanup evidence remain under the same local report root.
+
+The scoped drift scan ran and exited 1 with two `clock-mix` heuristic hits, reviewed as false positives: `gcsp-choice-model.test.js` combines a static provenance date with the explicitly mocked 26/27 November wall-clock reproduction test (and an unrelated invalid `new Date()` canonical-JSON input); `LearnedHatchbackHttpTest` combines a static source date with the controlled run clock. Neither compares a pinned calendar date with today’s wall clock. No scanner or application rule was weakened. The initial same-process hot-switch assumption was corrected to the explicit pinned-activation contract; no product defect was demonstrated.
+
+The result proves actual local dated publication and the configured successor HTTP composition, including old pins and unseen-class refusal. It does not claim hosted configuration or persistence after the deliberately disposable test database is removed. The exact packet and executable reproduction above make the authorised activation reviewable and repeatable.

@@ -22,6 +22,8 @@ import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptor;
 import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.Optional;
@@ -138,7 +140,7 @@ public class LearnedModelActivation {
             if (reading == null) throw stop(version, "the run clock could not move 1 ms past the start of " + base);
         }
         PolicyAdoption.Result result = adoption.adopt(new RunContext(env, run, ACTOR), ReviewedDefinitions.CHOICE_MODEL_SET,
-                version, reading.now(), base, Map.of(ActiveChoiceModel.REFERENCE_KEY, reference(model, artifact)));
+                version, reading.now(), base, Map.of(ActiveChoiceModel.REFERENCE_KEY, reference(model, artifact, reading.now())));
         if (!result.ok()) {
             throw stop(version, result.status() + ": " + result.detail()
                     + " Check that " + base + " is the active version of the run");
@@ -154,7 +156,7 @@ public class LearnedModelActivation {
         return summary;
     }
 
-    private static ObjectNode reference(String model, ModelArtifact artifact) {
+    static ObjectNode reference(String model, ModelArtifact artifact, Instant observedAt) {
         JsonNodeFactory json = JsonNodeFactory.instance;
         ObjectNode value = json.objectNode();
         value.put("artifactId", model);
@@ -163,10 +165,21 @@ public class LearnedModelActivation {
         ObjectNode row = json.objectNode();
         row.set("value", value);
         row.put("status", "assumed");
-        row.put("basis", "Synthetic-trained engineering artifact; thin vehicle choices, worse Brier than both baselines, "
-                + "optimizer iteration-limit. No BMW calibration.");
-        row.put("source", "docs/gcsp/models/fucq115-evaluation-result.md");
-        row.put("sourceDate", "2026-11-06");
+        String optimizer = artifact.payload().at("/optimizer/status").asText("unknown");
+        if (optimizer.isBlank()) optimizer = "unknown";
+        String basis = "Synthetic-trained engineering artifact. Optimizer status: " + optimizer
+                + ". Retained evaluation and limitations apply. No BMW calibration.";
+        String sourceDate;
+        try {
+            sourceDate = Instant.parse(artifact.payload().at("/trainingSettings/policyRead/asOf").asText(""))
+                    .atZone(ZoneOffset.UTC).toLocalDate().toString();
+        } catch (DateTimeParseException e) {
+            sourceDate = observedAt.atZone(ZoneOffset.UTC).toLocalDate().toString();
+            basis += " Training date unavailable; sourceDate records adoption observation.";
+        }
+        row.put("basis", basis);
+        row.put("source", "docs/gcsp/models/artifacts/" + model.substring(7) + ".json");
+        row.put("sourceDate", sourceDate);
         return row;
     }
 
