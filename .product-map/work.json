@@ -13652,6 +13652,51 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "id": "FUCQ-542",
+      "title": "Returns use the active run clock independent of supply",
+      "type": "Bug",
+      "status": "In Progress",
+      "branch": "dev/DEV-2026-11-22-vesper-018",
+      "workers": [
+        {
+          "name": "Pugh",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-26T07:21:19.221758+00:00",
+          "expires_at": "2026-11-26T07:21:19.221758+00:00",
+          "source": "native thread01a21686-f074-7bc0-a051-83806cb63766",
+          "status": "waiting: scoped205/205 delivered; root-coordinated refresh/full Java pending"
+        },
+        {
+          "name": "Lord Business",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-26T07:16:56.971678+00:00",
+          "expires_at": "2026-11-26T07:16:56.971678+00:00",
+          "source": "native thread01a21698-34fb-7a61-8709-0a3dbe950ae7; requested/selected gpt-6-luna/high",
+          "status": "stopped: source66bb592d pushed; lead205/205 verified"
+        }
+      ],
+      "observed_at": "2026-11-26T08:04:17Z",
+      "slices": [
+        {
+          "id": "repair",
+          "status": "complete",
+          "title": "Provider-independent return clock and regression",
+          "observed_at": "2026-11-26T07:16:57Z",
+          "evidence": "Lead reviewed six-file diff; independent final205/205 on source66bb592d with real OIDC/native PG none-supply plan/progress. Result in DEV-2026-11-22-vesper-018; strict targeted code_key5ecee2ac."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Lead validation and matching Java support gate",
+          "observed_at": "2026-11-26T08:04:17Z",
+          "evidence": "Required canonical Java CI45775454699 at75e1d539e982b048642da345b92f41ff470814fe passed clean verify:2340cases/2337executed/0fail/0error/3explicit unrelated environmentgatedskips; all106returns and actual none-supply/clock/startupwiring passed. Reports/collector/cleanup valid; peak4174303232B/scratch102187008B. Finalmetadatarefresh3f4e27447 Java/Nodeparity/fixture/workflow objectidentities equal CI. Root reviewed fullsixfiledelta. Sharedbrowserbatch/native reconciliation pending."
+        }
+      ],
+      "unsliced": false
     }
   ]
 }

@@ -109,6 +109,14 @@ class ReturnJourneyHttpTest {
         assertEquals("synthetic", data.get("provider").asText());
         j.startOrder();
         String order = j.order;
+        var run = persistence.guard().currentRun();
+        assertEquals(0, j.count("SELECT count(*) FROM supply_release_ticks WHERE environment_id = ? AND run_id = ?",
+                run.environmentId(), run.runId()));
+        Response initialPlan = j.plan("paula", order);
+        assertEquals(200, initialPlan.statusCode(), initialPlan.asString());
+        Response initialProgress = j.post("presenter", "/presenter/returns/progress",
+                "{\"commandId\":\"rj-progress-before-supply\"}");
+        assertEquals(200, initialProgress.statusCode(), initialProgress.asString());
         Response unknown = j.plan("paula", "no-such-order");
         assertEquals(404, unknown.statusCode(), unknown.asString());
 
@@ -139,6 +147,12 @@ class ReturnJourneyHttpTest {
 
         // 4. Scheduled: same-visit offers exactly the handover slot, and the request is pinned and idempotent.
         JsonNode scheduled = j.scheduleHandover();
+        assertEquals(j.t1, Instant.parse(j.clock().get("now").asText()));
+        assertEquals(0, j.count("SELECT count(*) FROM supply_release_ticks WHERE environment_id = ? AND run_id = ?",
+                run.environmentId(), run.runId()));
+        Response advancedProgress = j.post("presenter", "/presenter/returns/progress",
+                "{\"commandId\":\"rj-progress-after-advance\"}");
+        assertEquals(200, advancedProgress.statusCode(), advancedProgress.asString());
         JsonNode offer = j.planValue("paula", order);
         assertEquals("not-planned", offer.get("state").asText());
         assertEquals(1, offer.get("offeredSlots").get("same-visit").size());
@@ -231,5 +245,18 @@ class ReturnJourneyHttpTest {
         j.restart(schema, selection, sources, handovers, startup);
         assertEquals(before, j.evidence(order, "greg"));
         assertEquals(0, j.count("SELECT count(*) FROM pending_operations WHERE state IN ('intent', 'pending')"));
+
+        // 10. A run-clock read failure is translated into the returns' existing unavailable responses.
+        try (Connection c = dataSource.get().getConnection(); Statement st = c.createStatement()) {
+            c.setSchema(schema);
+            st.execute("ALTER TABLE run_clocks RENAME TO run_clocks_unreadable");
+        }
+        Response unreadablePlan = j.plan("paula", order);
+        assertEquals(503, unreadablePlan.statusCode(), unreadablePlan.asString());
+        assertEquals("return-plan-unavailable", body(unreadablePlan).get("code").asText(), unreadablePlan.asString());
+        Response unreadableProgress = j.post("presenter", "/presenter/returns/progress",
+                "{\"commandId\":\"rj-progress-unreadable-clock\"}");
+        assertEquals(503, unreadableProgress.statusCode(), unreadableProgress.asString());
+        assertEquals("database-unavailable", body(unreadableProgress).get("code").asText(), unreadableProgress.asString());
     }
 }
