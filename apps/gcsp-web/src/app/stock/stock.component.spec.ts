@@ -94,6 +94,42 @@ describe('released stock screen', () => {
       failure: null, takenIds: [], refresh: 0 }); fixture.detectChanges(); component.reviewDetail();
     expect(review).toHaveBeenCalledExactlyOnceWith(component.store.selectedCar()!.review);
   });
+  it('waits for terminal recovery stock refresh then retries the exact car with only its current supplied pins', async () => {
+    const { root, fixture, component } = await screen(); const review = vi.fn(); const retry = vi.fn();
+    component.review.subscribe(review); component.retryReservation.subscribe(retry);
+    let finish!: (value: unknown) => void;
+    client.readStock.mockReturnValueOnce(new Promise(resolve => { finish = resolve; }));
+    fixture.componentRef.setInput('reservation', { state: 'failed', blocked: false, selection: null, claim: null,
+      failure: 'claim-failed', takenIds: [], retryTargetId: 'stock-1', refresh: 1 });
+    fixture.detectChanges();
+    const action = button(root, 'Retry this reservation'); expect(action).toBeDefined(); expect(action.disabled).toBe(true);
+    action.click(); expect(review).not.toHaveBeenCalled(); expect(retry).not.toHaveBeenCalled();
+    const current = stock(); const decisions = current.decisions.map(car => car.orderUuid === 'stock-1'
+      ? { ...car, claimInput: { ...car.claimInput!, expectedStockVersion: 90 } } : car);
+    const fresh = { ...current, decisions, cars: decisions.filter(car => car.gateStatus === 'eligible') };
+    finish({ status: 'ok', value: fresh }); await fixture.whenStable(); fixture.detectChanges();
+    expect(component.store.failure()).toBeNull();
+    await vi.waitFor(() => { fixture.detectChanges(); expect(component.store.loading()).toBe(false);
+      expect(component.freshRetryCar()).not.toBeNull(); expect(button(root, 'Retry this reservation').disabled).toBe(false); });
+    button(root, 'Retry this reservation').click();
+    expect(review).toHaveBeenCalledExactlyOnceWith(component.store.allCars()[0].review);
+    expect(review.mock.calls[0][0].claimInput.expectedStockVersion).toBe(90); expect(retry).not.toHaveBeenCalled();
+  });
+  it.each(['missing', 'ineligible', 'no-pins', 'unavailable'])('does not retry a terminal car from %s refreshed stock or substitute its configuration', async variant => {
+    const { root, fixture, component } = await screen(); const review = vi.fn(); component.review.subscribe(review);
+    const current = stock(); const decisions = current.decisions.filter(car => variant !== 'missing' || car.orderUuid !== 'stock-1')
+      .map(car => car.orderUuid === 'stock-1' ? { ...car, ...(variant === 'ineligible' ? { gateStatus: 'ineligible' as const, claimInput: null } : {}),
+        ...(variant === 'no-pins' ? { claimInput: null } : {}) } : car);
+    const cars = decisions.filter(car => car.gateStatus === 'eligible');
+    const fresh = { ...current, decisions, cars, total: cars.length };
+    client.readStock.mockResolvedValueOnce(variant === 'unavailable' ? { status: 'unavailable', code: 'stock-read-failed', retryable: true } : { status: 'ok', value: fresh });
+    fixture.componentRef.setInput('reservation', { state: 'failed', blocked: false, selection: null, claim: null,
+      failure: 'claim-failed', takenIds: [], retryTargetId: 'stock-1', refresh: 1 });
+    await fixture.whenStable(); fixture.detectChanges();
+    if (variant !== 'unavailable') expect(component.store.failure()).toBeNull();
+    const action = button(root, 'Retry this reservation'); expect(action).toBeDefined(); expect(action.disabled).toBe(true);
+    action.click(); expect(review).not.toHaveBeenCalled();
+  });
   it('filters through existing store from native search/sort and shows a clear-filter recovery', async () => {
     const { root, fixture, component } = await screen(); const search = root.querySelector<HTMLInputElement>('#stock-query')!;
     search.value = 'missing model'; search.dispatchEvent(new Event('input', { bubbles: true })); fixture.detectChanges();
