@@ -1,15 +1,20 @@
 """affected/python.py -- test_stamp.py's Python plug-in: which unittest modules a change affects, and the sharded
 unittest runner. Loaded by path from test_stamp.py (`affected/<language>.py` next to it); it is not a command.
 
-The contract with test_stamp.py (a later language plug-in implements the same three functions)
+The language plug-in contract with test_stamp.py (affected/maven.py implements the same functions; the full text is in
+test_stamp.py's docstring and references/extensions.md)
+  applies(st, command_overridden)                                 -> bool: this plug-in drives the run (optional)
+  settings(raw)                                                   -> cfg, ValueError for wrong project settings
   discover_modules(cwd, cfg)                                      -> sorted list of test module ids
   select_affected(cwd, cwd_rel, cfg, changed, is_t0, modules)     -> (kind, modules, notes)
-  run(cwd, cfg, modules, jobs, rdir, log_dir, env, say, dry_run)  -> None (dry run) or (ok, ran, skipped, wall)
+  run_bounded(cwd, cfg, modules, jobs, rdir, log_dir, env, say, dry_run, identity, resources_raw, resume, project)
+                                                                  -> None (dry run) or (ok, ran, skipped, wall)
 `cwd` is the directory the tests run in (the project root, or a sub-folder of it: `tests.cwd`); `cwd_rel` is that
 folder relative to the project root ("." when they are the same); `changed` are project-root-relative git paths;
 `is_t0(path)` says whether a path is docs-only; `rdir` is the shared test-runs folder; `log_dir` is a fresh folder
 for this run's shard logs; `env` is the environment for the shards. kind is "none" (nothing to run), "some" (the
-modules chosen) or "full" (fall back to the whole suite; notes[0] says why).
+modules chosen) or "full" (fall back to the whole suite; notes[0] says why). This plug-in never answers "unknown"
+(the contract's way to say "I cannot tell"; test_stamp treats it as a labelled fallback to the full suite).
 
 Settings (the "python" block of "tests" in .claude/scaffolding.json; every path is relative to `cwd`)
   roots          folders whose .py files make up the import graph (default ["."]).
@@ -64,6 +69,14 @@ def helper(name):
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
+
+
+NOT_USED = "the python affected-test plug-in drives unittest only and the test command does not use it"
+
+
+def applies(st, command_overridden):
+    """The sharded unittest runner drives the suite only when the command is unittest and was not replaced by --command."""
+    return not command_overridden and "unittest" in st.command
 
 
 def settings(raw):

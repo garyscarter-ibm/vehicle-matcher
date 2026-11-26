@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.10.1"      # first, so the update check finds it within its first lines, ahead of the long docstring
+VERSION = "1.12.0"      # first, so the update check finds it within its first lines, ahead of the long docstring
 __doc__ = """scaffold_git.py -- the one place a scaffolded project runs git for its dev inbox and its team. Vendored into a
 project's `_tools/` by project-scaffolding; a generic port of the Account Corpus's corpus_git.py.
 
@@ -80,26 +80,47 @@ Settings: top-level keys of <project>/.claude/scaffolding.json (the record test_
                            pen's lease ref (default refs/leases/pen; a lease ref, and not under refs/leases/story/).
                            Without `protected`, none of the pen or merge-check rules apply.
 
-Extension: <project>/_tools/scaffold_ext.py, optional
+Extensions: <project>/_tools/ext/scaffold_git/<name>.py, optional, loaded by _tools/kit_ext.py (the shared loader; see
+project-scaffolding references/extensions.md). Enable one by listing its name in .claude/scaffolding.json
+`extensions.scaffold_git` (["name", ...] or {"name": {config}}; the module sees the config as CONFIG). A kit plugin of the
+same name wins; a file that is not listed does not load. Every hook is a safety gate and fails closed: an extension that
+fails to import, raises (or exits), or answers with the wrong shape makes the command refuse, naming the error (never a
+traceback), and one stderr line `extension scaffold_git/<name> skipped: <Kind>: <message>` says so once per process. With
+several extensions, each is asked and the answers are combined as below. A hook an extension does not define is no answer.
+(post_merge is the one hook that is not a gate: it fails open, as described under it.)
   def commit_lock(root) -> ("held", detail) | ("free", detail)
       Whether something in the project is mid-write, so that a commit would capture half-finished files (the corpus's
-      apply lock). Held: commit, pull, refresh and merge refuse (exit 2) and say why. ("free", "") is no lock. ("free", detail)
-      with a non-empty detail is no lock either, and commit says it first as `NOTE <detail>` (the corpus uses it for a
-      stale apply lock it is proceeding past). The file is loaded by path with importlib,
-      so _tools is never put on sys.path for it; an extension that needs its siblings adds the path itself. An
-      extension that raises, or answers with anything but those two shapes, is reported as a refusal naming the
-      error, never as a traceback. No file, or no commit_lock in it: no lock.
+      apply lock). Held (by any extension; the details are joined with "; "): commit, pull, refresh and merge refuse
+      (exit 2) and say why. ("free", "") is no lock. ("free", detail) with a non-empty detail is no lock either, and commit
+      says it first as `NOTE <detail>` (the corpus uses it for a stale apply lock it is proceeding past). The file is loaded
+      by path with importlib, so _tools is never put on sys.path for it; an extension that needs its siblings adds the path
+      itself. No extension, or none with a commit_lock: no lock.
   def commit_lock_owner(root) -> int pid | None
       Optional; the pid of the process that holds the lock commit_lock reports as held. Only the library's
       commit_paths(..., own_lock=True) asks for it (there is no command-line flag): when the lock is held and
       commit_lock_owner(root) == os.getpid(), the commit goes ahead, because the caller holds the lock across its own
-      write and this commit. Any other holder still refuses, as does an extension with no commit_lock_owner, one that
-      returns None, and one that raises or returns something that is not an int (that error is named in the refusal,
-      never a traceback).
+      write and this commit. Every extension that says held must name this process as its owner. Any other holder still refuses, as does an
+      extension with no commit_lock_owner, one that returns None, and one that raises or returns something that is not an
+      int (that error is named in the refusal, never a traceback).
   def pre_merge_checks(root, branch) -> list of refusal strings | [] | None
       Extra refusals for `merge --branch dev/ID`, asked after this tool's own checks and before it merges, only in
-      team mode with protected paths. Any string refuses (exit 2) and is said. An extension that raises, or answers with
-      anything but a list of strings, is reported as a refusal naming the error. No pre_merge_checks in it: none.
+      team mode with protected paths. Any string refuses (exit 2) and is said; the lists of several extensions are
+      concatenated. An extension that raises, or answers with anything but a list of strings, is reported as a refusal
+      naming the error. No pre_merge_checks in it: none.
+  def claim(root, story_id, points) -> list of refusal strings | [] | None
+      Extra refusals for `claim <story id> --points N`, asked after this tool's own argument checks and before it pulls, takes
+      the lease or moves the story (SCAF-72). Any string refuses (exit 2) and is said, so nothing is claimed; the lists of
+      several extensions are concatenated. Fails closed like pre_merge_checks: an extension that raises, or answers with
+      anything but a list of strings, is reported as a refusal naming the error.
+  def post_merge(root, branch, base, sha) -> ignored
+      Called once for each extension after `merge --branch dev/ID` has merged (sha is the merge commit's full id). Fail-open:
+      the merge already happened, so the answer is ignored and an extension that fails is only warned about (one stderr line
+      and a NOTE in the merge's message); the merge stays merged and exits 0.
+  The old single file <project>/_tools/scaffold_ext.py still works unchanged, loaded as if it were an enabled extension
+  named scaffold_ext (no record entry needed; an extension of that name listed in the record, or a kit plugin of that name,
+  replaces it). Using it prints on stderr: "_tools/scaffold_ext.py: move it to _tools/ext/scaffold_git/scaffold_ext.py and
+  list it in .claude/scaffolding.json extensions.scaffold_git". A project whose extensions are present but whose
+  _tools/kit_ext.py is missing is refused with that reason.
 
 One command at a time per checkout
 ----------------------------------
@@ -191,7 +212,7 @@ Protected paths and the merge check
                  protected path, refuse (exit 2) unless the claimer is in data_writers, naming the first 5 files, the label
                  and the claimer. With two or more data_writers the merging Mac must also pass data_writer_problem(root),
                  that is hold the pen; refused otherwise, with that reason.
-               - then scaffold_ext.pre_merge_checks(root, branch), if defined, may refuse too (protected paths only).
+               - then the extensions' pre_merge_checks(root, branch), if defined, may refuse too (protected paths only).
                This holds for any harness, with no project-specific guard. Path matching ignores case and Unicode
                normalisation, so a checkout on a case-insensitive disk cannot slip past it.
 Without a team block, merge is as before; with a team block but no protected paths only the team-block rule applies.
@@ -943,67 +964,178 @@ def _same_member(holder, login):
     return CLONE_NOTE if holder and login and holder.get("login") == login else ""
 
 
-# ---------------------------------------------------------------- the extension point
+# ---------------------------------------------------------------- the extension point (kit_ext.py hook points, SCAF-67)
 
-def _load_ext(root):
-    """<root>/_tools/scaffold_ext.py as a module, or None when there is no such file. Loaded by path; sys.path is not
-    touched. Raises whatever the file raises at import."""
-    path = os.path.join(root, "_tools", "scaffold_ext.py")
-    if not os.path.isfile(path):
+_LEGACY_EXT_NOTICE = ("_tools/scaffold_ext.py: move it to _tools/ext/scaffold_git/scaffold_ext.py and list it in "
+                      ".claude/scaffolding.json extensions.scaffold_git")
+_KIT_EXT = []
+_KIT_EXT_ERROR = []
+
+
+def _kit_ext():
+    """The shared loader kit_ext.py next to this file, loaded by path (sys.path is not touched), or None when it is absent
+    or broken (a vendored file that fails to import, or that lacks what this tool calls; why is in _KIT_EXT_ERROR)."""
+    if not _KIT_EXT:
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "kit_ext.py")
+        mod, error = None, ""
+        if os.path.isfile(path):
+            try:
+                spec = importlib.util.spec_from_file_location("kit_ext_for_scaffold_git", path)
+                mod = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(mod)
+                for needed in ("HookPoint", "run", "forget"):
+                    if not hasattr(mod, needed):
+                        raise AttributeError("no %s" % needed)
+            except (Exception, SystemExit) as e:
+                mod, error = None, "%s: %s" % (type(e).__name__, " ".join(str(e).split()))
+        _KIT_EXT.append(mod)
+        _KIT_EXT_ERROR.append(error)
+    return _KIT_EXT[0]
+
+
+def _check_commit_lock(answer):
+    if (isinstance(answer, (tuple, list)) and len(answer) == 2 and answer[0] in ("held", "free")
+            and isinstance(answer[1], str)):
         return None
-    spec = importlib.util.spec_from_file_location("scaffold_ext", path)
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
+    return "not ('held', detail) or ('free', detail)"
+
+
+def _check_owner(answer):
+    if answer is None or (isinstance(answer, int) and not isinstance(answer, bool)):
+        return None
+    return "not an int pid or None"
+
+
+def _check_pre_merge(answer):
+    if answer is None or (isinstance(answer, (list, tuple)) and all(isinstance(a, str) for a in answer)):
+        return None
+    return "not a list of strings"
+
+
+def _hook_points():
+    ke = _kit_ext()
+    if ke is None:
+        return None
+    legacy = ("scaffold_ext", "_tools/scaffold_ext.py", _LEGACY_EXT_NOTICE)
+    # A safety gate: a failing extension refuses (on_error="refuse"), as the single scaffold_ext.py always did.
+    try:
+        return _build_hook_points(ke, legacy)
+    except Exception as e:      # a vendored kit_ext.py too old for this tool: the same named refusal as a missing one
+        _KIT_EXT_ERROR[:] = ["%s: %s" % (type(e).__name__, " ".join(str(e).split()))]
+        return None
+
+
+def _build_hook_points(ke, legacy):
+    return {
+        "commit_lock": ke.HookPoint("scaffold_git", "commit_lock", ("root",), _check_commit_lock, "refuse", legacy=legacy,
+                                    doc="('held', detail) | ('free', detail): is something mid-write"),
+        "commit_lock_owner": ke.HookPoint("scaffold_git", "commit_lock_owner", ("root",), _check_owner, "refuse",
+                                          legacy=legacy, doc="pid of the process holding the lock, or None"),
+        "pre_merge_checks": ke.HookPoint("scaffold_git", "pre_merge_checks", ("root", "branch"), _check_pre_merge,
+                                         "refuse", legacy=legacy, doc="refusal strings for merge --branch, [] or None"),
+        "claim": ke.HookPoint("scaffold_git", "claim", ("root", "story_id", "points"), _check_pre_merge,
+                              "refuse", legacy=legacy, doc="refusal strings for claim, [] or None (SCAF-72)"),
+        "post_merge": ke.HookPoint("scaffold_git", "post_merge", ("root", "branch", "base", "sha"), None,
+                                   "skip", legacy=legacy, doc="called after a successful merge; the result is ignored (SCAF-72)"),
+    }
+
+
+def _ext_run(root, hook_name, *args):
+    """(RunResult, None) from the kit_ext hook point, or (None, problem) when the extensions cannot be consulted: kit_ext.py
+    missing while the project has extensions of its own (a gate that cannot be consulted refuses), or its own failure.
+    No kit_ext.py and no extension files: (an empty list, None), as no extension."""
+    points = _hook_points()
+    if points is None:
+        has_any = (os.path.isfile(os.path.join(root, "_tools", "scaffold_ext.py"))
+                   or os.path.isdir(os.path.join(root, "_tools", "ext", "scaffold_git")))
+        if has_any:
+            why = _KIT_EXT_ERROR[0] if _KIT_EXT_ERROR else ""
+            return None, ("scaffold_git extensions need _tools/kit_ext.py next to scaffold_git.py, which %s"
+                          % ("could not be loaded (%s)" % why if why else "is missing"))
+        return [], None
+    ke = _kit_ext()
+    ke.forget(root, "scaffold_git")      # judge every call afresh: a gate must not stay refused (or open) on an old answer
+    return ke.run(root, points[hook_name], *args), None
+
+
+def _ext_failure_text(failure):
+    """The refusal text for a failed extension: names the legacy file as before, else extension scaffold_git/<name>."""
+    if failure.kind == "Record":
+        return "the extension record is unreadable: %s" % failure.message
+    label = "_tools/scaffold_ext.py" if failure.name == "scaffold_ext" else "extension scaffold_git/%s" % failure.name
+    if failure.kind == "BadResult":
+        return "%s %s" % (label, failure.message)
+    if failure.kind in ("NotFound", "MissingHook"):
+        return "%s failed: %s: %s" % (label, failure.kind, failure.message)
+    where = "%s " % failure.hook if failure.hook == "commit_lock_owner" else ""
+    return "%s %sfailed: %s: %s" % (label, where, failure.kind, failure.raw)
 
 
 def commit_lock_state(root):
-    """('free'|'held'|'error', detail) from the extension's commit_lock(root). 'error' means the extension failed or
-    answered badly; detail names why."""
-    try:
-        ext = _load_ext(root)
-        fn = getattr(ext, "commit_lock", None) if ext is not None else None
-        if fn is None:
-            return "free", ""
-        answer = fn(root)
-    except (Exception, SystemExit) as e:
-        return "error", "_tools/scaffold_ext.py failed: %s: %s" % (type(e).__name__, e)
-    if (isinstance(answer, (tuple, list)) and len(answer) == 2 and answer[0] in ("held", "free")
-            and isinstance(answer[1], str)):
-        return answer[0], answer[1]
-    return "error", ("_tools/scaffold_ext.py commit_lock returned %r, not ('held', detail) or ('free', detail)"
-                     % (answer,))
+    """('free'|'held'|'error', detail) from the extensions' commit_lock(root). 'error' means an extension failed or
+    answered badly; detail names why. Several extensions: held if any says held (details joined by '; ')."""
+    res, problem = _ext_run(root, "commit_lock", root)
+    if problem:
+        return "error", problem
+    if getattr(res, "failures", None):
+        return "error", _ext_failure_text(res.failures[0])
+    answers = [a for _, a in res]
+    held = [a[1] for a in answers if a[0] == "held"]
+    if held:
+        return "held", "; ".join(held)
+    return "free", "; ".join(a[1] for a in answers if a[1])
+
+
+def _commit_lock_answers(root):
+    """([(extension name, ('held'|'free', detail))], problem): each extension's own commit_lock answer."""
+    res, problem = _ext_run(root, "commit_lock", root)
+    if problem:
+        return [], problem
+    if getattr(res, "failures", None):
+        return [], _ext_failure_text(res.failures[0])
+    return list(res), ""
+
+
+def _commit_lock_owners(root):
+    """({extension name: pid or None}, problem): each extension's own commit_lock_owner answer."""
+    res, problem = _ext_run(root, "commit_lock_owner", root)
+    if problem:
+        return {}, problem
+    if getattr(res, "failures", None):
+        return {}, _ext_failure_text(res.failures[0])
+    return dict(res), ""
 
 
 def commit_lock_owner_pid(root):
-    """(pid, problem) from the extension's optional commit_lock_owner(root). pid is None when the extension has no
-    commit_lock_owner or it answers None; problem is '' unless the extension failed or answered with something that is
-    not an int (a bool is not one), in which case it names why."""
-    try:
-        ext = _load_ext(root)
-        fn = getattr(ext, "commit_lock_owner", None) if ext is not None else None
-        if fn is None:
-            return None, ""
-        answer = fn(root)
-    except (Exception, SystemExit) as e:
-        return None, "_tools/scaffold_ext.py commit_lock_owner failed: %s: %s" % (type(e).__name__, e)
-    if answer is None:
-        return None, ""
-    if isinstance(answer, int) and not isinstance(answer, bool):
-        return answer, ""
-    return None, "_tools/scaffold_ext.py commit_lock_owner returned %r, not an int pid or None" % (answer,)
+    """(pid, problem) from the extensions' optional commit_lock_owner(root). pid is the first non-None answer, None when no
+    extension has commit_lock_owner or all answer None; problem is '' unless an extension failed or answered with something
+    that is not an int (a bool is not one), in which case it names why. (lock_check's own_lock does not use this: it matches each
+    extension's owner answer to that extension's lock.)"""
+    res, problem = _ext_run(root, "commit_lock_owner", root)
+    if problem:
+        return None, problem
+    if getattr(res, "failures", None):
+        return None, _ext_failure_text(res.failures[0])
+    for _, answer in res:
+        if answer is not None:
+            return answer, ""
+    return None, ""
 
 
 def lock_check(root, what, own_lock=False):
     """(refusal, note) for `what` (commit, pull, merge): refusal is None when it may go ahead, else the text; note is
-    the detail of a ('free', detail) answer, '' otherwise. With own_lock, a lock the extension's commit_lock_owner names
-    as this process is not a reason to refuse; any other holder, or an owner that cannot be told, still is."""
+    the detail of a ('free', detail) answer, '' otherwise. With own_lock, a held lock is not a reason to refuse only when
+    every extension that says held also names this process as the owner in its own commit_lock_owner; any other holder, an
+    extension with no owner answer, or an owner that cannot be told, still refuses."""
     state, detail = commit_lock_state(root)
     if state == "held":
         extra = ""
         if own_lock:
-            pid, problem = commit_lock_owner_pid(root)
-            if pid is not None and pid == os.getpid():
+            # Every extension that says held must name this process as its owner: one extension's own pid never
+            # lets the commit past another extension's lock.
+            holders = [n for n, a in _commit_lock_answers(root)[0] if a[0] == "held"]
+            owners, problem = _commit_lock_owners(root)
+            if holders and not problem and all(owners.get(n) == os.getpid() for n in holders):
                 return None, ""
             extra = "; " + problem if problem else ""
         return ("the project's commit lock is held (%s)%s; a write is in flight, so %s is refused"
@@ -1600,6 +1732,11 @@ def merge_branch(root, branch):
         what = _merge_failure(root, e, o, branch)
         return 3, "merge of %s failed (%s); aborted, %s is as it was" % (branch, what, base)
     rc, sha, _ = git(root, ["--no-optional-locks", "rev-parse", "--short", "HEAD"])
+    rc, full, _ = git(root, ["--no-optional-locks", "rev-parse", "HEAD"])
+    if rc == 0 and full.strip():
+        notes = list(notes) + post_merge_notes(root, branch, base, full.strip())  # fail-open: the merge already happened
+    else:
+        notes = list(notes) + ["post_merge extensions not run: the merge commit's sha could not be read"]
     return 0, "MERGED %s into %s at %s" % (branch, base, sha.strip()) + "".join("\nNOTE: " + n for n in notes)
 
 
@@ -1994,6 +2131,11 @@ def claim(root, story_id, points, now=None):
     refusal = _merge_in_progress(root)
     if refusal:
         return 2, refusal
+    state, texts = claim_refusals(root, story_id, points)       # extensions may add refusals (SCAF-72); fail-closed
+    if state == "error":
+        return 2, "%s; %s is not claimed" % (texts[0], story_id)
+    if texts:
+        return 2, "%s is not claimed: %s" % (story_id, "; ".join(texts))
     rc, msg = pull(root)
     if rc != 0:
         return rc, "not claimed, the pull failed: %s" % msg
@@ -3127,22 +3269,35 @@ def _team_value_at(root, ref):
     return rec.get("team") if isinstance(rec, dict) else None
 
 
+def _refusals(root, hook_name, *args):
+    """('ok'|'refused'|'error', [text]) from a refusal-list hook: each extension answers a list of refusal strings
+    (empty or None: none), concatenated over several extensions. 'error' means an extension failed or answered badly."""
+    res, problem = _ext_run(root, hook_name, root, *args)
+    if problem:
+        return "error", [problem]
+    if getattr(res, "failures", None):
+        return "error", [_ext_failure_text(res.failures[0])]
+    texts = [t for _, answer in res for t in (answer or [])]
+    return ("refused", texts) if texts else ("ok", [])
+
+
 def pre_merge_refusals(root, branch):
-    """('ok'|'refused'|'error', [text]) from the extension's pre_merge_checks(root, branch): a list of refusal strings
-    (empty or None: none). 'error' means the extension failed or answered badly."""
-    try:
-        ext = _load_ext(root)
-        fn = getattr(ext, "pre_merge_checks", None) if ext is not None else None
-        if fn is None:
-            return "ok", []
-        answer = fn(root, branch)
-    except (Exception, SystemExit) as e:
-        return "error", ["_tools/scaffold_ext.py failed: %s: %s" % (type(e).__name__, e)]
-    if answer is None:
-        return "ok", []
-    if not isinstance(answer, (list, tuple)) or not all(isinstance(a, str) for a in answer):
-        return "error", ["_tools/scaffold_ext.py pre_merge_checks returned %r, not a list of strings" % (answer,)]
-    return ("refused", list(answer)) if answer else ("ok", [])
+    """('ok'|'refused'|'error', [text]) from the extensions' pre_merge_checks(root, branch)."""
+    return _refusals(root, "pre_merge_checks", branch)
+
+
+def claim_refusals(root, story_id, points):
+    """('ok'|'refused'|'error', [text]) from the extensions' claim(root, story_id, points) (SCAF-72)."""
+    return _refusals(root, "claim", story_id, points)
+
+
+def post_merge_notes(root, branch, base, sha):
+    """Lines to add to a merge's message: one NOTE per extension whose post_merge(root, branch, base, sha) failed. The answers
+    are ignored and the merge stays merged: this hook is fail-open (SCAF-72)."""
+    res, problem = _ext_run(root, "post_merge", root, branch, base, sha)
+    if problem:
+        return ["post_merge extensions not run: %s" % problem]
+    return ["post_merge: %s" % _ext_failure_text(f) for f in getattr(res, "failures", [])]
 
 
 def merge_refusal(root, branch, base):

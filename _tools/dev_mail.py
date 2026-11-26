@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.19.0"
+VERSION = "1.20.0"
 """dev_mail.py: the dev mailbox between Cowork and Claude Code, and between the pollers of a team, for this project, and the
 guard that stops it looping (the rules for Cowork are in the managed `dev-inbox` skill).
 
@@ -134,7 +134,8 @@ Commands (exit 0 done, 1 error, 2 refused by a limit or by who may do it):
   spawn-story --thread THREAD --file DRAFT.md     (Cowork) write a stamped story into _dev/code-inbox/
   check-story ID                                  verify a story before building it (Code, at claim): its lineage (who asked),
         a ui story's `ui:` line (when the components piece or inbox.require_ui is on), and for new stories the epic, priority, size, depends_on, title and expedite lines; XL is a warning,
-        and so is a parity criterion with no screen, state, scenario or viewport (1.14.0)
+        and so is a parity criterion with no screen, state, scenario or viewport (1.14.0). The ui, security and parity checks are
+        kit plugins (plugins/dev_mail/, 1.20.0, SCAF-72) and a project may add checks (_tools/ext/dev_mail/; extensions.md): they only add
   queue [--stats]                                 the waiting stories in claim order, then `held` lines and ALERT lines; `NOTHING`
         when none is ready; --stats adds the counts and how well sizes matched story points
         a migration's retirement story (retires: <id>) is held until parity sign-off covers every screen (1.15.0)
@@ -346,84 +347,167 @@ def story_header(text):
     return {m.group(1): m.group(2).strip() for m in re.finditer(r"(?m)^(id|origin|chain|depth|spawned):[ \t]*(.*)$", top)}
 
 
-# A UI story names the kit components it uses (the project's COMPONENTS.md, see the component-kit skill), so the build
-# reuses them rather than building its own: `ui:` lists the kit's components, and any new one as
-# "new: <name>, because <why none fits>". A story needs the line only when the project has the components piece on
-# (`pieces.components` is "on" in .claude/scaffolding.json), or sets `inbox.require_ui: true` there because its kit lives
-# in another repo (a site the project's stories build); a line that is there is checked either way. Stories written
-# before the field existed (ids dated before UI_FROM) are left as they were; their story-lead still makes the component
-# plan the poller brief's component-plan step asks for.
-UI_KINDS = ("ui", "dashboard")   # `dashboard` is the older name for kind `ui`
-UI_FROM = "2026-10-26"
+# ---------------------------------------------------------------- the story-check hook point (kit_ext.py, SCAF-72)
+# The kit's own ui, security and parity checks are default plugins (plugins/dev_mail/<name>.py, ALWAYS_ON), loaded by the
+# shared loader kit_ext.py: found next to this file in a project (_tools/kit_ext.py, _tools/plugins/), or in the kit at
+# plugin/project/_tools/ (this file is plugin/skills/dev-inbox/scripts/). A project adds checks as extensions
+# (_tools/ext/dev_mail/<name>.py, listed in .claude/scaffolding.json extensions.dev_mail); they only ADD problems and
+# warnings. The core checks (field_problems and the rest) always run, and an extension cannot shadow a kit plugin. ui and
+# security are gates: when kit_ext.py or either plugin is missing or broken, check-story reports that as a problem, so a
+# story is never passed unchecked; parity only warns, so a missing parity plugin is a warning.
+KIT_CHECKS = ("security", "ui")       # check-story problems; a plugin that cannot run is itself a problem
+KIT_WARNINGS = ("parity",)            # check-story warnings
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_KIT_EXT = []
+_HOOKS = {}
 
 
-def components_on(root):
-    """True if <root>/.claude/scaffolding.json has pieces.components == "on"; False if off, unset, or the file or JSON is bad."""
-    try:
-        with open(os.path.join(root, ".claude", "scaffolding.json"), encoding="utf-8") as f:
-            return json.load(f)["pieces"]["components"] == "on"
-    except (OSError, ValueError, KeyError, TypeError):
-        return False
+class KitCheckUnavailable(MailError):
+    pass
 
 
+def _kit_ext():
+    """(kit_ext module, '') or (None, why): kit_ext.py beside this file (a project's _tools/), else the kit's
+    plugin/project/_tools/kit_ext.py. Loaded by path; sys.path is not touched."""
+    if not _KIT_EXT:
+        mod, why = None, "is missing (looked beside dev_mail.py and in plugin/project/_tools/)"
+        for path in (os.path.join(_HERE, "kit_ext.py"),
+                     os.path.normpath(os.path.join(_HERE, "..", "..", "..", "project", "_tools", "kit_ext.py"))):
+            if not os.path.isfile(path):
+                continue
+            try:
+                spec = importlib.util.spec_from_file_location("kit_ext_for_dev_mail", path)
+                mod = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(mod)
+                for needed in ("HookPoint", "run", "plan", "load"):
+                    if not hasattr(mod, needed):
+                        raise AttributeError("no %s" % needed)
+                mod.__dict__["_dev_mail_path"] = path
+                why = ""
+                break
+            except (Exception, SystemExit) as e:
+                mod, why = None, "could not be loaded (%s: %s)" % (type(e).__name__, " ".join(str(e).split()))
+        _KIT_EXT.append((mod, why))
+    return _KIT_EXT[0]
+
+
+def _defaults_root():
+    """The folder whose _tools/plugins/dev_mail holds the kit's default plugins: the one beside kit_ext.py, or None."""
+    ke, _ = _kit_ext()
+    if ke is None:
+        return None
+    tools = os.path.dirname(ke._dev_mail_path)
+    if os.path.basename(tools) == "_tools" and os.path.isdir(os.path.join(tools, "plugins", "dev_mail")):
+        return os.path.dirname(tools)
+    return None
+
+
+def _list_of_strings(answer):
+    if answer is None or (isinstance(answer, (list, tuple)) and all(isinstance(a, str) for a in answer)):
+        return None
+    return "not a list of strings"
+
+
+def _hook(name):
+    if name not in _HOOKS:
+        ke, _ = _kit_ext()
+        args = {"story_check": ("root", "stage", "fields", "sid", "text"), "story_warnings": ("root", "fields"),
+                "story_required_fields": ("root", "fields", "sid")}[name]
+        _HOOKS[name] = ke.HookPoint("dev_mail", name, args, _list_of_strings, "skip",
+                                    doc="a list of strings: problems, warnings or required field names, [] or None")
+    return _HOOKS[name]
+
+
+def _run_hook(root, name, *args):
+    """([(plugin name, answer)], {plugin name: why it failed}, why kit_ext is unusable or ''). The kit's default plugins run
+    first, then the project's enabled extensions; a plugin that failed is skipped (kit_ext warns once on stderr). Never raises."""
+    ke, why = _kit_ext()
+    if ke is None:
+        return [], {}, "kit_ext.py " + why
+    results, failed, seen = [], {}, set()
+    roots = [r for r in (_defaults_root(), os.path.abspath(root) if root else None) if r]
+    for r in dict.fromkeys(roots):
+        try:
+            res = ke.run(r, _hook(name), root or r, *args)
+        except Exception as e:      # kit_ext.py older than this tool, or broken: report it, never let it stop a check
+            return results, failed, "kit_ext.py failed (%s: %s)" % (type(e).__name__, " ".join(str(e).split()))
+        kind_of = getattr(res, "kind_of", lambda _name: None)
+        for plugin, answer in res:
+            if plugin in KIT_CHECKS + ("parity",) and kind_of(plugin) != "kit":
+                # A project extension named like a kit check can never stand in for it: the kit check counts as not run.
+                failed.setdefault(plugin, "answered by a project extension, not the kit's plugin")
+                continue
+            if plugin not in seen:
+                seen.add(plugin)
+                results.append((plugin, answer))
+        for f in res.failures:
+            failed.setdefault(f.name or "(record)", f.message)
+    return results, failed, ""
+
+
+def _kit_module(name):
+    """The default plugin module `name`, or raise KitCheckUnavailable saying why."""
+    ke, why = _kit_ext()
+    if ke is None:
+        raise KitCheckUnavailable("kit check %s cannot run: kit_ext.py %s" % (name, why))
+    droot = _defaults_root()
+    entries = [e for e in ke.plan(droot, "dev_mail", []).entries if e["name"] == name] if droot else []
+    mod = ke.load(droot, entries[0], lambda line: sys.stderr.write(line + "\n")) if entries else None
+    if mod is None:
+        raise KitCheckUnavailable("kit check %s cannot run: plugins/dev_mail/%s.py is missing or broken (run inbox_setup.py update)"
+                                  % (name, name))
+    return mod
+
+
+def _unavailable(name, failed, why):
+    return "kit check %s did not run (%s): the story is not passed unchecked; run inbox_setup.py update" % (
+        name, why or failed.get(name) or "plugins/dev_mail/%s.py is missing" % name)
+
+
+def story_check_problems(root, stage, fields, sid, text=None):
+    """[(plugin name, problem)] from the dev_mail story_check hook, in plugin order (the kit's defaults first) and from the
+    story_required_fields hook (each field name an extension requires that the story lacks or leaves empty). stage is "fields"
+    (field_problems: the queue, spawn-story, check-story) or "check" (check-story only, with the story's text). Only at "check"
+    is a missing or broken ui or security plugin itself a problem (named for that plugin)."""
+    results, failed, why = _run_hook(root, "story_check", stage, fields, sid, text)
+    out = [(n, t) for n, answer in results for t in (answer or [])]
+    if stage == "fields":
+        required, _, _ = _run_hook(root, "story_required_fields", fields, sid)
+        out += [(n, "%s: missing (required by extension dev_mail/%s)" % (f, n)) for n, names in required for f in (names or [])
+                if not (fields.get(f) or "").strip()]
+    if stage == "check":
+        done = {n for n, _ in results}
+        out += [(n, _unavailable(n, failed, why)) for n in KIT_CHECKS if n not in done]
+    return out
+
+
+def story_warning_lines(root, fields):
+    """Warnings from the dev_mail story_warnings hook (parity, then the project's); a missing parity plugin is a warning."""
+    results, failed, why = _run_hook(root, "story_warnings", fields)
+    out = [t for _, answer in results for t in (answer or [])]
+    done = {n for n, _ in results}
+    return out + [_unavailable(n, failed, why) for n in KIT_WARNINGS if n not in done]
+
+
+# Names the checks had in this file before they became plugins (1.20.0); kept so callers and tests keep working.
 def security_problem(fields, root):
-    """SPbD explicitly opts design-impact stories into substantive threat/control metadata.
-
-    This checks presence, including common draft placeholders, not threat policy or mitigation proof.
-    """
-    if fields.get("design_impact", "").strip().lower() != "yes":
-        return None
-    try:
-        with open(os.path.join(root, ".claude", "scaffolding.json"), encoding="utf-8") as f:
-            enabled = json.load(f)["pieces"]["spbd"] == "on"
-    except (OSError, ValueError, KeyError, TypeError):
-        enabled = False
-    if not enabled:
-        return None
-    placeholders = ("", "none", "n/a", "na", "tbd", "todo", "...", "-", "[ ]", "|", ">")
-    for line in fields.get("security", "").splitlines():
-        value = line.strip()
-        if value.startswith("#"):
-            continue
-        value = re.sub(r"^[-*+]\s+(?:\[[ xX]\]\s*)?", "", value).strip()
-        if value.casefold() not in placeholders and not re.fullmatch(r"<[^>]*>", value):
-            return None
-    return ("security: name the threat ids and controls to prove; a design-impact story needs this "
-            "when pieces.spbd is on (replace empty or placeholder text)")
+    return _kit_module("security").security_problem(fields, root)
 
 
 def ui_required(root):
-    """True if a ui story here must carry a `ui:` line: the components piece is on, or `inbox.require_ui` is true (the
-    kit is in another repo, so the piece stays off). False if neither, or the file or JSON is bad."""
-    if components_on(root):
-        return True
-    try:
-        with open(os.path.join(root, ".claude", "scaffolding.json"), encoding="utf-8") as f:
-            return json.load(f)["inbox"]["require_ui"] is True
-    except (OSError, ValueError, KeyError, TypeError):
-        return False
+    return _kit_module("ui").ui_required(root)
 
 
 def ui_problem(text, sid=None, components=False):
-    """None if the story's `ui:` field is fine, else why not. A story of kind ui (or the older dashboard) needs one when the
-    project's components piece is on (`components`); with it off, a `ui:` line that is there is still checked."""
-    top = text.split("\n## Result")[0]
-    kind = re.search(r"(?m)^kind:[ \t]*(\S+)", top)
-    if not kind or kind.group(1) not in UI_KINDS:
-        return None
-    day = re.match(r"DEV-(\d{4}-\d{2}-\d{2})-", sid or "")
-    if day and day.group(1) < UI_FROM:
-        return None
-    ui = re.search(r"(?m)^ui:[ \t]*(.*)$", top)
-    if not ui or not ui.group(1).strip():
-        if not components:
-            return None
-        return ("a ui story needs a `ui:` line naming the kit components it uses, from the project's COMPONENTS.md "
-                "(e.g. `ui: pageHead, card, dataTable, emptyState`), or `ui: none` when it changes no screen")
-    for part in re.findall(r"new:([^;\n]*)", ui.group(1)):
-        if "because" not in part:
-            return f"`ui:` asks for a new component ({part.strip()}) without saying why no existing one fits: 'new: <name>, because <why>'"
-    return None
+    return _kit_module("ui").ui_problem(text, sid, components)
+
+
+def acceptance_items(value):
+    return _kit_module("parity").acceptance_items(value)
+
+
+def parity_warnings(fields):
+    return _kit_module("parity").parity_warnings(fields)
 
 
 def load_owner(root):
@@ -1070,11 +1154,12 @@ def _related_story_problems(fields, sid, stories):
     return []
 
 
-def field_problems(fields, sid, owner=None, spawned=False, backlog_priority=None, has_backlog=None, jira=None, migrated=None):
+def field_problems(fields, sid, owner=None, spawned=False, backlog_priority=None, has_backlog=None, jira=None, migrated=None, root=None):
     """Problems with a story's epic, priority, size, depends_on, title and expedite lines. New stories (see PRIORITY_FROM) must carry
     priority, size and depends_on; stories dated from FIELDS_FROM also carry epic and priority_reason and keep each field to its one form.
     has_backlog: bid -> bool, to check that an epic names a backlog item; None skips that check. jira: the Jira project key
-    in Jira mode (epic may then be a key of that project, never looked up), else None."""
+    in Jira mode (epic may then be a key of that project, never looked up), else None. root: the project, to run its dev_mail
+    story_check extensions (they only add problems, after these); None runs the core checks alone."""
     new, out = is_new(sid), _bug_problems(fields, sid, jira)
     if fields_new(sid):
         out += _new_epic_priority_problems(fields, sid, owner, spawned, backlog_priority, has_backlog, jira, migrated)
@@ -1096,58 +1181,22 @@ def field_problems(fields, sid, owner=None, spawned=False, backlog_priority=None
                        "`depends_on: DEV-2026-10-27-001, DEV-2026-10-27-002 merged to master`")
     if "expedite" in fields:
         out += [p] if (p := parse_expedite(fields["expedite"], owner, spawned)[1]) else []
+    if root:
+        out += [t for _, t in story_check_problems(root, "fields", fields, sid)]
     return out
 
 
-# Parity criteria (1.14.0; SCAF-40, Russell 2026-11-20; plugin/skills/backlog/references/migration-parity.md, "Parity
-# definition"). A criterion that claims parity with another implementation names the screen, states, scenario and viewport
-# its screenshot pair is taken in. check-story warns, never refuses: API, data and JSON parity are out of scope.
-PARITY_CLAIM = re.compile(r"\bparity\b|same as the old (?:version|implementation|screen|app)|"
-                          r"preserv\w* (?:the )?(?:current |existing )?visual design", re.I)
-NOT_UI_PARITY = re.compile(r"\b(?:api|data|json|schema|backend|database)\s+parity\b", re.I)
-PARITY_PARTS = (("screen", re.compile(r"\bscreens?\b", re.I)), ("state", re.compile(r"\bstates?\b", re.I)),
-                ("scenario", re.compile(r"\bscenarios?\b", re.I)),
-                ("viewport", re.compile(r"\bviewports?\b|\b\d{3,4}x\d{3,4}\b", re.I)))
-
-
-def acceptance_items(value):
-    """The items of an `acceptance` value: each `- ...`, `* ...` or `1. ...` line, with its continuation lines joined."""
-    items, cur = [], None
-    for line in (value or "").split("\n"):
-        if re.match(r"^\s*(?:[-*]|\d+[.)])\s+", line):
-            if cur is not None:
-                items.append(cur)
-            cur = line.strip()
-        elif line.strip():
-            cur = line.strip() if cur is None else cur + " " + line.strip()
-    if cur is not None:
-        items.append(cur)
-    return items
-
-
-def parity_warnings(fields):
-    out = []
-    for n, item in enumerate(acceptance_items(fields.get("acceptance")), 1):
-        if not PARITY_CLAIM.search(NOT_UI_PARITY.sub("", item)):
-            continue
-        missing = [name for name, rx in PARITY_PARTS if not rx.search(item)]
-        if missing:
-            out.append(f"acceptance item {n} claims parity but names no {', '.join(missing)}: a parity criterion names "
-                       "the screen, states, scenario and viewport (backlog skill, references/migration-parity.md)")
-    return out
-
-
-def field_warnings(fields):
+def field_warnings(fields, root=None):
     size = ["size XL: cut it into smaller stories before posting (13+ points)"] if parse_size(fields.get("size"))[0] == "XL" else []
-    return size + parity_warnings(fields)
+    return size + story_warning_lines(root, fields)
 
 
-def _problems(s, owner, backlog_priority, has_backlog=None, jira=None, migrated=None):
+def _problems(s, owner, backlog_priority, has_backlog=None, jira=None, migrated=None, root=None):
     f = s.get("fields") or {}
-    return field_problems(f, s["id"], owner, "origin" in f, backlog_priority, has_backlog, jira, migrated)
+    return field_problems(f, s["id"], owner, "origin" in f, backlog_priority, has_backlog, jira, migrated, root)
 
 
-def open_expedites(stories, owner=None, backlog_priority=None, has_backlog=None, jira=None, migrated=None):
+def open_expedites(stories, owner=None, backlog_priority=None, has_backlog=None, jira=None, migrated=None, root=None):
     """[(date, id)] of the open expedite stories, first to go first: waiting ones, and claimed ones not blocked or failed.
     A story whose file has problems is held for those, so it doesn't count."""
     out = []
@@ -1161,7 +1210,7 @@ def open_expedites(stories, owner=None, backlog_priority=None, has_backlog=None,
         elif s["where"] != "code-inbox" or "paused" in f:
             continue
         ex = parse_expedite(f["expedite"], owner, "origin" in f)[0]
-        if (ex and not _problems(s, owner, backlog_priority, has_backlog, jira, migrated) and
+        if (ex and not _problems(s, owner, backlog_priority, has_backlog, jira, migrated, root) and
                 not _related_story_problems(f, s["id"], stories)):
             out.append((ex[0], s["id"]))
     return sorted(out)
@@ -1269,7 +1318,7 @@ def early_review_hold(fields, sid, migrations):
             "reviewed the first)")
 
 
-def rank(stories, today, owner=None, backlog_priority=None, has_backlog=None, jira=None, migrated=None, migrations=None):
+def rank(stories, today, owner=None, backlog_priority=None, has_backlog=None, jira=None, migrated=None, migrations=None, root=None):
     """stories: [{"id", "where": "code-inbox"|"in-progress"|"done"|"staged", "fields": dict, "rejected": bool,
                   "status": str|None}]  # status: the Result block's `- status:` word, if known (built|partial|blocked|failed|waiting)
     Duplicates are resolved by the caller. `migrations` is load_migrations' {id: record}: a story with a `retires:` line is held
@@ -1299,7 +1348,7 @@ def rank(stories, today, owner=None, backlog_priority=None, has_backlog=None, ji
                      "expedite": "expedite" in f and parse_expedite(f["expedite"], owner, spawned)[0] is not None,
                      "deps": deps[sid], "waits_for": [d for d in deps[sid] if state.get(d) != "merged"], "blocks": 0,
                      "state": state[sid], "why": None, "age_days": age,
-                     "problems": [] if state[sid] in ("merged", "rejected") else _problems(s, owner, backlog_priority, has_backlog, jira, migrated)}
+                     "problems": [] if state[sid] in ("merged", "rejected") else _problems(s, owner, backlog_priority, has_backlog, jira, migrated, root)}
         if state[sid] not in ("merged", "rejected"):
             info[sid]["problems"] += _related_story_problems(f, sid, stories)
         if work_item_type(f) == "bug":
@@ -1319,7 +1368,7 @@ def rank(stories, today, owner=None, backlog_priority=None, has_backlog=None, ji
     for y in waiting:
         for x in closure[y] - {y}:
             info[x]["blocks"] += 1
-    exp = open_expedites(stories, owner, backlog_priority, has_backlog, jira, migrated)
+    exp = open_expedites(stories, owner, backlog_priority, has_backlog, jira, migrated, root)
     first = exp[0] if exp else None
     held, alerts, cycles = {}, [], set()
     fixes, seconds = [], []
@@ -2303,7 +2352,7 @@ class Mail:
         if missing:
             raise MailError(f"the draft lacks required story fields: {', '.join(missing)}")
         bad = field_problems(story_fields(draft_text), f"DEV-{self.today.isoformat()}-000", self.owner, True, self.backlog_priority,
-                           self.has_backlog, self.jira, load_migrated(self.root, self.jira))
+                           self.has_backlog, self.jira, load_migrated(self.root, self.jira), self.root)
         if bad:
             raise MailError("the draft: " + "; ".join(bad))
         self._need_room()
@@ -2598,7 +2647,7 @@ class Mail:
         every story for dependencies and blocks either way."""
         stories = self.queue_stories()
         result = rank(stories, self.today, self.owner, self.backlog_priority, self.has_backlog, self.jira,
-                      load_migrated(self.root, self.jira), migrations=load_migrations(self.root))
+                      load_migrated(self.root, self.jira), migrations=load_migrations(self.root), root=self.root)
         now = self._clock or datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)   # batches.md times are UTC
         result["alerts"] = result["alerts"] + batch_alerts(self.root, now)
         if not self.team:
@@ -2617,7 +2666,7 @@ class Mail:
         return self.queue_view()[1]
 
     def check_warnings(self, sid):
-        return field_warnings(story_fields(_read(self.find_story(sid)["path"])))
+        return field_warnings(story_fields(_read(self.find_story(sid)["path"])), self.root)
 
     def check_story(self, sid):
         s = self.find_story(sid)
@@ -2628,17 +2677,17 @@ class Mail:
             if gone:
                 raise MailError(f"{sid}: a story from Jira {story_jira_key(fields)} lacks required fields: {', '.join(gone)} "
                                 "(the description needs a heading for each; the sync comments on the issue)")
-        security = security_problem(fields, self.root)
-        if security:
-            raise MailError(f"{sid}: {security}")
-        ui = ui_problem(text, sid, ui_required(self.root))
-        if ui:
-            raise MailError(f"{sid}: {ui}")
+        found = story_check_problems(self.root, "check", fields, sid, text)
+        gate = [t for n, t in found if n in KIT_CHECKS]       # the kit's security and ui checks: the first one refuses alone
+        if gate:
+            raise MailError(f"{sid}: {gate[0]}")
+        extra = [t for n, t in found if n not in KIT_CHECKS]
         bad = field_problems(fields, sid, self.owner, bool(s["origin"]), self.backlog_priority, self.has_backlog, self.jira,
-                             load_migrated(self.root, self.jira))
+                             load_migrated(self.root, self.jira), self.root)
         if work_item_type(fields) == "bug":
             bad += _related_story_problems(fields, sid, self.queue_stories())
             bad += evidence_problems(fields, sid, self.root)
+        bad += [t for t in extra if t not in bad]
         if bad:
             raise MailError(f"{sid}: " + "; ".join(bad))
         if is_new(sid) or "expedite" in fields:
@@ -2649,7 +2698,7 @@ class Mail:
                     raise MailError(f"{sid}: depends_on names {d}, which is not in code-inbox, in-progress, done or staged")
             if "expedite" in fields:
                 ahead = [e for e in open_expedites(stories, self.owner, self.backlog_priority, self.has_backlog, self.jira,
-                                         load_migrated(self.root, self.jira)) if e[1] != sid]
+                                         load_migrated(self.root, self.jira), self.root) if e[1] != sid]
                 mine = (parse_expedite(fields["expedite"])[0][0], sid)
                 if ahead and ahead[0] < mine:
                     raise MailError(f"{sid}: only one story may carry expedite at a time, and {ahead[0][1]} has it (since {ahead[0][0]})")

@@ -10,8 +10,8 @@ Exit 0 no hits, 1 hits, 2 usage error or missing list. Never deletes anything. S
 """
 import argparse, fnmatch, json, os, re, subprocess, sys
 
-VERSION = "1.0.1"
-KINDS = ("clock-mix", "stale-pin", "orphan-selector", "contract-callers", "regex")
+VERSION = "1.1.0"
+KINDS = ("clock-mix", "stale-pin", "orphan-selector", "contract-callers", "regex")      # the kit's; extensions add more (see `check` below)
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 SKIP_DIRS = {"node_modules", ".git", "build", "target", "dist", "_tools", ".claude"}
 MAX_BYTES = 2_000_000      # larger files are generated or data, not tests or sources
@@ -37,7 +37,7 @@ class Usage(Exception):
 
 
 # ---------------------------------------------------------------- the list
-def parse_drift(text):
+def parse_drift(text, extra=()):
     """(name, concept, kind, arg) from the text after "- ", or raise ValueError with the reason."""
     parts = [p.strip() for p in text.split("|", 3)]
     if len(parts) < 3:
@@ -48,7 +48,7 @@ def parse_drift(text):
         raise ValueError("name must be kebab-case")
     if not concept:
         raise ValueError("concept is empty")
-    if kind not in KINDS:
+    if kind not in KINDS and kind not in extra:
         raise ValueError("unknown kind " + repr(kind))
     if kind == "regex":
         try:
@@ -60,7 +60,7 @@ def parse_drift(text):
     return name, concept, kind, arg
 
 
-def read_list(path):
+def read_list(path, extra=()):
     """([drift dicts], [(line no, reason)]); a malformed line is skipped, never fatal."""
     drifts, errors, seen = [], [], set()
     with open(path, encoding="utf-8", errors="replace") as f:
@@ -68,7 +68,7 @@ def read_list(path):
             if not line.startswith("- "):
                 continue
             try:
-                name, concept, kind, arg = parse_drift(line[2:].rstrip("\n"))
+                name, concept, kind, arg = parse_drift(line[2:].rstrip("\n"), extra)
                 if name in seen:
                     raise ValueError("duplicate name " + name)
             except ValueError as e:
@@ -138,30 +138,6 @@ def ev(text):
     return text if len(text) <= 120 else text[:117] + "..."
 
 
-# ---------------------------------------------------------------- checkers; each yields (path, line no, evidence)
-DATE_RE = re.compile(r"\b(?:19|20)\d\d-\d\d-\d\d\b|LocalDate\.of\(\s*\d{4}\s*,|new Date\(\s*\d{4}\s*,")
-CLOCK_RE = re.compile(r"Instant\.now|LocalDate\.now|LocalDateTime\.now|Date\.now\(|new Date\(\)|\bclock\b|\brunNow\b|\bRunClock\b",
-                      re.I)
-
-
-def check_clock_mix(p, arg, opts):
-    """A test file with a literal date that also reads a live clock. A non-empty arg replaces the live-clock regex, so a
-    project whose tests say "clock" everywhere can narrow it with a one-line list edit."""
-    try:
-        clock = re.compile(arg, re.I) if arg.strip() else CLOCK_RE
-    except re.error as e:
-        raise Usage("clock-mix arg is not a valid regex: %s" % e)
-    for rel in p.scanned:
-        lines = p.lines(rel)
-        first = next(((n, l) for n, l in enumerate(lines, 1) if DATE_RE.search(l)), None)
-        if first and any(clock.search(l) for l in lines):
-            yield rel, first[0], ev(first[1]) + "  [file also uses the live clock]"
-
-
-HEX_RE = r"(?=[0-9a-f]*\d)[0-9a-f]{6,}"     # a hex run must hold a digit, so words like "facade" are not hashes
-TOKEN_RE = re.compile(r"(?<![\w.])(?:%s|v?\d+\.\d+\.\d+|policy[-_A-Za-z0-9]+)(?![\w])" % HEX_RE)
-
-
 def diff_removed(root, base):
     """{path: [removed lines]} and {path: [added lines]} for BASE..HEAD, paths relative to root."""
     rc, out, err = git(root, "diff", "--unified=0", "--relative", "--no-color", "--no-ext-diff", base, "HEAD", "--")
@@ -184,125 +160,132 @@ def diff_removed(root, base):
     return rem, add
 
 
-def check_stale_pin(p, arg, opts):
-    values = list(opts.old)
-    if opts.diff:
-        rem, _ = diff_removed(p.root, opts.diff)
-        blob = None
-        for path, lines in rem.items():
-            if path and not is_test_path(path):
-                for tok in TOKEN_RE.findall("\n".join(lines)):
-                    if len(tok) >= 6 and tok not in values:
-                        blob = p.source_blob() if blob is None else blob
-                        if tok not in blob:
-                            values.append(tok)
-    for value in values:
-        for rel in p.scanned:
-            for n, l in enumerate(p.lines(rel), 1):
-                if value in l:
-                    yield rel, n, ev("old value %s: %s" % (value, l))
-                    break
+# ---------------------------------------------------------------- checkers: the `check` hook point (kit_ext.py, SCAF-72)
+# The five kit checkers are default plugins (plugins/test_drift/<name>.py, ALWAYS_ON), each answering for its own kind. A
+# project adds checkers (and kinds) as extensions, _tools/ext/test_drift/<name>.py listed in .claude/scaffolding.json
+# extensions.test_drift; they only ADD: a name that is a kit kind is always answered by the kit's plugin, and a plugin that
+# fails is skipped and reported on stderr. A drift whose kit plugin cannot run is a usage error (exit 2), never a clean scan.
+#   def check(root, kind, project, arg, opts, helpers) -> [(path, line no, evidence)] | str (a usage error) | None (not mine)
+#   def kinds(root) -> [kind names this extension adds]       (optional; the kit's five need none)
+# helpers has ev, git, diff_removed, is_test_path, Usage and SOURCE_EXT. Without kit_ext.py beside this file the scan is refused.
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_KE = []
+_HOOKS = {}
 
 
-SEL_CALL_RE = re.compile(r"""(?:querySelector(?:All)?|locator|By\.css(?:Selector)?)\(\s*(['"`])(.*?)\1""")
-TESTID_CALL_RE = re.compile(r"""getByTestId\(\s*(['"`])(.*?)\1""")
-TESTID_ATTR_RE = re.compile(r"""\[data-testid\s*[~|^$*]?=\s*["']?([^"'\]]+)""")
-CLASS_RE = re.compile(r"\.([A-Za-z_][\w-]*)")
+def _kit_ext():
+    """(kit_ext module, '') or (None, why): kit_ext.py beside this file, loaded by path."""
+    if not _KE:
+        path, mod, why = os.path.join(_HERE, "kit_ext.py"), None, "is missing"
+        if os.path.isfile(path):
+            try:
+                import importlib.util
+                spec = importlib.util.spec_from_file_location("kit_ext_for_test_drift", path)
+                mod = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(mod)
+                for needed in ("HookPoint", "run"):
+                    if not hasattr(mod, needed):
+                        raise AttributeError("no %s" % needed)
+                why = ""
+            except (Exception, SystemExit) as e:
+                mod, why = None, "could not be loaded (%s: %s)" % (type(e).__name__, " ".join(str(e).split()))
+        _KE.append((mod, why))
+    return _KE[0]
 
 
-def selector_names(line):
-    names = set(TESTID_ATTR_RE.findall(line)) | {m.group(2) for m in TESTID_CALL_RE.finditer(line)}
-    for m in SEL_CALL_RE.finditer(line):
-        sel = m.group(2)
-        if re.match(r"\s*(text|xpath|role|id)=|\s*//", sel):
-            continue
-        sel = re.sub(r"\[[^\]]*\]|\"[^\"]*\"|'[^']*'", " ", sel)
-        names |= set(CLASS_RE.findall(sel))
-    return names
+def _check_answer(answer):
+    if answer is None or isinstance(answer, str):
+        return None
+    if isinstance(answer, (list, tuple)) and all(isinstance(h, (tuple, list)) and len(h) == 3 and isinstance(h[0], str)
+                                                 and isinstance(h[1], int) and isinstance(h[2], str) for h in answer):
+        return None
+    return "not a list of (path, line, evidence), a string or None"
 
 
-def check_orphan_selector(p, arg, opts):
-    blob = None
-    for rel in p.scanned:
-        found = {}
-        for n, l in enumerate(p.lines(rel), 1):
-            for name in selector_names(l):
-                found.setdefault(name, (n, l))
-        for name, (n, l) in found.items():
-            blob = p.source_blob(SOURCE_EXT) if blob is None else blob
-            if not re.search(r"(?<![\w-])%s(?![\w-])" % re.escape(name), blob):
-                yield rel, n, ev("no source defines '%s': %s" % (name, l))
+def _check_kinds(answer):
+    return None if answer is None or (isinstance(answer, (list, tuple)) and all(isinstance(k, str) for k in answer)) else "not a list of strings"
 
 
-SIG_RES = (
-    re.compile(r"^\s*(?:async\s+)?def\s+([A-Za-z]\w*)\s*\("),                                  # python, public only
-    re.compile(r"^\s*(?:export\s+)?(?:default\s+)?(?:async\s+)?function\s*\*?\s*([A-Za-z_$][\w$]*)\s*\("),   # js/ts
-    re.compile(r"^\s*export\s+(?:const|let)\s+([A-Za-z_$][\w$]*)\s*=\s*(?:async\s*)?\("),
-    re.compile(r"^\s*public\s+(?:(?:static|final|abstract|synchronized|default)\s+)*[\w<>\[\],.? ]+?\s+([A-Za-z_]\w*)\s*\("),  # java
-    re.compile(r"^\s*(?!(?:private|protected|internal)\b)(?:\w+\s+)*fun\s+(?:<[^>]+>\s*)?(?:[\w.]+\.)?(\w+)\s*\("),    # kotlin
-    re.compile(r"^func\s+(?:\([^)]*\)\s*)?([A-Z]\w*)\s*\("),                                   # go, exported
-)
+def _hook(name):
+    if name not in _HOOKS:
+        ke, _ = _kit_ext()
+        _HOOKS[name] = (ke.HookPoint("test_drift", "check", ("root", "kind", "project", "arg", "opts", "helpers"), _check_answer, "skip",
+                                     doc="hits, a usage error string, or None") if name == "check" else
+                        ke.HookPoint("test_drift", "kinds", ("root",), _check_kinds, "skip", doc="the kinds an extension adds"))
+    return _HOOKS[name]
 
 
-def signature_name(line):
-    for rx in SIG_RES:
-        m = rx.match(line)
-        if m:
-            return m.group(1)
-    return None
-
-
-def check_contract_callers(p, arg, opts):
-    if not opts.diff:
-        return
-    rem, add = diff_removed(p.root, opts.diff)
-    rc, out, _ = git(p.root, "diff", "--name-only", "--relative", opts.diff, "HEAD", "--")
-    changed_files = set(out.split())
-    changed = set()
-    for path, lines in rem.items():
-        if not path or is_test_path(path):
-            continue
-        added = {l.strip() for l in add.get(path, [])}
-        for l in lines:
-            name = signature_name(l)
-            if name and len(name) >= 3 and not name.startswith("_") and l.strip() not in added:
-                changed.add(name)
-    for name in sorted(changed):
-        rx = re.compile(r"\b%s\b" % re.escape(name))
-        for rel in p.scanned:
-            if rel in changed_files:
+def _run(root, name, *args):
+    """([(plugin, answer)], {plugin: failure message}, why kit_ext is unusable or ''). The kit's default plugins (beside this
+    file) first, then the project's extensions. Never raises."""
+    ke, why = _kit_ext()
+    if ke is None:
+        return [], {}, "kit_ext.py " + why
+    out, failed, seen = [], {}, set()
+    kit_root = os.path.dirname(_HERE) if os.path.basename(_HERE) == "_tools" and os.path.isdir(os.path.join(_HERE, "plugins")) else None
+    for r in dict.fromkeys([x for x in (kit_root, root) if x]):
+        try:
+            res = ke.run(r, _hook(name), r, *args)
+        except Exception as e:      # a kit_ext.py older than this tool: report it, never crash the scan
+            return out, failed, "kit_ext.py failed (%s: %s)" % (type(e).__name__, " ".join(str(e).split()))
+        kind_of = getattr(res, "kind_of", lambda _name: None)
+        for plugin, answer in res:
+            if plugin in KIT_CHECKERS and kind_of(plugin) != "kit":
+                # A project extension named like a kit check can never stand in for it: the kit check counts as not run.
+                failed.setdefault(plugin, "answered by a project extension, not the kit's plugin")
                 continue
-            for n, l in enumerate(p.lines(rel), 1):
-                if rx.search(l):
-                    yield rel, n, ev("signature of %s changed; test not changed: %s" % (name, l))
-                    break
+            if plugin not in seen:
+                seen.add(plugin)
+                out.append((plugin, answer))
+        for f in res.failures:
+            failed.setdefault(f.name or "(record)", f.message)
+    return out, failed, ""
 
 
-def check_regex(p, arg, opts):
-    rx = re.compile(arg)
-    for rel in p.scanned:
-        for n, l in enumerate(p.lines(rel), 1):
-            if rx.search(l):
-                yield rel, n, ev(l)
+class _Helpers(object):
+    ev, git, diff_removed = staticmethod(ev), staticmethod(git), staticmethod(diff_removed)
+    is_test_path, Usage, SOURCE_EXT = staticmethod(is_test_path), Usage, SOURCE_EXT
 
 
-CHECKERS = {"clock-mix": check_clock_mix, "stale-pin": check_stale_pin, "orphan-selector": check_orphan_selector,
-            "contract-callers": check_contract_callers, "regex": check_regex}
+def extension_kinds(root):
+    """The kinds the project's extensions add, besides the kit's five."""
+    found, _, _ = _run(root, "kinds")
+    return sorted({k for _, ks in found for k in (ks or []) if k not in KINDS and NAME_RE.match(k)})
+
+
+def run_checker(root, kind, project, arg, opts):
+    """[(path, line no, evidence)] for one drift. A kit kind needs its kit plugin: when that cannot run it is a usage error."""
+    found, failed, why = _run(root, "check", kind, project, arg, opts, _Helpers)
+    hits, answered = [], False
+    for plugin, answer in found:
+        if answer is None or (plugin not in KIT_CHECKERS and kind in KINDS):
+            continue                                     # not its kind, or an extension trying to answer a kit kind: the kit wins
+        if isinstance(answer, str):
+            raise Usage(answer)
+        answered = True
+        hits += [tuple(h) for h in answer]
+    if not answered and kind in KINDS:
+        raise Usage("drift kind %s cannot run: its kit plugin plugins/test_drift/%s.py is missing or broken (%s); run inbox_setup.py update"
+                    % (kind, kind.replace("-", "_"), why or failed.get(kind.replace("-", "_")) or "not loaded"))
+    return hits
+
+
+KIT_CHECKERS = {"clock_mix", "stale_pin", "orphan_selector", "contract_callers", "regex"}
 
 
 # ---------------------------------------------------------------- commands
-def add_line(path, spec):
+def add_line(path, spec, extra=()):
     if "\n" in spec or "\r" in spec:
         raise Usage("--add: the drift must be one line")
     try:
-        name, concept, kind, arg = parse_drift(spec)
+        name, concept, kind, arg = parse_drift(spec, extra)
     except ValueError as e:
         raise Usage("--add: %s" % e)
     if len(concept) > MAX_CONCEPT:
         raise Usage("--add: concept is %d characters; keep it to one sentence of %d or fewer" % (len(concept), MAX_CONCEPT))
     if not os.path.isfile(path):
         raise Usage("no drift list at %s; run --init first" % path)
-    if name in {d["name"] for d in read_list(path)[0]}:
+    if name in {d["name"] for d in read_list(path, extra)[0]}:
         raise Usage("--add: a drift named %s already exists" % name)
     with open(path, "rb") as f:
         needs_nl = not f.read().endswith(b"\n")
@@ -321,11 +304,11 @@ def init_list(path):
 
 
 def scan(opts, list_path):
-    drifts, errors = read_list(list_path)
+    drifts, errors = read_list(list_path, extension_kinds(opts.root))
     p = Project(opts.root, opts.paths)
     hits, idle = [], []
     for d in drifts:
-        found = [(d["name"], rel, n, e) for rel, n, e in CHECKERS[d["kind"]](p, d["arg"], opts)]
+        found = [(d["name"], rel, n, e) for rel, n, e in run_checker(opts.root, d["kind"], p, d["arg"], opts)]
         hits += found
         if not found:
             idle.append(d["name"])
@@ -359,7 +342,7 @@ def main(argv=None):
             print(init_list(path))
             return 0
         if opts.add is not None:
-            print(add_line(path, opts.add))
+            print(add_line(path, opts.add, extension_kinds(opts.root)))
             return 0
         if not os.path.isfile(path):
             raise Usage("no drift list at %s; run with --init, or copy plugin/project/templates/test-drift.md there" % path)

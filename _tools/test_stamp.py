@@ -5,8 +5,9 @@ the project's own settings say what "the tests" are.
 
 Usage (from anywhere; the project root is the parent of this file's folder unless --root is given)
   test_stamp.py --affected [BASE]  T1. The tests affected by what changed in BASE...HEAD plus uncommitted changes, for
-                                   languages that have an affected-test plug-in (python today). Prints its choice,
-                                   then runs it. For any other language it says so and runs the full suite instead.
+                                   languages that have an affected-test plug-in (python and maven; see "Language
+                                   plug-ins"). Prints its choice, then runs it. For any other language, or when the
+                                   plug-in fails or cannot tell, it says so and runs the full suite instead.
                                    BASE defaults to the record's `base_branch`, else main, else master.
   test_stamp.py --targeted [BASE] [--command CMD] [--reason TEXT]
                                    Strict scoped validation: select affected tests or run exactly CMD. Unsupported,
@@ -28,11 +29,13 @@ Usage (from anywhere; the project root is the parent of this file's folder unles
 Settings: the "tests" block of <project>/.claude/scaffolding.json
   {"tests": {"command": "python3 -B -m unittest discover -s tests",   # run once for --full (through the shell)
              "cwd": ".",                                              # where it runs, relative to the project root
-             "language": "python",                                    # picks the affected-test plug-in; free text else
+             "language": "python",                                    # picks the affected-test plug-in: python, maven;
+                                                                      # free text else (no plug-in)
              "t0_paths": ["docs/", "*.md", "backlog/"],               # docs-only paths: they run nothing, and a
                                                                       # change to them keeps a stamp
-             "python": {"roots": ["tools", "tests"],                  # the python plug-in's settings
+             "python": {"roots": ["tools", "tests"],                  # the python plug-in's settings (tests.<language>)
                         "test_glob": "tests/test_*.py", "unittest_top": "."},
+             "maven": {"args": ["-B"], "goal": "test"},               # the maven plug-in's settings
              "variants": {"site": {"env": {"ACM_SITE": "1"}}},        # --variant site
              "jobs": 1}}                                              # default for --jobs
   Only `command` is needed. With no "tests" block the command falls back to `inbox.test` from the same record. With
@@ -51,10 +54,44 @@ Stamp
 
 Running
   A command that is not run by the python plug-in runs through the shell, in `cwd`, with the variant's
-  environment added and owned temporary paths. Output is bounded in <test-runs>/logs/. The Python plug-in
-  (affected/python.py next to this file) runs independent unittest chunks when the language is python,
-  no --command is given and the command mentions unittest. Timings and resource headroom plan chunks;
-  --jobs is an upper bound and low headroom serialises work. Other commands are indivisible supervised units.
+  environment added and owned temporary paths. Output is bounded in <test-runs>/logs/. The language plug-in
+  (see below) runs the suite itself when it applies: the python plug-in runs independent unittest chunks when the
+  language is python, no --command is given and the command mentions unittest. Timings and resource headroom plan
+  chunks; --jobs is an upper bound and low headroom serialises work. Other commands are indivisible supervised units.
+
+Language plug-ins (tests.language picks one; the kit's are affected/python.py and affected/maven.py next to this file)
+  A plug-in is a module with these module-level functions (affected/python.py is the reference; all paths are
+  relative to `cwd`, the folder the tests run in, unless noted):
+    applies(st, command_overridden) -> bool        optional; whether the plug-in drives this run. Default: true unless
+                                                   --command was given. python: "unittest" in the command and no
+                                                   --command. maven: "mvn" in the command and no --command. When it is
+                                                   false the plug-in is not used: the configured command runs as is.
+    settings(raw) -> cfg                           `raw` is the "tests.<language>" block (None when absent); returns the
+                                                   plug-in's settings with defaults applied. ValueError(message) means
+                                                   the project's settings are wrong: reported as an error (exit 2).
+    discover_modules(cwd, cfg) -> [id]             sorted ids of the units of test selection: python test modules,
+                                                   maven modules (folder relative to cwd).
+    select_affected(cwd, cwd_rel, cfg, changed, is_t0, modules) -> (kind, ids, notes)
+                                                   `changed` are project-root-relative git paths, is_t0(path) says
+                                                   whether a path is docs-only. kind is
+                                                     "none"     nothing to run (T0 paths only);
+                                                     "some"     run `ids` (a subset of `modules`);
+                                                     "full"     run everything; notes[0] says why;
+                                                     "unknown"  the plug-in cannot tell what the change affects:
+                                                                run everything, and say it could not tell.
+    run_bounded(cwd, cfg, modules, jobs, rdir, log_dir, env, say, dry_run, identity, resources_raw=None, resume=False,
+                project=None) -> None | (ok, ran, skipped, wall)
+                                                   run `modules` inside the resource contract (tests.resources, via
+                                                   test_resources.execute); None for a dry run.
+  "unknown" is never "nothing affected". A plug-in that raises, exits, returns an unknown or malformed answer, or fails
+  to import falls back to the documented broad plan, the full test command, and says so on a line that names the plug-in
+  and the reason: `falling back to the full suite (plug-in <language> failed): ...` or `(plug-in <language> could not
+  tell): ...`. kind "full" is a plug-in's own decision, `falling back to the full suite: <reason>`. Under --targeted a
+  failing or unknown plug-in is refused (exit 2), never a fallback. A failing plug-in is isolated by kit_ext (one stderr
+  line `extension test_stamp/<language> skipped: ...`, skipped for the rest of the process).
+  The kit's plug-ins live in affected/<language>.py. A project's own may live in _tools/ext/test_stamp/<language>.py
+  when "<language>" is listed in "extensions": {"test_stamp": ["<language>"]} of .claude/scaffolding.json; the kit's
+  plug-in of the same name wins (one warning). It sees CONFIG, the extension's config from the record.
   tests.resources configures the budgets, immutable input identities and output destination; see
   docs/design/2026-11-03-test-resources.md in agent-scaffolding. Only finished owned log folders are pruned.
 
@@ -77,7 +114,7 @@ import sys
 import tempfile
 import time
 
-VERSION = "1.2.0"
+VERSION = "1.3.1"
 
 sys.dont_write_bytecode = True
 TOOLS = os.path.dirname(os.path.abspath(__file__))
@@ -253,6 +290,7 @@ class Settings:
         self.t0_patterns, self.python, self.variants, self.jobs = t0, python, variants, jobs
         self.base_branch = base_branch
         self.resources = {}
+        self.plugin_block = python      # the "tests.<language>" block the language plug-in reads (None when absent)
         self.cwd = os.path.normpath(os.path.join(root, cwd_rel))
 
     def is_t0(self, path):
@@ -304,6 +342,8 @@ def load_settings(root, command_override=None):
     base = record.get("base_branch") if isinstance(record.get("base_branch"), str) else None
     st = Settings(root, command, cwd_rel.rstrip("/") or ".", str(language), t0, python, variants, jobs, base)
     st.resources = tests.get("resources", {})
+    block = tests.get(st.language) if re.fullmatch(r"[a-z][a-z0-9_]*", st.language) else None
+    st.plugin_block = python if st.language == "python" else block if isinstance(block, dict) else None
     resource_module().Policy(st.resources)
     return st
 
@@ -323,30 +363,195 @@ def variant_env(st, name):
 
 # ---------------------------------------------------------------- plug-ins
 
-def load_plugin(language):
-    """The affected-test plug-in for `language` (affected/<language>.py next to this file), or None."""
+class PluginFailed(RunError):
+    """A language plug-in failed, or answered in a way the contract does not allow."""
+
+
+PLUGIN_ERRORS = {}      # (root, language) -> the one line saying why the plug-in is skipped for the rest of this process
+_PLUGIN_ENTRIES = {}    # (root, language) -> the kit_ext entry it was loaded as
+_KIT_EXT = []
+_KIT_EXT_API = ("default_warn", "read_record", "load", "fail", "warn_once")
+
+
+def _kit_ext():
+    """kit_ext.py beside this file (loaded by path), or None when it is missing or older than the API used here."""
+    if not _KIT_EXT:
+        found = None
+        try:
+            spec = importlib.util.spec_from_file_location("test_stamp_kit_ext", os.path.join(TOOLS, "kit_ext.py"))
+            found = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(found)
+            if not all(callable(getattr(found, n, None)) for n in _KIT_EXT_API):
+                found = None
+        except (Exception, SystemExit):
+            found = None
+        _KIT_EXT.append(found)
+    return _KIT_EXT[0]
+
+
+def _plugin_root(root):
+    return os.path.abspath(root or os.path.dirname(TOOLS))
+
+
+def plugin_failure(root, language):
+    """The line saying why the language's plug-in is skipped (it failed earlier in this process), else None."""
+    return PLUGIN_ERRORS.get((_plugin_root(root), language))
+
+
+def _fail_plugin(root, language, kind, message):
+    """Record the plug-in as skipped for the rest of the process: kit_ext's one warning line, kept in PLUGIN_ERRORS."""
+    ke, key = _kit_ext(), (root, language)
+    if ke is None:
+        line = "extension test_stamp/%s skipped: %s: %s" % (language, kind, " ".join(str(message).split()))
+        sys.stderr.write(line + "\n")
+    else:
+        entry = _PLUGIN_ENTRIES.get(key) or {"tool": "test_stamp", "name": language, "kind": "kit", "path": "", "config": {}}
+        line = str(ke.fail(root, entry, kind, message, ke.default_warn))
+    PLUGIN_ERRORS[key] = line
+
+
+def load_plugin(language, root=None):
+    """The affected-test plug-in for `language`, or None (no such plug-in, or it failed: see plugin_failure).
+    The kit's is affected/<language>.py next to this file; a project's own is _tools/ext/test_stamp/<language>.py, when
+    `language` is listed in .claude/scaffolding.json extensions.test_stamp. The kit's wins on a clash (one warning).
+    Loaded through kit_ext, so a plug-in that fails to import is skipped with one warning line and the core carries on."""
     if not re.fullmatch(r"[a-z][a-z0-9_]*", language or ""):
         return None
-    path = os.path.join(TOOLS, "affected", language + ".py")
-    if not os.path.isfile(path):
+    root = _plugin_root(root)
+    key = (root, language)
+    if key in PLUGIN_ERRORS:
         return None
-    spec = importlib.util.spec_from_file_location("test_stamp_affected_" + language, path)
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
+    kit_path = os.path.join(TOOLS, "affected", language + ".py")
+    ext_path = os.path.join(root, "_tools", "ext", "test_stamp", language + ".py")
+    ke = _kit_ext()
+    listed = {}
+    if ke is not None:
+        record, problems = ke.read_record(root)
+        for tool, problem in problems:
+            if tool is None or tool == "test_stamp":
+                ke.warn_once(root, problem, ke.default_warn)
+        listed = dict(record.get("test_stamp", []))
+    if os.path.isfile(kit_path):
+        entry = {"tool": "test_stamp", "name": language, "kind": "kit", "path": kit_path,
+                 "config": listed.get(language, {})}
+        if ke is not None and language in listed and os.path.isfile(ext_path):
+            ke.warn_once(root, "extension test_stamp/%s ignored: a kit plug-in of that name exists and wins" % language,
+                         ke.default_warn)
+    elif language in listed:
+        entry = {"tool": "test_stamp", "name": language, "kind": "ext", "path": ext_path, "config": listed[language]}
+        if not os.path.isfile(ext_path):
+            _PLUGIN_ENTRIES[key] = entry
+            _fail_plugin(root, language, "NotFound", "listed in .claude/scaffolding.json but there is no kit plug-in "
+                         "affected/%s.py and no _tools/ext/test_stamp/%s.py" % (language, language))
+            return None
+    else:
+        return None
+    _PLUGIN_ENTRIES[key] = entry
+    if ke is None:
+        if entry["kind"] == "ext":
+            _fail_plugin(root, language, "NoLoader", "project plug-ins need kit_ext.py beside test_stamp.py")
+            return None
+        try:      # an old vendored tool set without the shared loader: still isolate a failing kit plug-in
+            spec = importlib.util.spec_from_file_location("test_stamp_affected_" + language, kit_path)
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            return mod
+        except (Exception, SystemExit) as error:
+            _fail_plugin(root, language, type(error).__name__, "at import: %s" % (error,))
+            return None
+
+    def warn(line):      # kit_ext.load calls this once, when the import fails
+        PLUGIN_ERRORS[key] = line
+        ke.default_warn(line)
+    return ke.load(root, entry, warn)
+
+
+def _plugin_call(st, what, fn, *args):
+    """Call a plug-in function. An exception or SystemExit skips the plug-in for the rest of the process (one warning
+    line, kit_ext's wording) and raises PluginFailed, which callers turn into a labelled fallback to the broad plan."""
+    try:
+        return fn(*args)
+    except (Exception, SystemExit) as error:
+        if isinstance(error, RunError) or "ResourceError" in [c.__name__ for c in type(error).__mro__]:
+            raise      # the tool's own refusals (bad settings, git, the resource contract) are not the plug-in failing
+        _fail_plugin(_plugin_root(st.root), st.language, type(error).__name__, "%s: %s" % (what, error))
+        raise PluginFailed(plugin_failure(st.root, st.language))
+
+
+def plugin_in_play(st):
+    """True when a language plug-in other than python exists for this project's language and it has settings (its
+    tests.<language> block): only then does that block belong in the execution identity, so a project with no plug-in keeps
+    the stamps it had. A plug-in that fails at run time still counts (the identity must not change mid-run)."""
+    if st.plugin_block is None or st.language == "python":
+        return False
+    load_plugin(st.language, st.root)
+    entry = _PLUGIN_ENTRIES.get((_plugin_root(st.root), st.language))
+    return bool(entry) and os.path.isfile(entry.get("path") or "")
 
 
 def plugin_for_run(st, command_overridden):
-    """(plug-in, its settings) when the sharded runner drives this suite, else (None, None)."""
-    if st.language != "python" or command_overridden or "unittest" not in st.command:
-        return None, None
-    plugin = load_plugin("python")
+    """(plug-in, its settings) when the language plug-in drives this suite, else (None, None). A plug-in drives it when
+    it says so: its applies(st, command_overridden) (default: no --command was given). One that fails is skipped."""
+    plugin = load_plugin(st.language, st.root)
     if plugin is None:
         return None, None
+    applies = getattr(plugin, "applies", None)
     try:
-        return plugin, plugin.settings(st.python)
+        if callable(applies):
+            if not _plugin_call(st, "applies", applies, st, command_overridden):
+                return None, None
+        elif command_overridden:
+            return None, None
+    except PluginFailed:
+        return None, None
+    try:
+        return plugin, plugin.settings(st.plugin_block)
     except ValueError as e:
         raise RunError("tests.%s" % e)
+    except (Exception, SystemExit) as error:
+        _fail_plugin(_plugin_root(st.root), st.language, type(error).__name__, "settings: %s" % (error,))
+        return None, None
+
+
+def plugin_select(st, plugin, pcfg, changed, modules):
+    """plugin.select_affected, checked: (kind, chosen, notes) with kind none, some, full or unknown. Raises PluginFailed
+    when the plug-in raises or answers in a shape the contract does not allow."""
+    answer = _plugin_call(st, "select_affected", plugin.select_affected, st.cwd, st.cwd_rel, pcfg, changed,
+                          st.is_t0, modules)
+    problem = None
+    try:
+        kind, chosen, notes = answer
+        if kind not in ("none", "some", "full", "unknown"):
+            problem = "kind %r is not none, some, full or unknown" % (kind,)
+        elif not (isinstance(chosen, (list, tuple)) and all(isinstance(c, str) for c in chosen)
+                  and set(chosen) <= set(modules)):
+            problem = "the chosen ids are not a list of ids from discover_modules"
+        elif kind == "some" and not chosen:
+            problem = "kind some with no ids"
+        elif not (isinstance(notes, (list, tuple)) and all(isinstance(n, str) for n in notes)):
+            problem = "notes is not a list of strings"
+    except (TypeError, ValueError):
+        problem = "expected (kind, ids, notes)"
+    if problem:
+        _fail_plugin(_plugin_root(st.root), st.language, "BadResult", "select_affected returned %r: %s" % (answer, problem))
+        raise PluginFailed(plugin_failure(st.root, st.language))
+    return kind, list(chosen), list(notes) or ["no reason given"]
+
+
+def plugin_modules(st, plugin, pcfg):
+    """plugin.discover_modules, checked: a sorted list of ids. Raises PluginFailed like plugin_select."""
+    found = _plugin_call(st, "discover_modules", plugin.discover_modules, st.cwd, pcfg)
+    if not (isinstance(found, (list, tuple)) and all(isinstance(m, str) for m in found)):
+        _fail_plugin(_plugin_root(st.root), st.language, "BadResult",
+                     "discover_modules returned %r: not a list of ids" % (found,))
+        raise PluginFailed(plugin_failure(st.root, st.language))
+    return list(found)
+
+
+def fallback_line(st, why):
+    """The one line that labels a run of the broad plan as a fallback (never silent success)."""
+    return "falling back to the full suite (plug-in %s %s): %s" % (
+        st.language, "failed" if why == "failed" else "could not tell", plugin_failure(st.root, st.language) or "")
 
 
 # ---------------------------------------------------------------- stamps
@@ -422,13 +627,14 @@ def execution_identity(st, args, modules, env):
     return {"version": 1, "code": working_code_key(st.root, st.is_t0),
             "environment": resources.digest(environment), "inputs": inputs,
             "interpreter": [os.path.realpath(sys.executable), sys.version], "platform": platform.platform(),
-            "settings": resources.digest({"command": st.command, "cwd": st.cwd_rel, "python": st.python,
-                                           "resources": st.resources}),
+            "settings": resources.digest(dict({"command": st.command, "cwd": st.cwd_rel, "python": st.python,
+                                              "resources": st.resources},
+                                             **({"plugin": st.plugin_block} if plugin_in_play(st) else {}))),
             "variant": args.variant or "default", "selected": modules,
             "scope": "full" if args.full else "targeted" if getattr(args, "targeted", None) is not None else "affected"}
 
 
-def validation_identity(st, args, modules=None, scope="full"):
+def validation_identity(st, args, modules=None, scope="full", say=None):
     """Use the actual selected command/modules and variant environment for stamps as well as checkpoints."""
     context = argparse.Namespace(**vars(args))
     context.full = scope == "full"
@@ -438,7 +644,14 @@ def validation_identity(st, args, modules=None, scope="full"):
     env.update(extra)
     if modules is None:
         plugin, config = plugin_for_run(st, bool(args.command))
-        modules = [st.command] if plugin is None else plugin.discover_modules(st.cwd, config)
+        if plugin is not None:
+            try:
+                modules = plugin_modules(st, plugin, config)
+            except PluginFailed:
+                plugin = None      # skipped now: the plan is the full command, as run_suite will run it
+                if scope == "full" and say is not None:
+                    say(fallback_line(st, "failed"))
+        modules = [st.command] if plugin is None else modules
         if not modules:
             raise RunError("no test modules found for the selected validation plan")
     try:
@@ -490,26 +703,43 @@ def run_command(st, command, env_extra, rdir, say=print, dry_run=False, args=Non
 
 
 def run_suite(st, args, modules, rdir, say, classes_fn=None, identity=None):
-    """Run `modules` (None for the whole suite) the way the settings say. Returns (ok, ran, skipped, wall) or None."""
+    """Run `modules` (None for the whole suite) the way the settings say. Returns (ok, ran, skipped, wall) or None.
+    A language plug-in that fails here is skipped and the full command runs instead, labelled as a fallback."""
     _suffix, env_extra = variant_env(st, args.variant)
     plugin, pcfg = plugin_for_run(st, bool(args.command))
-    if plugin is None:
-        return run_command(st, st.command, env_extra, rdir, say, args.dry_run, args, identity)
-    env = dict(os.environ)
-    env.update(env_extra)
-    if modules is None:
-        modules = plugin.discover_modules(st.cwd, pcfg)
-        if not modules:
-            raise RunError("no test modules found by test_glob %r under %s" % (pcfg["test_glob"], st.cwd))
-    say("running %d module%s, jobs %d" % (len(modules), "" if len(modules) == 1 else "s", args.jobs))
-    log_dir = os.path.join(rdir, "logs", "dry-run") if args.dry_run else new_log_dir(rdir)
-    identity = execution_identity(st, args, modules, env) if identity is None else identity
-    try:
-        return plugin.run_bounded(st.cwd, pcfg, modules, args.jobs, rdir, log_dir, env, say, args.dry_run,
-                                  identity, st.resources, resume=getattr(args, "resume", False), project=st.root)
-    finally:
-        if not args.dry_run:
-            finish_logs(log_dir)
+    if plugin is not None:
+        env = dict(os.environ)
+        env.update(env_extra)
+        try:
+            if modules is None:
+                modules = plugin_modules(st, plugin, pcfg)
+                if not modules:
+                    raise RunError("no test modules found by the %s plug-in under %s (settings: %s)" % (
+                        st.language, st.cwd, json.dumps(pcfg, sort_keys=True, default=str)))
+            say("running %d module%s, jobs %d" % (len(modules), "" if len(modules) == 1 else "s", args.jobs))
+            log_dir = os.path.join(rdir, "logs", "dry-run") if args.dry_run else new_log_dir(rdir)
+            identity = execution_identity(st, args, modules, env) if identity is None else identity
+            try:
+                result = _plugin_call(st, "run_bounded", plugin.run_bounded, st.cwd, pcfg, modules, args.jobs, rdir,
+                                      log_dir, env, say, args.dry_run, identity, st.resources,
+                                      getattr(args, "resume", False), st.root)
+            finally:
+                if not args.dry_run:
+                    finish_logs(log_dir)
+            if args.dry_run:
+                return result
+            if not (isinstance(result, tuple) and len(result) == 4 and isinstance(result[0], bool)):
+                _fail_plugin(_plugin_root(st.root), st.language, "BadResult",
+                             "run_bounded returned %r: expected (ok, ran, skipped, wall)" % (result,))
+                raise PluginFailed(plugin_failure(st.root, st.language))
+            return result
+        except PluginFailed as failure:
+            if getattr(args, "targeted", None) is not None:
+                raise RunError("targeted run refused, no checks executed: the %s plug-in failed (%s); supply an "
+                               "explicit regression or verification --command" % (st.language, failure))
+            say(fallback_line(st, "failed"))
+            identity = None
+    return run_command(st, st.command, env_extra, rdir, say, args.dry_run, args, identity)
 
 
 # ---------------------------------------------------------------- commands
@@ -541,7 +771,7 @@ def cmd_full(args, say=print, classes_fn=None):
     clean = not dirty_code_lines(root, st.is_t0)
     key = stamp_key(root, st.is_t0)
     code_before, head_before = working_code_key(root, st.is_t0), head_commit(root)
-    identity = validation_identity(st, args)
+    identity = validation_identity(st, args, say=say)
     if clean and not args.force:
         s = find_stamp(rdir, key, variant)
         if s and s.get("execution_identity") == identity:
@@ -570,33 +800,47 @@ def cmd_full(args, say=print, classes_fn=None):
     return 0 if ok else 1
 
 
+def _full_fallback(args, say, classes_fn, line):
+    say(line)
+    args.force = False
+    return cmd_full(args, say, classes_fn)
+
+
 def cmd_affected(args, say=print, classes_fn=None):
     root, st, _variant = _context(args)
     rdir = runs_dir(root)
-    plugin = load_plugin(st.language)
-    if plugin is None or args.command:
+    if args.command:
+        plugin = load_plugin(st.language, root)
         why = "--command overrides the settings' command" if plugin is not None else \
             "no affected-test plug-in for %s" % st.language
-        say("%s; running the full suite" % why)
-        args.force = False
-        return cmd_full(args, say, classes_fn)
+        return _full_fallback(args, say, classes_fn, "%s; running the full suite" % why)
+    plugin = load_plugin(st.language, root)
+    if plugin is None:
+        failed = plugin_failure(root, st.language)
+        return _full_fallback(args, say, classes_fn, "falling back to the full suite (plug-in %s failed): %s" % (
+            st.language, failed) if failed else "no affected-test plug-in for %s; running the full suite" % st.language)
+    loaded = plugin
     plugin, pcfg = plugin_for_run(st, False)
     if plugin is None:
-        say("the python affected-test plug-in drives unittest only and the test command does not use it; "
-            "running the full suite")
-        args.force = False
-        return cmd_full(args, say, classes_fn)
+        failed = plugin_failure(root, st.language)
+        return _full_fallback(args, say, classes_fn, "falling back to the full suite (plug-in %s failed): %s" % (
+            st.language, failed) if failed else "%s; running the full suite" % getattr(
+                loaded, "NOT_USED", "the %s affected-test plug-in does not drive this test command" % st.language))
     base = resolve_base(root, args.affected if args.affected != "" else None, st.base_branch)
-    modules = plugin.discover_modules(st.cwd, pcfg)
     changed = changed_paths(root, base)
-    kind, chosen, notes = plugin.select_affected(st.cwd, st.cwd_rel, pcfg, changed, st.is_t0, modules)
+    try:
+        modules = plugin_modules(st, plugin, pcfg)
+        kind, chosen, notes = plugin_select(st, plugin, pcfg, changed, modules)
+    except PluginFailed:
+        return _full_fallback(args, say, classes_fn, fallback_line(st, "failed"))
     if kind == "none":
         say("no tests affected (%s)" % notes[0])
         return 0
     if kind == "full":
-        say("falling back to the full suite: %s" % notes[0])
-        args.force = False
-        return cmd_full(args, say, classes_fn)
+        return _full_fallback(args, say, classes_fn, "falling back to the full suite: %s" % notes[0])
+    if kind == "unknown":
+        return _full_fallback(args, say, classes_fn, "falling back to the full suite (plug-in %s could not tell what "
+                              "the change affects): %s" % (st.language, notes[0]))
     say("affected: %d of %d test modules (changes: %d file%s, base %s)" % (
         len(chosen), len(modules), len(changed), "" if len(changed) == 1 else "s", base))
     for n in notes:
@@ -651,8 +895,12 @@ def cmd_targeted(args, say=print, classes_fn=None):
         if plugin is None:
             raise RunError("targeted selection is unsupported for language %s and its configured runner; "
                            "supply an explicit scoped verification --command" % st.language)
-        modules = plugin.discover_modules(st.cwd, pcfg)
-        kind, chosen, notes = plugin.select_affected(st.cwd, st.cwd_rel, pcfg, changed, st.is_t0, modules)
+        try:
+            modules = plugin_modules(st, plugin, pcfg)
+            kind, chosen, notes = plugin_select(st, plugin, pcfg, changed, modules)
+        except PluginFailed as failure:
+            raise RunError("targeted selection failed (%s); supply an explicit regression or verification --command"
+                           % failure)
         if kind != "some" or not chosen:
             why = "; ".join(notes) or "no tests selected"
             raise RunError("targeted selection cannot establish coverage (%s): %s; "
