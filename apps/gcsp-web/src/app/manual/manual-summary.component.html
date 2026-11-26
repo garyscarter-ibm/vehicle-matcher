@@ -74,7 +74,7 @@
     <section class="gcsp-card gcsp-summary-section gcsp-summary-declarations" aria-labelledby="manual-confirmation-title">
       <div class="gcsp-card-body">
         <h2 class="gcsp-h2" id="manual-confirmation-title">Before you submit</h2>
-        <p id="manual-details-status" role="status">{{ detailsDirty() ? 'You have unsaved changes. Save your details before submitting your order.' : !projection().reviewDetails ? 'Your contact and collection details are unavailable. Check the current claim to try again.' : 'Check your saved details and tick every declaration to submit.' }}</p>
+        <p id="manual-details-status" role="status">{{ projection().state === 'expired' ? 'Your reservation has expired. Refresh stock to choose again.' : detailsDirty() ? 'You have unsaved changes. Save your details before submitting your order.' : !projection().reviewDetails ? 'Your contact and collection details are unavailable. Check the current claim to try again.' : 'Check your saved details and tick every declaration to submit.' }}</p>
         <form class="manual-submit" (submit)="submitOrder($event)">
           @if (projection().wording; as wording) { <p class="manual-terms">{{ wording }}</p> }
           @if (projection().terms) {

@@ -34,6 +34,18 @@ describe('manual selected-car review composition', () => {
     expect(text()).toContain('0 GBP / month'); expect((fixture.nativeElement as HTMLElement).querySelector('img')?.getAttribute('src')).toBe('/assets/gcsp-vehicle-evidence/000cfa6bd4d71e51611f32283003aacf383c9c9d12f1a29f25b600a98d496490.webp');
     expect((fixture.nativeElement as HTMLElement).querySelectorAll('h1')).toHaveLength(1);
   });
+  it.each([
+    [{ kind: 'employee-scheme', contribution: null }, 'None'],
+    [{ kind: 'employee-scheme', contribution: { amount: 0, currency: 'GBP', period: 'month' } }, 'None'],
+    [{ kind: 'employee-scheme' }, null],
+    [{ kind: 'employee-scheme', contribution: { status: 'unknown', amount: 0, currency: 'GBP' } }, null],
+    [{ kind: 'employee-scheme', contribution: { amount: 25, currency: 'GBP', period: 'month' } }, '25 GBP / month'],
+    [{ kind: 'employee-scheme', contribution: { amount: 25, currency: 'GBP' } }, '25 GBP'],
+    [{ kind: 'employee-scheme', contribution: { amount: 25 } }, null],
+  ] as const)('distinguishes no contribution from unknown and supplied monetary terms: %j', (terms, expected) => {
+    const vehicle = manualVehicle({ ...claim.quote, terms });
+    expect(vehicle.termRows.find((row) => row.label === 'Contribution')?.value).toBe(expected);
+  });
   it('reads name, photo and facts from the Java quote envelope (FUCQ-520)', () => {
     const snapshot = { display: { name: 'BMW 3 Series Touring 320i', photo: '/java.webp' }, facts: { model: { status: 'known', value: '320i', unit: null } }, snapshotVersion: 1 };
     const vehicle = manualVehicle({ ...claim.quote, facts: { facts: snapshot } } as unknown as ManualQuote);

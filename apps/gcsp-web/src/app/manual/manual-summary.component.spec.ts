@@ -38,6 +38,8 @@ describe('manual final review and actual outcome composition', () => {
     const card = (fixture.nativeElement as HTMLElement).querySelector('[data-card="points"]')!;
     const label = Array.from(card.querySelectorAll('dt')).find((entry) => entry.textContent?.trim() === 'Cash contribution')!;
     expect(label.nextElementSibling?.textContent?.trim()).toBe('None');
+    const heroLabel = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.manual-vehicle dt')).find((entry) => entry.textContent?.trim() === 'Contribution')!;
+    expect(heroLabel.nextElementSibling?.textContent?.trim()).toBe('None');
   });
   it('offers finish and printing for an actual saved outcome without exposing its internal car key', () => {
     fixture.componentRef.setInput('projection', { ...projection(), order: order('pending'), claim: null }); fixture.detectChanges();
@@ -51,6 +53,16 @@ describe('manual final review and actual outcome composition', () => {
     const submit = (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('button[type="submit"]')!;
     expect(submit.disabled).toBe(true); expect(submit.getAttribute('aria-describedby')).toBe('manual-details-status'); expect(text()).toContain('contact and collection details are unavailable');
     const event = new Event('submit', { cancelable: true }); (fixture.nativeElement as HTMLElement).querySelector('form')!.dispatchEvent(event); expect(event.defaultPrevented).toBe(true);
+  });
+  it.each([false, true])('gives terminal expiry recovery before missing details or dirty guidance (dirty=%s)', (dirty) => {
+    fixture.componentRef.setInput('projection', { ...projection(), state: 'expired', canRelease: false, canSubmit: false });
+    fixture.componentRef.setInput('detailsDirty', dirty); fixture.detectChanges();
+    const root = fixture.nativeElement as HTMLElement; const status = root.querySelector('#manual-details-status')!.textContent ?? '';
+    expect(status).toContain('Your reservation has expired.'); expect(status).toContain('Refresh stock to choose again.');
+    expect(status).not.toContain('details are unavailable'); expect(status).not.toContain('Save your details');
+    const submitted = vi.fn(); fixture.componentInstance.submit.subscribe(submitted);
+    expect(root.querySelector<HTMLButtonElement>('button[type="submit"]')!.disabled).toBe(true);
+    root.querySelector('form')!.dispatchEvent(new Event('submit', { cancelable: true })); expect(submitted).not.toHaveBeenCalled();
   });
   it('emits submission only from a deliberate valid native submit with server permission', () => {
     const submitted = vi.fn(); fixture.componentInstance.submit.subscribe(submitted);

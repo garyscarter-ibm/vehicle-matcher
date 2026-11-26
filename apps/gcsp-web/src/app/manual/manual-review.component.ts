@@ -44,10 +44,13 @@ export function manualVehicle(quote: ManualQuote | null, handoff: ManualHandoff 
   ];
   const allowance = manualObject(terms['allowanceInputs']) ? terms['allowanceInputs'] : {};
   const contribution = terms['contribution'];
+  const contributionUnknown = manualObject(contribution) && contribution['status'] === 'unknown';
+  const noContribution = terms['kind'] === 'employee-scheme' && (contribution === null
+    || manualObject(contribution) && contribution['amount'] === 0);
   const termRows: FactRow[] = [{ label: 'Points per month', value: manualObject(terms['points']) && terms['points']['unit'] === 'points'
     ? shown(terms['points']['value']) : null }, { label: 'Points allowance', value: manualObject(allowance['allowance'])
     && allowance['allowance']['unit'] === 'points' ? shown(allowance['allowance']['value']) : null },
-  { label: 'Contribution', value: manualObject(contribution) && typeof contribution['amount'] === 'number'
+  { label: 'Contribution', value: contributionUnknown ? null : noContribution ? 'None' : manualObject(contribution) && typeof contribution['amount'] === 'number'
     && text(contribution['currency']) ? `${contribution['amount']} ${contribution['currency']}${text(contribution['period']) ? ` / ${contribution['period']}` : ''}` : null }];
   const orderNumber = quote ? shown(facts['orderNumber']) : handoff?.orderNumber;
   return { name, images, rows, termRows, identity: orderNumber ? `Car order ${orderNumber}` : '' };
