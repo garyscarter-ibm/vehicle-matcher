@@ -23,6 +23,7 @@ public class SupplySelection {
     public static final String NONE = "none";
     public static final String TRANCHE_PLAN = "tranche-plan";
     public static final String DEMO = "demo";
+    public static final String GENERATED_STOCK = "generated-stock";
     public static final String POLICY_SERVICE = "policy-service";
     private static final Logger LOG = Logger.getLogger(SupplySelection.class);
 
@@ -31,11 +32,15 @@ public class SupplySelection {
 
     /** What the choices may bind to: PolicyService (demo stock), its release reader, and confirmed supply. */
     public record Deps(PolicyService policy, ReleasePolicy releasePolicy, ConfirmedSupplyLookup lookup,
-            RunCueLookup cues) {
-        static final Deps NONE = new Deps(null, null, null, RunCueLookup.NONE);
+            RunCueLookup cues, GeneratedStockPreparation generation) {
+        static final Deps NONE = new Deps(null, null, null, RunCueLookup.NONE, null);
+
+        public Deps(PolicyService policy, ReleasePolicy releasePolicy, ConfirmedSupplyLookup lookup, RunCueLookup cues) {
+            this(policy, releasePolicy, lookup, cues, null);
+        }
 
         public Deps(PolicyService policy, ReleasePolicy releasePolicy, ConfirmedSupplyLookup lookup) {
-            this(policy, releasePolicy, lookup, RunCueLookup.NONE);
+            this(policy, releasePolicy, lookup, RunCueLookup.NONE, null);
         }
     }
 
@@ -60,14 +65,29 @@ public class SupplySelection {
     @ConfigProperty(name = "gcsp.environment-id")
     Optional<String> environmentId;
 
+    @ConfigProperty(name = "gcsp.evidence.store")
+    Optional<String> corpusStore;
+
+    @ConfigProperty(name = "gcsp.evidence.reference-dir")
+    Optional<String> referenceDir;
+
+    @ConfigProperty(name = "gcsp.evidence.assets-root")
+    Optional<String> assetsRoot;
+
     private volatile Selected selected;
 
     @PostConstruct
     void init() {
         ConfirmedSupplyLookup lookup = new PostgresConfirmedSupplyLookup(dataSource::get, () -> environmentId.orElse("").trim());
         RunCueLookup cues = new PostgresRunCueLookup(dataSource::get, () -> environmentId.orElse("").trim());
+        GeneratedStockPreparation generation = GENERATED_STOCK.equals(providerName.trim())
+                ? new GeneratedStockPreparation(dataSource.get(), environmentId.orElse("").trim(),
+                        new GeneratedStockInputs(requiredPath(corpusStore, "gcsp.evidence.store"),
+                                requiredPath(referenceDir, "gcsp.evidence.reference-dir"),
+                                requiredPath(assetsRoot, "gcsp.evidence.assets-root"), policyService))
+                : null;
         selected = select(providerName, planFile.orElse(null), policyFile.orElse(null),
-                new Deps(policyService, policyRelease, lookup, cues));
+                new Deps(policyService, policyRelease, lookup, cues, generation));
         LOG.infof("GCSP supply provider: %s, release policy: %s", selected.provider().mode(), selected.policyMode());
     }
 
@@ -104,9 +124,16 @@ public class SupplySelection {
                 }
                 chosen = new DemoSupplyProvider(deps.policy(), deps.lookup(), deps.cues());
                 break;
+            case GENERATED_STOCK:
+                if (deps.generation() == null || deps.policy() == null || deps.lookup() == null) {
+                    throw new IllegalStateException("gcsp.supply.provider=generated-stock needs durable generation, PolicyService and the database");
+                }
+                chosen = new GeneratedSupplyProvider(deps.generation(),
+                        new DemoSupplyProvider(deps.policy(), deps.lookup(), deps.cues()));
+                break;
             default:
                 throw new IllegalStateException("Unknown gcsp.supply.provider '" + name + "'; supported: none, "
-                        + TRANCHE_PLAN + ", " + DEMO);
+                        + TRANCHE_PLAN + ", " + DEMO + ", " + GENERATED_STOCK);
         }
         if (policyFile == null || policyFile.isBlank()) {
             return deps.releasePolicy() == null ? new Selected(chosen, new UnconfiguredPolicy(), NONE)
@@ -117,6 +144,15 @@ public class SupplySelection {
             throw new IllegalStateException("gcsp.supply.policy-file is set but cannot be read: " + file);
         }
         return new Selected(chosen, new RetainedPolicyFile(file), "file");
+    }
+
+    private static Path requiredPath(Optional<String> value, String key) {
+        if (value.isEmpty() || value.get().isBlank()) {
+            throw new IllegalStateException("gcsp.supply.provider=generated-stock needs " + key);
+        }
+        Path path = Path.of(value.get().trim());
+        if (!path.isAbsolute()) throw new IllegalStateException(key + " must be an absolute path");
+        return path;
     }
 
     private static SupplyProvider tranchePlan(String planFile) {

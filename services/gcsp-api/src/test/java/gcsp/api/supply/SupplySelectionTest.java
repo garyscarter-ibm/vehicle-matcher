@@ -66,6 +66,13 @@ class SupplySelectionTest {
     }
 
     @Test
+    void generatedStockIsAnExplicitChoiceThatRequiresDurablePreparation() {
+        IllegalStateException error = assertThrows(IllegalStateException.class,
+                () -> SupplySelection.select("generated-stock", null, null, DEPS));
+        assertTrue(error.getMessage().contains("generated-stock needs"), error.getMessage());
+    }
+
+    @Test
     void withPolicyServiceBoundEveryProviderReadsThePolicyServiceUnlessAFileOverrides() {
         assertEquals("policy-service", SupplySelection.select("none", null, null, DEPS).policyMode());
         assertEquals("policy-service", SupplySelection.select("tranche-plan", PLAN, null, DEPS).policyMode());

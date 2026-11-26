@@ -12,6 +12,7 @@ import gcsp.api.persistence.RunContext;
 import gcsp.api.policy.PolicyRead;
 import gcsp.api.policy.PolicyResult;
 import gcsp.api.policy.PolicyService;
+import gcsp.api.supply.GeneratedSupplyProvider;
 
 /** Main's frozen input only: actual brief commands, with no released stock, holds, offers or notifications. */
 final class MainJourneyStart {
@@ -22,12 +23,19 @@ final class MainJourneyStart {
     private final PolicyService policy;
     private final RunClock clock;
     private final DemoPreparationFile file;
+    private final GeneratedSupplyProvider generated;
 
     MainJourneyStart(BriefService briefs, PolicyService policy, RunClock clock, DemoPreparationFile file) {
+        this(briefs, policy, clock, file, null);
+    }
+
+    MainJourneyStart(BriefService briefs, PolicyService policy, RunClock clock, DemoPreparationFile file,
+            GeneratedSupplyProvider generated) {
         this.briefs = briefs;
         this.policy = policy;
         this.clock = clock;
         this.file = file;
+        this.generated = generated;
     }
 
     ClockResult load(RunContext run, ScenarioCatalogue.Entry scenario) {
@@ -54,7 +62,18 @@ final class MainJourneyStart {
                 .put("expectedBriefVersion", 0).put("expectedDraftVersion", 1);
         confirm.set("consent", input.path("consent").deepCopy());
         BriefResult confirmed = briefs.confirmWithoutGate(scope, confirm);
-        return confirmed instanceof BriefResult.Ok ? ClockResult.ok(F.objectNode().put("briefVersion", 1)) : failure(confirmed);
+        if (!(confirmed instanceof BriefResult.Ok)) return failure(confirmed);
+        if (generated != null) {
+            JsonNode scenarioInput = file.scenario(SCENARIO_ID).orElseThrow();
+            JsonNode tranche = null;
+            for (JsonNode candidate : scenarioInput.path("inputs").path("stockTranches")) {
+                if ("generated-stock".equals(candidate.path("source").asText())) { tranche = candidate; break; }
+            }
+            if (tranche == null) return unavailable("scenario-generated-tranche-unavailable");
+            ClockResult prepared = generated.prepare(run, active.policyVersion(), time.get().now(), scenarioInput, tranche);
+            if (!prepared.ok()) return prepared;
+        }
+        return ClockResult.ok(F.objectNode().put("briefVersion", 1));
     }
 
     /** Values are frozen scenario inputs; essential operators and units stay owned by the pinned policy. */

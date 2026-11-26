@@ -10,6 +10,8 @@ import gcsp.api.persistence.TransactionRunner;
 import gcsp.api.persistence.WorkResult;
 import gcsp.api.policy.PolicyService;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.time.InstantSource;
@@ -134,7 +136,7 @@ public final class RunClock {
     public ClockResult controls(RunContext scope) {
         ClockResult state = state(scope);
         if (!(state instanceof ClockResult.Ok ok)) return state;
-        try {
+        try (Connection connection = dataSource.getConnection()) {
             ClockRows.Lookup run = lookup(scope);
             if (run.clock() == null) return notInitialized();
             ClockConfiguration.Loaded loaded = ClockConfiguration.read(policy, scope.runId(), run.clock().now());
@@ -144,12 +146,15 @@ public final class RunClock {
             controls.putObject("step").put("value", config.stepSeconds()).put("unit", "seconds");
             ObjectNode named = controls.putObject("namedTimes");
             run.clock().namedTimes().forEach((name, at) -> named.put(name, Instants.format(at)));
-            Instant release = run.clock().namedTimes().get("release");
+            ReleaseTarget generated = generatedRelease(connection, scope, run.clock().now());
+            Instant release = generated.generated() ? generated.next() : run.clock().namedTimes().get("release");
             ObjectNode next = controls.putObject("nextRelease");
             if (release != null && release.isAfter(run.clock().now())) {
-                next.put("status", "available").put("to", "release").put("at", Instants.format(release));
+                next.put("status", "available").put("to", generated.generated() ? "release-window" : "release")
+                        .put("at", Instants.format(release));
             } else {
-                next.put("status", "unavailable").put("reason", "No future release cue is configured.");
+                next.put("status", "unavailable").put("reason", generated.generated()
+                        ? "No future release window." : "No future release cue is configured.");
             }
             ObjectNode value = ((ObjectNode) ok.value()).deepCopy();
             value.set("controls", controls);
@@ -245,7 +250,9 @@ public final class RunClock {
             if (!presenter.loaded().ok()) {
                 return TickRunner.refusal("unavailable", POLICY_CODE, presenter.loaded().problem(), true, null);
             }
-            Instant next = presenterTarget(presenter, clock, to);
+            ReleaseTarget generated = presenter.mode() == PresenterMode.NEXT_RELEASE
+                    ? generatedRelease(tx.connection(), scope, clock.now()) : new ReleaseTarget(false, null);
+            Instant next = presenterTarget(presenter, clock, to, generated);
             if (next == null && presenter.mode() == PresenterMode.NEXT_RELEASE) {
                 return TickRunner.refusal("unavailable", "no-future-release", "No future release cue is configured.", false, null);
             }
@@ -301,7 +308,7 @@ public final class RunClock {
         return TickRunner.refusal("invalid", "invalid-clock-command", reason + " (" + field + ")", false, null);
     }
 
-    private static Instant presenterTarget(Presenter presenter, ClockRows.Clock clock, String to) {
+    private static Instant presenterTarget(Presenter presenter, ClockRows.Clock clock, String to, ReleaseTarget generated) {
         return switch (presenter.mode()) {
             case STEP -> {
                 long step = presenter.loaded().configuration().stepSeconds();
@@ -310,10 +317,35 @@ public final class RunClock {
             }
             case TO -> named(clock, to);
             case NEXT_RELEASE -> {
+                if (generated.generated()) yield generated.next();
                 Instant release = clock.namedTimes().get("release");
                 yield release != null && release.isAfter(clock.now()) ? release : null;
             }
         };
+    }
+
+    private record ReleaseTarget(boolean generated, Instant next) {}
+
+    /** Point read of the native generation receipt; an exhausted generated schedule has no named-cue fallback. */
+    private static ReleaseTarget generatedRelease(Connection connection, RunContext scope, Instant now) throws SQLException {
+        try (PreparedStatement ps = connection.prepareStatement("SELECT result #> '{report,release,windows}' "
+                + "FROM command_receipts WHERE environment_id = ? AND run_id = ? "
+                + "AND actor_id = 'system:stock-generation' AND command_id = 'stock:generate'")) {
+            ps.setString(1, scope.environmentId());
+            ps.setString(2, scope.runId());
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) return new ReleaseTarget(false, null);
+                String text = rs.getString(1);
+                if (text == null) return new ReleaseTarget(false, null);
+                JsonNode windows = ClockRows.json(text);
+                if (!windows.isArray()) return new ReleaseTarget(false, null);
+                for (JsonNode window : windows) {
+                    Instant at = window.isTextual() ? Instants.parse(window.asText()) : null;
+                    if (at != null && at.isAfter(now)) return new ReleaseTarget(true, at);
+                }
+                return new ReleaseTarget(true, null);
+            }
+        }
     }
 
     private static Instant named(ClockRows.Clock clock, String to) {

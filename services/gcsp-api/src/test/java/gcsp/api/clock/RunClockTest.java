@@ -492,6 +492,38 @@ class RunClockTest {
     }
 
     @Test
+    void generatedWindowsOwnNextReleaseWhileExplicitNamedTimeAndReplayKeepTheirMeaning() throws Exception {
+        RunClock clock = f.started();
+        f.update("INSERT INTO command_receipts (environment_id, run_id, actor_id, command_id, command_type, "
+                + "input_digest, result, run_revision) VALUES (?, 'run-1', 'system:stock-generation', 'stock:generate', "
+                + "'stock.generate', repeat('0',64), ?::jsonb, 1)", ClockFixture.ENV,
+                "{\"report\":{\"release\":{\"windows\":[\"2026-11-14T11:30:00.000Z\",\"2026-11-16T11:30:00.000Z\"]}}}");
+        JsonNode controls = value(clock.controls(ctx));
+        assertEquals("2026-11-14T09:30:00.000Z", controls.at("/controls/namedTimes/release").asText());
+        assertEquals("release-window", controls.at("/controls/nextRelease/to").asText());
+        assertEquals("2026-11-14T11:30:00.000Z", controls.at("/controls/nextRelease/at").asText());
+        JsonNode explicit = value(clock.presenterTick(ctx, "named-release", 1, PresenterMode.TO, "release"));
+        assertEquals("2026-11-14T09:30:00.000Z", explicit.at("/advance/now").asText());
+        JsonNode generated = value(clock.presenterTick(ctx, "generated-release", 2, PresenterMode.NEXT_RELEASE, null));
+        assertEquals("2026-11-14T11:30:00.000Z", generated.at("/advance/now").asText());
+        assertEquals(gcsp.api.persistence.Canonical.json(generated), gcsp.api.persistence.Canonical.json(
+                value(clock.presenterTick(ctx, "generated-release", 2, PresenterMode.NEXT_RELEASE, null))));
+        assertEquals("2026-11-16T11:30:00.000Z", value(clock.controls(ctx)).at("/controls/nextRelease/at").asText());
+    }
+
+    @Test
+    void exhaustedGeneratedWindowsNeverFallBackToAnUnrelatedNamedReleaseCue() throws Exception {
+        RunClock clock = f.started();
+        f.update("INSERT INTO command_receipts (environment_id, run_id, actor_id, command_id, command_type, "
+                + "input_digest, result, run_revision) VALUES (?, 'run-1', 'system:stock-generation', 'stock:generate', "
+                + "'stock.generate', repeat('0',64), '{\"report\":{\"release\":{\"windows\":[]}}}', 1)", ClockFixture.ENV);
+        assertEquals("unavailable", value(clock.controls(ctx)).at("/controls/nextRelease/status").asText());
+        failure(clock.presenterTick(ctx, "no-window", 1, PresenterMode.NEXT_RELEASE, null), Status.UNAVAILABLE,
+                "no-future-release");
+        assertEquals(1, clock.now(ClockFixture.ENV, "run-1").orElseThrow().clockVersion());
+    }
+
+    @Test
     void presenterTickRefusesBadInputAndStaleVersion() throws Exception {
         RunClock clock = f.started();
         failure(clock.presenterTick(ctx, "p1", 1, PresenterMode.TO, null), Status.INVALID, "invalid-presenter-tick");
