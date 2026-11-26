@@ -13556,33 +13556,36 @@
           "name": "Pugh",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-26T06:42:01.376200+00:00",
-          "expires_at": "2026-11-26T07:42:01.376200+00:00",
+          "observed_at": "2026-11-26T07:16:56.971678+00:00",
+          "expires_at": "2026-11-26T08:16:56.971678+00:00",
           "source": "native thread01a21686-f074-7bc0-a051-83806cb63766",
-          "status": "active: F542 delivery"
+          "status": "active: scoped205/205; awaiting root integration refresh/full gate"
         },
         {
           "name": "Lord Business",
           "harness": "codex",
           "role": "mechanic",
-          "observed_at": "2026-11-26T06:43:51.201426+00:00",
-          "expires_at": "2026-11-26T07:43:51.201426+00:00",
+          "observed_at": "2026-11-26T07:16:56.971678+00:00",
+          "expires_at": "2026-11-26T07:16:56.971678+00:00",
           "source": "native thread01a21698-34fb-7a61-8709-0a3dbe950ae7; requested/selected gpt-6-luna/high",
-          "status": "active: repair slice"
+          "status": "stopped: source66bb592d pushed; lead205/205 verified"
         }
       ],
-      "observed_at": "2026-11-26T06:43:51Z",
+      "observed_at": "2026-11-26T07:16:57Z",
       "slices": [
         {
           "id": "repair",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Provider-independent return clock and regression",
-          "observed_at": "2026-11-26T06:42:01Z"
+          "observed_at": "2026-11-26T07:16:57Z",
+          "evidence": "Lead reviewed six-file diff; independent final205/205 on source66bb592d with real OIDC/native PG none-supply plan/progress. Result in DEV-2026-11-22-vesper-018; strict targeted code_key5ecee2ac."
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Lead validation and matching Java support gate"
+          "status": "blocked",
+          "title": "Lead validation and matching Java support gate",
+          "observed_at": "2026-11-26T07:16:57Z",
+          "evidence": "Lead scoped/startup205/205 passed. Pending root matching full Java CI on final integrated ref because shared ReturnHttpSupport/Profile changed; no full-green claim."
         }
       ],
       "unsliced": false
