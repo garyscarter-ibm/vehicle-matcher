@@ -85,15 +85,15 @@ async function saveReviewDetails(suite, page) {
 async function assertReview(suite, page, car, width, stage) {
   const card = page.locator('section.manual-vehicle');
   await card.waitFor();
-  await page.locator('#manual-details-form').waitFor();
+  if (stage === 'preview') await page.locator('#manual-details-form').waitFor();
   await until(async () => await page.locator('.manual-review, .manual-summary').first().getAttribute('aria-busy') !== 'true', `${width} ${stage}: reads settle`);
-  assert.equal(await page.locator('#manual-details-status').innerText().then((t) => t.includes('unavailable')), false, `${width} ${stage}: review details load`);
+  if (stage === 'preview') assert.equal(await page.locator('#manual-details-status').innerText().then((t) => t.includes('unavailable')), false, `${width} ${stage}: review details load`);
   const name = card.locator('#manual-car-name, #manual-summary-car');
   await until(async () => (await name.innerText()) === car.name, `${width}: the selected-car card shows ${car.name}`);
   const text = await card.innerText();
   for (const absent of ['Car name not supplied', 'No image available for this car']) assert.ok(!text.includes(absent), `${width} ${stage}: card has no "${absent}"`);
   const identity = await card.locator('p.gcsp-note').first().innerText();
-  assert.ok([`Car order ${car.orderNumber}`, `Car ID ${car.orderUuid}`].includes(identity), `${width}: exact car identity, saw "${identity}"`);
+  assert.equal(identity, `Car order ${car.orderNumber}`, `${width}: exact plain car identity, saw "${identity}"`);
   const image = card.locator('img.vm-card-photo');
   await image.waitFor();
   await until(() => image.evaluate((node) => node.complete && node.naturalWidth > 0), `${width}: the supplied photo loads`);
@@ -112,9 +112,9 @@ test('FUCQ-520: the actual manual review shows the pinned car name and photo at 
     const stock = await releaseStock(suite, employee, presenter);
     assert.equal(stock.heldOffer ?? null, null, 'No held offer blocks review');
     await employee.goto(`${suite.origins.web}/gcsp/stock`, { waitUntil: 'domcontentloaded' });
-    const card = employee.locator('article.gcsp-vehicle-card').filter({ has: employee.locator('button:enabled', { hasText: 'Review this car' }) }).first();
+    const card = employee.locator('.vm-card').filter({ has: employee.locator('[data-review-id]:enabled') }).first();
     await card.waitFor();
-    const orderUuid = await card.getAttribute('data-member-id');
+    const orderUuid = await card.locator('[data-review-id]').getAttribute('data-review-id');
     const decision = stock.decisions.find((row) => row.orderUuid === orderUuid);
     assert.ok(decision, 'The chosen card is in the actual stock response');
     assert.equal(decision.gateStatus, 'eligible');
@@ -124,11 +124,12 @@ test('FUCQ-520: the actual manual review shows the pinned car name and photo at 
     assert.ok(sources.length, 'The actual snapshot supplies a photo');
     const car = { orderUuid, orderNumber: decision.orderNumber, name: display.name, sources };
 
-    await card.getByRole('button', { name: 'Review this car', exact: true }).click();
-    await employee.waitForURL((url) => url.pathname === '/gcsp/manual/review');
     const claimed = employee.waitForResponse((row) => row.request().method() === 'POST' && new URL(row.url()).pathname.endsWith('/manual/claim'));
-    await employee.getByRole('button', { name: 'Reserve this car to review', exact: true }).click();
+    await card.locator('[data-review-id]').click();
+    await employee.waitForURL((url) => url.pathname === '/gcsp/manual/review');
     assert.equal((await claimed).status(), 200, 'The actual claim is acquired');
+    assert.equal(await employee.getByRole('button', { name: 'Reserve this car to review', exact: true }).count(), 0,
+      'The F553 GET-confirmed held handover does not ask for a second reserve');
 
     const claim = good(await suite.call(employee, 'GET', '/manual/claim'), 'Actual claim readback');
     assert.equal(claim.quote.orderUuid, orderUuid, 'The quote pins the chosen car');

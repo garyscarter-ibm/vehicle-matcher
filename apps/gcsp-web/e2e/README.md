@@ -193,3 +193,11 @@ Select FUCQ-595 with `npm --prefix apps/gcsp-web run test:e2e -- --case f595`. I
 
 
 Select FUCQ-553 with `npm --prefix apps/gcsp-web run test:e2e -- --case f553`. The stock/choices proof uses actual signed employee/presenter sessions, Angular, Java and native PostgreSQL. Its controlled HTTPS claim-stock provider exercises the existing remote-provider contract with genuine pending and refused custody, then confirms a fresh attempt. A browser transport interruption before dispatch proves explicit same-command retry; status checks remain GET-only and held review performs no second reserve. The provider is a fictional boundary substitute, never evidence of live BMW availability. Same-state 1280 pending/failed source pairs remain pending human review; no fixture or agent verdict closes that criterion.
+
+Select FUCQ-554 with `npm --prefix apps/gcsp-web run test:e2e -- --case f554 --case f520 --case f553` on the final committed product source.
+The F554 case follows the actual confirmed gallery hold into review and the six-card summary. It checks server-owned
+countdown/announcements, plain context, saved/local/conflicting details, edit and release intents, declaration/version
+pins, one explicit submit after an acknowledgement loss, and outcome stages/Print/Finish. It replays the same live
+car, choices, details and deadlines through the read-only frozen Node host, saving review/summary 1280 pairs and
+relevant 375px states. The original human screenshot-pair criterion remains unchecked until a collaborator records
+a verdict. F520 retains exact selected-car HTTP identity/photo coverage and F553 retains its claim/recovery coverage.

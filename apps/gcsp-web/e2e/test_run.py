@@ -13,6 +13,14 @@ SPEC.loader.exec_module(runner)
 
 
 class RunnerSelectionTest(unittest.TestCase):
+    def test_manual_review_parity_combines_with_identity_and_handover_regressions(self):
+        selected = runner.selected_cases(['--case', 'f554', '--case', 'f520', '--case', 'f553'])
+        self.assertEqual(runner.suite_command('/node', selected), [
+            '/node', '--test', '--test-concurrency=1',
+            'apps/gcsp-web/e2e/manual-review-parity.test.mjs',
+            'apps/gcsp-web/e2e/manual-review.test.mjs',
+            'apps/gcsp-web/e2e/stock-choices-parity.test.mjs'])
+
     def test_default_and_repeated_automated_selection_stay_unchanged(self):
         self.assertEqual(runner.selected_cases([]), list(runner.CASES))
         selected = runner.selected_cases(['--case', 'f555', '--case', 'f548', '--case', 'f555'])
