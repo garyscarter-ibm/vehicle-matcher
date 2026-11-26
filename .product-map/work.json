@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-26T04:08:12Z",
+  "observed_at": "2026-11-26T04:50:23Z",
   "version": 1,
   "stories": [
     {
@@ -13422,6 +13422,52 @@
           "expires_at": "2026-11-26T04:35:06Z",
           "status": "Running registered c0d2a3b02 after real-case fixture and native-select keyboard correction",
           "source": "Native lead progress message read by usget-velko"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-558",
+      "title": "Greg's Angular demand view lost the metric tiles and the Node dashboard layout",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Bug",
+      "observed_at": "2026-11-26T05:00:08Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-558",
+      "native_observed_at": "2026-11-26T04:50:23Z",
+      "jira_observed_at": "2026-11-26T04:50:23Z",
+      "branch": "dev/DEV-2026-11-22-vesper-031",
+      "evidence": "Source107a268af; frontend51focused/340ratchet/drift0. Actual registered connected proof, independent rendered critique, original human1280AC3 and covering shared batch pending; no acceptance inferred.",
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "frontend-port",
+          "status": "complete",
+          "title": "Metric tile and demand/dashboard route port with focused direct-boundary validation",
+          "observed_at": "2026-11-26T05:00:08Z",
+          "evidence": "Lead checked source107a268af and source-only refresh identity:51focused tests,340ratchet checks,drift0; metric source DOM/privacy and demand caller regression. This frontend slice is not connected AC1/2 or human AC3 acceptance."
+        },
+        {
+          "id": "connected-parity",
+          "status": "in-progress",
+          "title": "Real Java/native PostgreSQL and signed OIDC; same actual release and frozen Node 1280/375 proof",
+          "observed_at": "2026-11-26T05:00:08Z",
+          "evidence": "Registered f558 proof and pinned local toolchain ready; waiting shared Java heavy slot. No browser/live demand read or screenshot pair run yet."
+        },
+        {
+          "id": "visual-critique",
+          "status": "not-started",
+          "title": "Independent rendered assessments A and B and any required in-scope corrections"
+        },
+        {
+          "id": "human-pair",
+          "status": "not-started",
+          "title": "Original AC3 human-reviewed 1280 same-scenario Node/Angular pair"
+        },
+        {
+          "id": "covering-batch",
+          "status": "not-started",
+          "title": "Covering shared validation batch after merge"
         }
       ]
     }
