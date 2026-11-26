@@ -270,7 +270,13 @@ evidence, not that suite. Known order-dependent failures (`PresenterClockHttpTes
 ## Shared local test stack — Gary, 18 November 2026
 
 This 16 GB Mac can't afford a new PostgreSQL cluster, `npm ci` and builds on every run. Every local story run, proof
-and batch run uses the shared stack instead. State lives in `~/Library/Caches/gcsp-test-stack` (never OneDrive).
+and batch run uses the shared stack instead. `_tools/test_stack.py` is the agent-scaffolding kit's (SCAF-71, 26 Nov
+2026: the GCSP fork is retired; never edit it here, add to `_tools/ext/test_stack/` instead). Its configuration is the
+`test_stack` block of `.claude/scaffolding.json`. State lives under the kit's state root,
+`~/Library/Caches/agent-scaffolding/test-stack` (`$AGENT_TEST_STACK_DIR` overrides it; never OneDrive). Tool paths follow
+the machine: `postgres.bin` is `${GCSP_PG_BIN:-<Homebrew>}` and `maven.java_home` is `${JAVA_HOME:-<Homebrew openjdk@21>}`.
+The old `~/Library/Caches/gcsp-test-stack` cluster is not used: `test_stack.py gcsp-legacy status` shows it, and
+`gcsp-legacy down` stops it.
 
 - **PostgreSQL:** `python3 -B _tools/test_stack.py pg up` starts or reuses one cluster. Then
   `eval "$(python3 -B _tools/test_stack.py pg db create --run <id> [--running] [--owner-pid <pid>])"` sets
@@ -281,19 +287,24 @@ and batch run uses the shared stack instead. State lives in `~/Library/Caches/gc
   -Dtest='gcsp.api.<package>.**'` takes the heavy slot, then creates and drops `gcsp_test_dev` (and
   `gcsp_test_running`), the names the `*HttpTest` profiles pin, and caps Maven at 512m
   and the test JVM at 1g (`--heap` to raise it). Don't cap metaspace: 384m and 1g caps fail.
-- **Node:** `python3 -B _tools/test_stack_build.py node link --app <wt>/apps/gcsp-web` links one install per lockfile in
+- **Node:** `python3 -B _tools/test_stack.py node link --app <wt>/apps/gcsp-web` links one install per lockfile in
   place of `npm ci`; `node unlink` before removing the worktree.
-- **Builds:** `build api --worktree <wt>` and `build web --worktree <wt>` print `PROOF_API_JAR=` and
+- **Builds:** `test_stack.py build api --worktree <wt>` and `build web --worktree <wt>` print `PROOF_API_JAR=` and
   `PROOF_WEB_BROWSER=` for the connected proofs, built once per committed tree and reused (a dirty tree builds in place,
   uncached). Run `build gc` only between runs.
 - **One heavy run at a time:** wrap anything that starts Java, a proof, Chrome or a full suite in
   `python3 -B _tools/test_stack.py heavy --label <id> [--ram-gib N] -- <command>`. It waits for the machine-wide slot
-  (exit 75 after `--wait-min`, default 30) and reserves RAM in the shared host budget.
+  (exit 75 after `--wait-min`, default 30) and reserves RAM in the shared host budget. The child sees
+  `AGENT_HEAVY_SLOT`, and a nested `heavy` inside it reuses the slot. The number of slots is the machine's
+  (`test_stack.heavy_slots` in `~/.config/agent-scaffolding/machine.json`), not the repo's: there is no `--slots`.
 - **Proof JVMs:** the connected proofs take their API heap from `scripts/gcsp/proof-jvm.mjs` (`PROOF_API_HEAP` raises
   it for one run). Don't add per-script `-Xmx` flags.
 - **Connected browser checks run once per story**, at the end on the final commit, not on every attempt. Earlier
   iterations use the focused unit and HTTP tests. Runs that need more than about 3 GiB (FUCQ-452's full-size job) go
-  overnight or to CI, not into a daytime queue.
+  overnight or to CI, not into a daytime queue. `heavy` enforces this: outside the machine's night window (00:00–07:30
+  here) a request above `daytime_max_gib` (3) exits 75 with "run overnight or in CI". That includes the web e2e runner
+  and `browser-ci-batch.py`, which ask for 3.5 GiB. Exit 75 is "not now", never a test result. CI (`CI=true`) is exempt.
+  Don't pass `--allow-daytime` to get round it (SCAF-78, decided 26 Nov 2026).
 
 ## Concepts and mockups
 

@@ -269,7 +269,7 @@ def family_result(output, family, source):
 def owned_stack(scratch, env, summary, output, browser_temps):
     scratch.__enter__()
     env.update(scratch.env(env))
-    env['GCSP_TEST_STACK_DIR'] = str(scratch.root / 'stack')
+    env['AGENT_TEST_STACK_DIR'] = str(scratch.root / 'stack')
     try:
         with browser_temps.account(scratch):
             yield
@@ -296,7 +296,19 @@ def owned_stack(scratch, env, summary, output, browser_temps):
         if not cleanup['browser_temps']['complete']:
             resources.atomic_json(output / 'batch-receipt.json', summary)
             raise RuntimeError('Browser temp cleanup unverified; named roots preserved')
+        _writable_tree(scratch.root / 'stack')
         scratch.__exit__(None, None, None)
+
+
+def _writable_tree(root):
+    # The kit publishes clean build outputs read-only (Cache._readonly), and Scratch.__exit__ is a plain
+    # rmtree, so restore owner write on every directory of the owned state root first. Links are not followed.
+    if not root.is_dir() or root.is_symlink():
+        return
+    for directory, subdirectories, _files in os.walk(root, followlinks=False):
+        path = Path(directory)
+        if not path.is_symlink():
+            os.chmod(path, path.lstat().st_mode | stat.S_IWUSR | stat.S_IXUSR)
 
 
 def main(argv=None):
@@ -345,7 +357,7 @@ def main(argv=None):
         with resources.handled_termination(), owned_stack(scratch, env, summary, output, browser_temps):
             env.update(GCSP_E2E_PG_MODULE=str(ROOT / 'server/node_modules/pg/lib/index.js'),
                        GCSP_NODE_REFERENCE=str(reference))
-            env.pop('GCSP_HEAVY_SLOT', None)
+            env.pop('AGENT_HEAVY_SLOT', None)
 
             def command(argv, label, seconds=600, heavy=True):
                 summary['current_chunk'] = label
@@ -371,10 +383,10 @@ def main(argv=None):
                 raise ValueError('Pinned Node/npm or required JDK/PostgreSQL major version mismatch')
             summary['environment'] = versions
             for app in ('apps/gcsp-web', 'server'):
-                command([sys.executable, '-B', '_tools/test_stack_build.py', 'node', 'link', '--app', str(ROOT / app)],
+                command([sys.executable, '-B', '_tools/test_stack.py', 'node', 'link', '--app', str(ROOT / app)],
                         'install-' + Path(app).name)
             for kind, variable in (('api', 'PROOF_API_JAR'), ('web', 'PROOF_WEB_BROWSER')):
-                built = command([sys.executable, '-B', '_tools/test_stack_build.py', 'build', kind, '--worktree', str(ROOT)], 'build-' + kind)
+                built = command([sys.executable, '-B', '_tools/test_stack.py', 'build', kind, '--worktree', str(ROOT)], 'build-' + kind)
                 env[variable] = next(line.partition('=')[2] for line in built.splitlines() if line.startswith(variable + '='))
             for family in options.cases:
                 if git_value(ROOT, 'rev-parse', 'HEAD') != source:
