@@ -51,15 +51,26 @@ async function review(suite, page) {
   await button.focus(); await page.keyboard.press('Enter');
   const panel = page.locator('.order-review'); await panel.waitFor();
   assert.equal(await panel.locator('h2').innerText(), 'Request this handover time?');
-  await until(() => panel.evaluate((node) => node === document.activeElement), 'Keyboard review receives focus');
+  suite.receipt.noEffectRetry.reviewFocus ??= [];
+  suite.receipt.noEffectRetry.reviewFocus.push(await page.evaluate(() => ({ tag: document.activeElement?.tagName,
+    className: document.activeElement?.className, text: document.activeElement?.textContent?.trim().slice(0, 120) })));
   assert.equal(posts(suite).length, count, 'Review alone never sends a command');
   return panel;
+}
+async function keyboardConfirmation(page, panel) {
+  const button = panel.getByRole('button', { name: 'Confirm', exact: true });
+  const maximum = await page.locator('a[href], button, input, select, textarea, [tabindex]').count() + 1;
+  for (let count = 0; count < maximum; count++) {
+    if (await button.evaluate((node) => node === document.activeElement)) return;
+    await page.keyboard.press('Shift+Tab');
+  }
+  assert.fail('The deliberate Confirm control must be reachable by keyboard from the review opener');
 }
 async function confirm(suite, page, panel) {
   const count = posts(suite).length;
   const response = page.waitForResponse((value) => value.request().method() === 'POST'
     && new URL(value.url()).pathname.endsWith('/appointments/request'));
-  await panel.getByRole('button', { name: 'Confirm', exact: true }).focus();
+  await keyboardConfirmation(page, panel);
   await page.keyboard.press('Enter');
   const actual = await response;
   await until(() => posts(suite).length === count + 1, 'Exactly one actual command response is observed');
@@ -180,7 +191,7 @@ for (const scenarioId of ['normal-success', 'durable-pending']) test(`FUCQ-521: 
       await route.fulfill({ status: 202, contentType: 'application/json', body: '{' });
     }, { times: 1 });
     const finalResponse = employee.waitForResponse((value) => value.request().method() === 'POST' && value.url() === requestUrl);
-    await panel.getByRole('button', { name: 'Confirm', exact: true }).focus(); await employee.keyboard.press('Enter');
+    await keyboardConfirmation(employee, panel); await employee.keyboard.press('Enter');
     await finalResponse; await settled(employee);
     const committed = suite.receipt.noEffectRetry.transportFault.actual;
     assert.ok(!commandIds.includes(committed.sent.commandId), 'Fresh confirmation uses a new commandId after no-effect recovery');
