@@ -13203,58 +13203,6 @@
       "unsliced": false
     },
     {
-      "id": "FUCQ-553",
-      "type": "Bug",
-      "title": "Angular stock gallery and order choices lost Node notices, card styling and the employee/driver facts",
-      "status": "In Progress",
-      "branch": "dev/DEV-2026-11-22-vesper-034",
-      "component_ids": [
-        "manual-journey",
-        "shared-experience"
-      ],
-      "note": "Native verified01:49:36Z: InProgress/Russell/13/F432/link442, AC1–4checked/AC5humanopen; fresh pairs1647795–98+existingcomment5068545. Locald0364260b:331Angular/135ratchet/registeredf5537pass. HumanAC5 and coveringbrowserbatchopen; earlier2unknownstagingobjects unverified.",
-      "observed_at": "2026-11-26T01:49:36Z",
-      "slices": [
-        {
-          "id": "notices-and-choices-facts",
-          "status": "complete",
-          "title": "Restore offer/car-taken notices and read-only employee/driver/licence facts (3 points)",
-          "observed_at": "2026-11-26T00:18:31Z",
-          "evidence": "Final refreshed product/proof source 072593848: dispatcher 14 specs/326 tests, ratchet 135/135 and registered actual Angular/Java/nativePG+frozenNode 7/7 passed; original AC1/3 notice/facts groups and final 1280/375 rendered inspection. OriginalAC4/5 and covering batch remain open; Result DEV-2026-11-22-vesper-034."
-        },
-        {
-          "id": "VehicleCard-source-parity",
-          "status": "complete",
-          "title": "Port frozen explicit matchCard structure and eligibility (3 points)",
-          "observed_at": "2026-11-26T00:18:31Z",
-          "evidence": "Final refreshed product/proof source 072593848: source matchCard/eligibility, 14 specs/326 tests, ratchet 135/135 and actual registered 7/7 passed. Dispatcher inspected final 375px held-offer/1280px pending composition; retained independent critique. OriginalAC2 evidenced; original human AC5 remains blank."
-        },
-        {
-          "id": "gallery-claim-held-review-and-integration",
-          "status": "in-progress",
-          "title": "Restore reservation status/retry and confirmed held review; connected and human parity evidence (7 points)",
-          "observed_at": "2026-11-26T01:39:14Z",
-          "evidence": "d0364260b:331 Angular/135 ratchet/registeredf5537 pass; current terminal GET retires old identity; visible exact-car Retry waits for fresh pins/newUUID; GET-only status/held no2ndreserve. Actual1280/375 inspected, engineering PASS. Original AC4 evidenced; humanAC5 and covering browserbatch open."
-        }
-      ],
-      "unsliced": false,
-      "original_status": "In Progress",
-      "assignee": "Russell Gowers",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-553",
-      "native_story_points": 13,
-      "native_parent": "FUCQ-432",
-      "native_links": [
-        "FUCQ-442"
-      ],
-      "native_labels": [
-        "backlog",
-        "defect",
-        "gcsp",
-        "kind:ui"
-      ],
-      "native_updated": "2026-11-25T18:44:07.379-0600"
-    },
-    {
       "id": "FUCQ-554",
       "type": "Bug",
       "title": "Angular manual review and summary show internal IDs and lost the reservation countdown and read-back cards",
@@ -13544,6 +13492,58 @@
         }
       ],
       "note": "Partial merged 1d7ec61f8; final executable source 562bf8f55. AC1–3 evidenced: 71 focused, 340 ratchet, registered connected 6/6; full immutable result/digest equality and A/B rendered review. Native comment 5068934 and exact two PNGs 1647918/1647919 verified 26Nov 06:05 UTC. Original human AC4 blank; covering shared web/browser/Node remains pending. Source observation timestamps preserved; no backend/storage/query/math/workload change."
+    },
+    {
+      "id": "FUCQ-553",
+      "type": "Bug",
+      "title": "Angular stock gallery and order choices lost Node notices, card styling and the employee/driver facts",
+      "status": "In Progress",
+      "branch": "dev/DEV-2026-11-22-vesper-034",
+      "component_ids": [
+        "manual-journey",
+        "shared-experience"
+      ],
+      "note": "Native verified01:49:36Z: InProgress/Russell/13/F432/link442, AC1–4checked/AC5humanopen; fresh pairs1647795–98+existingcomment5068545. Locald0364260b:331Angular/135ratchet/registeredf5537pass. HumanAC5 open; covering browser batch green at7ab69ffda (26Nov03:26UTC); earlier2unknownstagingobjects unverified.",
+      "observed_at": "2026-11-26T06:11:59Z",
+      "slices": [
+        {
+          "id": "notices-and-choices-facts",
+          "status": "complete",
+          "title": "Restore offer/car-taken notices and read-only employee/driver/licence facts (3 points)",
+          "observed_at": "2026-11-26T00:18:31Z",
+          "evidence": "Final refreshed product/proof source 072593848: dispatcher 14 specs/326 tests, ratchet 135/135 and registered actual Angular/Java/nativePG+frozenNode 7/7 passed; original AC1/3 notice/facts groups and final 1280/375 rendered inspection. OriginalAC4/5 and covering batch remain open; Result DEV-2026-11-22-vesper-034."
+        },
+        {
+          "id": "VehicleCard-source-parity",
+          "status": "complete",
+          "title": "Port frozen explicit matchCard structure and eligibility (3 points)",
+          "observed_at": "2026-11-26T00:18:31Z",
+          "evidence": "Final refreshed product/proof source 072593848: source matchCard/eligibility, 14 specs/326 tests, ratchet 135/135 and actual registered 7/7 passed. Dispatcher inspected final 375px held-offer/1280px pending composition; retained independent critique. OriginalAC2 evidenced; original human AC5 remains blank."
+        },
+        {
+          "id": "gallery-claim-held-review-and-integration",
+          "status": "in-progress",
+          "title": "Restore reservation status/retry and confirmed held review; connected and human parity evidence (7 points)",
+          "observed_at": "2026-11-26T06:11:59.417742Z",
+          "evidence": "d0364260b:331 Angular/135 ratchet/registeredf5537 pass; current terminal GET retires old identity; visible exact-car Retry waits for fresh pins/newUUID; GET-only status/held no2ndreserve. Actual1280/375 inspected, engineering PASS. Original AC4 evidenced; Covering browser batch green at7ab69ffda/26Nov03:26UTC, all14families; original humanAC5 remains blank."
+        }
+      ],
+      "unsliced": false,
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-553",
+      "native_story_points": 13,
+      "native_parent": "FUCQ-432",
+      "native_links": [
+        "FUCQ-442"
+      ],
+      "native_labels": [
+        "backlog",
+        "defect",
+        "gcsp",
+        "kind:ui"
+      ],
+      "native_updated": "2026-11-25T18:44:07.379-0600"
     }
   ]
 }
