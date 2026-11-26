@@ -1,3 +1,4 @@
+import { ProductionControlsComponent } from './production-controls.component';
 import { OutboxClient, OutboxMessage } from '../outbox/outbox.client';
 import { basicModel, weekDays } from './basic-model';
 import { PresenterRelease } from './presenter.projections';
@@ -21,7 +22,7 @@ import { PresenterCatalogue, PresenterClientFailure, PresenterCommand, Presenter
 let serial = 0;
 @Component({
   selector: 'gcsp-presenter',
-  imports: [ReleaseSectionComponent, SuitabilitySectionComponent, HappenedFeedComponent, RouterLink, ButtonDirective, FactListComponent, LabelledFieldComponent, ScreenIntroComponent, StatusScreenComponent],
+  imports: [ProductionControlsComponent, ReleaseSectionComponent, SuitabilitySectionComponent, HappenedFeedComponent, RouterLink, ButtonDirective, FactListComponent, LabelledFieldComponent, ScreenIntroComponent, StatusScreenComponent],
   templateUrl: './presenter.component.html', styleUrl: './presenter.component.css',
 })
 export class PresenterComponent implements OnDestroy {
@@ -86,7 +87,7 @@ export class PresenterComponent implements OnDestroy {
     { label: 'Scheme clock', value: friendlyTime(this.controls()!.now) }, { label: 'Scenario', value: this.current()?.currentScenario?.name },
   ] : []);
   readonly resetFacts = computed<readonly FactRow[]>(() => this.resetReview() ? [{ label: 'Scenario', value: this.catalogue()?.scenarios.find(s => s.scenarioId === this.resetReview()!.input.scenarioId)?.name || 'Selected scenario' }] : []);
-  readonly retryFacts = computed<readonly FactRow[]>(() => { const command = this.retryCommand(); return command ? [{ label: 'Action', value: ({ advance: 'Advance clock', tick: 'Tick current time', 'control-tick': command.kind === 'control-tick' && command.input.mode === 'next-release' ? 'Next release' : 'Step the scheme clock', reset: 'Start a fresh scenario', fault: 'Set fault mode' })[command.kind] }] : []; });
+  readonly retryFacts = computed<readonly FactRow[]>(() => { const command = this.retryCommand(); return command ? [{ label: 'Action', value: ({ production: 'Production response', advance: 'Advance clock', tick: 'Tick current time', 'control-tick': command.kind === 'control-tick' && command.input.mode === 'next-release' ? 'Next release' : 'Step the scheme clock', reset: 'Start a fresh scenario', fault: 'Set fault mode' })[command.kind] }] : []; });
   readonly namedTimes = computed(() => Object.entries(this.controls()?.controls.namedTimes ?? {}).map(([name, at]) => ({ name, at: friendlyTime(at) })));
   private recoveredReset: { readonly input: PresenterResetInput; readonly subject: string; readonly environmentId: string; readonly needsPreparation: boolean } | null = null;
   private session: SessionState | null = null;

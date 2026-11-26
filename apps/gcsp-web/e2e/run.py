@@ -31,6 +31,7 @@ CASES = {
     'f553': 'apps/gcsp-web/e2e/stock-choices-parity.test.mjs',
     'f555': 'apps/gcsp-web/e2e/offer-parity.test.mjs',
     'f556': 'apps/gcsp-web/e2e/orders-parity.test.mjs',
+    'f559': 'apps/gcsp-web/e2e/greg-planning-parity.test.mjs',
     'f561': 'apps/gcsp-web/e2e/presenter-parity.test.mjs',
     'f520': 'apps/gcsp-web/e2e/manual-review.test.mjs',
     'f595': 'apps/gcsp-web/e2e/account-release-parity.test.mjs',

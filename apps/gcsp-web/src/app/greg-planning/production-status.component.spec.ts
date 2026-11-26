@@ -1,6 +1,8 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { ordersFixture } from './greg-orders.fixtures';
+import { GregOrders, parseGregOrders } from './greg-orders.model';
 import { PlanningStore } from './planning.store';
 import { PlanningResult, ProductionSubmissionDto, ProductionView } from './planning.types';
 import { ProductionStatusComponent } from './production-status.component';
@@ -12,17 +14,52 @@ function view(): ProductionView { return { asOf: '2026-11-16T12:00:00Z', provide
 }] }; }
 describe('Production request tracking screen', () => {
   const production = signal<ProductionView | null>(view()); const submission = signal<PlanningResult<ProductionSubmissionDto> | null>(null);
+  const orders = signal<GregOrders | null>(null); const orderRetry = signal(false); const orderRetryKind = signal<'manual' | 'queue' | null>(null); const retainedRetry = vi.fn(async () => {}); const retryReleaseQueue = vi.fn(async () => {});
   const retryable = signal(false); const busy = signal(false); const retry = vi.fn(async () => {}); const refresh = vi.fn(async () => {});
   let fixture: ComponentFixture<ProductionStatusComponent>;
   const button = (label: string) => Array.from((fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>('button')).find(b => b.textContent?.trim() === label)!;
   beforeEach(async () => {
-    production.set(view()); submission.set(null); retryable.set(false); busy.set(false); retry.mockClear(); refresh.mockClear();
+    orders.set(null); orderRetry.set(false); orderRetryKind.set(null); retainedRetry.mockClear(); retryReleaseQueue.mockClear(); production.set(view()); submission.set(null); retryable.set(false); busy.set(false); retry.mockClear(); refresh.mockClear();
     await TestBed.configureTestingModule({ imports: [ProductionStatusComponent], providers: [{ provide: PlanningStore, useValue: {
-      production, submission, canRetrySubmission: retryable, productionBusy: busy, submitting: signal(false), access: signal('ready'), planBusy: signal(false),
+      scope: signal('greg'), orderMessage: signal(''), orders, orderOutcome: signal(null), orderRetryKind, canRetryOrder: orderRetry, canRequestCars: signal(false),
+      queueBlocked: () => false, requestCars: vi.fn(), retryReleaseQueue, retryOrder: retainedRetry, production, submission, canRetrySubmission: retryable, productionBusy: busy, submitting: signal(false), access: signal('ready'), planBusy: signal(false),
       pendingValue: signal(null), productionFailure: signal(null), needsAuthentication: signal(false), retrySubmission: retry, refresh, refreshProduction: vi.fn(async () => {}),
       signIn: vi.fn(), failureMessage: (v: { reason?: string }) => v.reason ?? 'Unavailable',
     } }] }).compileComponents();
     fixture = TestBed.createComponent(ProductionStatusComponent); fixture.detectChanges();
+  });
+  it('restores the intentional request form and source order tracking table', () => {
+    const root = fixture.nativeElement as HTMLElement;
+    expect(root.textContent).toContain('Request cars'); expect(root.querySelectorAll('form')).toHaveLength(1);
+    expect(Array.from(root.querySelectorAll('thead th')).map(h => h.textContent?.trim())).toEqual(['Car', 'Stage', 'Requested', 'Confirmed', 'Released', 'Expected / delayed']);
+    expect(root.textContent).toContain('3 Series 320i');
+  });
+  it('keeps the source release queue button usable for an explicit retained queue retry', async () => {
+    const value = ordersFixture(); orders.set(parseGregOrders({ ...value, requests: [{ ...value.requests[0], queuedQuantity: 0,
+      supplies: [{ ...(value.requests[0]['supplies'] as Record<string, unknown>[])[0], queued: false }] }] }));
+    orderRetry.set(true); orderRetryKind.set('queue'); fixture.detectChanges();
+    expect(Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('button')).filter(b => b.textContent?.trim() === 'Retry release queue')).toHaveLength(1);
+    button('Retry release queue').click(); await fixture.whenStable(); expect(retainedRetry).toHaveBeenCalledOnce();
+  });
+  it('keeps a retained release queue retry available after refreshed supply is already queued', async () => {
+    orders.set(parseGregOrders(ordersFixture())); orderRetry.set(true); orderRetryKind.set('queue'); fixture.detectChanges();
+    expect((fixture.nativeElement as HTMLElement).querySelectorAll('.gcsp-orders-queue')).toHaveLength(0);
+    expect(button('Retry release queue')).toBeDefined(); button('Retry release queue').click(); await fixture.whenStable();
+    expect(retainedRetry).toHaveBeenCalledOnce();
+  });
+  it('shows confirmed supply waiting for its queue date and uses the authoritative date once queued', () => {
+    const value = ordersFixture();
+    const request = value.requests[0];
+    const supply = (request['supplies'] as Record<string, unknown>[])[0];
+    orders.set(parseGregOrders({ ...value, requests: [{ ...request, queuedQuantity: 0,
+      supplies: [{ ...supply, queued: false, eligibleFrom: null }] }] }));
+    fixture.detectChanges();
+    const timing = () => fixture.componentInstance.tableRows()[0].cells['timing'];
+    expect(timing()).toContain('Confirmed: 1 awaiting release queue; arrival date pending');
+    expect(timing()).not.toContain('due Date unavailable');
+    orders.set(parseGregOrders(value)); fixture.detectChanges();
+    expect(timing()).toContain('Confirmed: 1 due 6 Nov 2026');
+    expect(timing()).not.toContain('arrival date pending');
   });
   it('labels all five distinct server quantity stages and displays actual response history', () => {
     const root = fixture.nativeElement as HTMLElement; const labels = Array.from(root.querySelectorAll('dt')).map(e => e.textContent?.trim());

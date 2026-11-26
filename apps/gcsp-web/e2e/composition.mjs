@@ -69,7 +69,7 @@ function identity(pid) {
 }
 
 export async function startComposition({ caseId = 'f548', ordering = 'synthetic', claims = 'local' } = {}) {
-  assert.ok(['f340', 'f548', 'f549', 'f550', 'f551', 'f552', 'f553', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked', 'f561', 'f520', 'f595'].includes(caseId));
+  assert.ok(['f340', 'f548', 'f549', 'f550', 'f551', 'f552', 'f553', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked', 'f561', 'f520', 'f595', 'f559', 'f559-learned'].includes(caseId));
   assert.ok(['synthetic', 'rejected', 'unknown-then-rejected'].includes(ordering));
   assert.ok(['local', 'controlled'].includes(claims));
   const scratch = local(process.env.SCRATCH ?? '');
@@ -158,7 +158,9 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       ? 'The initial source fixture is bootstrap only. F340 discards it through actual named Main resets and prepares both walkthroughs through the normal editor; reset outcomes are recorded separately.'
       : 'Java named Main reset availability is recorded separately (FUCQ-562); no successful reset is claimed.',
       'A bootstrap run migrates the owned database, then is legally retired. A fresh replay run receives the exact initial clock before Java restarts; no clock guard is bypassed.',
-      'The exact initial Main brief and consent are fixture inputs in the owned test database; public editor validation is unchanged.',
+      caseId === 'f559-learned'
+        ? 'The separate covered learned scenario starts without a brief; normal public preferences, the registered430L answer and consent create it, as in LearnedPlanHttpBase.'
+        : 'The exact initial Main brief and consent are fixture inputs in the owned test database; public editor validation is unchanged.',
       'The frozen Node stock instance enters Java through its existing tranche-plan provider; release, allocation, holds and offers are actual services.'],
     requests: [], screenshots: [], checks: {}, browsers: {}, consoleErrors: [], imageResponses: [], processes };
   const journalPath = path.join(runOutput, 'processes.json');
@@ -327,6 +329,11 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       GCSP_DEMO_IDP_ENABLED: 'true', GCSP_DEMO_IDP_REDIRECT_URIS: `${origins.web}/gcsp/auth/callback`,
       GCSP_DEMO_IDP_POST_LOGOUT_REDIRECT_URIS: `${origins.web}/gcsp/`, GCSP_DEMO_IDP_ACCESS_TOKEN_LIFETIME: '1h',
       GCSP_ENVIRONMENT_ID: envId, GCSP_RUN_ID: bootstrapRunId, GCSP_POLICY_VERSION: input.clock.policyVersion,
+      ...(['f559', 'f559-learned'].includes(caseId) ? { GCSP_PRODUCTION_PROVIDER: 'synthetic' } : {}),
+      ...(caseId === 'f559-learned' ? {
+        GCSP_POLICY_VERSION: 'gcsp-policy-v1+learned-model-v1',
+        GCSP_LEARNING_ACTIVE_MODEL: 'sha256:2ce1109d986c7709bf9505f8e388e9c1479ff3c36e7cae86f656ff29bb973c7d',
+      } : {}),
       GCSP_SCENARIO_PROVIDER: 'demo', GCSP_ACCOUNT_PROVIDER: 'repository', GCSP_ORDERING_PROVIDER: ordering === 'synthetic' ? 'synthetic' : 'remote', GCSP_RESET_ALLOWED: 'true',
       ...(ordering === 'synthetic' ? {} : { GCSP_ORDERING_EXECUTE_URL: `${origins.web}/proof-ordering/execute`,
         GCSP_ORDERING_RECONCILE_URL: `${origins.web}/proof-ordering/reconcile`, GCSP_ORDERING_TOKEN: orderingToken, GCSP_ORDERING_TIMEOUT: '5s' }),
@@ -360,7 +367,7 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       // BriefContent owns editable values; account/provider facts stay in their canonical source rows.
       const editableKeys = ['schemaVersion', 'preferences', 'essentials', 'currentCarFeedback', 'currentCarRating', 'sameAgain'];
       const content = Object.fromEntries(editableKeys.filter((key) => Object.hasOwn(initial, key)).map((key) => [key, initial[key]]));
-      receipt.canonicalBriefFixture = { rawNodeKnownFacts: initial.knownFacts, editableKeys: Object.keys(content),
+      receipt.canonicalBriefFixture = { applied: caseId !== 'f559-learned', rawNodeKnownFacts: initial.knownFacts, editableKeys: Object.keys(content),
         absentOptionalNodeFields: editableKeys.slice(3).filter((key) => !Object.hasOwn(initial, key)),
         nodeFieldsOutsideEditableContent: Object.fromEntries(Object.entries(initial).filter(([key]) => !editableKeys.includes(key))),
         authority: 'BriefContent.java:41 editable whitelist; BuddyJourneySeed.java:137. Source facts are read back and proven through /manual/account and /brief/editor.' };
@@ -387,14 +394,16 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
         INSERT INTO employee_account_records(environment_id,run_id,employee_id,record_set_id,record,version)
           VALUES(${literal(envId)},${literal(runId)},${literal(initial.employeeId)},${literal(record.recordSetId)},${literal(JSON.stringify(record))}::jsonb,${account.versions.employee});
         ${slotStatements.join('\n')}
-        INSERT INTO brief_heads(environment_id,run_id,employee_id,brief_version) VALUES(${literal(envId)},${literal(runId)},${literal(initial.employeeId)},1);
+        ${caseId === 'f559-learned' ? '' : `INSERT INTO brief_heads(environment_id,run_id,employee_id,brief_version) VALUES(${literal(envId)},${literal(runId)},${literal(initial.employeeId)},1);
         INSERT INTO briefs(environment_id,run_id,employee_id,brief_version,previous_brief_version,operation,content,buddy,semantic_digest,
           policy_version,confirmed_by,confirmed_at,command_id) VALUES(${literal(envId)},${literal(runId)},${literal(initial.employeeId)},1,NULL,'confirmed',
           ${literal(JSON.stringify(content))}::jsonb,${literal(JSON.stringify(initial.buddy))}::jsonb,${literal(sha(canonical(content)))},
-          ${literal(initial.policyVersion)},${literal(initial.confirmedBy)},${literal(initial.confirmedAt)}::timestamptz,'frozen-main-initial-input');
+          ${literal(initial.policyVersion)},${literal(initial.confirmedBy)},${literal(initial.confirmedAt)}::timestamptz,'frozen-main-initial-input');`}
         COMMIT;`);
       receipt.initialFixture = { bootstrapRunId, replayRunId: runId, replayIdentity: NODE_REPLAY_IDENTITY, identifierMapping: { environment: envId,
-        fromRun: input.reference.runId, toRun: runId }, source: 'Exact captured Main input; parent-authorized BuddyJourneySeed pattern' };
+        fromRun: input.reference.runId, toRun: runId }, source: caseId === 'f559-learned'
+          ? 'Retained account/source/clock input with no initial brief; the separate native covered scenario is created through public editor commands.'
+          : 'Exact captured Main input; parent-authorized BuddyJourneySeed pattern' };
       api = start('api', path.join(javaHome, 'bin/java'), apiArgs, replayApiEnv);
       await waitForApi();
     } finally { await ready.dispose(); }
@@ -680,9 +689,38 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
         expected: { ...expected, runId } }, visit);
       return receipt.nodeReplay;
     }
+    function failProductionQueueWrites(requestId) {
+      assert.equal(caseId, 'f559', 'Only the owned F559 scenario installs this queue fault');
+      assert.equal(typeof requestId, 'string'); assert.ok(requestId.length > 0 && requestId.length <= 200);
+      const predicate = `environment_id=${literal(envId)} AND run_id=${literal(runId)} AND request_id=${literal(requestId)}`;
+      const read = () => JSON.parse(sql(`SELECT coalesce(json_agg(json_build_object('supplyId',supply_id,'quantity',quantity,
+        'confirmedAt',confirmed_at,'queuedAt',queued_at,'eligibleFrom',eligible_from) ORDER BY supply_id),'[]'::json)::text
+        FROM production_confirmations WHERE ${predicate};`).split('\n').at(-1));
+      const before = read(); assert.deepEqual(before, [], 'Install only before this actual request is confirmed');
+      sql(`CREATE FUNCTION f559_fail_queue_write() RETURNS trigger LANGUAGE plpgsql AS $f559$
+        BEGIN
+          IF NEW.environment_id=${literal(envId)} AND NEW.run_id=${literal(runId)} THEN
+            RAISE EXCEPTION 'F559 controlled release queue unavailable' USING ERRCODE='55000';
+          END IF;
+          RETURN NEW;
+        END $f559$;
+        CREATE TRIGGER f559_fail_queue_write BEFORE INSERT ON confirmed_supply_queue
+          FOR EACH ROW EXECUTE FUNCTION f559_fail_queue_write();`);
+      const fault = receipt.productionQueueFault = { kind: 'queue-write-unavailable-before-insert', before,
+        binding: { database: database[3], schema, environmentId: envId, runId, requestId }, removed: false,
+        authority: 'Root-approved owned local fault25Nov; ProductionService commits confirmation before independent queue transaction.',
+        limitation: 'Controlled failure of a real queue write; no production row or immutable queue history is deleted or fabricated.' };
+      return () => {
+        if (fault.removed) return;
+        sql(`DROP TRIGGER f559_fail_queue_write ON confirmed_supply_queue; DROP FUNCTION f559_fail_queue_write();`);
+        fault.removed = true; fault.confirmationsAfterFault = read();
+        assert.equal(fault.confirmationsAfterFault.length, 1, 'The real confirmed supply survived the queue failure');
+        assert.equal(fault.confirmationsAfterFault[0].queuedAt, null);
+      };
+    }
     return { context, receipt, origins, apiBase, input, plan, newPage, call, prepareInitialBrief, releaseMainOffer,
       readImage: (page, locator) => imageObservers.get(page).read(locator),
-      readActualHold, readOfferPersistence, restartApi, screenshot, compareFrozenNode, visitFrozenNode,
+      readActualHold, readOfferPersistence, restartApi, screenshot, compareFrozenNode, visitFrozenNode, failProductionQueueWrites,
       claims: { requests: claimRequests, pending() { claimMode = 'unknown'; }, rejectPending() { claimMode = 'rejected'; }, confirm() { claimMode = 'confirmed'; } },
       ordering: { requests: orderingRequests, rejectPending() { assert.equal(ordering, 'unknown-then-rejected'); rejectPending = true; } }, close };
   } catch (error) {

@@ -1,4 +1,4 @@
-<section class="planning-page" aria-labelledby="planning-title" [attr.aria-busy]="store.planBusy()">
+<section class="planning-page gcsp-plan" aria-labelledby="planning-title" [attr.aria-busy]="store.planBusy()">
   <div class="planning-heading"><gcsp-screen-intro title="Next order" [level]="headingLevel()" />
     @if (store.access() === 'ready') { <button gcspButton variant="ghost" type="button" [disabled]="store.planBusy() || store.submitting()" (click)="replan()">Replan with the latest inputs</button> }
   </div>
@@ -37,15 +37,18 @@
           } @else {
             <fieldset><legend>{{ editor.label }}</legend>
               @for (row of editor.rows; track row.id) {
-                <div class="bound-row"><p>{{ row.label }}</p>
-                  <gcsp-labelled-field [controlId]="inputId(editor, row.id, 'min')" [label]="row.label + ' minimum'">
+                <div class="gcsp-plan-limit" role="group" [attr.aria-labelledby]="inputId(editor, row.id, 'label')"><p class="gcsp-plan-limit-name" [id]="inputId(editor, row.id, 'label')">{{ row.label }}</p>
+                  <gcsp-labelled-field [controlId]="inputId(editor, row.id, 'min')" label="Min">
                     <input [id]="inputId(editor, row.id, 'min')" type="number" min="0" step="1" inputmode="numeric" aria-describedby="plan-editor-errors"
                       [value]="store.value(editor, row.id, 'min')" [disabled]="store.submitting()" (input)="edit(editor, $event, row.id, 'min')" />
                   </gcsp-labelled-field>
-                  <gcsp-labelled-field [controlId]="inputId(editor, row.id, 'max')" [label]="row.label + ' maximum'">
+                  <gcsp-labelled-field [controlId]="inputId(editor, row.id, 'max')" label="Max">
                     <input [id]="inputId(editor, row.id, 'max')" type="number" min="0" step="1" inputmode="numeric" aria-describedby="plan-editor-errors"
                       [value]="store.value(editor, row.id, 'max')" [disabled]="store.submitting()" (input)="edit(editor, $event, row.id, 'max')" />
                   </gcsp-labelled-field>
+                  @if (editor.idField === 'derivativeId') {
+                    <div class="gcsp-plan-slider"><gcsp-range-slider [question]="sliderQuestion(editor, row)" [value]="sliderValue(editor, row)" [disabled]="store.planBusy() || store.submitting() || sliderValue(editor, row) === null" [ariaLabel]="row.label + ' maximum slider'" (valueChange)="store.edit(editor.key, $event.toString(), row.id, 'max')" /></div>
+                  }
                 </div>
               }
             </fieldset>
@@ -65,14 +68,10 @@
         @if (plan.limitations.length) { <ul class="gcsp-note">@for (limitation of plan.limitations; track $index) { <li>{{ limitation }}</li> }</ul> }
       </section>
       @if (plan.comparison.length) {
-        <div class="plan-table" tabindex="0" role="region" aria-label="Differences from the current plan"><table><caption>Differences from the current plan</caption><thead><tr><th scope="col">Measure or derivative</th><th scope="col">Current</th><th scope="col">Preview</th></tr></thead><tbody>
-          @for (row of plan.comparison; track $index) { <tr><th scope="row">{{ row.label }}</th><td>{{ row.current ?? 'Not supplied' }}</td><td>{{ row.preview ?? 'No plan' }}</td></tr> }
-        </tbody></table></div>
+        <gcsp-data-table caption="Differences from the current plan" [columns]="comparisonColumns" [rows]="comparisonRows()" />
       }
       @if (plan.state !== 'infeasible' && plan.state !== 'empty') {
-        <div class="plan-table" tabindex="0" role="region" aria-label="Proposed order"><table><caption>Proposed order</caption><thead><tr><th scope="col">Model</th><th scope="col">Derivative</th><th scope="col">Quantity</th></tr></thead><tbody>
-          @for (line of plan.lines; track line.id) { <tr><th scope="row">{{ line.model }}</th><td>{{ line.derivative }}</td><td>{{ line.quantity }}</td></tr> } @empty { <tr><td colspan="3">No derivatives in this plan.</td></tr> }
-        </tbody></table></div>
+        <gcsp-data-table caption="Proposed order" [columns]="orderColumns" [rows]="orderRows()" emptyText="No derivatives in this plan." />
         <section class="plan-section" aria-labelledby="model-totals"><h3 id="model-totals">Order totals by model</h3><gcsp-fact-list [rows]="plan.models" /></section>
         <div class="plan-metrics"><gcsp-fact-list [rows]="plan.metrics" /></div>
         @if (plan.riskSources.length) { <section class="plan-section" aria-labelledby="risk-sources"><h3 id="risk-sources">Unmatched supply by source</h3><gcsp-fact-list [rows]="plan.riskSources" /></section> }
@@ -92,16 +91,12 @@
         <section class="plan-section plan-learned" aria-labelledby="learned-plan"><h3 id="learned-plan">Learned model</h3>
           <p class="plan-notice">Advisory only. These learned figures are not the submitted plan; Request from Production uses the baseline plan above.</p>
           <gcsp-fact-list [rows]="model.modelFacts" />
-          <div class="plan-table" tabindex="0" role="region" aria-label="Expected demand by vehicle class"><table><caption>Expected demand by vehicle class</caption><thead><tr><th scope="col">Vehicle class and period</th><th scope="col">Expected</th><th scope="col">Low</th><th scope="col">High</th></tr></thead><tbody>
-            @for (row of model.classes; track $index) { <tr><th scope="row">{{ row.label }}</th><td>{{ row.expected }}</td><td>{{ row.low }}</td><td>{{ row.high }}</td></tr> } @empty { <tr><td colspan="4">No expected demand was supplied.</td></tr> }
-          </tbody></table></div>
+          <gcsp-data-table caption="Expected demand by vehicle class" [columns]="classColumns" [rows]="classRows()" emptyText="No expected demand was supplied." />
           <gcsp-fact-list [rows]="model.evaluation" />
           @if (model.limitations.length) { <ul class="gcsp-note">@for (limitation of model.limitations; track $index) { <li>{{ limitation }}</li> }</ul> }
           @if (model.differences.note) { <p class="gcsp-note">{{ model.differences.note }}</p> }
           @if (model.differences.rows.length) {
-            <div class="plan-table" tabindex="0" role="region" aria-label="Baseline compared with learned model"><table><caption>Baseline compared with learned model</caption><thead><tr><th scope="col">Measure or derivative</th><th scope="col">Baseline</th><th scope="col">Learned</th><th scope="col">Difference</th></tr></thead><tbody>
-              @for (row of model.differences.rows; track $index) { <tr><th scope="row">{{ row.label }}</th><td>{{ row.baseline }}</td><td>{{ row.learned }}</td><td>{{ row.difference }}</td></tr> }
-            </tbody></table></div>
+            <gcsp-data-table caption="Baseline compared with learned model" [columns]="learnedColumns" [rows]="learnedRows()" [stack]="true" />
           }
         </section>
       } @else if (plan.learned) { <section class="plan-section" aria-labelledby="learned-plan"><h3 id="learned-plan">Learned model</h3><p class="gcsp-note">{{ plan.learned }}</p></section> }

@@ -5,6 +5,7 @@ import { AuthPort } from '../auth/auth.port';
 import type { ApplicationContext, SessionState } from '../auth/auth.port';
 import { PORTAL_FETCH, RuntimeConfigService } from '../auth/runtime-config';
 import type { RuntimePublicConfig } from '../auth/runtime-config';
+import { ordersFixture } from '../greg-planning/greg-orders.fixtures';
 import { PresenterClient } from './presenter.client';
 import type { PresenterClientFailure, PresenterCommand, PresenterResetInput } from './presenter.types';
 
@@ -65,6 +66,29 @@ describe('PresenterClient Java routes, pinned commands and private lifecycle', (
     } finally { document.removeEventListener('gcsp:presenter-action', events); write.mockRestore(); }
   });
 
+  it('reads the allowed production inspection and sends exact retained response bytes', async () => {
+    fetcher.mockResolvedValueOnce(ok(ordersFixture()));
+    expect(await client.readProduction()).toMatchObject({ state: 'ready', value: { requests: [{ requestId: 'request-1', version: 6 }] } });
+    const input = { commandId: 'production-1', requestId: 'request-1', expectedVersion: 6, action: 'confirm' as const, quantity: 1 };
+    const prepared = command(client.prepareProduction(input));
+    fetcher.mockRejectedValueOnce(new Error('private network detail'));
+    expect(await client.submit(prepared)).toMatchObject({ state: 'failed', writeOutcome: 'unknown' });
+    fetcher.mockResolvedValueOnce(ok({ reconciled: 1, applied: 1, skipped: 0, queued: 1,
+      requests: [{ requestId: 'request-1', outcome: 'applied' }], scripted: { requestId: 'request-1', action: 'confirm', seq: 1 } }));
+    expect((await client.submit(prepared)).state).toBe('ready');
+    expect(fetcher.mock.calls.map(([url]) => url)).toEqual(['greg/production', 'presenter/production', 'presenter/production'].map(p => `https://api.example/api/gcsp/v1/${p}`));
+    expect(fetcher.mock.calls[1][1]?.body).toBe(JSON.stringify(input));
+    expect(fetcher.mock.calls[2][1]?.body).toBe(fetcher.mock.calls[1][1]?.body);
+  });
+  it('prepares versioned production responses without sending and rejects Greg authority', async () => {
+    const input = { commandId: 'production-1', requestId: 'request-1', expectedVersion: 2, action: 'confirm' as const, quantity: 1 };
+    const prepared = client.prepareProduction(input);
+    expect(prepared).toMatchObject({ kind: 'production', input });
+    expect(fetcher).not.toHaveBeenCalled();
+    expect(client.prepareProduction({ ...input, expectedVersion: 0 })).toMatchObject({ problem: 'invalid-command' });
+    state.set({ status: 'ready', context: context({ roles: ['greg'] }) });
+    expect(client.prepareProduction(input)).toMatchObject({ problem: 'role-required' });
+  });
   it('P01 reads only actual presenter GET routes without account selectors or cookies', async () => {
     const controls = { ...clock(), controls: { policyVersion: 'policy-1', step: { value: 60, unit: 'seconds' },
       namedTimes: { release: at }, nextRelease: { status: 'unavailable', reason: 'No future release' } } };

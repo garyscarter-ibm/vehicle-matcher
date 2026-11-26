@@ -2,7 +2,7 @@
 target: F553 stock, choices and reservation source parity
 total_score: 30
 max_score: 40
-na_heuristics: 
+na_heuristics:
 p0_count: 0
 p1_count: 0
 timestamp: 2026-11-25T23-50-55Z

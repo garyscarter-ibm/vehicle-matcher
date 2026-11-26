@@ -39,7 +39,7 @@ export class PlanningClient {
     return this.request('greg/order-plan/preview', validPlanValue, options, { changes: structuredClone(changes) });
   }
   readProduction(options: PlanningOptions = {}): Promise<PlanningResult<ProductionValueDto>> {
-    return this.request('greg/production', validProduction, options);
+    return this.request('greg/orders', validProduction, options);
   }
   submit(input: ProductionCommand, options: PlanningOptions = {}): Promise<PlanningResult<ProductionSubmissionDto>> {
     if (!exactKeys(input, ['commandId', 'planId', 'versions']) || !text(input['commandId']) || input['commandId'].length > 200
@@ -47,6 +47,21 @@ export class PlanningClient {
       return Promise.resolve(failure('invalid', 'invalid-production-command', 'Supply the current plan and its unchanged input versions.'));
     }
     return this.request('greg/production/requests', validSubmission, options, structuredClone(input), true);
+  }
+  submitManual(input: { readonly commandId: string; readonly model: string; readonly derivative: string; readonly quantity: number;
+    readonly expectedPolicyVersion: string; readonly expectedStockVersion: string }, options: PlanningOptions = {}): Promise<PlanningResult<ProductionSubmissionDto>> {
+    if (!exactKeys(input, ['commandId', 'model', 'derivative', 'quantity', 'expectedPolicyVersion', 'expectedStockVersion'])
+      || !['commandId', 'model', 'derivative', 'expectedPolicyVersion', 'expectedStockVersion'].every(k => text(input[k as keyof typeof input]) && String(input[k as keyof typeof input]).length <= 200)
+      || !Number.isSafeInteger(input.quantity) || input.quantity < 1 || input.quantity > 1000) {
+      return Promise.resolve(failure('invalid', 'invalid-manual-request', 'Choose a car and a whole quantity from 1 to 1000.'));
+    }
+    return this.request('greg/orders', validSubmission, options, structuredClone(input), true);
+  }
+  queue(input: { readonly commandId: string; readonly requestId: string }, options: PlanningOptions = {}): Promise<PlanningResult<{ readonly requestId: string }>> {
+    if (!exactKeys(input, ['commandId', 'requestId']) || ![input.commandId, input.requestId].every(v => text(v) && v.length <= 200)) {
+      return Promise.resolve(failure('invalid', 'invalid-queue-request', 'Choose the confirmed request to queue.'));
+    }
+    return this.request('greg/orders/queue', (v): v is { readonly requestId: string } => record(v) && v['requestId'] === input.requestId && Array.isArray(v['queued']), options, structuredClone(input), true);
   }
   private scope(): string | null {
     const state = this.auth.state();

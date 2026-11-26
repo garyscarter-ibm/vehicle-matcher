@@ -132,4 +132,7 @@
       </div></section>
     }
   </div>
+  <div class="gcsp-console-main" [hidden]="!advanced() || !permitted()"><div class="gcsp-console-advanced"><div class="gcsp-console-controls">
+    <gcsp-production-controls [active]="advanced() && permitted()" />
+  </div></div></div>
 </div>

@@ -3868,3 +3868,37 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 ### 2026-11-25 23:08 UTC · usget-velko · DL-20261125-VELKO-06 · Rendered-toggle synchronization verified in both compositions
 
 - The isolated showAdvanced bounded wait retained its true-attribute assertion. Registered F595 at6f5c7bed9 passed4/4 after the earlier setup failure; final F559 at04a390410 passed6/6 including actual Presenter confirm/delay. This verifies the observed shared-helper race mitigation in these compositions; it is not a framework-wide resolution. Both final runs dropped their owned DBs, removed scratch and recorded no remaining owned process. Other F559 setup/fault-contract failures have separate diagnosis; no product change was inferred from them.
+
+### 2026-11-25 23:11 UTC · usget-codex · DL-20261125-CODEX-01 · FUCQ-334 recurs as a pre-watermark candidate
+
+- **Evidence/impact:** the next normal overlap query used watermark 2026-11-25 22:17Z and JQL `updated >= "2026-11-25 16:15"`; its complete page again returned 42 candidates, including FUCQ-334 updated `2026-11-25T11:24:06.201-0600` (17:24Z), before the UTC watermark. Strict returned-timestamp filtering retained FUCQ-549, FUCQ-551, FUCQ-556, FUCQ-520 and FUCQ-595. The attachment partitions matched those five: zero empty, five non-empty, 21 attachments and seven typed issue links.
+- **Cause/uncertainty:** as in the prior observation, evidence does not establish how Jira interpreted the unqualified date literal or why the stale candidate recurred.
+- **Action/outcome:** excluded FUCQ-334 by its returned timestamp, then ran the ordinary pull with the five retained issues. It imported/updated zero and reported one claimed-story change/notification for FUCQ-595 (acceptance and decided among eight changed Jira-owned fields); its local Result remains partial with AC4 unchecked. No reconciliation query, Jira write or product-map edit ran.
+- **Framework follow-up:** preserve the literal, returned timestamp and UTC cutoff in receipts, and investigate interpretation before changing the query or parser. No helper/query change or new gate was applied.
+
+### 2026-11-25 23:25 UTC · usget-codex · DL-20261125-CODEX-01 · Corrected the pull cursor to Jira wall time
+
+- **Evidence/impact:** the first pull was given `--now 2026-11-25T23:11:23Z`, but `jira_sync.now_wall()` deliberately preserves wall-clock fields and ignores the offset because JQL uses the Jira user's timezone. This temporarily stored `23:11` as Jira wall time, six hours ahead of the 23:11Z as-of point. No later pass ran with that cursor.
+- **Cause:** the caller assumed the offset would be converted; the helper's time contract instead expects the Jira user's wall time.
+- **Action/outcome:** replayed the same saved five-issue input with `--now 2026-11-25T17:11:23-06:00`. The final cursor is `2026-11-25 17:11`; the saved `told` digest suppressed duplicate FUCQ-595 notification/marker changes. The replay changed no card or Jira content and reported zero imports, updates, changes, comments or notifications. Query receipts preserve both inputs.
+- **Framework follow-up:** when a UTC as-of instant is supplied, convert it to Jira-user wall time before passing `--now`, and retain both values in the receipt. No helper change was made.
+
+### 2026-11-25 23:26 UTC · usget-codex · DL-20261125-CODEX-02 · One helper push rejection succeeded on retry
+
+- **Evidence/impact:** the first helper push of log commit `530e93388` reported `Block Secrets: push scanned, no secrets found` followed by a remote rejection. The commit remained local and the fetched remote ref had not advanced.
+- **Cause/uncertainty:** the rejection gave no cause; a fresh helper pull was up to date and the same helper push then succeeded.
+- **Action/outcome:** preserved the commit, used `scaffold_git.py pull` to confirm the remote state, retried only with `scaffold_git.py push`, and verified publication at `530e93388`. No direct or force push was used.
+- **Framework follow-up:** retain the rejection output and verify fetched refs before retrying; no helper change is proposed after this single transient failure.
+
+
+### 2026-11-25 23:26 UTC · usget-velko · DL-20261125-VELKO-07 · F559 visual review found theme and stale-state faults
+
+- **Evidence/impact:** independent Assessment A at04a390410 scored25/40 and found invisible slider paint, a stale request acknowledgement after confirmed/delayed reads, and Node/Java disagreement on prequeue arrival timing. Root inspected the actual1280/375 captures.
+- **Cause/action:** the shared range lacked the existing VM token scope. Production feedback retained a historical acknowledgement; the first correction also lost its comparison across a failed read, reproduced by the review regression (1failed/21passed), then fixed using the last successful fingerprint reset with signed-in scope (22/22green). The date regression went1failed/9passed→10/10green. Source a44a08b5d is published and independent state-risk review passed; final combined/browser checks and corrected visual review are pending.
+- **Remaining boundary:** Java has no authoritative date/policy provenance before immutable queue insertion, as the existing F477 contract requires; queue retry can bind a later policy. Render pending queue/date honestly rather than guessing. Frozen Node prequeue timing parity remains original F559 work affecting table/state criteria; no backend/schema change or acceptance tick is inferred.
+- **Framework improvement proposed:** compare theme scope and failure→recovery state sequences when reviewing existing parity evidence; no new gate was introduced.
+
+
+### 2026-11-26 00:08 UTC · usget-velko · DL-20261125-SORREL-15 · F559 media response retention recurrence
+
+- F559's first phase-one media upload completed before its temporary ID was retained; the transfer was repeated and only the retained media object was attached. The six intended issue PNGs and comment5068522 were verified at23:54:23Z on25November; no duplicate issue attachment was observed. An unattached staging object may remain, with acceptance/expiry/removal unverified. This repeats the existing upload-response retention limitation also disclosed for F595; native publication is verified, temporary cleanup is not. No framework change or new delivery gate was made. Proposed improvement remains preserving safe temporary IDs and phase outcomes before continuing, then reconciling target attachments before retry.

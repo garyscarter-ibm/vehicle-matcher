@@ -262,3 +262,43 @@ Native publication was read back at **2026-11-25T23:02:45Z**: exactly one issue 
 | Screen / original criterion | State and viewport | Pair | Verdict | Human reviewer | Date | Source |
 | --- | --- | --- | --- | --- | --- | --- |
 | Your cars — F595 AC4 | Same public-release state,1280-wide full page | Node attachment `1647740`; Angular attachment `1647741` above | | | | |
+
+
+## F559 — Planning and Production — original AC4 — awaiting human verdict
+
+The same-state 1280px pairs come from actual registered source `b3f9336d6dd0c6147cc0dcea21a00c835a21a8b1`, integrated through partial merge `90724daaf`. The frozen Node reference remains `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`. The Angular journey uses signed OIDC, Java and owned native PostgreSQL; the confirmation, delay and release-queue retry states are real composition outcomes. The registered family passed 6/6 and the final selected Angular set passed 182/182. These engineering observations do not supply a human verdict.
+
+| State | Frozen Node | Angular / Java |
+| --- | --- | --- |
+| Confirmed | [node-production-confirmed-1280.png](https://ibm-consulting.atlassian.net/secure/attachment/1647752/node-production-confirmed-1280.png) — `1647752`, 87,646 bytes | [production-confirmed-1280.png](https://ibm-consulting.atlassian.net/secure/attachment/1647753/production-confirmed-1280.png) — `1647753`, 98,912 bytes |
+| Delayed | [node-production-delayed-1280.png](https://ibm-consulting.atlassian.net/secure/attachment/1647754/node-production-delayed-1280.png) — `1647754`, 92,490 bytes | [production-delayed-1280.png](https://ibm-consulting.atlassian.net/secure/attachment/1647755/production-delayed-1280.png) — `1647755`, 99,324 bytes |
+| Release-queue retry | [node-production-release-queue-retry-1280.png](https://ibm-consulting.atlassian.net/secure/attachment/1647756/node-production-release-queue-retry-1280.png) — `1647756`, 100,153 bytes | [production-release-queue-retry-1280.png](https://ibm-consulting.atlassian.net/secure/attachment/1647757/production-release-queue-retry-1280.png) — `1647757`, 117,946 bytes |
+
+F559 remains **partial / In Progress, 13 points**. AC1 is evidenced; original AC2/3 remain open because Angular truthfully shows an arrival date pending release queue while frozen Node shows 17 January 2027. Java currently has no authoritative prequeue arrival date or policy version: the existing F477 contract binds policy and immutable eligibility at the queue attempt (`fucq477-planning-supply-2026-11-16.md`, lines24–26), and a later retry may bind a later policy. No guessed date or changed backend policy is claimed. AC4 human review and the covering shared browser batch remain open.
+
+Native status, description, six intended issue attachments and comment `5068522` were read back at **2026-11-25T23:54:23Z**. Receipt: `.claude/poller/velko-f559-20261125/native-publication/final-native-readback.json`. One phase-one media upload completed before its temporary ID was retained, so it was repeated; the unattached staging object's status remains unverified. No new review question was opened.
+
+| Screen / original criterion | State and viewport | Pair | Verdict | Human reviewer | Date | Source |
+| --- | --- | --- | --- | --- | --- | --- |
+| Planning / Production — F559 AC4 | Confirmed, 1280px | Node `1647752`; Angular `1647753` | | | | |
+| Planning / Production — F559 AC4 | Delayed, 1280px | Node `1647754`; Angular `1647755` | | | | |
+| Planning / Production — F559 AC4 | Release-queue retry, 1280px | Node `1647756`; Angular `1647757` | | | | |
+
+
+## F553 — stock reservation pending and failed — original AC5 — 26 November
+
+Prepared-source engineering evidence only: registered `f553` ran all seven checks at `315494b3b77044255cf1683888aa26c053598a2c` against actual Angular/Java/PostgreSQL and frozen Node `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`, with signed test OIDC and controlled remote acknowledgements. Each engine prepares the same exact car and pending-then-terminal-failed custody states through its actual claim services; the suite asserts exact selected-car equality before capture. The full-page screenshots below use a 1280×800 viewport. They are retained local evidence; this continuation has not published Jira attachments or recorded human approval.
+
+Retained root: `/Users/usget/Claude/vehicle-matcher/.claude/poller/f553/hugo/browser-315494b3b-chromium159/f553/`. The parent `run-receipt.json` and this directory's `browser-receipt.json` record the tested source, real readbacks and capture paths.
+
+| State | Frozen Node capture | Angular / Java capture |
+| --- | --- | --- |
+| Reservation in progress | `node-reservation-pending-1280.png` | `angular-reservation-pending-1280.png` |
+| Durable reservation failure | `node-reservation-failed-1280.png` | `angular-reservation-failed-1280.png` |
+
+Original AC4 remains partial even though the scripted groups pass: frozen Node's unresolved uncertain attempt can keep **Retry this reservation** after durable `claim-failed`, while the current Angular/Java matching terminal GET clears the attempt and refreshes availability. The decided matching-GET contract explains the current implementation; no human intentional-departure ruling was found. This remains FUCQ-553 producer/controller recovery work, alongside the original human AC5 verdict. A source comparison and an agent critique are not human sign-off. No new human question was opened in this continuation.
+
+| Screen / original criterion | State and viewport | Pair | Verdict | Human reviewer | Date | Source |
+| --- | --- | --- | --- | --- | --- | --- |
+| Stock gallery — F553 AC5 | Same exact car, reservation pending, 1280×800 | `node-reservation-pending-1280.png` / `angular-reservation-pending-1280.png`, retained root above | | | | |
+| Stock gallery — F553 AC5 | Same exact car, terminal claim-failed, 1280×800 | `node-reservation-failed-1280.png` / `angular-reservation-failed-1280.png`, retained root above | | | | |

@@ -1,3 +1,4 @@
+import { RangeSliderComponent } from '../kit/range-slider.component';
 import { CountBarsComponent } from '../kit/count-bars.component';
 import { ReleaseGridComponent } from '../kit/release-grid.component';
 import { MailDetailComponent } from '../kit/mail-detail.component';
@@ -48,7 +49,7 @@ const buddyPreview = (patch: Partial<ActivityProjection> = {}): ActivityProjecti
   searchEvidence: { status: 'recorded', checks: 1 }, currentOffer: null, offers: [], stateChanges: [], stateChangesEvidence: { status: 'recorded', rejectedReceipts: 0 }, ...patch });
 const galleryOffer: ActivityOffer = { offerRef: { offerId: 'gallery-held' }, state: 'active', displayState: 'active', version: 1, briefVersion: 4, createdAt: '2026-11-22T09:00:00Z', expiresAt: '2026-11-23T12:00:00Z' };
 const readyBuddy = (value: ActivityProjection): ActivityResult<ActivityProjection> => ({ status: 'ok', value });
-@Component({ selector: 'gcsp-gallery', imports: [CountBarsComponent, ReleaseGridComponent, MailDetailComponent, BriefPreviewCardComponent, NotificationBellComponent, MailStatusChipComponent, GregNavigationComponent, MediaWellComponent, PreferenceCategoryComponent, PreferenceModeComponent, UnderstandingMeterComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LoadingSkeletonComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent, VehicleDetailsComponent, MediaGalleryComponent, CheckboxFieldComponent, OptionListComponent, TaskListComponent, SlotPickerComponent, BuddyStatusComponent, BuddyTileComponent, ActivityTimelineComponent, ActivityOfferComponent], styleUrl: './gallery.component.css', template: `
+@Component({ selector: 'gcsp-gallery', imports: [RangeSliderComponent, CountBarsComponent, ReleaseGridComponent, MailDetailComponent, BriefPreviewCardComponent, NotificationBellComponent, MailStatusChipComponent, GregNavigationComponent, MediaWellComponent, PreferenceCategoryComponent, PreferenceModeComponent, UnderstandingMeterComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LoadingSkeletonComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent, VehicleDetailsComponent, MediaGalleryComponent, CheckboxFieldComponent, OptionListComponent, TaskListComponent, SlotPickerComponent, BuddyStatusComponent, BuddyTileComponent, ActivityTimelineComponent, ActivityOfferComponent], styleUrl: './gallery.component.css', template: `
   <gcsp-screen-intro title="Angular components" lede="Shared portal components and states." />
   <section class="gcsp-panel"><h2>GCSP notification bell</h2><div class="notification-gallery">
     @for (example of bells; track example.label) { <div class="notification-example" [class.has-panel]="example.open"><h3>{{ example.label }}</h3>
@@ -64,6 +65,12 @@ const readyBuddy = (value: ActivityProjection): ActivityResult<ActivityProjectio
     <div gcspCheckboxField controlId="gallery-disabled-declaration" label="Declaration unavailable" [disabled]="true" describedBy="gallery-declaration-disabled-reason"></div>
     <p class="gcsp-note" id="gallery-declaration-disabled-reason">This example is disabled until the record is supplied.</p>
     <p role="status">Example choices only. No changes have been saved.</p>
+  </section>
+  <section class="gcsp-panel"><h2>Source single range slider</h2>
+    <div class="gcsp-plan-slider"><gcsp-range-slider [question]="planLimitQuestion" [value]="planLimit()" ariaLabel="3 Series 320i maximum slider" (valueChange)="planLimit.set($event)" /></div>
+    <button gcspButton variant="ghost" type="button" (click)="planLimit.set(null)">Project unknown limit</button>
+    <button gcspButton variant="ghost" type="button" (click)="planLimit.set(0)">Project confirmed zero</button>
+    <div class="gcsp-plan-slider"><gcsp-range-slider [question]="planLimitQuestion" [value]="4" [disabled]="true" ariaLabel="Unavailable maximum slider" /></div>
   </section>
   <section class="gcsp-panel"><h2>Source radio rows</h2>
     <gcsp-option-list groupId="gallery-decline-reason" label="Example reason for declining" variant="rows" [required]="true" [invalid]="!selectedReason()" [options]="exampleReasons" [value]="selectedReason()" (valueChange)="selectedReason.set($event)" />
@@ -263,6 +270,8 @@ const readyBuddy = (value: ActivityProjection): ActivityResult<ActivityProjectio
   </section>
 ` })
 export class GalleryComponent {
+  readonly planLimit = signal<number | null>(4);
+  readonly planLimitQuestion = { id: 'gallery-plan-limit', label: '3 Series 320i maximum', min: 0, max: 10, step: 1, unit: ' vehicles' };
   readonly presenterTime = friendlyTime('2026-11-16T11:30:00Z');
   matrixChoice = '';
   readonly capturedExample = { jobId: 'gallery-email', messageKind: 'offer', state: 'sent', transport: 'captured' as const, attempts: 1, error: null, nextAttemptAt: null, time: '2026-11-16T11:30:00Z', recipient: { employeeId: 'gallery-paula', name: 'Paula Mason' }, subject: 'Your reserved car', htmlBody: '<p>Your BMW 330e Touring is ready to review.</p>', textBody: 'Your BMW 330e Touring is ready to review.', offerLink: null };
