@@ -4327,3 +4327,10 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 - **Impact:** the first attempt cost ~10 min and would have read as a mass regression; the VM load error reads as a new failure identity on Node 26 machines.
 - **Action/outcome:** recorded the line red with known FUCQ-555 37 plus the environment note; no Bug filed for the VM error (environment, not product).
 - **Proposed improvement:** `node link` (or the batch-tester brief) should also link `server/node_modules`; the node suite should either pin Node 24 or set `NODE_OPTIONS=--experimental-vm-modules` so both machines run the same suite.
+
+
+### 2026-11-26 12:36 UTC · usget-velko · DL-20261124-F555-08 · Pull merge used the other harness trailer
+
+- The Codex `scaffold_git.py pull` created local merge `d6934d509` with a Claude Code trailer (`ATTRIBUTION` at `_tools/scaffold_git.py:392`). The merge content only integrated four already-pushed commits; impact was commit attribution.
+- Corrected the still-local merge message to the Codex trailer before publishing it as `b37824dec`; verified that merge and the F597 cleanup commit both carry Codex trailers, then pushed and confirmed local/remote `gcsp-poc-dev` match. No product files changed and no tests ran.
+- Proposed improvement remains harness-aware helper attribution; this mitigation did not change the helper. This recurs under the existing issue, with no new gate.
