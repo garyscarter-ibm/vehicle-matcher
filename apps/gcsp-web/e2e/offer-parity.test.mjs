@@ -21,6 +21,27 @@ function assertMainPoints(projection) {
   assert.deepEqual(projection.comparison.currentCar.facts.points, { value: 1100, unit: 'points-per-month' });
   assert.deepEqual(projection.quote.terms.points, { value: 800, unit: 'points' }, 'The actual allocated Main offer costs 800 points');
 }
+async function assertNoActiveDeadline(suite, employee, state, actual, phase) {
+  assert.equal(actual.offerId, state.offer.offerRef.offerId, `${phase}: the same owned offer remains open`);
+  assert.equal(actual.state, 'accepted', `${phase}: the offer remains accepted`);
+  assert.equal(actual.selection?.selectionState, 'handoff-failed', `${phase}: the real ordering refusal remains terminal`);
+  assert.equal(actual.quote.orderUuid, state.offer.orderUuid, `${phase}: the refusal remains tied to the allocated order`);
+  assert.equal(actual.holdState, 'allocated', `${phase}: the accepted offer retains its allocated custody`);
+  const main = employee.locator('main');
+  await main.getByRole('heading', { name: 'Your selection was not sent to ordering', exact: true }).waitFor();
+  const counts = {
+    deadline: await main.locator('.gcsp-decision-deadline').count(),
+    countdown: await main.locator('.gcsp-countdown').count(),
+    timeLeft: await main.locator('[aria-label="Time left to decide"]').count(),
+  };
+  assert.deepEqual(counts, { deadline: 0, countdown: 0, timeLeft: 0 }, `${phase}: terminal offer has no active deadline or countdown`);
+  suite.receipt.refusedNoDeadline ??= [];
+  suite.receipt.refusedNoDeadline.push({ state: phase,
+    viewport: await employee.evaluate(() => ({ width: innerWidth, height: innerHeight })), counts,
+    refusedReadback: { offerId: actual.offerId, offerState: actual.state,
+      selectionState: actual.selection.selectionState, orderUuid: actual.quote.orderUuid,
+      holdId: state.offer.holdId, holdState: actual.holdState } });
+}
 async function activeOfferSnapshot(suite, employee, presenter, state) {
   const projection = await actualRead(suite, employee, state.offer.offerRef.offerId);
   const clock = good(await suite.call(presenter, 'GET', '/presenter/clock'), 'Signed presenter clock around active-offer restart');
@@ -61,6 +82,13 @@ async function activeOfferSnapshot(suite, employee, presenter, state) {
 async function visibleRefresh(page) {
   // This native handler signal makes real signed reads; it does not claim a physical visibility transition.
   await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
+}
+async function captureRefusedState(suite, employee, state, actual, phase, screenshotPrefix) {
+  for (const [width, height] of [[1280, 800], [390, 844]]) {
+    await employee.setViewportSize({ width, height });
+    await assertNoActiveDeadline(suite, employee, state, actual, phase);
+    await suite.screenshot(employee, `${screenshotPrefix}-${width}`);
+  }
 }
 async function installDeadlineJournal(page) {
   await page.evaluate(() => {
@@ -586,8 +614,35 @@ test('FUCQ-555: real offer decision support and exits against frozen Main inputs
       assert.equal(executions.length, 1); assert.equal(requests[0].reply.status, 'not-found');
       assert.ok(requests.every((row) => row.operationId === executions[0].operationId && row.runId === executions[0].runId && row.orderUuid === state.offer.orderUuid && row.authenticated));
       assert.equal(executions[0].idempotencyKey, executions[0].operationId);
-      await employee.setViewportSize({ width: 1280, height: 800 }); await suite.screenshot(employee, 'refused-stages-1280');
-      await employee.setViewportSize({ width: 390, height: 844 }); await suite.screenshot(employee, 'refused-stages-390');
+      if (ordering === 'rejected') {
+        await captureRefusedState(suite, employee, state, actual, 'receipt', 'refused-stages');
+        const refreshResponse = employee.waitForResponse((item) => item.request().method() === 'GET'
+          && new URL(item.url()).pathname === `/api/gcsp/v1${offerPath(state.offer.offerRef.offerId)}`);
+        await visibleRefresh(employee);
+        const refreshedResponse = await refreshResponse;
+        assert.equal(refreshedResponse.status(), 200, 'Visibility refresh completes an actual signed offer read');
+        await refreshedResponse.finished();
+        const current = await actualRead(suite, employee, state.offer.offerRef.offerId);
+        await captureRefusedState(suite, employee, state, current, 'visibility-refresh', 'refused-current');
+
+        const lifecycle = await suite.restartApi();
+        suite.receipt.refusedRestart = { lifecycle };
+        const offerId = state.offer.offerRef.offerId;
+        const restartedResponse = employee.waitForResponse((item) => item.request().method() === 'GET'
+          && new URL(item.url()).pathname === `/api/gcsp/v1${offerPath(offerId)}`);
+        await employee.goto(`${suite.origins.web}/gcsp/offers/${encodeURIComponent(offerId)}`, { waitUntil: 'domcontentloaded' });
+        const afterRestartResponse = await restartedResponse;
+        assert.equal(afterRestartResponse.status(), 200, 'Owned-offer navigation completes an actual signed read after API restart');
+        await afterRestartResponse.finished();
+        await employee.locator('main').getByRole('heading', { name: 'Your selection was not sent to ordering', exact: true }).waitFor();
+        const afterRestart = await actualRead(suite, employee, offerId);
+        await captureRefusedState(suite, employee, state, afterRestart, 'api-restart', 'refused-restart');
+        assert.equal(suite.ordering.requests.filter((row) => row.method === 'POST').length, 1,
+          'Current-state refresh and API restart do not repeat the refused ordering operation');
+      } else {
+        await employee.setViewportSize({ width: 1280, height: 800 }); await suite.screenshot(employee, 'refused-stages-1280');
+        await employee.setViewportSize({ width: 390, height: 844 }); await suite.screenshot(employee, 'refused-stages-390');
+      }
       await employee.getByRole('link', { name: 'Contact scheme support', exact: true }).click();
       await employee.waitForURL((url) => url.pathname === '/gcsp/help'); await suite.screenshot(employee, 'refused-support-390');
     });

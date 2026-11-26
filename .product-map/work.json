@@ -13546,6 +13546,61 @@
       "native_updated": "2026-11-25T18:44:07.379-0600"
     },
     {
+      "id": "FUCQ-544",
+      "title": "Hide active deadline on terminal refused offers",
+      "status": "In Progress",
+      "type": "Bug",
+      "branch": "dev/DEV-2026-11-22-vesper-020",
+      "observed_at": "2026-11-26T07:43:29Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-544",
+      "workers": [
+        {
+          "name": "Goopy Geer",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-26T06:59:22.429522+00:00",
+          "expires_at": "2026-11-26T07:36:31.163600+00:00",
+          "status": "complete",
+          "source": "claimed a9acfddc9; native 2026-11-26T06:57:49.258Z"
+        },
+        {
+          "name": "Egghead Jr",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-26T06:59:22.429522+00:00",
+          "expires_at": "2026-11-26T07:36:31.163600+00:00",
+          "status": "complete",
+          "source": "Title/thread01a216a7-7a92-7533-883b-387c07c00b55; two-module syntaxpass; lead corrected allocated state/API prefix before browserproof."
+        },
+        {
+          "name": "Hubie",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-26T07:07:35Z",
+          "expires_at": "2026-11-26T07:36:31.163600+00:00",
+          "status": "complete",
+          "source": "Requested/selected gpt-6-luna/high; focused units and registered f555 at unchanged executable/testcommit6e484e4e7."
+        }
+      ],
+      "slices": [
+        {
+          "id": "evidence",
+          "status": "complete",
+          "title": "Terminal-refusal-regression",
+          "observed_at": "2026-11-26T07:36:31Z",
+          "evidence": "Lead full diff and six rendered captures reviewed;165 direct tests and6 registered f555 tests passed. Exact identities and setup failures in docs/gcsp/evidence/fucq544/terminal-deadline-2026-11-26.md."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Final-composition-proof-and-reconciliation",
+          "observed_at": "2026-11-26T07:43:29Z",
+          "evidence": "Merged/pushedb1d19fc18. Root read full two-module diff, Node24syntaxchecks passed, independently165/165directtests on refreshedcd297ae3; finalmetadata84b310a27 preserved all executable identities. Lead6/6registeredf555 with realPG/OIDC receipt/currentsignedreread/restart1280/390 shows zero active timing, accepted/allocated/handoff-failed and one orderingPOST. Ownedcleanup verified. Shared18familybatch pending; F555 acceptance separate. docs/gcsp/evidence/fucq544/terminal-deadline-2026-11-26.md"
+        }
+      ],
+      "unsliced": false
+    },
+    {
       "id": "FUCQ-320",
       "title": "Retrain the learned forecast so it covers hatchbacks",
       "type": "Story",
@@ -13572,7 +13627,7 @@
           "source": "/root/sulley/captain_flack"
         }
       ],
-      "observed_at": "2026-11-26T07:05:20Z",
+      "observed_at": "2026-11-26T07:45:40Z",
       "slices": [
         {
           "id": "dataset",
@@ -13592,8 +13647,8 @@
           "id": "integration",
           "status": "complete",
           "title": "Real-composition-and-final-validation",
-          "observed_at": "2026-11-26T07:03:59.113233+00:00",
-          "evidence": "Lead reviewed final diff; independent 73/73 Java across four learning and ten required startup classes, zero skips/failures, 27.84 s; strict Node activation stamp 5/5; unchanged 31 Node tests reused. Actual fixed-database absence and target/TMP/dependency cleanup verified. Full suites deferred to batch; hosted deployment unverified."
+          "observed_at": "2026-11-26T07:43:29Z",
+          "evidence": "Merged/pushed9488df8f9. Root reviewed final diff and independently passed36/36Node and17/17Java; unchanged lead73/73Java includes mandatory startup/wiring. Actual nativePG17/OIDC pinned-policy dated successor activation and hatch/unseen-cohort outcomes verified. Scratch/DB/process/link cleanup verified. Hosted unverified; canonical default inactive; shared covering batches still pending. docs/gcsp/models/fucq320-result.md"
         }
       ],
       "unsliced": false
