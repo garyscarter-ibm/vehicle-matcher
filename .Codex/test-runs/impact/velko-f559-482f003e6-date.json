@@ -1,0 +1,72 @@
+{
+  "story": "FUCQ-559",
+  "source_head": "482f003e61d8172ee2acea904b144b33a7199f30",
+  "base": "e7cc7ccfbf93dba6b11978c72b0df9a58b25e674",
+  "variant": "local macOS shared PostgreSQL17, signed testOIDC, Java21, 512m Maven/1g testJVM",
+  "code_sha256": {
+    "services/gcsp-api/src/main/java/gcsp/api/production/ProductionService.java": "2b3297a5764cf061a1e84eab050382ebf11f918f57a5215fdb11394cee01fe90",
+    "services/gcsp-api/src/main/java/gcsp/api/production/ProductionStore.java": "1897ba4e9a97c37d9219eea999237394fbda2cbe2c80ddf93fb34fc2686120b9",
+    "services/gcsp-api/src/main/java/gcsp/api/production/ProductionServiceHolder.java": "b4e7fd0d3f8dc6fdd947fcaa0224d35a3a011e69948e80b9922912f2129cd82a",
+    "services/gcsp-api/src/test/java/gcsp/api/production/ProductionFixture.java": "9d0502fc23230ede57a6fc34f9891b9b8005405e8dc133abc213c5437c5fd77d",
+    "services/gcsp-api/src/test/java/gcsp/api/production/ProductionConfirmationDateTest.java": "abd2cda4094cabc6753f639d80d0d86e655265a022a9e7560eaaa89e7d1efe2a",
+    "services/gcsp-api/src/test/java/gcsp/api/production/GregOrdersHttpTest.java": "624a1d5bbbd7be983a8d2e5f78288fdf0778ac9e404227bad12b3b66580d9adc",
+    "apps/gcsp-web/e2e/greg-planning-parity.test.mjs": "b55a1be1693df45731cdc9cef510aa82694bd7d0edbfa7974db94e3ed2ec0cab",
+    "services/gcsp-api/src/main/java/gcsp/api/production/PlanSnapshotPort.java": "3ac3b1fec0af692dab2eac25ffafbe2f8f11830604de7b1ed80e8a6ac6bf2ac4",
+    "services/gcsp-api/src/main/java/gcsp/api/production/PlanningPlanSnapshot.java": "3c8801f9944f16d03b22dcb27d7061b0873a9687fd4f8613834311df6f8af400",
+    "services/gcsp-api/src/main/java/gcsp/api/production/ProductionReads.java": "ec90d10162c5b86c84315ad54f71af5ef3bd9e9aa454ff84f4bd29ffde816042",
+    "services/gcsp-api/src/main/java/gcsp/api/planning/OrderPlanOperations.java": "efb9e8a18c96c9910e66747bcd29a867300854c0858390e67a2dbab4f2e40dd1",
+    "services/gcsp-api/src/test/java/gcsp/api/planning/OrderPlanOperationsTest.java": "3ef68866bc1cc7963d3dbb651cc982077afe3a859fe373d5f5983c78a92aee34"
+  },
+  "edges": {
+    "ProductionService.apply/confirmationDate + ProductionStore.applyAnswer": "ProductionConfirmationDateTest eight regressions, production package; atomic refusal/retry and memoized historical policy",
+    "ProductionServiceHolder.service + constructor callers": "GregOrdersHttpTest new signed HTTP case, owning production tests and ten AGENTS startup/wiring classes",
+    "queue-first read / F477 planning": "GregOrderPlan*Test and PostgresPlanningSupplyTest; later queue authority and oldNULL regressions",
+    "greg-planning-parity.test.mjs": "node --check only; actual final browser and frozenNode date comparison pending root CI",
+    "F546 submission changes / PlanSnapshot / constraint_changes fixture": "Owning production tests include merged submission regressions; OrderPlanOperationsTest added to prior explicit set. F559 date semantics and queue-first reads survive integration."
+  },
+  "selector": "gcsp.api.production.**,gcsp.api.planning.GregOrderPlan*Test,gcsp.api.planning.PostgresPlanningSupplyTest,gcsp.api.planning.OrderPlanOperationsTest,gcsp.api.DefaultProfileTest,gcsp.api.OidcContextTest,gcsp.api.OidcIdentityTest,gcsp.api.IdentitySelectionTest,gcsp.api.persistence.PersistenceWiringTest,gcsp.api.persistence.NotConfiguredReadinessTest,gcsp.api.claims.ClaimWiringTest,gcsp.api.notify.NotificationDrainWiringTest,gcsp.api.appointments.AppointmentsWiringTest,gcsp.api.ordering.RemoteOrderingStartupTest",
+  "group_counts": {
+    "startup/wiring": [
+      56,
+      0,
+      0,
+      0
+    ],
+    "planning": [
+      44,
+      0,
+      0,
+      0
+    ],
+    "production": [
+      82,
+      0,
+      0,
+      0
+    ]
+  },
+  "result": {
+    "tests": 182,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "classes": 28,
+    "maven_wall_seconds_rounded": 84,
+    "supervisor_wall_seconds": 88.13489854200452,
+    "strict_wall_seconds": 89.2
+  },
+  "selection": "Legacy affected dry-plan uses unspecified language and proposes full npm fallback; not executed. Explicit scoped selected command recorded with strict targeted evidence. Full suite deferred to covering batch.",
+  "coverage_contexts": "Per-test measured coverage contexts unavailable; reviewed constructor/adapter/fixture edges supplement executed class counts. No extra suite run for telemetry.",
+  "pending": [
+    "Actual final f559 connected CI and rendered new date review",
+    "Human AC4 ledger signoff",
+    "Covering shared batches"
+  ],
+  "post_integration": {
+    "incoming": "F546 submission changes; Service/Store/Fixture and PlanSnapshot readers",
+    "review": "Dot integration-only review passed at 482f003e61d8172ee2acea904b144b33a7199f30; no defects",
+    "reason": "Actual incoming production/planning contract and fixture changes justify one final focused set; prior scoped evidence remains retained",
+    "strict_targeted_evidence": "/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f559-20261126/lead/stamp/targeted-f065bd2c385a45fe0d62b9b7f2b609b3cfdef1727f9155ef3ad6658d0c49a1e6-default-1795691537389579000.json",
+    "cleanup_summary": "/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f559-20261126/lead/cleanup-summary-post-f546.json"
+  }
+}

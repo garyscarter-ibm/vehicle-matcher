@@ -83,6 +83,21 @@ final class ProductionFixture implements AutoCloseable {
         public Reading current(RunContext ctx, gcsp.api.identity.Principal principal) {
             return reading;
         }
+
+        /** Stands in for the planner's validation: the changes come back sorted by key, or refused when rejectChanges is set. */
+        volatile boolean rejectChanges;
+
+        @Override
+        public Reading current(RunContext ctx, gcsp.api.identity.Principal principal, JsonNode changes) {
+            if (changes == null) return reading;
+            if (rejectChanges) return new PlanSnapshotPort.Invalid("invalid-changes", "Supply each editable key once with its new value.");
+            Snapshot s = (Snapshot) reading;
+            List<JsonNode> sorted = new java.util.ArrayList<>();
+            changes.forEach(sorted::add);
+            sorted.sort(java.util.Comparator.comparing(n -> n.get("key").asText()));
+            return new Snapshot(s.planId(), s.versions(), s.feasible(), s.asOf(), s.lines(),
+                    com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.arrayNode().addAll(sorted));
+        }
     }
 
     private ProductionFixture(String url, String schema) {
@@ -131,7 +146,8 @@ final class ProductionFixture implements AutoCloseable {
     }
 
     ProductionService service(PGSimpleDataSource pool, ProductionProviderPort p) {
-        return new ProductionService(pool, p, plan, new TickProductionClock(pool), queue);
+        return new ProductionService(pool, p, plan, new TickProductionClock(pool), queue,
+                (runId, asOf) -> new PolicyReading.Ok("gcsp-policy-v1", 10, 3, 60));
     }
 
     /** Moves the demo clock forward by delivering a later tick. */

@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-26T09:50:32Z",
+  "observed_at": "2026-11-26T11:14:11.941490Z",
   "version": 1,
   "stories": [
     {
@@ -13196,32 +13196,61 @@
       "assignee": "Russell Gowers",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-559",
       "branch": "dev/DEV-2026-11-22-vesper-035",
-      "evidence": "Partial source b3f9336d6; registered6/6 and Angular182/182. Native In Progress read back23:54:23Z; three 1280px pairs published, comment5068522. AC1met; originalAC2/3prequeue date parity, humanAC4and coveringbatchremain.",
-      "observed_at": "2026-11-25T23:54:23Z",
+      "evidence": "Post-F546 source 482f003e6, base e7cc7ccfb: lead 182/182 scoped Java tests across 28 classes; Dot integration review passed. Final date/frozen Node CI, original human AC4 and covering batches pending; In Progress unchanged.",
+      "observed_at": "2026-11-26T11:14:11.941490Z",
       "slices": [
         {
           "id": "planning-controls",
           "status": "in-progress",
           "title": "Planning controls (5 points; AC1–2)",
-          "observed_at": "2026-11-25T23:33:21Z",
-          "evidence": "Requestform/slider/learned emphasis proven; table prequeue date parity remains originalAC2."
+          "observed_at": "2026-11-26T11:14:11.941490Z",
+          "evidence": "Prior request form, slider and emphasis evidence retained; post-F546 producer/reader native tests pass. New rendered date/frozen Node and human parity pending."
         },
         {
           "id": "production-actions",
           "status": "in-progress",
           "title": "Production actions (5 points; AC3)",
-          "observed_at": "2026-11-25T23:33:21Z",
-          "evidence": "Actual role-correct confirm/delay/queue503+lost-response recovery proven; prequeue timing remains originalAC3."
+          "observed_at": "2026-11-26T11:14:11.941490Z",
+          "evidence": "Historical confirmation-time date, refusal rollback, old NULL and later queue authority retained after F546; scoped production 82/82 and Dot review passed. Final actual date screens pending."
         },
         {
           "id": "integration",
           "status": "in-progress",
           "title": "Real composition, focused validation and human pair (3 points; AC4)",
-          "observed_at": "2026-11-25T23:33:21Z",
-          "evidence": "Final registered6/6 and focused182/182, A29/40/B0; original humanAC4blank and sharedbrowserbatchdue."
+          "observed_at": "2026-11-26T11:14:11.941490Z",
+          "evidence": "Post-F546 explicit Java 182/182 at 482f003e6, including OrderPlanOperationsTest; cleanup complete. Final connected date proof, original human AC4 and covering batches pending. Prior A29/40/B0 applies earlier state."
         }
       ],
-      "unsliced": false
+      "unsliced": false,
+      "workers": [
+        {
+          "name": "Toothless",
+          "harness": "codex",
+          "role": "story-lead",
+          "status": "completed",
+          "observed_at": "2026-11-26T11:14:11.941490Z",
+          "expires_at": "2026-11-26T11:14:11.941490Z",
+          "source": "Observed live collaboration tree and child progress on 26 Nov; Sol/high, no fallback"
+        },
+        {
+          "name": "Cecil Turtle",
+          "harness": "codex",
+          "role": "implementer",
+          "status": "completed",
+          "observed_at": "2026-11-26T11:14:11.941490Z",
+          "expires_at": "2026-11-26T11:14:11.941490Z",
+          "source": "Observed live collaboration tree and child progress on 26 Nov; Sol/medium, no fallback"
+        },
+        {
+          "name": "Dot",
+          "harness": "codex",
+          "role": "independent state/API reviewer",
+          "status": "completed",
+          "observed_at": "2026-11-26T11:14:11.941490Z",
+          "expires_at": "2026-11-26T11:14:11.941490Z",
+          "source": "Observed integration-only review at 482f003e6: gpt-6.1-sol/high requested/selected; no fallback; VERDICT passed, no defects"
+        }
+      ]
     },
     {
       "id": "FUCQ-554",
@@ -13806,6 +13835,52 @@
       ],
       "unsliced": false,
       "jira_observed_at": "2026-11-26T08:01:29.625Z"
+    },
+    {
+      "id": "FUCQ-546",
+      "title": "Report Node's submission constraint changes in the Java Production replan status",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-546",
+      "branch": "dev/DEV-2026-11-22-vesper-021",
+      "workers": [
+        {
+          "name": "Wile E. Coyote",
+          "harness": "claude-code",
+          "role": "story-lead",
+          "observed_at": "2026-11-26T09:45:00Z",
+          "expires_at": "2026-11-26T10:45:00Z",
+          "source": "story-lead finished: built, Result committed",
+          "status": "completed"
+        }
+      ],
+      "unsliced": false,
+      "observed_at": "2026-11-26T10:41:00Z",
+      "slices": [
+        {
+          "id": "changes-source",
+          "status": "complete",
+          "title": "AC1 submission constraint changes stored and reported in the replan value",
+          "observed_at": "2026-11-26T10:40:44Z",
+          "evidence": "Lead review of c5da6159d; story set 316/0 on 8287dad5a incl. ProductionDeployedJourneyHttpTest @Order(8) vs Node golden"
+        },
+        {
+          "id": "queue-fault",
+          "status": "complete",
+          "title": "AC2 supply-side fault drives the queue 503 path, replan stays truthful",
+          "observed_at": "2026-11-26T10:40:44Z",
+          "evidence": "Lead review of 8287dad5a; @Order(9) supply-side trigger fault 503 and truthful replan; story set 316/0"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Story test set, migration full suite and result",
+          "observed_at": "2026-11-26T10:40:45Z",
+          "evidence": "Story test set 316/0, test_drift 0 hits on 8287dad5a; full java suite deferred to dispatcher batch (V546_1)"
+        }
+      ]
     },
     {
       "id": "FUCQ-597",

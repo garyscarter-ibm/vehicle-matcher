@@ -211,6 +211,28 @@ public final class OrderPlanOperations {
         }
     }
 
+    /** The draft plan with Greg's canonical changes, or the failure that stopped it (a plan outcome other than a plan, or invalid changes). */
+    public record Draft(ObjectNode plan, ArrayNode changes, ObjectNode failure) {
+    }
+
+    /** Node submitPlan's draft: validates the changes like previewPlan, then plans under them. Writes nothing. */
+    public Draft draftFor(Principal principal, JsonNode changes) {
+        try {
+            Started started = start(principal);
+            if (started.failure() != null) {
+                return new Draft(null, null, started.failure());
+            }
+            Checked checked = checkChanges(started.base(), changes);
+            if (checked.failure() != null) {
+                return new Draft(null, null, checked.failure());
+            }
+            ObjectNode plan = draftPlan(principal, started.base(), checked.changes());
+            return isPlan(plan) ? new Draft(plan, checked.changes(), null) : new Draft(null, null, plan);
+        } catch (RuntimeException e) {
+            return new Draft(null, null, Outcomes.operationsUnavailable("order-plan-operations-unavailable"));
+        }
+    }
+
     private ObjectNode finish(Principal principal, ObjectNode value) {
         return OrderPlanService.greg(principal) ? Outcomes.ok(value) : Outcomes.forbidden();
     }

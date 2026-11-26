@@ -307,4 +307,22 @@ class OrderPlanOperationsTest {
         value(real.previewPlan(principal("greg"), body(change("orderPlan.budgetMinor", M.getNodeFactory().numberNode(9)))));
         assertTrue(java.util.Arrays.equals(before, java.nio.file.Files.readAllBytes(seed)));
     }
+
+    @Test
+    void draftForReturnsThePreviewPlanAndCanonicalChangesAndTheSameFailures() {
+        JsonNode reversed = M.createArrayNode()
+                .add(change("orderPlan.derivativeBounds", withBound("orderPlan.derivativeBounds", "derivativeId", SALOON, "min", 2)))
+                .add(change("orderPlan.budgetMinor", M.getNodeFactory().numberNode(1000)));
+        JsonNode preview = value(ops.previewPlan(principal("greg"), M.createObjectNode().set("changes", reversed)));
+        OrderPlanOperations.Draft draft = ops.draftFor(principal("greg"), reversed);
+        assertEquals(null, draft.failure());
+        assertEquals(preview.get("plan"), draft.plan());
+        assertEquals(preview.get("changes"), draft.changes());
+        assertEquals("orderPlan.budgetMinor", draft.changes().get(0).get("key").textValue());
+        for (JsonNode bad : List.of(M.createArrayNode(), M.createArrayNode().add(change("orderPlan.horizonDays", M.getNodeFactory().numberNode(5))),
+                M.createArrayNode().add(change("orderPlan.budgetMinor", M.getNodeFactory().numberNode(-1))))) {
+            assertEquals(ops.previewPlan(principal("greg"), M.createObjectNode().set("changes", bad)).get("code"),
+                    ops.draftFor(principal("greg"), bad).failure().get("code"));
+        }
+    }
 }

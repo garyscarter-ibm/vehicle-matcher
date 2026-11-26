@@ -3,6 +3,7 @@ package gcsp.api.production;
 import com.fasterxml.jackson.databind.JsonNode;
 import gcsp.api.identity.Principal;
 import gcsp.api.persistence.RunContext;
+import gcsp.api.planning.OrderPlanOperations;
 import gcsp.api.planning.OrderPlanService;
 import gcsp.api.planning.PlanningCatalog;
 import gcsp.api.planning.PlanningClock;
@@ -29,10 +30,12 @@ public final class PlanningPlanSnapshot implements PlanSnapshotPort {
 
     private final PolicyService policy;
     private final OrderPlanService planner;
+    private final OrderPlanOperations drafts;
 
     public PlanningPlanSnapshot(PolicyService policy, PlanningDemand demand, PlanningSupply supply, PlanningClock clock) {
         this.policy = policy;
         this.planner = new OrderPlanService(policy, demand, supply, clock);
+        this.drafts = new OrderPlanOperations(policy, demand, supply, clock, (c, p) -> null);
     }
 
     @Override
@@ -42,7 +45,22 @@ public final class PlanningPlanSnapshot implements PlanSnapshotPort {
 
     @Override
     public Reading current(RunContext ctx, Principal principal) {
-        JsonNode plan = planner.readPlan(principal, principal.policyVersion());
+        return read(ctx, principal, planner.readPlan(principal, principal.policyVersion()), null);
+    }
+
+    @Override
+    public Reading current(RunContext ctx, Principal principal, JsonNode changes) {
+        if (changes == null) return current(ctx, principal);
+        OrderPlanOperations.Draft draft = drafts.draftFor(principal, changes);
+        if (draft.failure() == null) return read(ctx, principal, draft.plan(), draft.changes());
+        JsonNode f = draft.failure();
+        if ("invalid".equals(f.path("status").asText())) {
+            return new Invalid(f.path("code").asText("invalid-changes"), f.path("reasons").path(0).path("reason").asText(NOT_READY));
+        }
+        return notPlan(f);
+    }
+
+    private Reading read(RunContext ctx, Principal principal, JsonNode plan, JsonNode changes) {
         String status = plan.path("status").asText("");
         if (!"feasible".equals(status) && !"infeasible".equals(status)) {
             return notPlan(plan);
@@ -79,7 +97,7 @@ public final class PlanningPlanSnapshot implements PlanSnapshotPort {
                         q.get("quantity").asInt()));
             }
         }
-        return new Snapshot(plan.path("planId").asText(), versions, feasible, asOf, lines);
+        return new Snapshot(plan.path("planId").asText(), versions, feasible, asOf, lines, changes);
     }
 
     /** The planner's own code, with its reason when it gave one. */

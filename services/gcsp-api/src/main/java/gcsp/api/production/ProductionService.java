@@ -20,10 +20,14 @@ import gcsp.api.production.ProductionProviderPort.Status;
 import gcsp.api.production.ProductionStore.ConfirmationRow;
 import gcsp.api.production.ProductionStore.RequestRow;
 import gcsp.api.production.ProductionStore.Submission;
+import gcsp.api.supply.PolicyReading;
+import gcsp.api.supply.ReleasePolicy;
+import gcsp.api.supply.UnconfiguredPolicy;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +48,12 @@ public final class ProductionService {
     static final String MODE_CHANGED = "provider-mode-changed";
     private static final String DB_REASON = "The database could not be reached. Try again shortly.";
 
-    /** What Greg submitted: the plan he previewed and the input versions it was built from. */
-    public record SubmitInput(String commandId, String planId, Map<String, String> versions) {}
+    /** What Greg submitted: the plan he previewed, its input versions and any draft changes it was previewed under (null = none). */
+    public record SubmitInput(String commandId, String planId, Map<String, String> versions, JsonNode changes) {
+        public SubmitInput(String commandId, String planId, Map<String, String> versions) {
+            this(commandId, planId, versions, null);
+        }
+    }
 
     private final DataSource dataSource;
     private final TransactionRunner runner;
@@ -53,6 +61,7 @@ public final class ProductionService {
     private final PlanSnapshotPort plans;
     private final ProductionClock clock;
     private final SupplyQueuePort supply;
+    private final ReleasePolicy releasePolicy;
     private final ProductionReads reads;
 
     public ProductionService(DataSource dataSource, ProductionProviderPort provider, PlanSnapshotPort plans,
@@ -62,12 +71,18 @@ public final class ProductionService {
 
     public ProductionService(DataSource dataSource, ProductionProviderPort provider, PlanSnapshotPort plans,
             ProductionClock clock, SupplyQueuePort supply) {
+        this(dataSource, provider, plans, clock, supply, new UnconfiguredPolicy());
+    }
+
+    public ProductionService(DataSource dataSource, ProductionProviderPort provider, PlanSnapshotPort plans,
+            ProductionClock clock, SupplyQueuePort supply, ReleasePolicy releasePolicy) {
         this.dataSource = dataSource;
         this.runner = new TransactionRunner(dataSource);
         this.provider = provider;
         this.plans = plans;
         this.clock = clock;
         this.supply = supply;
+        this.releasePolicy = releasePolicy;
         this.reads = new ProductionReads(dataSource, provider, clock);
     }
 
@@ -95,15 +110,16 @@ public final class ProductionService {
                 return new ProductionResult.Unavailable("clock-not-set", "The demo clock has not been set. Try again shortly.", true);
             }
             Instant at = Ids.ms(now.get());
-            Reading reading = plans.current(scope, principal);
+            Reading reading = in.changes() == null ? plans.current(scope, principal) : plans.current(scope, principal, in.changes());
             if (reading instanceof PlanSnapshotPort.Unavailable u) {
                 return new ProductionResult.Unavailable(u.code(), u.reason(), false);
             }
+            if (reading instanceof PlanSnapshotPort.Invalid i) return new ProductionResult.Invalid(i.code(), i.reason());
             Snapshot plan = (Snapshot) reading;
             ProductionResult refused = checkPlan(in, plan);
             if (refused != null) return refused;
             return create(scope, "submit", in.commandId(), input, digest, submissionId, in.planId(), input.get("versions"),
-                    wanted(plan), at, null);
+                    wanted(plan), at, null, plan.changes());
         } catch (SQLException | RuntimeException e) {
             return new ProductionResult.Unavailable(DB_CODE, DB_REASON, true);
         }
@@ -158,7 +174,7 @@ public final class ProductionService {
             if (in.plan() != null) versions.set("plan", in.plan());
             List<Line> lines = List.of(new Line("l1", in.model(), in.derivative(), in.quantity()));
             return create(scope, "manual", in.commandId(), input, digest, submissionId,
-                    ProductionReads.MANUAL_PREFIX + submissionId, versions, lines, Ids.ms(now.get()), in.expectedStockVersion());
+                    ProductionReads.MANUAL_PREFIX + submissionId, versions, lines, Ids.ms(now.get()), in.expectedStockVersion(), F.arrayNode());
         } catch (SQLException | RuntimeException e) {
             return new ProductionResult.Unavailable(DB_CODE, DB_REASON, true);
         }
@@ -210,6 +226,7 @@ public final class ProductionService {
         o.put("planId", in.planId());
         ObjectNode v = o.putObject("versions");
         in.versions().forEach(v::put);
+        if (in.changes() != null) o.set("changes", in.changes());
         return o;
     }
 
@@ -261,17 +278,17 @@ public final class ProductionService {
 
     /** One command transaction stores the submission and every intent row first; a stock fence re-checks stock inside it. */
     private ProductionResult create(RunContext scope, String kind, String clientCommandId, ObjectNode input, String digest,
-            String submissionId, String planId, JsonNode planVersions, List<Line> lines, Instant at, String stockFence)
-            throws SQLException {
+            String submissionId, String planId, JsonNode planVersions, List<Line> lines, Instant at, String stockFence,
+            JsonNode changes) throws SQLException {
         String commandId = "production:" + kind + ":" + scope.actorId() + ":" + clientCommandId;
         Outcome out = runner.execute(scope, new Command("production." + kind, commandId, input), tx -> {
             if (stockFence != null && !stockFence.equals(ProductionStore.stockVersion(tx.connection(), scope))) {
                 throw new TxConflict("stale-version", "Stock changed since you looked.");
             }
             tx.write("INSERT INTO production_submissions (environment_id, run_id, submission_id, command_id, requested_by, "
-                    + "plan_id, plan_versions, input_digest, requested_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    + "plan_id, plan_versions, input_digest, requested_at, constraint_changes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     scope.environmentId(), scope.runId(), submissionId, clientCommandId, scope.actorId(), planId,
-                    planVersions, digest, at);
+                    planVersions, digest, at, changes);
             for (Line l : lines) {
                 String requestId = "request-" + Ids.hex32(scope.runId(), submissionId, l.lineId());
                 ObjectNode op = F.objectNode();
@@ -378,9 +395,39 @@ public final class ProductionService {
         ObjectNode input = F.objectNode().put("requestId", row.requestId()).put("version", row.version());
         String id = idPrefix + row.requestId() + ":v" + row.version();
         return runner.execute(scope, new Command(type, id, input), tx -> {
-            ProductionStore.Applied applied = ProductionStore.applyAnswer(tx, row, answer, provider.mode(), at, from);
-            return WorkResult.ok(F.objectNode().put("requestId", row.requestId()).put("applied", applied.name()));
+            Map<Instant, Instant> dates = new HashMap<>();
+            try {
+                ProductionStore.Applied applied = ProductionStore.applyAnswer(tx, row, answer, provider.mode(), at,
+                        confirmedAt -> dates.computeIfAbsent(Ids.ms(confirmedAt), time -> confirmationDate(scope, time)), from);
+                return WorkResult.ok(F.objectNode().put("requestId", row.requestId()).put("applied", applied.name()));
+            } catch (ConfirmationDateUnavailable e) {
+                return WorkResult.refuse("policy-unavailable", e.getMessage());
+            }
         });
+    }
+
+    /** Original confirmation-clock policy, retained for tracking until the queue supplies its own immutable date. */
+    private Instant confirmationDate(RunContext scope, Instant confirmedAt) {
+        try {
+            PolicyReading reading = releasePolicy.read(scope.runId(), confirmedAt);
+            if (reading instanceof PolicyReading.Ok policy && policy.policyVersion() != null
+                    && !policy.policyVersion().isBlank() && policy.leadTimeDays() >= 0) {
+                long expected = Math.addExact(confirmedAt.toEpochMilli(), Math.multiplyExact(policy.leadTimeDays(), 86_400_000L));
+                // Keep tracking dates within the frozen Node implementation's finite Date range.
+                if (expected >= -8_640_000_000_000_000L && expected <= 8_640_000_000_000_000L) {
+                    return Instant.ofEpochMilli(expected);
+                }
+            }
+        } catch (RuntimeException e) {
+            // An unavailable or unusable policy refuses the entire answer transaction, without a fallback date.
+        }
+        throw new ConfirmationDateUnavailable();
+    }
+
+    private static final class ConfirmationDateUnavailable extends RuntimeException {
+        ConfirmationDateUnavailable() {
+            super("The supply lead-time policy is unavailable or invalid.");
+        }
     }
 
     /** Hands a request's unqueued confirmations to supply, outside any transaction, then marks each by version CAS. */
