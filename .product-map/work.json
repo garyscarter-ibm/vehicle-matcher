@@ -13707,7 +13707,7 @@
       "type": "Story",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-538",
       "branch": "dev/DEV-2026-11-22-vesper-014",
-      "observed_at": "2026-11-26T09:00:43Z",
+      "observed_at": "2026-11-26T09:37:39Z",
       "workers": [
         {
           "name": "Pugh",
@@ -13779,8 +13779,8 @@
           "id": "validation-review",
           "status": "in-progress",
           "title": "Scoped parity, restart, concurrency and covering review",
-          "observed_at": "2026-11-26T08:52:35Z",
-          "evidence": "Scoped 133 +104 +56 Java and44 Node checks green; independent risk review PASS; root canonical JavaCI and dispatcher batch pending"
+          "observed_at": "2026-11-26T09:37:39Z",
+          "evidence": "Scoped293Java+44Node and independent risk review PASS; root canonical CI45788335920 at81eb2eab1:2362executed/0fail-errors/3conditional skips,384validreports,cleanup verified. Current integrated18-family browser batch pending."
         }
       ],
       "unsliced": false,
