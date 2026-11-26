@@ -499,6 +499,69 @@ class ProductionDeployedJourneyHttpTest {
         assertEquals(golden.get("expected"), replan.get("changes"));
     }
 
+    // ---- 9: FUCQ-546, a supply-side queue fault leaves the replan truthful ----
+
+    @Test
+    @Order(9)
+    void aSupplyQueueFaultKeepsTheReplanTruthfulAndTheRetryRestoresIt() throws Exception {
+        JsonNode expected = M.readTree(getClass().getResourceAsStream("/order-plan-parity/submission-changes.json")).get("expected");
+        Resp read = get(greg, PLAN);
+        assertEquals(200, read.status(), read.toString());
+        String supplyBefore = read.body().at("/value/plan/versions/supply").asText();
+        long inboundBefore = inboundTotal();
+        String fn = schema + ".f546_supply_fault";
+        String trg = "f546_supply_fault_trg";
+        String unqueuedBefore = text("SELECT count(*) FROM production_confirmations WHERE request_id = ? AND queued_at IS NULL", changesRequest);
+        assertEquals("0", unqueuedBefore);
+        long queuedBefore = request(changesRequest).get("queuedQuantity").asLong();
+        String retry = cmd();
+        try {
+            exec("CREATE FUNCTION " + fn + "() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'f546 supply fault'; END $$");
+            exec("CREATE TRIGGER " + trg + " BEFORE INSERT ON " + schema + ".confirmed_supply_queue FOR EACH ROW EXECUTE FUNCTION " + fn + "()");
+            Resp step = post(presenter, STEP, step(cmd(), changesRequest, request(changesRequest).get("version").asLong(), 1));
+            assertEquals(200, step.status(), step.toString());
+            Resp queue = post(greg, ORDERS + "/queue", "{\"commandId\":\"" + retry + "\",\"requestId\":\"" + changesRequest + "\"}");
+            assertEquals(503, queue.status(), queue.toString());
+            assertEquals("supply-queue-unavailable", queue.body().get("code").asText());
+            assertTrue(queue.body().get("retryable").asBoolean(), queue.toString());
+
+            assertEquals(1, count("SELECT count(*) FROM production_confirmations WHERE request_id = ? AND queued_at IS NULL", changesRequest));
+            assertEquals(0, count("SELECT count(*) FROM confirmed_supply_queue q JOIN production_confirmations p ON p.supply_id = q.supply_id "
+                    + "WHERE p.request_id = ? AND p.queued_at IS NULL", changesRequest));
+            JsonNode view = request(changesRequest);
+            assertEquals(2, view.get("confirmedQuantity").asInt(), view.toString());
+            assertEquals(queuedBefore, view.get("queuedQuantity").asLong(), view.toString());
+            assertEquals(0, view.get("releasedQuantity").asInt());
+            Resp activity = get(greg, API + "/greg/production/supply-activity");
+            assertEquals(200, activity.status(), activity.toString());
+            JsonNode replan = activity.body().at("/value/replan");
+            assertEquals("replanned", replan.get("status").asText(), replan.toString());
+            boolean confirmed = false;
+            for (JsonNode h : replan.get("responses")) confirmed |= changesRequest.equals(h.get("requestId").asText()) && "confirmed".equals(h.get("state").asText());
+            assertTrue(confirmed, replan.toString());
+
+            Resp during = get(greg, PLAN);
+            assertEquals(503, during.status(), during.toString());
+            assertEquals("planning-confirmed-supply-invalid", during.body().get("code").asText(), during.toString());
+            assertTrue(during.body().path("value").isMissingNode(), "no plan is made up while a confirmation has no queue date");
+        } finally {
+            exec("DROP TRIGGER IF EXISTS " + trg + " ON " + schema + ".confirmed_supply_queue");
+            exec("DROP FUNCTION IF EXISTS " + fn + "()");
+        }
+
+        Resp again = post(greg, ORDERS + "/queue", "{\"commandId\":\"" + retry + "\",\"requestId\":\"" + changesRequest + "\"}");
+        assertEquals(200, again.status(), again.toString());
+        assertEquals(1, again.body().at("/value/queued").size(), again.toString());
+        assertEquals(0, count("SELECT count(*) FROM production_confirmations WHERE request_id = ? AND queued_at IS NULL", changesRequest));
+        assertEquals(queuedBefore + 1, request(changesRequest).get("queuedQuantity").asLong());
+        Resp after = get(greg, PLAN);
+        assertEquals(200, after.status(), after.toString());
+        assertNotEquals(supplyBefore, after.body().at("/value/plan/versions/supply").asText());
+        assertEquals("replanned", after.body().at("/value/replan/status").asText());
+        assertEquals(expected, after.body().at("/value/replan/changes"));
+        assertEquals(inboundBefore + 1, inboundTotal());
+    }
+
     // ---- helpers ----
 
     private JsonNode inbound() {
@@ -508,6 +571,18 @@ class ProductionDeployedJourneyHttpTest {
         ObjectNode out = supply.readSupply(read, policy);
         assertEquals("ok", out.get("status").asText(), out.toString());
         return out.at("/value/inbound");
+    }
+
+    private long inboundTotal() {
+        long total = 0;
+        for (JsonNode s : inbound()) total += s.get("quantity").asLong();
+        return total;
+    }
+
+    private void exec(String sql) throws Exception {
+        try (Connection c = dataSource.get().getConnection(); Statement st = c.createStatement()) {
+            st.execute(sql);
+        }
     }
 
     private void assertNoWrites() throws Exception {
