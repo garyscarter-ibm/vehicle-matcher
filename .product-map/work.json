@@ -13697,6 +13697,46 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "id": "FUCQ-546",
+      "title": "Report Node's submission constraint changes in the Java Production replan status",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-546",
+      "branch": "dev/DEV-2026-11-22-vesper-021",
+      "workers": [
+        {
+          "name": "Wile E. Coyote",
+          "harness": "claude-code",
+          "role": "story-lead",
+          "observed_at": "2026-11-26T09:45:00Z",
+          "expires_at": "2026-11-26T13:45:00Z",
+          "source": "claimed by berengar dispatcher (ddd4ef2e5); story-lead started",
+          "status": "active"
+        }
+      ],
+      "unsliced": false,
+      "observed_at": "2026-11-26T10:02:22Z",
+      "slices": [
+        {
+          "id": "changes-source",
+          "status": "not-started",
+          "title": "AC1 submission constraint changes stored and reported in the replan value"
+        },
+        {
+          "id": "queue-fault",
+          "status": "not-started",
+          "title": "AC2 supply-side fault drives the queue 503 path, replan stays truthful"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Story test set, migration full suite and result"
+        }
+      ]
     }
   ]
 }
