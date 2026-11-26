@@ -251,7 +251,8 @@ final class ProductionStore {
     }
 
     /** Applies a cumulative provider Answer under a version CAS; an unusable one only records an attempt. */
-    static Applied applyAnswer(Tx tx, RequestRow row, Answer a, String mode, Instant at, String... fromStates)
+    static Applied applyAnswer(Tx tx, RequestRow row, Answer a, String mode, Instant at,
+            java.util.function.Function<Instant, Instant> confirmationDate, String... fromStates)
             throws SQLException {
         RunContext ctx = tx.context();
         Plan plan = plan(row, a);
@@ -278,10 +279,11 @@ final class ProductionStore {
         Set<String> have = supplyIds(tx, ctx, row.requestId());
         for (Confirmation c : plan.confirmations) {
             if (have.contains(c.supplyId())) continue;
+            Instant eligibleFrom = confirmationDate.apply(c.confirmedAt());
             tx.write("INSERT INTO production_confirmations (environment_id, run_id, supply_id, request_id, quantity, "
-                    + "confirmed_at, source_version, provider_reference) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                    + "confirmed_at, source_version, provider_reference, eligible_from) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     ctx.environmentId(), ctx.runId(), c.supplyId(), row.requestId(), c.quantity(), c.confirmedAt(),
-                    a.sourceVersion() == null ? "unknown" : a.sourceVersion(), plan.reference);
+                    a.sourceVersion() == null ? "unknown" : a.sourceVersion(), plan.reference, eligibleFrom);
         }
         ObjectNode details = F.objectNode();
         details.put("confirmedQuantity", plan.total);

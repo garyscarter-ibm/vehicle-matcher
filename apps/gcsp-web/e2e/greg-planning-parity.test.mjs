@@ -125,9 +125,13 @@ test('FUCQ-559: intentional planning and role-separated Production responses use
       commands.push({ operation: 'confirm', response: confirm }); good(confirm, 'Presenter real confirmation');
       states.confirmed = await refresh(suite, greg);
       assert.equal(states.confirmed.requests.find(row => row.requestId === confirmed.requestId).stage, 'confirmed');
-      assert.equal(states.confirmed.requests.find(row => row.requestId === confirmed.requestId).supplies[0].eligibleFrom, null);
+      const prequeueSupply = states.confirmed.requests.find(row => row.requestId === confirmed.requestId).supplies[0];
+      assert.equal(prequeueSupply.queued, false, 'The real queue fault leaves the dated confirmation unqueued');
+      assert.ok(Number.isFinite(Date.parse(prequeueSupply.eligibleFrom)), 'New confirmations retain their original policy date before queueing');
+      const expectedDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric',
+        timeZone: 'Europe/London' }).format(new Date(prequeueSupply.eligibleFrom));
       await greg.getByRole('table', { name: 'Requested, confirmed and released cars', exact: true })
-        .getByText('Confirmed: 1 awaiting release queue; arrival date pending', { exact: true }).waitFor();
+        .getByText(`Confirmed: 1 due ${expectedDate}`, { exact: true }).waitFor();
       assert.equal(await greg.locator('[data-order-result]').count(), 0,
         'A fresh confirmed projection clears the stale manual-request acknowledgement');
       screenshots.confirmed = await capture(suite, greg, 'production-confirmed');
@@ -191,6 +195,12 @@ test('FUCQ-559: intentional planning and role-separated Production responses use
       await suite.visitFrozenNode({ gregPlanning: { choice, states, screenshots, delayDate: commands.find(row => row.operation === 'delay').date } },
         async replay => replay.visitGregPlanning());
       assert.equal(suite.receipt.nodeReplay.state, 'matched');
+      const sourceConfirmed = suite.receipt.nodeReplay.gregPlanning.states.confirmed.requests.find(row => row.quantity === 1
+        && row.model === choice.model && row.derivative === choice.derivative);
+      const angularConfirmed = states.confirmed.requests.find(row => row.quantity === 1
+        && row.model === choice.model && row.derivative === choice.derivative);
+      assert.equal(Date.parse(angularConfirmed.supplies[0].eligibleFrom), Date.parse(sourceConfirmed.supplies[0].expectedAt),
+        'The original prequeue confirmation date matches frozen Node in the same scenario');
       assert.deepEqual(suite.receipt.consoleErrors, []);
     });
   });

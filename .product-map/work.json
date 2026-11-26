@@ -13197,7 +13197,7 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-559",
       "branch": "dev/DEV-2026-11-22-vesper-035",
       "evidence": "Partial source b3f9336d6; registered6/6 and Angular182/182. Native In Progress read back23:54:23Z; three 1280px pairs published, comment5068522. AC1met; originalAC2/3prequeue date parity, humanAC4and coveringbatchremain.",
-      "observed_at": "2026-11-25T23:54:23Z",
+      "observed_at": "2026-11-26T10:40:30Z",
       "slices": [
         {
           "id": "planning-controls",
@@ -13210,8 +13210,8 @@
           "id": "production-actions",
           "status": "in-progress",
           "title": "Production actions (5 points; AC3)",
-          "observed_at": "2026-11-25T23:33:21Z",
-          "evidence": "Actual role-correct confirm/delay/queue503+lost-response recovery proven; prequeue timing remains originalAC3."
+          "observed_at": "2026-11-26T10:33:53Z",
+          "evidence": "26 Nov Toothless: source-traced missing prequeue date; original AC3 correction within existing nullable confirmation field, fixed policy and OIDC/nativePG validation underway; final browser/human ledger pending."
         },
         {
           "id": "integration",
@@ -13221,7 +13221,27 @@
           "evidence": "Final registered6/6 and focused182/182, A29/40/B0; original humanAC4blank and sharedbrowserbatchdue."
         }
       ],
-      "unsliced": false
+      "unsliced": false,
+      "workers": [
+        {
+          "name": "Toothless",
+          "harness": "codex",
+          "role": "story-lead",
+          "status": "running",
+          "observed_at": "2026-11-26T10:40:30Z",
+          "expires_at": "2026-11-26T12:10:30Z",
+          "source": "Observed live collaboration tree and child progress on 26 Nov; Sol/high, no fallback"
+        },
+        {
+          "name": "Cecil Turtle",
+          "harness": "codex",
+          "role": "implementer",
+          "status": "running",
+          "observed_at": "2026-11-26T10:40:30Z",
+          "expires_at": "2026-11-26T12:10:30Z",
+          "source": "Observed live collaboration tree and child progress on 26 Nov; Sol/medium, no fallback"
+        }
+      ]
     },
     {
       "id": "FUCQ-554",

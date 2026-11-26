@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -45,6 +46,9 @@ class GregOrdersHttpTest {
 
     @Inject
     Instance<AgroalDataSource> dataSource;
+
+    @Inject
+    gcsp.api.supply.ReleasePolicy releasePolicy;
 
     private String greg;
     private String presenter;
@@ -279,5 +283,46 @@ class GregOrdersHttpTest {
         as(greg).body(q).post(QUEUE + "?x=1").then().statusCode(400);
         as(presenter).body(q).post(QUEUE).then().statusCode(403);
         as(employee).body(q).post(QUEUE).then().statusCode(403);
+    }
+
+    @Test
+    void presenterConfirmationIsDatedInGregReadBeforeReleaseQueueCanAcceptIt() throws Exception {
+        String id = request(2);
+        java.time.Instant at = java.time.Instant.parse(read().getString("value.asOf"));
+        var run = persistence.guard().currentRun();
+        String confirm = "{\"commandId\":\"" + command() + "\",\"requestId\":\"" + id + "\",\"expectedVersion\":" + versionOf(id)
+                + ",\"action\":\"confirm\",\"quantity\":2}";
+        try (Connection c = dataSource.get().getConnection(); var sql = c.createStatement()) {
+            sql.execute("CREATE FUNCTION f559_refuse_queue() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN "
+                    + "IF EXISTS (SELECT 1 FROM production_confirmations WHERE supply_id = NEW.supply_id "
+                    + "AND request_id = TG_ARGV[0]) THEN RAISE EXCEPTION 'F559 queue unavailable'; END IF; RETURN NEW; END $$");
+            sql.execute("CREATE TRIGGER f559_refuse_queue BEFORE INSERT ON confirmed_supply_queue FOR EACH ROW "
+                    + "EXECUTE FUNCTION f559_refuse_queue('" + id + "')");
+        }
+        try {
+            as(presenter).body(confirm).post(STEP).then().statusCode(200)
+                    .body("value.requests[0].outcome", equalTo("applied"));
+            gcsp.api.supply.PolicyReading.Ok policy = assertInstanceOf(gcsp.api.supply.PolicyReading.Ok.class,
+                    releasePolicy.read(run.runId(), at));
+            String expected = at.plusSeconds(policy.leadTimeDays() * 86400L).toString();
+            Map<String, Object> row = read().<Map<String, Object>>getList("value.requests").stream()
+                    .filter(r -> id.equals(r.get("requestId"))).findFirst().orElseThrow();
+            assertEquals("confirmed", row.get("stage"));
+            assertEquals(2, row.get("confirmedQuantity"));
+            assertEquals(0, row.get("queuedQuantity"));
+            Map<?, ?> supply = (Map<?, ?>) ((List<?>) row.get("supplies")).get(0);
+            assertEquals(expected, supply.get("eligibleFrom"));
+            assertEquals(0, count(dataSource.get(), "SELECT count(*) FROM confirmed_supply_queue q "
+                    + "JOIN production_confirmations c USING (environment_id, run_id, supply_id) WHERE c.request_id = ?", id));
+            String queue = "{\"commandId\":\"" + command() + "\",\"requestId\":\"" + id + "\"}";
+            as(greg).body(queue).post(QUEUE).then().statusCode(503).body("code", equalTo("supply-queue-unavailable"));
+            as(presenter).body(confirm).post(STEP).then().statusCode(200).body("value.replayed", equalTo(true));
+            assertEquals(1, count(dataSource.get(), "SELECT count(*) FROM production_confirmations WHERE request_id = ?", id));
+        } finally {
+            try (Connection c = dataSource.get().getConnection(); var sql = c.createStatement()) {
+                sql.execute("DROP TRIGGER f559_refuse_queue ON confirmed_supply_queue");
+                sql.execute("DROP FUNCTION f559_refuse_queue()");
+            }
+        }
     }
 }

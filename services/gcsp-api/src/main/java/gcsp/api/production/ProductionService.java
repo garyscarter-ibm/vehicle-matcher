@@ -20,10 +20,14 @@ import gcsp.api.production.ProductionProviderPort.Status;
 import gcsp.api.production.ProductionStore.ConfirmationRow;
 import gcsp.api.production.ProductionStore.RequestRow;
 import gcsp.api.production.ProductionStore.Submission;
+import gcsp.api.supply.PolicyReading;
+import gcsp.api.supply.ReleasePolicy;
+import gcsp.api.supply.UnconfiguredPolicy;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +57,7 @@ public final class ProductionService {
     private final PlanSnapshotPort plans;
     private final ProductionClock clock;
     private final SupplyQueuePort supply;
+    private final ReleasePolicy releasePolicy;
     private final ProductionReads reads;
 
     public ProductionService(DataSource dataSource, ProductionProviderPort provider, PlanSnapshotPort plans,
@@ -62,12 +67,18 @@ public final class ProductionService {
 
     public ProductionService(DataSource dataSource, ProductionProviderPort provider, PlanSnapshotPort plans,
             ProductionClock clock, SupplyQueuePort supply) {
+        this(dataSource, provider, plans, clock, supply, new UnconfiguredPolicy());
+    }
+
+    public ProductionService(DataSource dataSource, ProductionProviderPort provider, PlanSnapshotPort plans,
+            ProductionClock clock, SupplyQueuePort supply, ReleasePolicy releasePolicy) {
         this.dataSource = dataSource;
         this.runner = new TransactionRunner(dataSource);
         this.provider = provider;
         this.plans = plans;
         this.clock = clock;
         this.supply = supply;
+        this.releasePolicy = releasePolicy;
         this.reads = new ProductionReads(dataSource, provider, clock);
     }
 
@@ -378,9 +389,39 @@ public final class ProductionService {
         ObjectNode input = F.objectNode().put("requestId", row.requestId()).put("version", row.version());
         String id = idPrefix + row.requestId() + ":v" + row.version();
         return runner.execute(scope, new Command(type, id, input), tx -> {
-            ProductionStore.Applied applied = ProductionStore.applyAnswer(tx, row, answer, provider.mode(), at, from);
-            return WorkResult.ok(F.objectNode().put("requestId", row.requestId()).put("applied", applied.name()));
+            Map<Instant, Instant> dates = new HashMap<>();
+            try {
+                ProductionStore.Applied applied = ProductionStore.applyAnswer(tx, row, answer, provider.mode(), at,
+                        confirmedAt -> dates.computeIfAbsent(Ids.ms(confirmedAt), time -> confirmationDate(scope, time)), from);
+                return WorkResult.ok(F.objectNode().put("requestId", row.requestId()).put("applied", applied.name()));
+            } catch (ConfirmationDateUnavailable e) {
+                return WorkResult.refuse("policy-unavailable", e.getMessage());
+            }
         });
+    }
+
+    /** Original confirmation-clock policy, retained for tracking until the queue supplies its own immutable date. */
+    private Instant confirmationDate(RunContext scope, Instant confirmedAt) {
+        try {
+            PolicyReading reading = releasePolicy.read(scope.runId(), confirmedAt);
+            if (reading instanceof PolicyReading.Ok policy && policy.policyVersion() != null
+                    && !policy.policyVersion().isBlank() && policy.leadTimeDays() >= 0) {
+                long expected = Math.addExact(confirmedAt.toEpochMilli(), Math.multiplyExact(policy.leadTimeDays(), 86_400_000L));
+                // Keep tracking dates within the frozen Node implementation's finite Date range.
+                if (expected >= -8_640_000_000_000_000L && expected <= 8_640_000_000_000_000L) {
+                    return Instant.ofEpochMilli(expected);
+                }
+            }
+        } catch (RuntimeException e) {
+            // An unavailable or unusable policy refuses the entire answer transaction, without a fallback date.
+        }
+        throw new ConfirmationDateUnavailable();
+    }
+
+    private static final class ConfirmationDateUnavailable extends RuntimeException {
+        ConfirmationDateUnavailable() {
+            super("The supply lead-time policy is unavailable or invalid.");
+        }
     }
 
     /** Hands a request's unqueued confirmations to supply, outside any transaction, then marks each by version CAS. */
