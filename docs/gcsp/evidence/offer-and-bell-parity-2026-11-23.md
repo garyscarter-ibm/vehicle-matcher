@@ -285,7 +285,7 @@ Native status, description, six intended issue attachments and comment `5068522`
 | Planning / Production — F559 AC4 | Release-queue retry, 1280px | Node `1647756`; Angular `1647757` | | | | |
 
 
-## F553 — stock reservation pending and failed — original AC5 — 26 November
+## F553 — stock reservation pending and failed — original AC5 — 26 November (historical source 072593848; revised below)
 
 Final refreshed-source engineering evidence only: registered `f553` ran all seven checks at `0725938484ed7647e74ad8ac6d9dba187c747e2c` against actual Angular/Java/PostgreSQL and frozen Node `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`, with signed test OIDC and controlled remote acknowledgements. Each engine prepares the same exact car and pending-then-terminal-failed custody states through its actual claim services; the suite asserts exact selected-car equality before capture. The full-page screenshots below use a 1280×800 viewport. The four PNGs were published to FUCQ-553 and read back at 26 November 00:44:45 UTC; existing comment 5068545 records the partial result. Human approval remains unrecorded.
 
@@ -302,3 +302,15 @@ Original AC4 remains partial even though the scripted groups pass: frozen Node's
 | --- | --- | --- | --- | --- | --- | --- |
 | Stock gallery — F553 AC5 | Same exact car, reservation pending, 1280×800 | `node-reservation-pending-1280.png` / `angular-reservation-pending-1280.png`, retained root above | | | | |
 | Stock gallery — F553 AC5 | Same exact car, terminal claim-failed, 1280×800 | `node-reservation-failed-1280.png` / `angular-reservation-failed-1280.png`, retained root above | | | | |
+
+
+## F553 — recovered terminal Retry — original AC5 pair revision d0364260b
+
+Registered f553 at d0364260b passed7/7 with actual signed OIDC/Java/PostgreSQL and frozen Node e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38. The same exact car enters pending then terminal claim-failed in both engines before the1280×800 captures. Angular now retains the visible Retry action after retiring the resolved command; it waits for refreshed stock and explicitly reserves with fresh pins/new identity. Original functional AC4 is evidenced. Root and independent engineering inspection found this action legible at1280/375; they do not approve overall parity. Original AC5 remains open; native publication is in progress.
+
+Retained root: /Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f553-retry-20261126/browser-d0364260b-chromium159/f553/. The parent run-receipt.json and browser-receipt.json retain actual source/readbacks. Earlier pairs remain historical. Broader visible release-history/filter/media-badge differences remain subject to baseline triage and human comparison.
+
+| Screen / original criterion | State and viewport | Pair | Verdict | Human reviewer | Date | Source |
+| --- | --- | --- | --- | --- | --- | --- |
+| Stock gallery — F553 AC5 | Same exact car, reservation pending,1280×800 | node-reservation-pending-1280.png / angular-reservation-pending-1280.png, revised retained root above | | | | |
+| Stock gallery — F553 AC5 | Same exact car, terminal claim-failed,1280×800 | node-reservation-failed-1280.png / angular-reservation-failed-1280.png, revised retained root above | | | | |
