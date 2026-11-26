@@ -1,33 +1,34 @@
 package gcsp.api.returns;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import gcsp.api.clock.ClockReading;
+import gcsp.api.clock.ClockUnavailableException;
+import gcsp.api.persistence.RunContext;
 import java.time.Instant;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 class TickReturnClockTest {
 
-    static final String DIGEST = "a".repeat(64);
-
     @Test
-    void readsTheLatestDeliveredTickOfTheRunAndIsEmptyWithoutOne() throws Exception {
-        try (ReturnsFixture f = ReturnsFixture.create()) {
-            TickReturnClock clock = new TickReturnClock(f.pool());
-            assertTrue(clock.now(f.ctx()).isEmpty());
-            f.update("INSERT INTO runs (environment_id, run_id, status, retired_at) VALUES (?, 'run-2', 'retired', now())", ReturnsFixture.ENV);
-            tick(f, "run-1", "t1", "2026-11-05T09:00:00Z", 1);
-            tick(f, "run-1", "t2", "2026-11-05T10:00:00Z", 2);
-            tick(f, "run-1", "t2b", "2026-11-05T09:30:00Z", 2);
-            tick(f, "run-2", "t9", "2027-01-01T00:00:00Z", 9);
-            assertEquals(Optional.of(Instant.parse("2026-11-05T09:30:00Z")), clock.now(f.ctx()));
-            assertTrue(clock.now(new gcsp.api.persistence.RunContext(ReturnsFixture.ENV, "run-3", "x")).isEmpty());
-        }
-    }
+    void mapsTheActiveRunClockAndPreservesEmptyAndUnreadableStates() {
+        Instant now = Instant.parse("2026-11-05T09:00:00Z");
+        RunContext context = new RunContext("test-env", "run-1", "caller");
+        TickReturnClock clock = new TickReturnClock((environmentId, runId) -> {
+            assertEquals("test-env", environmentId);
+            assertEquals("run-1", runId);
+            return Optional.of(new ClockReading(now, 2));
+        });
 
-    private static void tick(ReturnsFixture f, String run, String id, String now, long version) throws Exception {
-        f.update("INSERT INTO supply_release_ticks (environment_id, run_id, tick_id, tick_now, clock_version, input_digest, state) "
-                + "VALUES (?, ?, ?, ?::timestamptz, ?, ?, 'pending')", ReturnsFixture.ENV, run, id, now, version, DIGEST);
+        assertEquals(Optional.of(now), clock.now(context));
+        assertTrue(new TickReturnClock((environmentId, runId) -> Optional.empty()).now(context).isEmpty());
+
+        ClockUnavailableException unavailable = new ClockUnavailableException("unreadable", new java.sql.SQLException());
+        IllegalStateException translated = assertThrows(IllegalStateException.class,
+                () -> new TickReturnClock((environmentId, runId) -> { throw unavailable; }).now(context));
+        assertEquals(unavailable, translated.getCause());
     }
 }

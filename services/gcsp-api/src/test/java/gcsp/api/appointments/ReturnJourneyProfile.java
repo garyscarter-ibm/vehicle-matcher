@@ -26,9 +26,9 @@ public class ReturnJourneyProfile implements QuarkusTestProfile {
         return m;
     }
 
-    /** The dev composition's selected supply (SupplyDevCompositionProfile): demo provider, PolicyService release policy. */
+    /** The real journey exercises return-clock independence from supply. */
     static Map<String, String> supply() {
-        return Map.of("gcsp.supply.provider", "demo");
+        return Map.of("gcsp.supply.provider", "none");
     }
 
     @Override
