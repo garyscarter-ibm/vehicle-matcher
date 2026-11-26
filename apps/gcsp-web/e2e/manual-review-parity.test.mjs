@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { randomUUID } from 'node:crypto';
+import { primaryDisplayImageSource } from '../../../server/gcsp/vehicle-evidence/display-images.js';
 import { startComposition } from './composition.mjs';
 
 const good = (response, label) => {
@@ -346,9 +347,11 @@ test('FUCQ-554: authoritative manual review, six-card summary and safe navigatio
       await reviewImage.waitFor({ state: 'visible' }); await reviewImage.scrollIntoViewIfNeeded();
       await until(() => reviewImage.evaluate(image => image.complete && image.naturalWidth > 0), 'Frozen review photo loads before capture');
       await reviewImage.evaluate(image => image.decode());
-      const reviewMedia = await reviewImage.evaluate(image => ({ src: image.getAttribute('src'), complete: image.complete,
+      const reviewMedia = await reviewImage.evaluate(image => ({ src: image.getAttribute('src'), actualUrl: image.currentSrc || image.src, complete: image.complete,
         naturalWidth: image.naturalWidth, naturalHeight: image.naturalHeight }));
-      assert.equal(reviewMedia.src, claim.quote.facts.display.photo, 'Frozen review paints its exact pinned photo');
+      reviewMedia.publishedSource = await primaryDisplayImageSource(claim.quote.facts.display.photo);
+      assert.equal(reviewMedia.src, reviewMedia.publishedSource, 'Frozen review paints its exact published pinned photo');
+      assert.equal(new URL(reviewMedia.actualUrl).pathname, reviewMedia.publishedSource, 'Loaded review media uses that same published identity');
       await capture(suite, page, 'node-review-1280');
       await page.setViewportSize({ width: 375, height: 812 }); await capture(suite, page, 'node-review-375');
       await page.setViewportSize({ width: 1280, height: 800 });
