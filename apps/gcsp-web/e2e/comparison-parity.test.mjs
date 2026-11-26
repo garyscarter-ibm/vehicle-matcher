@@ -214,9 +214,17 @@ test('FUCQ-560: stored comparison labelled values, source range bars and native 
       await greg.route(pattern, abort);
       try {
         for (const width of [1280, 375]) {
+          if (width === 375) {
+            // Start each failure trial from ready, so an old unavailable heading cannot satisfy the wait.
+            await greg.unroute(pattern, abort);
+            await root.getByRole('button', { name: 'Refresh', exact: true }).click();
+            await picker.waitFor();
+            await greg.route(pattern, abort);
+          }
           await greg.setViewportSize({ width, height: width === 1280 ? 800 : 812 });
           await root.getByRole('button', { name: 'Refresh', exact: true }).click();
           await root.getByRole('heading', { name: 'Comparisons are unavailable', exact: true }).waitFor();
+          assert.equal(await root.getByRole('heading', { name: 'Loading the stored comparisons', exact: true }).count(), 0);
           assert.equal(await root.locator('.comparison-result, .gcsp-range-bar').count(), 0);
           await cleanPresentation(root); await noOverflow(greg);
           await suite.screenshot(greg, `angular-comparison-unavailable-${width}`, { fullPage: true });
