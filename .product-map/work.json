@@ -13134,15 +13134,15 @@
     },
     {
       "id": "FUCQ-559",
-      "title": "Greg's Angular planning lost the request-cars form, plan-limit slider and production actions",
+      "title": "Greg's Angular planning lost the request-cars form, plan-limit slider and changed-cell highlights",
       "type": "Bug",
       "status": "In Progress",
       "original_status": "In Progress",
-      "assignee": "usget",
+      "assignee": "Russell Gowers",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-559",
       "branch": "dev/DEV-2026-11-22-vesper-035",
-      "evidence": "Partial source b3f9336d6; real registered6/6 and Angular182/182. AC1met; originalAC2/3prequeue date parity and humanAC4remain, coveringbatchdue. No acceptance inferred.",
-      "observed_at": "2026-11-25T21:37:41Z",
+      "evidence": "Partial source b3f9336d6; registered6/6 and Angular182/182. Native In Progress read back23:54:23Z; three 1280px pairs published, comment5068522. AC1met; originalAC2/3prequeue date parity, humanAC4and coveringbatchremain.",
+      "observed_at": "2026-11-25T23:54:23Z",
       "slices": [
         {
           "id": "planning-controls",
