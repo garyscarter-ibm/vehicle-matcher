@@ -11224,26 +11224,28 @@
       ]
     },
     {
-      "assignee": "",
+      "assignee": "Russell Gowers",
       "id": "FUCQ-566",
-      "observed_at": "2026-11-26T00:32:11Z",
-      "original_status": "To Do",
-      "status": "To Do",
+      "observed_at": "2026-11-26T00:52:46Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
       "title": "Notification panel clips its heading and vehicle off the left of narrow screens",
       "type": "Bug",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-566",
       "slices": [
         {
           "id": "ui",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Contain active Angular notification panel and note at narrow widths; preserve desktop and interaction behavior (AC1–2)",
-          "observed_at": "2026-11-26T00:29:13Z",
-          "evidence": "Claim93528eb31 under usget/velko; formal3point intake382429ae4 and source-backed diagnosis. Original active/frozen375captures inspected; presentation repair beginning, no pass claim."
+          "observed_at": "2026-11-26T00:52:46Z",
+          "evidence": "c20879e04; actual 375/390 panel x=8, notes contained; six actual responsive captures; 45 Angular / 135 ratchet including root independent rerun; final registered f548 6/6; dual-agent visualcritique 31/36 no in-scope actionable findings. Result in DEV-2026-11-23-002."
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Focused caller tests, actual registered desktop/narrow proof and independent visual critique (AC3)"
+          "status": "complete",
+          "title": "Focused caller tests, actual registered desktop/narrow proof and independent visual critique (AC3)",
+          "observed_at": "2026-11-26T00:52:46Z",
+          "evidence": "c20879e04; actual 375/390 panel x=8, notes contained; six actual responsive captures; 45 Angular / 135 ratchet including root independent rerun; final registered f548 6/6; dual-agent visualcritique 31/36 no in-scope actionable findings. Result in DEV-2026-11-23-002."
         }
       ],
       "unsliced": false,
@@ -11252,34 +11254,43 @@
         "entry",
         "shared-experience"
       ],
-      "note": "Local development claim93528eb31, usget/velko; native tracker snapshot remains To Do as observed2026-11-23, not freshly queried here. Original3AC and3points retained; active work is explicit below.",
+      "note": "Native In Progress / Russell / 3 points verified by root/Baymax on 26 November 2026. Original 3 AC built at c20879e04; actual 6/6 browser, 45 Angular / 135 ratchet including root independent committed-source rerun, dual-agent visual critique 31/36 with no in-scope findings. Native acceptance and green batch covering eventual merge remain dispatcher-owned.",
       "workers": [
         {
           "name": "Scooby Doo",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-26T00:32:11Z",
-          "expires_at": "2026-11-26T01:32:11Z",
-          "source": "Native child start/follow-up observed by F566 story lead",
-          "status": "working"
+          "observed_at": "2026-11-26T00:52:46Z",
+          "expires_at": "2026-11-26T00:52:46Z",
+          "source": "Observed final child results and completed lead delivery record; no active worker inferred beyond this observation.",
+          "status": "completed"
         },
         {
           "name": "Mushu",
           "harness": "codex",
           "role": "mechanic",
-          "observed_at": "2026-11-26T00:32:11Z",
-          "expires_at": "2026-11-26T01:32:11Z",
-          "source": "Native child start/follow-up observed by F566 story lead",
-          "status": "working"
+          "observed_at": "2026-11-26T00:52:46Z",
+          "expires_at": "2026-11-26T00:52:46Z",
+          "source": "Observed final child results and completed lead delivery record; no active worker inferred beyond this observation.",
+          "status": "completed"
         },
         {
           "name": "Foxy",
           "harness": "codex",
           "role": "runner",
-          "observed_at": "2026-11-26T00:32:11Z",
-          "expires_at": "2026-11-26T01:32:11Z",
-          "source": "Native child start/follow-up observed by F566 story lead",
-          "status": "working"
+          "observed_at": "2026-11-26T00:52:46Z",
+          "expires_at": "2026-11-26T00:52:46Z",
+          "source": "Observed final child results and completed lead delivery record; no active worker inferred beyond this observation.",
+          "status": "completed"
+        },
+        {
+          "name": "Imhotep",
+          "harness": "codex",
+          "role": "reviewer",
+          "status": "completed",
+          "observed_at": "2026-11-26T00:52:46Z",
+          "expires_at": "2026-11-26T00:52:46Z",
+          "source": "Observed final child results and completed lead delivery record; no active worker inferred beyond this observation."
         }
       ]
     },
