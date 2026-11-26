@@ -13,7 +13,9 @@ import { StatePageComponent } from '../pages/state-page.component';
 import { ManualStore } from '../manual/manual.store';
 import { routes } from '../routes';
 import { StockComponent } from './stock.component';
-import { StockRouteComponent } from './stock-route.component';
+import { GalleryReservationController, StockRouteComponent } from './stock-route.component';
+import { ManualClient } from '../manual/manual.client';
+import type { ManualClaim, ManualResult } from '../manual/manual.types';
 import { StockNavigationSnapshot } from './stock.store';
 import { StockDecision, StockFact, StockPayload } from './stock.types';
 
@@ -45,7 +47,9 @@ const snapshot = (selectedId: string | null = null): StockNavigationSnapshot => 
 describe('released stock route and browser history', () => {
   let harness: RouterTestingHarness; let router: Router; let location: Location; let platform: MockPlatformLocation;
   const state = signal<SessionState>(ready); const client = { readStock: vi.fn() };
-  const manual = { enter: vi.fn() };
+  const reserved = signal<any>({ state: 'ready', blocked: false, selection: null, claim: null, failure: null, refresh: 0 });
+  const reservation = { state: reserved, load: vi.fn(async () => {}), dispose: vi.fn(), dismissFailure: vi.fn(), reserve: vi.fn(), checkStatus: vi.fn(), retry: vi.fn() };
+  const manual = { enter: vi.fn(), projection: () => ({ claim: reserved().claim }), confirmResume: vi.fn() };
   const screen = () => harness.routeDebugElement!.query(By.directive(StockComponent)).componentInstance as StockComponent;
   const settle = async () => { harness.detectChanges(); await harness.fixture.whenStable(); harness.detectChanges(); };
   const history = () => location.getState() as Record<string, unknown>;
@@ -55,11 +59,20 @@ describe('released stock route and browser history', () => {
   };
   beforeEach(async () => {
     TestBed.resetTestingModule(); state.set(ready); client.readStock.mockReset().mockResolvedValue({ status: 'ok', value: stock() });
-    manual.enter.mockReset().mockResolvedValue(undefined);
+    manual.enter.mockReset().mockResolvedValue(undefined); manual.confirmResume.mockReset();
+    reserved.set({ state: 'ready', blocked: false, selection: null, claim: null, failure: null, refresh: 0 });
+    reservation.reserve.mockReset().mockImplementation(async (selection) => {
+      const claim = { state: 'quoted', now: '2026-11-25T12:00:00Z', pendingOperation: null,
+        hold: { holdId: 'hold', orderUuid: selection.orderUuid, type: 'cart', state: 'active', employeeId: 'employee-1', entitlementSlotId: 'slot', expiresAt: '2026-11-25T13:00:00Z' },
+        quote: { quoteId: 'quote', orderUuid: selection.orderUuid, configurationId: selection.configurationId, employeeId: 'employee-1', entitlementSlotId: 'slot', facts: { facts: selection.snapshot },
+          policyVersion: selection.versions.policy, draftVersion: selection.claimInput.expectedDraftVersion, contextVersion: selection.claimInput.expectedContextVersion,
+          termsDigest: selection.claimInput.expectedTermsDigest, stockVersion: 12, validUntil: '2026-11-25T13:00:00Z' } };
+      reserved.set({ ...reserved(), state: 'confirmed', blocked: true, selection, claim });
+    });
     Object.defineProperty(window, 'innerWidth', { value: 1440, writable: true, configurable: true });
     TestBed.configureTestingModule({ providers: [provideRouter(routes), { provide: PlatformLocation, useClass: MockPlatformLocation },
       { provide: AuthPort, useValue: { state, initialize: vi.fn(async () => {}) } }, { provide: AccountClient, useValue: client },
-      { provide: ManualStore, useValue: manual }] });
+      { provide: ManualStore, useValue: manual }, { provide: GalleryReservationController, useValue: reservation }] });
     harness = await RouterTestingHarness.create(); router = TestBed.inject(Router); location = TestBed.inject(Location);
     platform = TestBed.inject(PlatformLocation) as MockPlatformLocation;
   });
@@ -74,6 +87,7 @@ describe('released stock route and browser history', () => {
     const navigate = vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
     screen().activate({ memberId: 'stock-1', action: 'review' });
     await settle();
+    expect(reservation.reserve).toHaveBeenCalledExactlyOnceWith(selection);
     expect(manual.enter).toHaveBeenCalledExactlyOnceWith(selection);
     expect(navigate).toHaveBeenCalledExactlyOnceWith('/manual/review');
     expect(JSON.stringify(history())).not.toMatch(/claimInput|expectedTermsDigest|opaque-1/);
@@ -84,7 +98,7 @@ describe('released stock route and browser history', () => {
     manual.enter.mockImplementation(() => new Promise<void>(resolve => { finish = resolve; }));
     const navigate = vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
     const selection = screen().store.allCars().find(car => car.id === 'stock-1')!.review;
-    const pending = host.reviewSelection(selection); await host.reviewSelection(selection);
+    const pending = host.reviewSelection(selection); await vi.waitFor(() => expect(manual.enter).toHaveBeenCalledOnce()); await host.reviewSelection(selection);
     expect(manual.enter).toHaveBeenCalledTimes(1); expect(navigate).not.toHaveBeenCalled();
     finish(); await pending; expect(navigate).toHaveBeenCalledExactlyOnceWith('/manual/review');
   });
@@ -157,7 +171,7 @@ describe('released stock route and browser history', () => {
   it('adds a shared card gallery example with details feedback while preserving the existing table examples', async () => {
     await harness.navigateByUrl('/components', GalleryComponent); await settle();
     const root = harness.routeNativeElement!; const captions = Array.from(root.querySelectorAll('gcsp-data-table caption')).map(caption => caption.textContent);
-    expect(captions).toEqual(['Example renewal cases', 'Unavailable case actions', 'Example car comparison']);
+    expect(captions).toEqual(['Supplied cell content', 'Example renewal cases', 'Unavailable case actions', 'Example car comparison']);
     expect(root.querySelector('gcsp-data-table .gcsp-table-action')?.getAttribute('aria-label')).toBe('Open case for Paula');
     const comparison = root.querySelector('gcsp-data-table .gcsp-table-wrap.is-compare')!; expect(comparison.querySelector('button')).toBeNull(); expect(comparison.querySelector('td.is-winner')?.textContent).toBe('1,100'); expect(comparison.querySelector('[data-band=true] .gcsp-vh')?.textContent).toBe('Fewer than five');
     expect(root.textContent).toContain('Case queue table'); expect(root.textContent).toContain('Released vehicle card');
@@ -166,5 +180,128 @@ describe('released stock route and browser history', () => {
     expect(actions.find(button => button.textContent?.trim() === 'Review this car')!.disabled).toBe(true);
     actions.find(button => button.textContent?.trim() === 'Vehicle details')!.click(); await settle();
     expect(root.textContent).toContain('Vehicle details selected for the example car');
+  });
+});
+
+
+describe('gallery reservation command ownership', () => {
+  const context = signal<{ subject: string; environmentId: string; runId: string; employeeId: string } | null>({ subject: 'user-1', environmentId: 'test', runId: 'run-1', employeeId: 'employee-1' });
+  const absent = { status: 'not-found', code: 'manual-claim-not-found', retryable: false } as const;
+  const unknown = { status: 'uncertain', code: 'manual-transport-unavailable', retryable: false } as const;
+  const pending = { status: 'pending', code: 'claim-pending', operationId: 'operation-1', retryable: false } as const;
+  const api = { context: () => context(), readClaim: vi.fn(), claim: vi.fn() };
+  let controller: GalleryReservationController;
+  const selected = (id = 1) => {
+    const car = decision(id);
+    return { orderUuid: car.orderUuid, orderNumber: car.orderNumber, configurationId: car.configurationId,
+      candidateKey: car.candidateKey, facts: car.snapshot.facts, snapshot: car.snapshot, terms: car.terms,
+      draftVersion: car.draftVersion, versions: stock().versions, decisionVersions: car.versions, claimInput: car.claimInput ?? null };
+  };
+  const held = (changes: Partial<ManualClaim> = {}): ManualClaim => ({ state: 'quoted', now: '2026-11-25T12:00:00Z', pendingOperation: null,
+    hold: { holdId: 'hold-1', orderUuid: 'stock-1', employeeId: 'employee-1', entitlementSlotId: 'slot-1',
+      type: 'cart', state: 'active', phase: 'preview', mode: 'new', version: 2, expiresAt: '2026-11-25T12:02:00Z', reviewStartedAt: null, releaseReason: null },
+    quote: { quoteId: 'quote-1', orderUuid: 'stock-1', employeeId: 'employee-1', entitlementSlotId: 'slot-1', configurationId: 'shared-config',
+      facts: { facts: decision(1).snapshot }, terms: {}, termsDigest: 'opaque-1', policyVersion: 'policy-1', contextVersion: 'context-1', draftVersion: 2,
+      stockVersion: 12, quotedAt: '2026-11-25T12:00:00Z', validUntil: '2026-11-25T13:00:00Z', driverId: null,
+      timing: { previewSeconds: 120, reviewSeconds: 600, transition: 'once-from-preview' } },
+    view: { state: 'quoted', editable: false, supportOwner: 'employee', action: 'review-or-cancel' }, ...changes });
+  const ok = (value: ManualClaim): ManualResult<ManualClaim> => ({ status: 'ok', value });
+  const terminal = (holdId = 'hold-1'): ManualClaim => { const c = held(); return { ...c, state: 'claim-failed', hold: { ...c.hold, holdId, state: 'claim-failed', version: 3 },
+    view: { ...c.view, state: 'claim-failed', action: 'browse-stock' } }; };
+  beforeEach(() => {
+    TestBed.resetTestingModule(); context.set({ subject: 'user-1', environmentId: 'test', runId: 'run-1', employeeId: 'employee-1' });
+    api.readClaim.mockReset().mockResolvedValue(absent); api.claim.mockReset().mockResolvedValue(unknown);
+    TestBed.configureTestingModule({ providers: [{ provide: ManualClient, useValue: api }] }); controller = TestBed.inject(GalleryReservationController);
+  });
+  afterEach(() => TestBed.resetTestingModule());
+  it('posts once with exact supplied pins and confirms only from the current GET', async () => {
+    await controller.load(); let finish!: (value: ManualResult<ManualClaim>) => void;
+    api.claim.mockReturnValueOnce(new Promise(resolve => { finish = resolve; })); api.readClaim.mockResolvedValue(ok(held()));
+    const first = controller.reserve(selected()); const duplicate = controller.reserve(selected());
+    expect(controller.state().state).toBe('claiming'); expect(api.claim).toHaveBeenCalledTimes(1);
+    expect(api.claim.mock.calls[0][0]).toEqual({ ...selected().claimInput, commandId: expect.any(String) });
+    finish(ok(held())); await Promise.all([first, duplicate]);
+    expect(api.readClaim).toHaveBeenCalledTimes(2); expect(controller.state().state).toBe('confirmed');
+    expect(controller.state().selection?.orderUuid).toBe('stock-1');
+  });
+  it('checks pending/unknown outcomes with GET only, then explicitly retries the identical command', async () => {
+    await controller.load(); api.claim.mockResolvedValueOnce(pending); api.readClaim.mockResolvedValueOnce(pending);
+    await controller.reserve(selected()); expect(controller.state().state).toBe('pending');
+    api.readClaim.mockResolvedValueOnce(absent); await controller.checkStatus();
+    expect(api.claim).toHaveBeenCalledTimes(1); expect(controller.state().state).toBe('retry-available');
+    const original = structuredClone(api.claim.mock.calls[0][0]);
+    api.claim.mockResolvedValueOnce(ok(held())); api.readClaim.mockResolvedValueOnce(ok(held())); await controller.retry();
+    expect(api.claim.mock.calls[1][0]).toEqual(original); expect(controller.state().state).toBe('confirmed');
+  });
+  it('resolves a matching terminal receipt and gives the same employee a fresh attempt with refreshed stock pins', async () => {
+    await controller.load(); const receipt = held({ state: 'claim-pending', pendingOperation: { operationId: 'operation-1', operationType: 'claim', lastKnownState: 'pending' } });
+    api.claim.mockResolvedValueOnce(ok(receipt)); api.readClaim.mockResolvedValueOnce(ok(terminal())); await controller.reserve(selected());
+    expect(controller.state().state).toBe('released'); expect(controller.state().blocked).toBe(false);
+    const first = api.claim.mock.calls[0][0]; const fresh = selected(); fresh.claimInput = { ...fresh.claimInput!, expectedStockVersion: 13 };
+    api.readClaim.mockResolvedValueOnce(absent); await controller.reserve(fresh);
+    expect(api.claim.mock.calls[1][0].commandId).not.toBe(first.commandId);
+    expect(api.claim.mock.calls[1][0].expectedStockVersion).toBe(13);
+  });
+  it('binds the actual Java 202 operation to its authenticated pending GET before terminal recovery', async () => {
+    await controller.load(); const c = held(); const pendingClaim = { ...c, state: 'claim-pending', hold: { ...c.hold, state: 'claim-pending' },
+      pendingOperation: { operationId: 'operation-1', operationType: 'manual-claim', lastKnownState: 'claim-pending' },
+      view: { ...c.view, state: 'pending', action: 'check-status' } };
+    api.claim.mockResolvedValueOnce(pending); api.readClaim.mockResolvedValueOnce(ok(pendingClaim)); await controller.reserve(selected());
+    expect(controller.state().state).toBe('pending');
+    api.readClaim.mockResolvedValueOnce(ok(terminal())); await controller.checkStatus();
+    expect(controller.state().state).toBe('released'); expect(controller.state().blocked).toBe(false);
+    expect(api.claim).toHaveBeenCalledTimes(1);
+  });
+  it.each([{ code: 'car-not-eligible-or-available' }, { code: 'stock-unavailable' }, { code: 'stale-version', resource: 'stock' }])
+    ('normalizes actual Java car refusal $code into the retained-list notice without reloading stock', async failure => {
+      await controller.load(); api.claim.mockResolvedValueOnce({ status: 'conflict', retryable: false, ...failure });
+      await controller.reserve(selected()); expect(controller.state().state).toBe('failed');
+      expect(controller.state().failure).toBe('car-taken'); expect(controller.state().refresh).toBe(0);
+      expect(controller.state().takenIds).toEqual(['stock-1']);
+      await controller.reserve(selected()); expect(api.claim).toHaveBeenCalledTimes(1);
+    });
+  it('dismisses a resolved single-car notice for explicit refresh without clearing an unresolved attempt', async () => {
+    await controller.load(); api.claim.mockResolvedValueOnce({ status: 'conflict', code: 'stock-unavailable', retryable: false });
+    await controller.reserve(selected()); controller.dismissFailure();
+    expect(controller.state().state).toBe('ready'); expect(controller.state().failure).toBeNull(); expect(controller.state().takenIds).toEqual([]);
+    await controller.reserve(selected()); expect(controller.state().state).toBe('retry-available');
+    controller.dismissFailure(); expect(controller.state().state).toBe('retry-available'); expect(controller.state().blocked).toBe(true);
+  });
+  it('retains each refused exact car without reloading even when the previous terminal claim remains readable', async () => {
+    await controller.load(); api.claim.mockResolvedValue({ status: 'conflict', code: 'stock-unavailable', retryable: false });
+    api.readClaim.mockResolvedValue(ok(terminal('previous-hold')));
+    await controller.reserve(selected()); await controller.reserve(selected(4));
+    expect(controller.state().failure).toBe('car-taken'); expect(controller.state().takenIds).toEqual(['stock-1', 'stock-4']);
+    expect(controller.state().refresh).toBe(0); expect(controller.state().blocked).toBe(false);
+  });
+  it('clears the old single-car refusal when a new deliberate reservation begins', async () => {
+    await controller.load(); api.claim.mockResolvedValueOnce({ status: 'conflict', code: 'stock-unavailable', retryable: false });
+    await controller.reserve(selected()); expect(controller.state().failure).toBe('car-taken');
+    let finish!: (value: ManualResult<ManualClaim>) => void;
+    api.claim.mockReturnValueOnce(new Promise(resolve => { finish = resolve; }));
+    const next = controller.reserve(selected(4)); expect(controller.state().failure).toBeNull();
+    expect(controller.state().takenIds).toEqual(['stock-1']);
+    finish(unknown); await next;
+  });
+  it('does not resolve a newer uncertain command from an old terminal hold', async () => {
+    await controller.load(); api.readClaim.mockResolvedValueOnce(ok(terminal('old-hold'))); await controller.reserve(selected());
+    expect(controller.state().state).toBe('retry-available'); expect(controller.state().blocked).toBe(true);
+    await controller.reserve({ ...selected(), claimInput: { ...selected().claimInput!, expectedStockVersion: 90 } });
+    expect(api.claim).toHaveBeenCalledTimes(1); await controller.retry();
+    expect(api.claim.mock.calls[1][0]).toEqual(api.claim.mock.calls[0][0]);
+  });
+  it.each(['configuration', 'snapshot', 'draft', 'context', 'digest', 'expired', 'receipt'])('rejects a mismatched %s readback', async field => {
+    await controller.load(); const receipt = held(); const current = held();
+    const quote = { ...current.quote, ...(field === 'configuration' ? { configurationId: 'other' } : {}), ...(field === 'snapshot' ? { facts: { facts: { ...decision(1).snapshot, snapshotVersion: 'other' } } } : {}),
+      ...(field === 'draft' ? { draftVersion: 99 } : {}), ...(field === 'context' ? { contextVersion: 'other' } : {}), ...(field === 'digest' ? { termsDigest: 'other' } : {}),
+      ...(field === 'expired' ? { validUntil: current.now } : {}), ...(field === 'receipt' ? { quoteId: 'other' } : {}) };
+    api.claim.mockResolvedValueOnce(ok(receipt)); api.readClaim.mockResolvedValueOnce(ok({ ...current, quote })); await controller.reserve(selected());
+    expect(controller.state().state).toBe('readback-mismatch'); expect(controller.state().blocked).toBe(true);
+  });
+  it('retains an unknown identity across route disposal and clears it on principal/run change', async () => {
+    await controller.load(); await controller.reserve(selected()); const command = api.claim.mock.calls[0][0];
+    controller.dispose(); await controller.load(); await controller.retry(); expect(api.claim.mock.calls[1][0]).toEqual(command);
+    context.set({ ...context()!, runId: 'new-run' }); TestBed.tick(); await controller.load();
+    await controller.reserve(selected()); expect(api.claim.mock.calls[2][0].commandId).not.toBe(command.commandId);
   });
 });

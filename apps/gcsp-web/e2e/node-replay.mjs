@@ -143,7 +143,7 @@ export async function withNodeReplay({ browser, input, plan, cert, key, output, 
     if (!providers.has(request.runId)) providers.set(request.runId, createSyntheticStockProvider({ runId: request.runId, ...plan }));
     return providers.get(request.runId).pull(request);
   } };
-  let runtime; let server; let api; let context; let imageObserver;
+  let runtime; let server; let api; let context; let imageObserver; let galleryClaims;
   const receipt = { reference: input.reference, stockPlan: input.stockPlan, setupDifferences: [
     'The frozen named Main loader establishes initial brief/account/clock in an isolated memory repository.',
     'The same lossless generated stock instance enters the existing synthetic stock-provider seam.',
@@ -157,6 +157,32 @@ export async function withNodeReplay({ browser, input, plan, cert, key, output, 
       stockProvider, production: createDemoUpstream().production, adoptOfferJourney: true,
       offerLandingUrl: 'https://gcsp-proof.example.test/gcsp-offer.html',
       mail: { env: { GCSP_PUBLIC_ORIGIN: 'http://127.0.0.1:7548' } } }), 'Node runtime');
+    if (expected.stockGallery) {
+      // Compose the unchanged frozen services through their existing remote adapter seam.
+      // Runtime has no claim-adapter option: rebind both claims and the source history facade explicitly.
+      const [{ createManualClaimsService }, { createManualGalleryStockRead }] = await Promise.all([
+        load('server/gcsp/manual-claims/index.js'), load('server/gcsp/manual-gallery/stock-read.js'),
+      ]);
+      let mode = 'unknown'; const replies = new Map(); const requests = [];
+      const response = (operation, method) => {
+        const ids = { operationId: operation.operationId, runId: operation.runId, orderUuid: operation.payload.orderUuid };
+        const status = replies.get(operation.operationId) ?? mode;
+        requests.push({ method, ...ids, type: operation.operationType, status });
+        if (status === 'unknown') throw new Error('Controlled stock acknowledgement unavailable');
+        replies.set(operation.operationId, status); return { status, ...ids };
+      };
+      const adapter = { mode: 'remote', execute: async operation => response(operation, 'POST'), reconcile: async operation => response(operation, 'GET') };
+      const manualClaims = createManualClaimsService({ repository, policy: runtime.policy, clock: runtime.clock,
+        identity: runtime.identity, manual: runtime.account, adapter });
+      const gallery = createManualGalleryStockRead({ manual: manualClaims, releaseHistory: runtime.releaseHistory,
+        identity: runtime.identity, clock: runtime.clock });
+      const manualRead = { readAccount: manualClaims.readAccount.bind(manualClaims), readDraft: manualClaims.readDraft.bind(manualClaims),
+        saveDraft: manualClaims.saveDraft.bind(manualClaims), discardDraft: manualClaims.discardDraft.bind(manualClaims), browseStock: gallery.browseStock.bind(gallery) };
+      runtime = { ...runtime, manualClaims, manualRead, dependencies: { ...runtime.dependencies, gcspManualClaims: manualClaims, gcspManualRead: manualRead } };
+      galleryClaims = { requests, pending() { mode = 'unknown'; }, rejectPending() { mode = 'rejected'; }, confirm() { mode = 'confirmed'; } };
+      receipt.stockGallery = { provider: 'Fictional controlled remote adapter; unchanged frozen claims and release-history services', requests,
+        originalRuntime: 'Buddy and other services retain their original provider. Only manual gallery read/claim dependencies use this existing seam.' };
+    }
     const tls = { key: readFileSync(key), cert: readFileSync(cert) };
     let front;
     server = createServer(tls, (req, res) => front ? front(req, res) : res.writeHead(503).end());
@@ -479,7 +505,7 @@ export async function withNodeReplay({ browser, input, plan, cert, key, output, 
       tick: { clockVersion: tick.advance.clockVersion, now: tick.advance.now },
       offer: { orderUuid: offer.orderUuid, offerId: offer.offerRef.offerId, expiresAt: offer.expiresAt, state: offer.state },
       humanAcceptance: 'pending Gary/Russell review; engineering equality is not acceptance' });
-    Object.assign(receipt, await visit({ page, context, origin, runtime, employee, control, repository, offer, receipt, images: imageObserver }));
+    Object.assign(receipt, await visit({ page, context, origin, runtime, employee, control, repository, offer, receipt, images: imageObserver, galleryClaims }));
     assert.deepEqual(receipt.consoleErrors, [], 'No frozen source app runtime errors');
     return receipt;
   } catch (error) {

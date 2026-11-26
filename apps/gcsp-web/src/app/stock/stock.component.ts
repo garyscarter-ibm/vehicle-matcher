@@ -10,6 +10,7 @@ import { StatusScreenComponent } from '../kit/status-screen.component';
 import { VehicleCardAction, VehicleCardComponent } from '../kit/vehicle-card.component';
 import { stockFactRows, stockFilterOptions } from './stock.presentation';
 import { StockControls, StockNavigationSnapshot, StockSort, StockStore } from './stock.store';
+import type { GalleryReservation } from './stock-route.component';
 import { StockCar, StockData, StockDisplayFact } from './stock.types';
 
 const states: Readonly<Record<string, readonly [string, string]>> = {
@@ -43,6 +44,20 @@ export class StockComponent {
   readonly navigationChange = output<{ readonly snapshot: StockNavigationSnapshot | null; readonly replace: boolean }>();
   readonly review = output<StockCar['review']>();
   readonly back = output<void>();
+  readonly reservation = input<GalleryReservation | null>(null);
+  readonly availabilityRefresh = output<void>();
+  readonly checkReservation = output<void>(); readonly retryReservation = output<void>(); readonly viewOffer = output<string>();
+  readonly offerId = computed(() => { const value = this.store.projection()?.source?.heldOffer?.['offerId']; return typeof value === 'string' && value ? value : null; });
+  readonly carTaken = computed(() => this.reservation()?.failure === 'car-taken' || !!this.reservation()?.takenIds?.length);
+  readonly reservationMessage = computed(() => ({ checking: 'Checking your current reservation.', claiming: 'Reserving this exact car for review.',
+    pending: 'Your reservation is still being checked. Check its status before choosing another car.',
+    uncertain: 'The reservation status is unavailable. Check its status before choosing another car.',
+    'readback-mismatch': 'The current reservation does not match this selection. Check its status before continuing.',
+    'existing-claim': 'You already have a current reservation. Continue its review from your account.',
+    confirmed: 'Your car is reserved for review.', failed: 'The car could not be reserved. Refresh availability before choosing again.',
+    'retry-available': 'No current reservation was found. Retry this same reservation or check its status.',
+    released: 'Your previous reservation has ended. Availability has been refreshed.', ready: '',
+  })[this.reservation()?.state ?? 'ready']);
   readonly options = computed(() => stockFilterOptions(this.store.allCars(), this.store.series(), this.store.bodies(), this.store.controls()));
   readonly message = computed(() => states[this.store.state()] ?? null);
   readonly allowance = computed(() => {
@@ -82,8 +97,12 @@ export class StockComponent {
   private readonly document = inject(DOCUMENT);
   private restored: unknown = undefined;
   private lastNavigation = '';
+  private refreshedReservation = 0;
 
   constructor() {
+    effect(() => { const revision = this.reservation()?.refresh ?? 0; if (revision > this.refreshedReservation) {
+      this.refreshedReservation = revision; untracked(() => { void this.store.reload(); });
+    } });
     const window = this.document.defaultView;
     const resize = () => this.store.setViewportWidth(window?.innerWidth ?? 1024);
     resize();
@@ -124,6 +143,10 @@ export class StockComponent {
   eligibility(car: StockCar): string {
     return car.gateStatus === 'eligible' ? 'Eligible' : car.gateStatus === 'ineligible' ? 'Not eligible' : 'Needs confirmation';
   }
+  reviewReason(car: StockCar): string | null {
+    return car.reviewDisabledReason || this.reviewUnavailableReason()
+      || (this.reservation()?.takenIds?.includes(car.id) ? 'This car is no longer available.' : null);
+  }
   setControls(patch: Partial<StockControls>): void { this.store.setControls(patch); this.publish(); }
   sort(value: string): void { this.setControls({ sort: value as StockSort }); }
   clearFilters(): void { this.setControls({ query: '', series: '', body: '' }); this.focus(() => this.document.getElementById('stock-query')); }
@@ -135,7 +158,7 @@ export class StockComponent {
   activate(event: VehicleCardAction): void {
     const car = this.store.allCars().find(car => car.id === event.memberId);
     if (!car) return;
-    if (event.action === 'review') { if (car.reviewAvailable && !this.reviewUnavailableReason()) this.review.emit(car.review); return; }
+    if (event.action === 'review') { if (car.reviewAvailable && !this.reviewReason(car)) this.review.emit(car.review); return; }
     this.store.openDetail(car.id); this.publish();
     this.focus(() => this.host.nativeElement.querySelector<HTMLElement>('[data-detail-heading]'));
   }
@@ -145,8 +168,8 @@ export class StockComponent {
     this.focus(() => Array.from(this.host.nativeElement.querySelectorAll<HTMLElement>('[data-details-id]')).find(node => node.dataset['detailsId'] === id)
       ?? this.host.nativeElement.querySelector<HTMLElement>('#stock-query'));
   }
-  async reload(): Promise<void> { await this.store.reload(); }
-  reviewDetail(): void { const car = this.store.selectedCar(); if (car?.reviewAvailable && !this.reviewUnavailableReason()) this.review.emit(car.review); }
+  async reload(): Promise<void> { this.availabilityRefresh.emit(); await this.store.reload(); }
+  reviewDetail(): void { const car = this.store.selectedCar(); if (car?.reviewAvailable && !this.reviewReason(car)) this.review.emit(car.review); }
   private publish(): void {
     const snapshot = this.store.navigationSnapshot();
     this.lastNavigation = JSON.stringify(snapshot);

@@ -21,8 +21,6 @@
         @if (projection().state === 'resume-required') {
           <p>Review this unfinished selection before continuing.</p>
           <button gcspButton type="button" [disabled]="busy()" (click)="resume.emit()">Continue reviewing this selection</button>
-        } @else if (canClaim()) {
-          <button gcspButton type="button" [disabled]="busy()" (click)="claim.emit()">Reserve this car to review</button>
         } @else {
           <button gcspButton type="button" [disabled]="!projection().canReview || busy()" (click)="continue.emit()">Continue to order review</button>
         }

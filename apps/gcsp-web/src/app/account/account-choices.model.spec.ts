@@ -55,4 +55,22 @@ describe('native account manual choices', () => {
     expect(sameChoices({ a: 0, b: { c: '' } }, { b: { c: '' }, a: 0 })).toBe(true);
     expect(sameChoices(complete(), { ...complete(), expectedReturnMileage: null })).toBe(false);
   });
+  it('projects the frozen employee and selected licence facts without changing their source', () => {
+    const account = accountSnapshot(); const original = structuredClone(account);
+    const model = deriveManualChoices(account, { ...complete(), driverId: 'nominated:employee-paula' });
+    expect(model.employeeFacts).toEqual([{ label: 'Name', value: 'Paula Mason' }, { label: 'Grade', value: 'G7' },
+      { label: 'Employee number', value: 'E749057' }]);
+    expect(model.driverFacts).toEqual([{ label: 'Relationship', value: 'spouse' }, { label: 'Licence number', value: 'WARD9900000CW9XX' },
+      { label: 'Categories', value: 'car' }, { label: 'Valid from', value: '2012-01-01' }, { label: 'Valid until', value: '2030-01-01' }]);
+    expect(account).toEqual(original);
+  });
+  it('waits for a selected driver and preserves unknown facts instead of inventing a licence', () => {
+    const account = accountSnapshot(); const driver = account.drivers![1];
+    expect(deriveManualChoices(account, { ...complete(), driverId: '' }).driverFacts).toEqual([]);
+    const model = deriveManualChoices({ ...account, drivers: [{ ...driver, relationship: null, licence: null }] },
+      { ...complete(), driverId: driver.driverId });
+    expect(model.driverFacts.map((row) => row.value)).toEqual(['', '', '', '', '']);
+    expect(model.errors['driverId']).toContain('confirmation');
+  });
+
 });

@@ -7,5 +7,6 @@ textarea { resize: vertical; }
 select[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--gcsp-danger); }
 .choices-review { padding: var(--gcsp-space-4); background: var(--gcsp-surface-muted); border: 1px solid var(--gcsp-divider); }
 .choices-review .gcsp-actions { margin-top: var(--gcsp-space-3); }
+.choices-driver-facts { grid-column: 1 / -1; margin-bottom: var(--gcsp-space-5); }
 .choices-actions { margin-top: var(--gcsp-space-5); }
 @media (max-width: 640px) { .choices-grid { grid-template-columns: minmax(0, 1fr); } }

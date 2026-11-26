@@ -1,6 +1,14 @@
-<section class="gcsp-stock">
+<section class="gcsp-stock vm gcsp-gallery-body">
   <gcsp-screen-intro kicker="Choose your car" title="Released cars" lede="Browse the available cars. Review one to reserve it while you check the details." />
-  @if (reviewUnavailableReason()) { <p class="gcsp-note" role="status">{{ reviewUnavailableReason() }}</p> }
+  @if (reservationMessage()) {
+    <section class="gcsp-gallery-claim" aria-label="Reservation status" [attr.aria-busy]="reservation()?.state === 'checking' || reservation()?.state === 'claiming'">
+      <p class="gcsp-note" role="status">{{ reservationMessage() }}</p>
+      @if (reservation()?.blocked) {
+        <button gcspButton type="button" variant="ghost" [disabled]="reservation()?.state === 'checking' || reservation()?.state === 'claiming'" (click)="checkReservation.emit()">Check status</button>
+      }
+      @if (reservation()?.state === 'retry-available') { <button gcspButton type="button" (click)="retryReservation.emit()">Retry this reservation</button> }
+    </section>
+  }
   @if (store.allCars().length) { <p class="gcsp-stock-allowance">{{ allowance() }}</p> }
   @if (store.releaseHistory(); as release) {
     <section aria-label="Release history">
@@ -10,8 +18,13 @@
     </section>
   }
   @if (store.projection()?.source?.heldOffer) {
-    <gcsp-status-screen title="You already have a car offer" message="Decide on your current offer before reviewing another car." [level]="2" [announcement]="null" />
+    <div gcspStatusScreen presentation="source" title="You already have a car offer" message="Your buddy is holding a car for you. Decide on that offer before reserving another car." [level]="2" [announcement]="null">
+      @if (offerId(); as id) { <button gcspButton presentation="source" type="button" (click)="viewOffer.emit(id)">View your offer</button> }
+    </div>
   }
+  @if (carTaken()) { <div gcspStatusScreen presentation="source" title="This car is no longer available" message="Choose another car or refresh availability." [level]="2" [announcement]="null">
+    <button gcspButton presentation="source" type="button" variant="ghost" (click)="reload()">Refresh availability</button>
+  </div> }
     @if (store.allCars().length) {
       <gcsp-option-list groupId="stock-series" label="Series" [options]="options().series" [value]="store.controls().series" (valueChange)="setControls({series: $event})" />
       <gcsp-option-list groupId="stock-body" label="Body style" [options]="options().bodies" [value]="store.controls().body" (valueChange)="setControls({body: $event})" />
@@ -39,8 +52,8 @@
           } @else { <p class="gcsp-note">Allowance not supplied</p> }
         </div>
         <gcsp-fact-list [rows]="detailRows()" />
-        <button gcspButton type="button" [disabled]="!car.reviewAvailable || !!reviewUnavailableReason()" (click)="reviewDetail()">Review this car</button>
-        <p class="gcsp-note">{{ car.reviewDisabledReason || reviewUnavailableReason() || 'Reviewing reserves this exact car while you check its details.' }}</p>
+        <button gcspButton type="button" [disabled]="!car.reviewAvailable || !!reviewReason(car)" (click)="reviewDetail()">Review this car</button>
+        <p class="gcsp-note">{{ reviewReason(car) || 'Reviewing reserves this exact car while you check its details.' }}</p>
         @for (section of detailSections(); track section.title) {
           <details><summary>{{ section.title }}</summary><gcsp-fact-list [rows]="section.rows" /></details>
         }
@@ -50,7 +63,7 @@
         </gcsp-status-screen>
       } @else if (message(); as state) {
         <gcsp-status-screen [title]="state[0]" [message]="state[1]" [level]="2">
-          @if (store.detailState() === 'choices-invalid') { <button gcspButton type="button" (click)="back.emit()">Back to your choices</button> }
+          @if (store.detailState() === 'choices-invalid') { <button gcspButton type="button" [disabled]="reservation()?.blocked === true" (click)="back.emit()">Back to your choices</button> }
           @else if (store.detailState() === 'source-unavailable') { <button gcspButton type="button" variant="ghost" (click)="reload()">Refresh availability</button> }
         </gcsp-status-screen>
       }
@@ -59,13 +72,13 @@
     @if (message(); as state) {
       <gcsp-status-screen [title]="state[0]" [message]="state[1]" [busy]="store.state() === 'loading'" [level]="2" [announcement]="null">
         @if (store.state() === 'empty-search') { <button gcspButton type="button" variant="ghost" (click)="clearFilters()">Clear filters</button> }
-        @else if (store.state() === 'choices-invalid') { <button gcspButton type="button" (click)="back.emit()">Back to your choices</button> }
+        @else if (store.state() === 'choices-invalid') { <button gcspButton type="button" [disabled]="reservation()?.blocked === true" (click)="back.emit()">Back to your choices</button> }
         @else if (store.state() !== 'loading' && store.state() !== 'denied' && !store.state().startsWith('authentication')) { <button gcspButton type="button" variant="ghost" (click)="reload()">Refresh availability</button> }
       </gcsp-status-screen>
     }
     <div class="gcsp-stock-grid">
       @for (car of store.pageCars(); track car.id) {
-        <gcsp-vehicle-card [memberId]="car.id" [name]="car.name" [line]="line(car)" [orderNumber]="car.identity.orderNumber" [images]="images(car)" [points]="car.cost.value" [allowance]="car.cost.allowance" [contribution]="car.contribution" [eligibility]="eligibility(car)" [reviewDisabled]="!car.reviewAvailable || !!reviewUnavailableReason()" [disabledReason]="car.reviewDisabledReason || reviewUnavailableReason()" [facts]="cardFacts(car)" (action)="activate($event)" />
+        <gcsp-vehicle-card [memberId]="car.id" [name]="car.name" [line]="line(car)" [orderNumber]="car.identity.orderNumber" [images]="images(car)" [points]="car.cost.value" [allowance]="car.cost.allowance" [contribution]="car.contribution" [eligibility]="eligibility(car)" [reviewDisabled]="!car.reviewAvailable || !!reviewReason(car)" [disabledReason]="reviewReason(car)" [facts]="cardFacts(car)" (action)="activate($event)" />
       }
     </div>
     @if (store.cars().length > store.pageSize()) {
@@ -75,5 +88,5 @@
       </div>
     }
   }
-  @if (store.state() !== 'choices-invalid') { <div><button gcspButton type="button" variant="ghost" (click)="back.emit()">Back to your choices</button></div> }
+  @if (store.state() !== 'choices-invalid') { <div><button gcspButton type="button" variant="ghost" [disabled]="reservation()?.blocked === true" (click)="back.emit()">Back to your choices</button></div> }
 </section>

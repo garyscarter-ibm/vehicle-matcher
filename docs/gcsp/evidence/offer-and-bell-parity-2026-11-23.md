@@ -283,3 +283,22 @@ Native status, description, six intended issue attachments and comment `5068522`
 | Planning / Production — F559 AC4 | Confirmed, 1280px | Node `1647752`; Angular `1647753` | | | | |
 | Planning / Production — F559 AC4 | Delayed, 1280px | Node `1647754`; Angular `1647755` | | | | |
 | Planning / Production — F559 AC4 | Release-queue retry, 1280px | Node `1647756`; Angular `1647757` | | | | |
+
+
+## F553 — stock reservation pending and failed — original AC5 — 26 November
+
+Final refreshed-source engineering evidence only: registered `f553` ran all seven checks at `0725938484ed7647e74ad8ac6d9dba187c747e2c` against actual Angular/Java/PostgreSQL and frozen Node `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`, with signed test OIDC and controlled remote acknowledgements. Each engine prepares the same exact car and pending-then-terminal-failed custody states through its actual claim services; the suite asserts exact selected-car equality before capture. The full-page screenshots below use a 1280×800 viewport. They are retained local evidence; this continuation has not published Jira attachments or recorded human approval.
+
+Retained root: `/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f553-20261126/browser-072593848-chromium159/f553/`. The parent `run-receipt.json` and this directory's `browser-receipt.json` record the tested source, real readbacks and capture paths.
+
+| State | Frozen Node capture | Angular / Java capture |
+| --- | --- | --- |
+| Reservation in progress | `node-reservation-pending-1280.png` | `angular-reservation-pending-1280.png` |
+| Durable reservation failure | `node-reservation-failed-1280.png` | `angular-reservation-failed-1280.png` |
+
+Original AC4 remains partial even though the scripted groups pass: frozen Node's unresolved uncertain attempt can keep **Retry this reservation** after durable `claim-failed`, while the current Angular/Java matching terminal GET clears the attempt and refreshes availability. The decided matching-GET contract explains the current implementation; no human intentional-departure ruling was found. This remains FUCQ-553 producer/controller recovery work, alongside the original human AC5 verdict. A source comparison and an agent critique are not human sign-off. No new human question was opened in this continuation.
+
+| Screen / original criterion | State and viewport | Pair | Verdict | Human reviewer | Date | Source |
+| --- | --- | --- | --- | --- | --- | --- |
+| Stock gallery — F553 AC5 | Same exact car, reservation pending, 1280×800 | `node-reservation-pending-1280.png` / `angular-reservation-pending-1280.png`, retained root above | | | | |
+| Stock gallery — F553 AC5 | Same exact car, terminal claim-failed, 1280×800 | `node-reservation-failed-1280.png` / `angular-reservation-failed-1280.png`, retained root above | | | | |

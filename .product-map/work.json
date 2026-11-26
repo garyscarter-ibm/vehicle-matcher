@@ -13167,6 +13167,43 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "id": "FUCQ-553",
+      "type": "Bug",
+      "title": "Restore Angular stock gallery and order choices source parity",
+      "status": "Unknown",
+      "branch": "dev/DEV-2026-11-22-vesper-034",
+      "component_ids": [
+        "manual-journey",
+        "shared-experience"
+      ],
+      "note": "Local F553 delivery plan only; no current native tracker observation was supplied. Original five acceptance criteria and 13 points retained; human pending/failed1280 pairs and shared batch remain required.",
+      "observed_at": "2026-11-26T00:18:31Z",
+      "slices": [
+        {
+          "id": "notices-and-choices-facts",
+          "status": "complete",
+          "title": "Restore offer/car-taken notices and read-only employee/driver/licence facts (3 points)",
+          "observed_at": "2026-11-26T00:18:31Z",
+          "evidence": "Final refreshed product/proof source 072593848: dispatcher 14 specs/326 tests, ratchet 135/135 and registered actual Angular/Java/nativePG+frozenNode 7/7 passed; original AC1/3 notice/facts groups and final 1280/375 rendered inspection. OriginalAC4/5 and covering batch remain open; Result DEV-2026-11-22-vesper-034."
+        },
+        {
+          "id": "VehicleCard-source-parity",
+          "status": "complete",
+          "title": "Port frozen explicit matchCard structure and eligibility (3 points)",
+          "observed_at": "2026-11-26T00:18:31Z",
+          "evidence": "Final refreshed product/proof source 072593848: source matchCard/eligibility, 14 specs/326 tests, ratchet 135/135 and actual registered 7/7 passed. Dispatcher inspected final 375px held-offer/1280px pending composition; retained independent critique. OriginalAC2 evidenced; original human AC5 remains blank."
+        },
+        {
+          "id": "gallery-claim-held-review-and-integration",
+          "status": "in-progress",
+          "title": "Restore reservation status/retry and confirmed held review; connected and human parity evidence (7 points)",
+          "observed_at": "2026-11-26T00:18:31Z",
+          "evidence": "Final refreshed product/proof source 072593848 registered 7/7, Angular 14 specs/326 tests and ratchet 135/135 passed; held handover/GET-only status proven; no backend delta so native checks reused. OriginalAC4 uncertain-to-terminal claim-failed frozen retry/current release/refresh gap and original AC5 human 1280 verdicts remain F553 work; covering batch open."
+        }
+      ],
+      "unsliced": false
     }
   ]
 }

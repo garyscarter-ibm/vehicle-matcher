@@ -1,7 +1,8 @@
-import { Component, input, output } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { ButtonDirective } from './button.directive';
 import { FactListComponent, FactRow } from './fact-list.component';
-import { MediaGalleryComponent, MediaGalleryImage } from './media-gallery.component';
+import { MediaGalleryImage } from './media-gallery.component';
+import { MediaWellComponent } from './media-well.component';
 
 let vehicleCardSequence = 0;
 
@@ -9,7 +10,7 @@ export interface VehicleCardAction { readonly memberId: string; readonly action:
 
 @Component({
   selector: 'gcsp-vehicle-card',
-  imports: [ButtonDirective, FactListComponent, MediaGalleryComponent],
+  imports: [ButtonDirective, FactListComponent, MediaWellComponent],
   templateUrl: './vehicle-card.component.html',
   styleUrl: './vehicle-card.component.css',
 })
@@ -25,8 +26,17 @@ export class VehicleCardComponent {
   readonly allowance = input<number | null>(null);
   readonly contribution = input<{ readonly amount: number; readonly currency: string; readonly period: string } | null>(null);
   readonly eligibility = input('');
+  readonly gate = computed(() => {
+    switch (this.eligibility()) {
+      case 'Eligible': return 'eligible';
+      case 'Not eligible': return 'ineligible';
+      case 'Needs confirmation': return 'needs-confirmation';
+      default: return 'unknown';
+    }
+  });
   readonly reviewDisabled = input(true);
   readonly disabledReason = input<string | null>(null);
+  readonly reviewReason = computed(() => this.reviewDisabled() ? this.disabledReason() || 'This action is not available.' : null);
   readonly facts = input<readonly FactRow[]>([]);
   readonly action = output<VehicleCardAction>();
   readonly number = (value: number): string => value.toLocaleString('en-GB');

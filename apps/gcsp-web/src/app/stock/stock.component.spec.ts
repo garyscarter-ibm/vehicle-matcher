@@ -52,7 +52,47 @@ describe('released stock screen', () => {
     expect(root.textContent).toContain('Your allowance: 1,000 points a month'); expect(root.textContent).toContain('No image for this car yet');
     expect(new Set(component.store.allCars().map(car => car.identity.configurationId)).size).toBe(1);
     expect(root.querySelector('[data-member-id="stock-2"]')?.textContent).toContain('Not eligible');
-    expect(root.querySelector<HTMLButtonElement>('[data-member-id="stock-3"] .gcsp-actions button')?.disabled).toBe(true);
+    expect(root.querySelector<HTMLButtonElement>('[data-member-id="stock-3"] .vm-card-actions button')?.disabled).toBe(true);
+  });
+  it('restores the held-offer action and car-taken refresh notice above the retained cards', async () => {
+    client.readStock.mockResolvedValue({ status: 'ok', value: { ...stock(), heldOffer: { offerId: 'offer/1', runId: 'run-1' } } });
+    const { root, fixture, component } = await screen(); const view = vi.fn(); component.viewOffer.subscribe(view);
+    expect(button(root, 'View your offer').closest('div[gcspStatusScreen].vm-screen.vm-status')).not.toBeNull();
+    expect(button(root, 'View your offer').classList.contains('vm-btn-primary')).toBe(true);
+    button(root, 'View your offer').click(); expect(view).toHaveBeenCalledExactlyOnceWith('offer/1');
+    expect(root.querySelectorAll('gcsp-vehicle-card')).toHaveLength(6);
+    fixture.componentRef.setInput('reservation', { state: 'failed', blocked: false, selection: null, claim: null, failure: 'car-taken', refresh: 0 });
+    fixture.detectChanges(); expect(root.textContent).toContain('This car is no longer available');
+    expect(button(root, 'Refresh availability').closest('div[gcspStatusScreen].vm-screen.vm-status')).not.toBeNull();
+    expect(button(root, 'Refresh availability').classList.contains('vm-btn-ghost')).toBe(true);
+    expect(root.querySelectorAll('gcsp-vehicle-card')).toHaveLength(6);
+    const refreshed = vi.fn(); component.availabilityRefresh.subscribe(refreshed);
+    button(root, 'Refresh availability').click(); await fixture.whenStable(); expect(client.readStock).toHaveBeenCalledTimes(2); expect(refreshed).toHaveBeenCalledOnce();
+  });
+  it('exposes only deliberate status/retry actions and blocks back while reservation custody is unresolved', async () => {
+    const { root, fixture, component } = await screen(); const check = vi.fn(); const retry = vi.fn(); const back = vi.fn();
+    component.checkReservation.subscribe(check); component.retryReservation.subscribe(retry); component.back.subscribe(back);
+    fixture.componentRef.setInput('reservation', { state: 'retry-available', blocked: true, selection: null, claim: null, failure: null, refresh: 0 });
+    fixture.detectChanges(); button(root, 'Check status').click(); button(root, 'Retry this reservation').click();
+    expect(check).toHaveBeenCalledOnce(); expect(retry).toHaveBeenCalledOnce();
+    button(root, 'Back to your choices').click(); expect(back).not.toHaveBeenCalled();
+    expect(root.querySelector('.gcsp-stock.vm.gcsp-gallery-body')).not.toBeNull();
+  });
+  it('keeps a refused exact car unavailable in its card, detail and direct action while other cars remain selectable', async () => {
+    const { root, fixture, component } = await screen(); const review = vi.fn(); component.review.subscribe(review);
+    fixture.componentRef.setInput('reservation', { state: 'failed', blocked: false, selection: null, claim: null,
+      failure: 'car-taken', takenIds: ['stock-1'], refresh: 0 });
+    fixture.detectChanges();
+    const taken = root.querySelector<HTMLElement>('[data-member-id="stock-1"]')!;
+    expect(button(taken, 'Review this car').disabled).toBe(true); expect(taken.textContent).toContain('This car is no longer available.');
+    expect(button(root.querySelector<HTMLElement>('[data-member-id="stock-4"]')!, 'Review this car').disabled).toBe(false);
+    component.activate({ memberId: 'stock-1', action: 'review' }); expect(review).not.toHaveBeenCalled();
+    component.activate({ memberId: 'stock-1', action: 'details' }); fixture.detectChanges();
+    expect(button(root.querySelector<HTMLElement>('[aria-label="Selected vehicle"]')!, 'Review this car').disabled).toBe(true);
+    component.reviewDetail(); expect(review).not.toHaveBeenCalled();
+    fixture.componentRef.setInput('reservation', { state: 'ready', blocked: false, selection: null, claim: null,
+      failure: null, takenIds: [], refresh: 0 }); fixture.detectChanges(); component.reviewDetail();
+    expect(review).toHaveBeenCalledExactlyOnceWith(component.store.selectedCar()!.review);
   });
   it('filters through existing store from native search/sort and shows a clear-filter recovery', async () => {
     const { root, fixture, component } = await screen(); const search = root.querySelector<HTMLInputElement>('#stock-query')!;

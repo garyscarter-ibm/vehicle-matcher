@@ -1,13 +1,14 @@
-import { Component, DestroyRef, computed, effect, inject, input, output, signal, untracked } from '@angular/core';
+import { Component, DestroyRef, ElementRef, computed, effect, inject, input, output, signal, untracked } from '@angular/core';
 import { AuthPort } from '../auth/auth.port';
 import { ButtonDirective } from '../kit/button.directive';
+import { FactListComponent } from '../kit/fact-list.component';
 import { ErrorSummaryComponent } from '../kit/error-summary.component';
 import { LabelledFieldComponent } from '../kit/labelled-field.component';
 import { AccountClient } from './account.client';
 import { deriveManualChoices, initialManualChoices, matchesJourney, permittedJourney, sameChoices } from './account-choices.model';
 import { AccountFailure, AccountProjection, JourneyIntent, ManualChoices, ManualDraft } from './account.types';
 
-@Component({ selector: 'gcsp-account-choices', imports: [ButtonDirective, ErrorSummaryComponent, LabelledFieldComponent],
+@Component({ selector: 'gcsp-account-choices', imports: [ButtonDirective, ErrorSummaryComponent, LabelledFieldComponent, FactListComponent],
   templateUrl: './account-choices.component.html', styleUrl: './account-choices.component.css' })
 export class AccountChoicesComponent {
   readonly account = input.required<AccountProjection>();
@@ -15,6 +16,7 @@ export class AccountChoicesComponent {
   readonly intent = input.required<JourneyIntent>();
   readonly back = output<void>();
   readonly continueToStock = output<void>();
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly client = inject(AccountClient);
   private readonly auth = inject(AuthPort);
   private readonly destroy = inject(DestroyRef);
@@ -29,6 +31,7 @@ export class AccountChoicesComponent {
   readonly failure = signal<AccountFailure | null>(null);
   readonly errors = signal<Readonly<Record<string, string>>>({});
   readonly notice = signal('');
+  readonly eligibleCount = signal<number | null>(null);
   readonly available = signal(true);
   readonly summary = computed(() => Object.entries(this.errors()).map(([field, message]) => ({ controlId: field === 'context' || field === 'allowance' ? 'choices-heading' : field === 'contact' ? 'choices-phone' : `choices-${field}`, message })));
   private operation = new AbortController();
@@ -44,7 +47,7 @@ export class AccountChoicesComponent {
       untracked(() => {
         if (scope === null || this.scope !== undefined && scope !== this.scope) {
           this.cancel(); this.available.set(false); this.projection.set(null); this.draft.set(null); this.choices.set(null); this.refreshedDraft = null;
-          this.errors.set({}); this.failure.set(null); this.notice.set('');
+          this.errors.set({}); this.failure.set(null); this.notice.set(''); this.eligibleCount.set(null);
         }
         this.scope = scope;
       });
@@ -52,8 +55,8 @@ export class AccountChoicesComponent {
     effect(() => { const account = this.account(); const intent = this.intent(); const draft = this.savedDraft();
       untracked(() => {
         if (!this.available()) return;
-        if (this.dirty()) { this.projection.set(account); this.refreshReady.set(false); this.reviewRequired.set(true); return; }
-        this.projection.set(account); this.draft.set(draft);
+        if (this.dirty()) { this.projection.set(account); this.eligibleCount.set(null); this.refreshReady.set(false); this.reviewRequired.set(true); return; }
+        this.projection.set(account); this.eligibleCount.set(null); this.draft.set(draft);
         this.choices.set(initialManualChoices(account, intent, draft)); this.dirty.set(false);
         this.reviewRequired.set(!permittedJourney(account, intent) || !!draft && (!matchesJourney(draft.choices, intent) || !!draft.requiresRefresh || draft.contextVersion !== account.contextVersion));
       });
@@ -65,17 +68,26 @@ export class AccountChoicesComponent {
   value(event: Event): string { return (event.target as HTMLInputElement).value; }
   update(field: keyof ManualChoices, value: string | number | null): void {
     if (this.busy() || !this.available() || !this.choices() || !['driverId', 'contractOptionId', 'requestedCollectionDate', 'collectionLocationId', 'brand', 'expectedReturnMileage', 'specialRequirements'].includes(field)) return;
+    this.eligibleCount.set(null);
     this.choices.update((current) => current ? { ...current, [field]: value } : null); this.dirty.set(true); this.errors.set({}); this.notice.set('Your choices changed. Availability will be refreshed after saving.');
   }
   updateContact(field: 'phone' | 'email', value: string): void {
     if (this.busy() || !this.available()) return;
+    this.eligibleCount.set(null);
     this.choices.update((current) => current ? { ...current, contact: { phone: current.contact?.phone ?? '', email: current.contact?.email ?? '', [field]: value } } : null);
     this.dirty.set(true); this.errors.set({});
+  }
+  requestSupport(route: 'hr-support' | 'driver-support' | 'scheme-support'): void {
+    if (!this.available()) return;
+    this.host.nativeElement.dispatchEvent(new CustomEvent('gcsp:support', { detail: { route }, bubbles: true, composed: true }));
+    this.notice.set(route === 'hr-support' ? 'Contact HR support to correct employee details. No request has been sent.'
+      : route === 'driver-support' ? 'Contact driver support to correct driver or licence details. No request has been sent.'
+        : 'Contact scheme support to confirm your ordering details. No request has been sent.');
   }
   error(field: string): string { return this.errors()[field] ?? ''; }
   private focusErrors(): void { queueMicrotask(() => document.getElementById('choices-panel')?.querySelector<HTMLElement>('.gcsp-error-summary')?.focus()); }
   private rejected(failure: AccountFailure): void {
-    this.failure.set(failure);
+    this.failure.set(failure); this.eligibleCount.set(null);
     this.reviewRequired.set(true); this.refreshReady.set(false);
     const reasons = Array.isArray(failure.reasons) ? failure.reasons : [];
     this.errors.set(Object.fromEntries(reasons.filter((item) => item && typeof item.field === 'string' && typeof item.reason === 'string').map((item) => [item.field, item.reason])));
@@ -91,7 +103,7 @@ export class AccountChoicesComponent {
 
   async refresh(): Promise<void> {
     if (this.busy() || !this.available()) return;
-    this.cancel(); const generation = this.generation; const signal = this.operation.signal;
+    this.cancel(); this.eligibleCount.set(null); const generation = this.generation; const signal = this.operation.signal;
     this.busy.set(true); this.failure.set(null);
     const [account, draft] = await Promise.all([this.client.readAccount({ signal }), this.client.readDraft({ signal })]);
     if (generation !== this.generation || !this.available()) return;
@@ -108,12 +120,12 @@ export class AccountChoicesComponent {
     this.reviewRequired.set(false); this.refreshReady.set(false); this.failure.set(null); this.errors.set({}); this.notice.set('Review complete. Save your choices to continue.');
   }
 
-  async save(proceed: boolean): Promise<void> {
+  async save(proceed: boolean, returnToAccount = true): Promise<void> {
     const account = this.projection(); const choices = this.choices(); const model = this.model();
     if (this.busy() || !this.available() || !account || !choices || !model) return;
     const errors = { ...model.errors, ...(this.reviewRequired() ? { context: 'Refresh and review your ordering context before saving.' } : {}) };
     this.errors.set(errors); if (Object.keys(errors).length) { this.focusErrors(); return; }
-    this.cancel(); const generation = this.generation; const signal = this.operation.signal;
+    this.cancel(); this.eligibleCount.set(null); const generation = this.generation; const signal = this.operation.signal;
     this.busy.set(true); this.failure.set(null); this.notice.set('Saving your choices');
     const previous = this.draft(); const payload = { commandId: crypto.randomUUID(), expectedDraftVersion: previous?.draftVersion ?? 0,
       expectedContextVersion: account.contextVersion!, choices: structuredClone(choices) };
@@ -126,7 +138,7 @@ export class AccountChoicesComponent {
       this.busy.set(false); this.rejected({ status: 'uncertain', code: 'draft-readback-mismatch' }); this.notice.set(''); return;
     }
     this.draft.set(saved.value); this.dirty.set(false); this.errors.set({});
-    if (!proceed) { this.busy.set(false); this.notice.set('Your choices are saved.'); this.back.emit(); return; }
+    if (!proceed && returnToAccount) { this.busy.set(false); this.notice.set('Your choices are saved.'); this.back.emit(); return; }
     this.notice.set('Checking availability');
     const stock = await this.client.readStock({ signal });
     if (generation !== this.generation || !this.available()) return;
@@ -135,6 +147,7 @@ export class AccountChoicesComponent {
     if (stock.value.versions.draft !== saved.value.draftVersion || stock.value.versions.context !== account.contextVersion) {
       this.rejected({ status: 'stale-version', code: 'availability-context-changed' }); this.notice.set(''); return;
     }
-    this.notice.set('Your choices are saved.'); this.continueToStock.emit();
+    this.eligibleCount.set(stock.value.total);
+    this.notice.set('Your choices are saved.'); if (proceed) this.continueToStock.emit();
   }
 }

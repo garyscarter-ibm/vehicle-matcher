@@ -163,12 +163,12 @@ const readyBuddy = (value: ActivityProjection): ActivityResult<ActivityProjectio
     <gcsp-greg-navigation page="dashboard" [panels]="{ dashboard: gregDemand, policy: gregPolicy }" />
     <ng-template #gregDemand>Saved demand and released supply</ng-template><ng-template #gregPolicy>Current policy draft</ng-template>
   </section>
-  <section class="gcsp-panel"><h2>Released vehicle card</h2>
-    <gcsp-vehicle-card memberId="gallery-exact-stock" name="BMW 3 Series" line="Touring"
-      orderNumber="0000001" [images]="[]" [points]="740" [allowance]="1000"
+  <section class="gcsp-panel vm"><h2>Released vehicle card</h2>
+    <gcsp-vehicle-card memberId="gallery-exact-stock" name="BMW 320i xDrive M Sport Touring with a long supplied specification" line="Touring"
+      orderNumber="0000001" [images]="[]" [points]="0" [allowance]="1000"
       eligibility="Needs confirmation" [reviewDisabled]="true"
       disabledReason="Reviewing a car is unavailable in this example."
-      [facts]="[{ label: 'Exterior', value: 'Blue' }, { label: 'Interior', value: null }]"
+      [facts]="[{ label: 'Exterior', value: 'Portimao Blue metallic' }, { label: 'CO2', value: 0, unit: 'g/km' }, { label: 'Confirmation supplied', value: false }, { label: 'Interior', value: null }]"
       (action)="cardOpened.set('Vehicle details selected for the example car')" />
     <p role="status">{{ cardOpened() }}</p>
   </section>
