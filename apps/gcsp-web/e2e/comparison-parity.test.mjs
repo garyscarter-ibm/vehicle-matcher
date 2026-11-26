@@ -61,6 +61,7 @@ async function closeDetails(root) {
   for (const detail of await root.locator('details').all()) {
     if (await detail.evaluate(node => node.open)) await detail.locator(':scope > summary').click();
   }
+  await root.evaluate(node => node.ownerDocument.defaultView.scrollTo({ top: 0, left: 0, behavior: 'instant' }));
 }
 async function nodeCall(page, suffix) {
   return page.evaluate(async suffix => {
