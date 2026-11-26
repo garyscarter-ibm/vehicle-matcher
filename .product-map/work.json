@@ -13412,16 +13412,16 @@
         "FUCQ-447"
       ],
       "branch": "dev/DEV-2026-11-22-vesper-030",
-      "note": "Original5AC unchanged. Product198focused/135ratchet and independent source/state review passed on unchanged covering feature code a1aa11d6c. Refreshed onto integratedF521; final proof attempts a6b882129 and0046515fa stopped in source-fixture setup before engineering groups. Canonical third public employee case replaces unnecessary source-copy helper; first attempt cleanup verified, second cleanup pending lead receipt. HTTP400 dueAt premise is under causal tracing, not a product defect finding. Final browser/A/B, original humanAC5 and covering batches remain pending.",
+      "note": "Original5AC unchanged. Product198focused/135ratchet and independent source/state review passed on unchanged featurecodea1aa11d6c. Real public three-case fixture and unknowncharging API assertion now pass at23f2e2e4b; browser stopped at first native-select keyboard group, so no screenACgroup pass yet. The prior HTTP400 involved an expired automatic-case due time after release-clock advancement, not null dueAt; fresh options.asOf+1h corrects the input. Registered c0d2a3b02 uses native ArrowUp/ArrowDown+Enter/Escape while retaining order/focus checks; execution/A/B/originalhumanAC5/coveringbatches pending. All three earlier run cleanup receipts verified; no product change made for fixture/platform assumptions.",
       "workers": [
         {
           "name": "Scooby Doo",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-26T04:15:26Z",
-          "expires_at": "2026-11-26T04:30:26Z",
-          "status": "Tracing real public case-update inputs after setup-only HTTP400; no engineering browser groups passed",
-          "source": "Native lead progress messages read by usget-velko; proof0046515fa stopped during preparation"
+          "observed_at": "2026-11-26T04:20:06Z",
+          "expires_at": "2026-11-26T04:35:06Z",
+          "status": "Running registered c0d2a3b02 after real-case fixture and native-select keyboard correction",
+          "source": "Native lead progress message read by usget-velko"
         }
       ]
     }
