@@ -6,9 +6,10 @@ topic: technical
 story: DEV-2026-11-22-vesper-021
 chain: DEV-2026-11-22-vesper-021
 depth: 0
-status: awaiting-reply
+status: answered
 opened: 2026-11-26
 counter_questions_used: 0
+acks: usget-velko 2026-11-26T10:13
 spawned: none
 subject: FUCQ-546 file overlap with F559: production package, nothing committed yet
 
