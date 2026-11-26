@@ -13556,10 +13556,10 @@
           "name": "Pugh",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-26T07:16:56.971678+00:00",
-          "expires_at": "2026-11-26T08:16:56.971678+00:00",
+          "observed_at": "2026-11-26T07:21:19.221758+00:00",
+          "expires_at": "2026-11-26T07:21:19.221758+00:00",
           "source": "native thread01a21686-f074-7bc0-a051-83806cb63766",
-          "status": "active: scoped205/205; awaiting root integration refresh/full gate"
+          "status": "waiting: scoped205/205 delivered; root-coordinated refresh/full Java pending"
         },
         {
           "name": "Lord Business",
@@ -13571,7 +13571,7 @@
           "status": "stopped: source66bb592d pushed; lead205/205 verified"
         }
       ],
-      "observed_at": "2026-11-26T07:16:57Z",
+      "observed_at": "2026-11-26T07:21:19Z",
       "slices": [
         {
           "id": "repair",
