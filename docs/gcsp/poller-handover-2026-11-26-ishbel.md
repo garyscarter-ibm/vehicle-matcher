@@ -19,7 +19,8 @@ shared checkout stays on `gcsp-poc-dev`.
   `## Result`, resume it with a fresh story-lead on the same branch.
 - Scope rulings given to Heihei: screens with no Node skeleton still get one, reusing page, console or section (no new
   layout). Sub-panel loading text is out of scope and is listed under "not done" for a collaborator to raise.
-- Its browser cases run under `heavy` on the final commit, so they share the slot with the web-e2e batch below.
+- Its browser cases run under `heavy` (3.5 GiB) on the final commit, so after 00:00 GMT on the new base, sharing the
+  slot with the web-e2e batch below. Heihei was told to `refresh` onto d768ac4b2 before that final run.
 
 ## For the successor
 - **web-e2e is due and unleased.** Last line at 68eacb337. Uncovered matching merges: 73b493c42 (FUCQ-546),
@@ -28,8 +29,12 @@ shared checkout stays on `gcsp-poc-dev`.
   (`/opt/homebrew/opt/openjdk@21`), PostgreSQL 17 (`/opt/homebrew/opt/postgresql@17`) and Google Chrome (set
   `GCSP_E2E_BROWSER_PATH` if Playwright's Chromium is absent). Host Node is v26.5.0, and the suite's `needs` says Node
   24.22.3 (pinned-runner recipe in `docs/gcsp/dispatcher-learnings.md`, grep "Node 24"). Link both `node_modules`
-  and `server/node_modules` in the batch worktree. Keep `_tools/test_stack.py` as is: run
-  `inbox_setup.py update --except _tools/test_stack.py` until SCAF-77 to 81 land.
+  and `server/node_modules` in the batch worktree. **Test stack changed at 22:17Z** (MSG-2026-11-26-002, acked):
+  `_tools/test_stack.py` is now the kit's 1.2.1 (8329d6099); the `--except` rule is lifted, `test_stack_build.py` is
+  gone (`test_stack.py node link|build`), state is under `~/Library/Caches/agent-scaffolding/test-stack`, and heavy
+  above 3 GiB exits 75 outside 00:00 to 07:30. This Mac's kit is 0.17.0; Russell asks for 0.17.1 (`tools/update`, then
+  the pending script's sudo apply line as ADMIN-D0Q). Once `test_stack.py gcsp-legacy status` lists no databases,
+  `gcsp-legacy down` stops the old cluster.
 - node and web each had 1 uncovered matching merge at 21:00Z (not due on count; due on the first pass after midnight
   if still uncovered and not run today: node ran 12:45Z, web 05:39Z on 26 Nov).
 - **Queue:** nothing else claimable. Most GC Stories from Jira fail check-story (missing sections); ui Bugs
