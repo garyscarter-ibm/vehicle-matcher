@@ -1,13 +1,12 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { createHash } from 'node:crypto';
 import { performance } from 'node:perf_hooks';
 import { startComposition } from './composition.mjs';
 
 const retainedNote = 'Previously loaded case information is shown below. Refresh to check its current state.';
 const chargingCode = 'charging-unconfirmed';
 const chargingLabel = 'Charging access not confirmed';
-const reasons = { paula: 'My replacement needs a charging check.', alex: 'Please review my later renewal.' };
+const reasons = { paula: 'My replacement needs a charging check.', alex: 'Please review my renewal.', greg: 'Please review my later renewal.' };
 const good = (response, label) => {
   assert.equal(response.status, 200, label);
   assert.equal(response.body?.status, 'ok', label);
@@ -36,13 +35,6 @@ function sorted(rows, mode) {
 const caseState = row => Object.fromEntries(['employeeId', 'renewalDeadline', 'status', 'reason', 'nextAction', 'dueAt', 'policyVersion']
   .map(key => [key, key === 'dueAt' ? new Date(row[key]).toISOString() : row[key]]));
 const caseStates = rows => rows.map(caseState).sort((a, b) => a.employeeId.localeCompare(b.employeeId));
-const cloneAlex = value => {
-  if (Array.isArray(value)) return value.map(cloneAlex);
-  if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).map(([key, item]) =>
-    [key, key === 'contractEndDate' || key === 'latestCollectionDate' ? '2026-12-15' : cloneAlex(item)]));
-  return typeof value === 'string' ? value.replaceAll('employee-paula', 'employee-alex').replaceAll('slot-paula', 'slot-alex')
-    .replaceAll('Paula Mason', 'Alex Brennan') : value;
-};
 async function unansweredCharging(call) {
   const editor = good(await call('GET', '/brief/editor'), 'Read the actual editor before changing its practical answer');
   const brief = structuredClone(editor.initial.brief);
@@ -64,12 +56,15 @@ async function unansweredCharging(call) {
 async function openCases(callPaula, callAlex, callGreg) {
   const paula = good(await callPaula('POST', '/cases', { commandId: 'f557-paula-help', reason: reasons.paula }), 'Open actual Paula case').case;
   good(await callAlex('POST', '/cases', { commandId: 'f557-alex-help', reason: reasons.alex }), 'Open actual Alex case');
+  const greg = good(await callGreg('POST', '/cases', { commandId: 'f557-greg-help', reason: reasons.greg }), 'Open Greg’s actual employee case').case;
+  assert.ok(greg.renewalDeadline > paula.renewalDeadline, 'The canonical Greg renewal supplies the later deadline');
   good(await callGreg('POST', '/scheme-team/cases/update', { commandId: 'f557-progress', caseId: paula.caseId,
     expectedVersion: paula.version, status: 'in-progress', reason: 'Checking the available charging evidence.',
     nextAction: 'Confirm charging access with Paula.', dueAt: paula.dueAt }), 'Progress the real Paula case');
-  const queue = good(await callGreg('GET', '/scheme-team/cases'), 'Read actual queue after both case commands');
+  const queue = good(await callGreg('GET', '/scheme-team/cases'), 'Read actual queue after the case commands');
   assert.ok(queue.cases.some(row => row.employeeId === 'employee-paula' && row.status === 'in-progress'));
   assert.ok(queue.cases.some(row => row.employeeId === 'employee-alex' && row.status === 'open'));
+  assert.ok(queue.cases.some(row => row.employeeId === 'operator-greg' && row.status === 'open'));
   assert.notDeepEqual(sorted(queue.cases, 'deadline').map(row => row.caseId), sorted(queue.cases, 'status').map(row => row.caseId),
     'The source scenario must distinguish deadline and status ordering');
   return queue;
@@ -122,7 +117,6 @@ test('FUCQ-557: actual queue sorting, plain unknown gate, retained Help refresh 
     const paula = await suite.newPage('f557-paula', 'demo-paula', 'help');
     const presenter = await suite.newPage('f557-presenter', 'demo-presenter', 'presenter');
     const released = await suite.releaseMainOffer(paula, presenter);
-    evidence.alexSource = suite.prepareCaseHelpSource();
     const alex = await suite.newPage('f557-alex', 'demo-alex', 'help');
     const greg = await suite.newPage('f557-greg', 'demo-greg', 'greg/cases');
     const call = page => (method, suffix, body) => suite.call(page, method, suffix, body);
@@ -197,21 +191,7 @@ test('FUCQ-557: actual queue sorting, plain unknown gate, retained Help refresh 
 
     await check('frozen live-path same-case-state pair at 1280', async () => {
       const replay = await suite.visitFrozenNode({ ...suite.receipt.offer, hold: released.hold, clock: released.clock,
-        finalAccount: released.account }, async ({ page, context, origin, runtime, control, repository }) => {
-        const source = serviceGood(await repository.read(control, { table: 'employees', key: { runId: control.runId, employeeId: 'employee-paula' } }), 'Frozen Paula source');
-        const slots = serviceGood(await repository.query(control, 'entitlement_slots', { employeeId: 'employee-paula' }), 'Frozen Paula slot');
-        serviceGood(await repository.transaction(control, { commandId: 'f557-alex-source',
-          inputDigest: createHash('sha256').update(JSON.stringify(evidence.alexSource)).digest('hex') }, async tx => {
-          for (const [table, row, id] of [['employees', source, 'employeeId'], ['entitlement_slots', slots[0], 'entitlementSlotId']]) {
-            const cloned = cloneAlex(row); const key = { runId: control.runId, [id]: cloned[id] };
-            const old = await tx.get({ table, key });
-            const patch = Object.fromEntries(Object.entries(cloned).filter(([name]) => !['runId', id, 'version', 'createdAt', 'updatedAt'].includes(name)));
-            const result = old.status === 'not-found' ? await tx.insert(table, cloned)
-              : old.status === 'ok' ? await tx.compareAndSwap({ table, key }, old.value.version, patch) : old;
-            if (result.status !== 'ok') return result;
-          }
-          return { status: 'ok', value: { employeeId: 'employee-alex' } };
-        }), 'Install bounded frozen Alex source input');
+        finalAccount: released.account }, async ({ page, context, origin, runtime, control }) => {
         await page.goto(origin + '/gcsp-help.html', { waitUntil: 'domcontentloaded' });
         await unansweredCharging((method, suffix, body) => nodeCall(page, method, suffix, body));
         const alexNode = await frozenPage(context, origin, runtime, control, 'demo-alex', '/gcsp-help.html');
@@ -234,7 +214,7 @@ test('FUCQ-557: actual queue sorting, plain unknown gate, retained Help refresh 
           return { caseHelp: { java: queue.cases.map(row => ({ caseId: row.caseId, ...caseState(row) })),
             node: nodeQueue.cases.map(row => ({ caseId: row.caseId, ...caseState(row) })),
             gateCodes: [...new Set(nodeOptions.options.alternativeCars.needsConfirmation.flatMap(row => row.unknowns))],
-            humanVerdict: '', source: 'Frozen live pages and case HTTP routes; identical actual case commands over bounded source inputs.' } };
+            humanVerdict: '', source: 'Frozen live pages and case HTTP routes; identical actual case commands over canonical account sources.' } };
         } finally { await alexNode.close(); await gregNode.close(); }
       });
       evidence.nodeReplay = replay;
