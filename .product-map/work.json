@@ -13288,6 +13288,54 @@
         "kind:ui"
       ],
       "native_updated": "2026-11-25T18:44:07.379-0600"
+    },
+    {
+      "id": "FUCQ-554",
+      "type": "Bug",
+      "title": "Angular manual review and summary show internal IDs and lost the reservation countdown and read-back cards",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-22-vesper-036",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-554",
+      "native_story_points": 8,
+      "native_start_date": "2026-11-26",
+      "native_parent": "FUCQ-432",
+      "native_links": [
+        "FUCQ-443"
+      ],
+      "native_labels": [
+        "backlog",
+        "defect",
+        "gcsp",
+        "kind:ui"
+      ],
+      "native_updated": "2026-11-25T19:24:45.646-0600",
+      "native_observed_at": "2026-11-26T01:26:26Z",
+      "note": "Native claim observed 2026-11-26T01:26:26Z: In Progress/Russell/8/start 2026-11-26, parent F432/origin F443; description unchanged and all7AC unchecked. Development is ongoing; original human AC7 remains pending. Claim receipt .claude/poller/velko-f554-20261126/native-publication/claim-receipt.json.",
+      "observed_at": "2026-11-26T01:26:26Z",
+      "slices": [
+        {
+          "id": "manual-readback-countdown",
+          "status": "in-progress",
+          "title": "Restore authoritative countdown and plain readback joins",
+          "observed_at": "2026-11-26T01:27:59Z",
+          "evidence": "Tweety implementing original AC1/2 and shared readback. Observed RED6.3s:3 expected behavior failures/25pass; no connected F554 pass yet."
+        },
+        {
+          "id": "summary-navigation-outcome",
+          "status": "in-progress",
+          "title": "Restore six cards, declarations, edit/navigation and outcome controls",
+          "observed_at": "2026-11-26T01:27:59Z",
+          "evidence": "Tweety owns manual components/store/route; Pluto owns registered composition. Original AC3\u20136 remain unchecked pending actual validation; source e44ed08a9 immutable."
+        },
+        {
+          "id": "connected-review-and-human-pair",
+          "status": "not-started",
+          "title": "Connected acceptance evidence, independent critique and original human pair verdict"
+        }
+      ],
+      "unsliced": false
     }
   ]
 }
