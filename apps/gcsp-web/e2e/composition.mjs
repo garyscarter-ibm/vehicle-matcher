@@ -474,8 +474,8 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       await waitForApi();
     } finally { await ready.dispose(); }
     async function restartApi() {
-      assert.equal(caseId, 'f555-pending', 'Only the active-offer persistence proof restarts Java');
-      assert.equal(receipt.activeOfferRestart?.lifecycle, undefined, 'One literal active-offer restart per composition');
+      assert.ok(['f555-pending', 'f555-rejected'].includes(caseId), 'Only the active-offer and refused-offer proofs restart Java');
+      assert.equal(receipt.activeOfferRestart?.lifecycle, undefined, 'One literal API restart per composition');
       const previous = api;
       const before = identity(previous.pid);
       assert.ok(before?.start, 'The active-offer JVM has an observed PID/start');

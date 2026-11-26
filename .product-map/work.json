@@ -13544,6 +13544,50 @@
         "kind:ui"
       ],
       "native_updated": "2026-11-25T18:44:07.379-0600"
+    },
+    {
+      "id": "FUCQ-544",
+      "title": "Hide active deadline on terminal refused offers",
+      "status": "In Progress",
+      "type": "Bug",
+      "branch": "dev/DEV-2026-11-22-vesper-020",
+      "observed_at": "2026-11-26T06:59:22Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-544",
+      "workers": [
+        {
+          "name": "Goopy Geer",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-26T06:59:22.429522+00:00",
+          "expires_at": "2026-11-26T08:59:22.429522+00:00",
+          "status": "active",
+          "source": "claimed a9acfddc9; native 2026-11-26T06:57:49.258Z"
+        },
+        {
+          "name": "Egghead Jr",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-26T06:59:22.429522+00:00",
+          "expires_at": "2026-11-26T07:59:22.429522+00:00",
+          "status": "starting",
+          "source": "tiers mechanic gpt-6-luna/high"
+        }
+      ],
+      "slices": [
+        {
+          "id": "evidence",
+          "status": "in-progress",
+          "title": "Terminal-refusal-regression",
+          "observed_at": "2026-11-26T06:59:22Z",
+          "evidence": "Current product guards already present; extending registered f555 refused state only."
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Final-composition-proof-and-reconciliation"
+        }
+      ],
+      "unsliced": false
     }
   ]
 }
