@@ -321,3 +321,24 @@ Fresh native attachments (older four retained; Jira added UUID suffixes to dupli
 | --- | --- | --- |
 | Pending | [node-reservation-pending-1280 (a3b6cae8-6604-47c0-887b-6f049e3d6e41).png](https://ibm-consulting.atlassian.net/secure/attachment/1647795/node-reservation-pending-1280%20%28a3b6cae8-6604-47c0-887b-6f049e3d6e41%29.png) (1647795, 180,436B) | [angular-reservation-pending-1280 (737fef6c-cf46-4ba7-adb0-2b0b3c0112a6).png](https://ibm-consulting.atlassian.net/secure/attachment/1647796/angular-reservation-pending-1280%20%28737fef6c-cf46-4ba7-adb0-2b0b3c0112a6%29.png) (1647796, 376,536B) |
 | Terminal claim-failed | [node-reservation-failed-1280 (63ab019b-c727-46b8-bdf4-c5eac4856993).png](https://ibm-consulting.atlassian.net/secure/attachment/1647797/node-reservation-failed-1280%20%2863ab019b-c727-46b8-bdf4-c5eac4856993%29.png) (1647797, 242,800B) | [angular-reservation-failed-1280 (84c8e4ba-e720-4345-8ee0-032d5f8391e9).png](https://ibm-consulting.atlassian.net/secure/attachment/1647798/angular-reservation-failed-1280%20%2884c8e4ba-e720-4345-8ee0-032d5f8391e9%29.png) (1647798, 364,389B) |
+
+
+## F554 — manual review and summary — original AC7 — awaiting human verdict
+
+Final actual F554 source `2a7515bd28d4700716e13fca80832856d580e39e` passed all eight registered engineering groups against signed OIDC, Angular/Java/native PostgreSQL and immutable Node `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`. Original functional AC1–6 are evidenced; original AC7 still requires an actual collaborator verdict. F520 and all seven F553 entries passed at `6132628a4`; only the local F554 media expectation changed afterward, with product, shared helpers, inputs and environment unchanged. No caller pass is attributed to a commit on which it did not run.
+
+Each engine uses the same exact selected car, choices, saved contact/return facts and server deadlines before the 1280×800 full-page captures. Frozen review now waits for its existing pinned image to load/decode and verifies the checksum-catalogue public mapping. The photographs are visibly loaded at both widths; earlier blank captures and the incorrect raw-asset/public-URL equality remain historical evidence, not a current pair limitation.
+
+| State | Frozen Node | Angular / Java |
+| --- | --- | --- |
+| Review, preview reservation | [node-review-1280.png](/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f554-20261126/browser-2a7515bd2-chromium159/f554/node-review-1280.png) | [angular-review-1280.png](/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f554-20261126/browser-2a7515bd2-chromium159/f554/angular-review-1280.png) |
+| Six-card summary, order review | [node-summary-1280.png](/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f554-20261126/browser-2a7515bd2-chromium159/f554/node-summary-1280.png) | [angular-summary-1280.png](/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f554-20261126/browser-2a7515bd2-chromium159/f554/angular-summary-1280.png) |
+
+Independent capture/source critique used separate A/B agents: final 30/40 after the three contribution/timer/expiry findings were repaired, deterministic scan 0 findings. Both inspected all 13 final captures; this is engineering comparison, with no overlay, full assistive-technology or print-pagination claim. Typography, separators, fact density, breadcrumbs, control placement and narrow summary order still visibly differ and remain part of the original human comparison. The agent assessment does not approve those differences.
+
+Retained receipts and cleanup: parent `run-receipt.json`, `f554/browser-receipt.json`, `cleanup-observed.json`; final scratch/database/process/cache checks passed. The covering shared browser batch remains open. Root owns native attachment/comment publication; these local capture pointers do not claim uploads.
+
+| Screen / original criterion | State and viewport | Pair | Verdict | Human reviewer | Date | Source |
+| --- | --- | --- | --- | --- | --- | --- |
+| Manual review — F554 AC7 | Same car/choices/deadline,1280×800 | node-review-1280.png / angular-review-1280.png, retained root above | | | | |
+| Manual summary — F554 AC7 | Same saved facts/deadline,1280×800 | node-summary-1280.png / angular-summary-1280.png, retained root above | | | | |
