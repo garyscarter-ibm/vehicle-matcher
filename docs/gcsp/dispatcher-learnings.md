@@ -4058,3 +4058,8 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 - **Cause/uncertainty:** the documented audit workflow and helper interface do not match. No evidence establishes whether the helper implementation or the procedure is stale.
 - **Action/outcome:** ran the supported audit over all saved pages and origins, retained its report, and left Jira parenting unchanged. No helper or procedure was modified.
 - **Framework follow-up:** align the helper and documented procedure so the complete-page attestation and audit state are supported. No new gate or policy change is proposed.
+
+### 2026-11-26 04:06 UTC · usget-velko · DL-20261126-VELKO-17 · Final F521 normal-success and pending paths verified
+
+- Final registered f521 at c2a79f95b passed2/2: a separate fresh normal-success composition observes recovered-provider actual200/requested with one appointment/acknowledged intent, and durable-pending observes genuine202 with one persisted appointment/intent before malformed acknowledgement and truthful locked reconciliation. Both1280/375 paths assert no automatic POST and fresh deliberate command identity. This resolves the originalAC2 screen-success evidence gap. Root independently reran130Orders/10runner/4native checks, read final source and verified final scratch absent.
+- Metadata-only refresh5e9bacb78 preserved covering code/proof. Normal helper merge33269c77f and base push completed. Native publication/shared covering batches remain pending; no human verdict or full-suite green inferred. Final browser36.21s, RSS2675228672B/scratch247511136B, complete owned cleanup; bounded receipts in .claude/poller/velko-f521-20261126. No new gate or unrelated product change.
