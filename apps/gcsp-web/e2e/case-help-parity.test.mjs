@@ -146,17 +146,18 @@ test('FUCQ-557: actual queue sorting, plain unknown gate, retained Help refresh 
         const sort = greg.getByRole('combobox', { name: 'Sort cases', exact: true });
         await sort.waitFor();
         assert.equal(await sort.evaluate(node => node.tagName), 'SELECT');
-        await sort.focus(); await sort.press('ArrowUp'); await sort.press('Enter'); await sort.press('Escape');
+        // Pace native type-ahead beyond Chromium's search buffer between choices.
+        await sort.focus(); await sort.press('d', { delay: 1200 });
         evidence.keyboard.push({ width, intended: 'deadline', actual: await sort.inputValue() });
         await until(async () => await sort.inputValue() === 'deadline', 'Keyboard selects deadline');
         await assertQueue(greg, queue.cases, 'deadline');
         assert.equal(await sort.evaluate(node => document.activeElement === node), true);
-        await sort.press('ArrowDown'); await sort.press('Enter'); await sort.press('Escape');
+        await sort.press('s', { delay: 1200 });
         evidence.keyboard.push({ width, intended: 'status', actual: await sort.inputValue() });
         await until(async () => await sort.inputValue() === 'status', 'Keyboard selects status');
         await assertQueue(greg, queue.cases, 'status');
         assert.equal(await sort.evaluate(node => document.activeElement === node), true);
-        await sort.press('ArrowUp'); await sort.press('Enter'); await sort.press('Escape');
+        await sort.press('d', { delay: 1200 });
         evidence.keyboard.push({ width, intended: 'deadline-return', actual: await sort.inputValue() });
         await assertQueue(greg, queue.cases, 'deadline');
         await greg.locator(`button[data-row-id="${paulaCase.caseId}"]`).click();
