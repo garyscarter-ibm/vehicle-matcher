@@ -3989,3 +3989,14 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 - **Evidence/impact:** The first diagnostic command in the 14-family prep used `git status --short` directly, contrary to the all-Git-through-`scaffold_git` rule. It was read-only; no product, helper, test or registration files were changed by that query.
 - **Action/outcome:** Stopped using direct Git commands. The prepared launcher uses the imported `scaffold_git` API for SHA, cleanliness and live-claim checks; its syntax checks pass. No worktree, lease, build or test was started. This is a local mitigation, not a verified framework fix.
 - **Framework follow-up:** Reuse the existing helper-only Git guidance and DL-20261126-VELKO-13 follow-up; no new gate proposed.
+
+
+### 2026-11-26 02:48 UTC · usget-velko · DL-20261126-VELKO-12 · Caller regression reached the actual opt-in boundaries
+
+- The first registered F596 f340/f550 run at595dd2951 failed7of8: F340 recreated a Basic Presenter after the earlier opt-in, then clicked hidden Advanced controls; F550 passed its chip/replay comparisons but failed its later helper mode-settle check. Exact initial F550 mode was unrecorded, so an absent-attribute race remains a hypothesis. Scratch228413024B/RSS2330869760B; database, owned scratch and all8 recorded PIDs verified removed.
+- The reviewed two-file continuation reopens Advanced on the actual fresh F340 Presenter and waits for F550 return-route/console/serialized-mode readiness, retaining all original assertions. Final registered run at6e9f1f54d is in progress; syntax and static drift checks alone do not establish resolution. Proposed framework improvement: caller drift examples should cover page recreation and record mode readiness before opt-in. No new acceptance gate.
+
+### 2026-11-26 02:48 UTC · usget-velko · DL-20261126-VELKO-14 · F554 proof used raw rather than published media identity
+
+- The latest6132628a4 registered trio passed F520, all7F553 and every F554functional group, then failed a newly added raw image-src equality. The loaded/decoded frozen image used the existing API publication URL; the pinned quote retained its asset URL. The existing checksum-verified catalogue mapper is identical in current/frozen code, so this assertion did not establish a product defect.
+- Proof-only2a7515bd2 now compares raw DOM src and loaded currentSrc with that existing exact catalogue mapping; exact-car/deadline/load/decode checks remain. F554-only rerun is pending the heavy slot; prior613F520/F553 evidence is retained with explicit unchanged-identity assessment. Root independently passed38component tests for the three P2 product corrections and verified scratch/app-cache removal. Final frozen-media comparison and humanAC7 remain unverified. Proposed improvement: use existing publication identity contracts in visual proofs instead of inferring raw URL equality. No new gate or human acceptance inferred.
