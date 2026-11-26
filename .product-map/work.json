@@ -11226,7 +11226,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-566",
-      "observed_at": "2026-11-26T00:52:46Z",
+      "observed_at": "2026-11-26T01:02:01Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Notification panel clips its heading and vehicle off the left of narrow screens",
@@ -11254,7 +11254,7 @@
         "entry",
         "shared-experience"
       ],
-      "note": "Native In Progress / Russell / 3 points verified by root/Baymax on 26 November 2026. Original 3 AC built at c20879e04; actual 6/6 browser, 45 Angular / 135 ratchet including root independent committed-source rerun, dual-agent visual critique 31/36 with no in-scope findings. Native acceptance and green batch covering eventual merge remain dispatcher-owned.",
+      "note": "All three original repair ACs evidenced at c20879e04, merged cfe590ab9. Six exact narrow/desktop captures and comment5068560 published; native In Progress/Russell/3/F88 observed26Nov01:02:01Z. Covering WEB/browser batches still pending; no human acceptance claimed.",
       "workers": [
         {
           "name": "Scooby Doo",
@@ -11292,7 +11292,14 @@
           "expires_at": "2026-11-26T00:52:46Z",
           "source": "Observed final child results and completed lead delivery record; no active worker inferred beyond this observation."
         }
-      ]
+      ],
+      "native_story_points": 3,
+      "native_parent": "FUCQ-88",
+      "native_links": [
+        "FUCQ-375",
+        "FUCQ-548"
+      ],
+      "native_updated": "2026-11-25T19:02:01.345-0600"
     },
     {
       "assignee": "",
