@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-26T05:01:41Z",
+  "observed_at": "2026-11-26T05:16:20Z",
   "version": 1,
   "stories": [
     {
@@ -13418,6 +13418,67 @@
       "note": "Merged403e741c4; functionalAC1–4 verified by unchanged independently198focused/135ratchet and registered7/7 atd090b83d0. IndependentA28/40/B0detector findings, noactionableF557repair. NativeInProgress8 and four1280PNG attachments1647886/1647889/1647891/1647890 plus comment5068813 verified26Nov05:01:41Z. OriginalhumanAC5blank and coveringbatchpending; keeporiginalpartialclaim/WT. Earlier653-byteuploadresponse discarded; originalstagingobjectUNKNOWN, followed by rootverified201freshuploads/onefreshNodequeue recovery; noorphanpurgeclaim.",
       "workers": [],
       "jira_observed_at": "2026-11-26T05:01:41Z"
+    },
+    {
+      "id": "FUCQ-560",
+      "title": "Angular comparison view shows raw JSON and lost the range bars and experiment picker",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Bug",
+      "observed_at": "2026-11-26T05:16:20Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-560",
+      "native_observed_at": "2026-11-26T05:16:20Z",
+      "jira_observed_at": "2026-11-26T05:16:20Z",
+      "native_parent": "FUCQ-432",
+      "native_story_points": 8,
+      "native_start_date": "2026-11-26",
+      "native_links": [
+        "FUCQ-452"
+      ],
+      "branch": "dev/DEV-2026-11-22-vesper-032",
+      "workers": [],
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "producer-and-reference",
+          "title": "Verify retained producer/reference contract and actual stored read identity/digest",
+          "status": "in-progress",
+          "observed_at": "2026-11-26T05:21:59Z"
+        },
+        {
+          "id": "range-and-labelled-results",
+          "title": "Port frozen range display and complete labelled presentation preserving existing picker/state",
+          "status": "not-started",
+          "observed_at": "2026-11-26T05:21:59Z"
+        },
+        {
+          "id": "focused-and-connected-proof",
+          "title": "Focused owning tests, scoped ratchet and actual1280/375/sameartifact registered proof",
+          "status": "not-started",
+          "observed_at": "2026-11-26T05:21:59Z"
+        },
+        {
+          "id": "independent-rendered-review",
+          "title": "Isolated A/B, critique and final evidence/cleanup",
+          "status": "not-started",
+          "observed_at": "2026-11-26T05:21:59Z"
+        },
+        {
+          "id": "covering-shared-batch",
+          "title": "Existing development gate: green shared batch covers merge (root-owned)",
+          "status": "not-started",
+          "evidence": "Full suites deferred to root sharedbatch; original4AC unchanged, no per-story fullsuite or newhuman gate.",
+          "observed_at": "2026-11-26T05:21:59Z"
+        },
+        {
+          "id": "human-pair",
+          "title": "OriginalAC4 actual collaborator ledger verdict",
+          "status": "not-started",
+          "observed_at": "2026-11-26T05:21:59Z"
+        }
+      ],
+      "note": "Claimed bounded comparison presentation parity. Existing four-experiment picker retained; process-only artifact byte equality verified, runtime identity/digest pending registered proof. Original human AC4 remains blank. Full shared batch is a development slice. No backend, storage, query, math or workload change."
     }
   ]
 }
