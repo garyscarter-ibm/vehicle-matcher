@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-26T12:28:33Z",
+  "observed_at": "2026-11-26T12:31:23Z",
   "version": 1,
   "stories": [
     {
@@ -13887,9 +13887,9 @@
     {
       "id": "FUCQ-597",
       "title": "Registered browser composition rejects valid Linux supervisor scratch",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
       "type": "Bug",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-597",
       "branch": "dev/DEV-2026-11-26-velko-002",
@@ -13915,7 +13915,7 @@
           "source": "F597 guard summary; Sol/medium requested/selected, no fallback"
         }
       ],
-      "observed_at": "2026-11-26T11:13:25Z",
+      "observed_at": "2026-11-26T12:31:23Z",
       "slices": [
         {
           "id": "scratch-guard",
