@@ -106,7 +106,8 @@ async function continueReview(page, label = 'Continue to order review') {
 test('FUCQ-554: authoritative manual review, six-card summary and safe navigation match the frozen live journey', { timeout: 540000 }, async t => {
   const suite = await startComposition({ caseId: 'f554', claims: 'controlled' });
   t.after(() => suite.close());
-  const evidence = suite.receipt.manualReview = { humanAcceptance: 'Original AC7 unchecked: same-state 1280 pair awaits an actual collaborator verdict', groups: [] };
+  const evidence = suite.receipt.manualReview = { humanAcceptance: 'Original AC7 unchecked: same-state 1280 pair awaits an actual collaborator verdict', groups: [],
+    setupDifference: 'Confirmed gallery-held handover consumes the existing explicit resume before review edits; no command replay.' };
   async function check(name, run) {
     const row = { name, state: 'running' }; evidence.groups.push(row);
     try { await run(); row.state = 'passed'; } catch (error) { row.state = 'failed'; row.failure = error.message; throw error; }
@@ -136,6 +137,12 @@ test('FUCQ-554: authoritative manual review, six-card summary and safe navigatio
     const claim = good(await suite.call(employee, 'GET', '/manual/claim'), 'GET-confirmed held handover');
     assert.equal(claim.state, 'quoted'); assert.equal(claim.hold.state, 'active'); assert.equal(claim.hold.phase, 'preview');
     assert.equal(claim.quote.orderUuid, id); assert.equal(claim.quote.driverId, evidence.inputs.choices.driverId);
+    const resume = button(employee, 'Continue reviewing this selection'); const writesBeforeResume = journal.writes.length;
+    const explicitResumeConsumed = await resume.isVisible();
+    if (explicitResumeConsumed) await resume.click();
+    await until(() => employee.locator('#manual-contact-phone').isEnabled(), 'Explicit resume enables review details');
+    assert.equal(journal.writes.length, writesBeforeResume, 'Explicit resume sends no reserve, review, release or submit command');
+    (evidence.resumeSetup ??= []).push({ explicitResumeConsumed, additionalCommands: 0 });
     return { claim, selected };
   }
   let held = await reserve();

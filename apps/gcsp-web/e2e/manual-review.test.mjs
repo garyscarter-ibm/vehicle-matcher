@@ -124,6 +124,11 @@ test('FUCQ-520: the actual manual review shows the pinned car name and photo at 
     assert.ok(sources.length, 'The actual snapshot supplies a photo');
     const car = { orderUuid, orderNumber: decision.orderNumber, name: display.name, sources };
 
+    const manualWrites = [];
+    employee.on('request', request => {
+      const path = new URL(request.url()).pathname;
+      if (request.method() === 'POST' && ['/manual/claim', '/manual/claim/review', '/manual/claim/release', '/manual/order'].some(suffix => path.endsWith(suffix))) manualWrites.push(path);
+    });
     const claimed = employee.waitForResponse((row) => row.request().method() === 'POST' && new URL(row.url()).pathname.endsWith('/manual/claim'));
     await card.locator('[data-review-id]').click();
     await employee.waitForURL((url) => url.pathname === '/gcsp/manual/review');
@@ -134,7 +139,15 @@ test('FUCQ-520: the actual manual review shows the pinned car name and photo at 
     const claim = good(await suite.call(employee, 'GET', '/manual/claim'), 'Actual claim readback');
     assert.equal(claim.quote.orderUuid, orderUuid, 'The quote pins the chosen car');
     assert.equal(claim.quote.facts.facts.display.name, display.name, 'The quote facts carry the snapshot display name');
-    suite.receipt.f520 = { orderUuid, name: display.name, sources, quoteId: claim.quote.quoteId, widths: {} };
+    await until(async () => await employee.locator('.manual-review').getAttribute('aria-busy') !== 'true', 'Held handover reads settle');
+    const resume = employee.getByRole('button', { name: 'Continue reviewing this selection', exact: true });
+    const writesBeforeResume = manualWrites.length; const explicitResumeConsumed = await resume.isVisible();
+    if (explicitResumeConsumed) await resume.click();
+    await until(() => employee.locator('#manual-contact-phone').isEnabled(), 'Explicit resume enables review details');
+    assert.equal(manualWrites.length, writesBeforeResume, 'Explicit resume sends no reserve, review, release or submit command');
+    assert.equal(manualWrites.filter(path => path.endsWith('/manual/claim')).length, 1, 'Held handover has exactly one reserve');
+    suite.receipt.f520 = { orderUuid, name: display.name, sources, quoteId: claim.quote.quoteId,
+      setup: { note: 'Consume the existing explicit resume after confirmed gallery-held handover.', explicitResumeConsumed, additionalCommands: 0 }, widths: {} };
 
     const sizes = [[1280, 800], [390, 844]];
     for (const [width, height] of sizes) {
