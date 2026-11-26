@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { spawn, spawnSync, execFileSync } from 'node:child_process';
 import { createHash, randomUUID } from 'node:crypto';
 import { createServer } from 'node:https';
-import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync, lstatSync, readlinkSync, createWriteStream } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync, lstatSync, readlinkSync, createWriteStream, rmSync, renameSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { gunzipSync } from 'node:zlib';
@@ -69,7 +69,7 @@ function identity(pid) {
 }
 
 export async function startComposition({ caseId = 'f548', ordering = 'synthetic', claims = 'local' } = {}) {
-  assert.ok(['f340', 'f548', 'f549', 'f550', 'f551', 'f552', 'f553', 'f554', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked', 'f561', 'f520', 'f595', 'f559', 'f559-learned'].includes(caseId));
+  assert.ok(['f340', 'f548', 'f549', 'f550', 'f551', 'f552', 'f553', 'f554', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked', 'f561', 'f520', 'f521', 'f595', 'f559', 'f559-learned'].includes(caseId));
   assert.ok(['synthetic', 'rejected', 'unknown-then-rejected'].includes(ordering));
   assert.ok(['local', 'controlled'].includes(claims));
   const scratch = local(process.env.SCRATCH ?? '');
@@ -96,6 +96,8 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
   const browserBuild = local(process.env.PROOF_WEB_BROWSER ?? '');
   const psql = local(process.env.PROOF_PSQL_BIN ?? '/opt/homebrew/opt/postgresql@17/bin/psql');
   const nodeEnv = { ...process.env, TMPDIR: dirs.tmp, TMP: dirs.tmp, TEMP: dirs.tmp };
+  const appointmentHost = caseId === 'f521' ? Object.fromEntries(['control', 'ready', 'stop'].map((key) => [key, path.join(dirs.tmp, `f521-${key}.json`)])) : null;
+  let appointmentControl = null;
   const inputFile = path.join(HERE, 'fixtures/main-inputs.json');
   const input = JSON.parse(readFileSync(inputFile, 'utf8'));
   const compressedPlan = readFileSync(path.join(HERE, 'fixtures', input.stockPlan.file));
@@ -176,16 +178,22 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       input: `SET search_path TO ${schema};\n${statement}\n`, encoding: 'utf8', timeout: 10000 }).trim();
   }
   const recordProcess = (name, child) => {
-    const record = { name, caseId, ...identity(child.pid), parentPid: process.pid, ended: false };
+    const record = { name, caseId, ...identity(child.pid), parentPid: process.pid, ended: false,
+      ...(child.execTransition ? { execTransition: child.execTransition } : {}) };
     assert.equal(record.pid, child.pid, `Positive process identity for ${name}`);
     processes.push(record); journal();
     child.once('exit', () => { record.ended = true; journal(); });
     return record;
   };
-  const start = (name, executable, args, env) => {
+  const start = (name, executable, args, env, ownGroup = false) => {
+    const execTransition = ownGroup && caseId === 'f521' && name === 'api-f521-host' ? {
+      kind: 'f521-maven-to-java', expectedExecutable: local(path.join(javaHome, 'bin/java')),
+    } : undefined;
     const log = createWriteStream(path.join(dirs.logs, `${name}.log`));
     const child = spawn(executable, args, { cwd: ROOT, env: { ...env, TMPDIR: dirs.tmp, TMP: dirs.tmp, TEMP: dirs.tmp },
-      stdio: ['ignore', 'pipe', 'pipe'], detached: false });
+      stdio: ['ignore', 'pipe', 'pipe'], detached: ownGroup });
+    child.ownsGroup = ownGroup;
+    child.execTransition = execTransition;
     let kept = 0;
     const capture = (chunk) => { const bytes = chunk.subarray(0, Math.max(0, 262144 - kept)); kept += bytes.length; if (bytes.length) log.write(bytes); };
     child.stdout.on('data', capture); child.stderr.on('data', capture); child.once('close', () => log.end());
@@ -194,6 +202,29 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
     return child;
   };
   const stop = async (child) => {
+    if (child?.ownsGroup) {
+      const alive = () => {
+        try { process.kill(-child.pid, 0); return true; }
+        catch (error) { if (error.code === 'ESRCH') return false; throw error; }
+      };
+      for (const signal of ['SIGTERM', 'SIGKILL']) {
+        if (!alive()) { await child.joined; return; }
+        const current = identity(child.pid);
+        if (current) {
+          // The wrapper execs Maven's Java in place, preserving its PID, group and start time.
+          const stable = ({ pid, pgid, start }) => ({ pid, pgid, start });
+          assert.deepEqual(stable(current), stable(child.ownedIdentity));
+          assert.ok([child.ownedIdentity.executable, child.execTransition?.expectedExecutable].includes(current.executable),
+            'Only the recorded F521 wrapper or its configured Java executable may own the group');
+        }
+        process.kill(-child.pid, signal);
+        const deadline = Date.now() + (signal === 'SIGTERM' ? 5000 : 2000);
+        while (alive() && Date.now() < deadline) await delay(100);
+      }
+      assert.equal(alive(), false, 'The owned Maven and test API process group must stop');
+      await child.joined;
+      return;
+    }
     if (!child || child.exitCode !== null || child.signalCode) return;
     for (const signal of ['SIGTERM', 'SIGKILL']) {
       assert.deepEqual(identity(child.pid), (({ pid, pgid, start, executable }) => ({ pid, pgid, start, executable }))(child.ownedIdentity), 'Signal only the unchanged owned child');
@@ -207,18 +238,30 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
     if (closed) return;
     closed = true;
     const errors = [];
-    for (const action of [() => browser?.close(), () => Promise.all([...imageObservers.values()].map((observer) => observer.stop())),
-      () => browserServer?.close(), () => stop(api), () => server && new Promise((resolve) => {
+    let apiStopped = false;
+    for (const action of [async () => {
+      if (appointmentHost && api?.ownsGroup) {
+        writeFileSync(appointmentHost.stop, '{}');
+        await Promise.race([api.joined, delay(5000)]);
+      }
+    }, () => browser?.close(), () => Promise.all([...imageObservers.values()].map((observer) => observer.stop())),
+      () => browserServer?.close(), async () => { await stop(api); apiStopped = true; }, () => server && new Promise((resolve) => {
       server.closeAllConnections?.(); server.close(resolve);
     })]) {
       try { await action(); } catch (error) { errors.push(error.message); }
+    }
+    if (appointmentHost && apiStopped) {
+      const markers = [...Object.values(appointmentHost), appointmentHost.control + '.next'];
+      for (const file of markers) rmSync(file, { force: true });
+      receipt.appointmentHostCleanup = { processGroupStopped: true, markersRemoved: markers.every((file) => !existsSync(file)) };
+      assert.equal(receipt.appointmentHostCleanup.markersRemoved, true);
     }
     receipt.cleanupErrors = errors;
     receipt.claimStockSubstitute = { variant: claims, requests: claimRequests };
     receipt.orderingSubstitute = { variant: ordering, requests: orderingRequests };
     receipt.finishedAt = new Date().toISOString();
     writeFileSync(path.join(output, 'browser-receipt.json'), JSON.stringify(receipt, null, 2));
-    for (const name of ['api-bootstrap.log', 'api.log', 'api-active-offer-restart.log']) {
+    for (const name of ['api-bootstrap.log', 'api.log', 'api-active-offer-restart.log', 'api-f521-host.log']) {
       const file = path.join(dirs.logs, name);
       if (existsSync(file)) writeFileSync(path.join(output, name), readFileSync(file).subarray(-65536));
     }
@@ -299,7 +342,7 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       `-Dquarkus.datasource.jdbc.additional-jdbc-properties.currentSchema=${schema}`, `-Dquarkus.flyway.schemas=${schema}`,
       `-Dquarkus.flyway.default-schema=${schema}`, '-jar', jar];
     // These existing provider/file selections apply only to the Orders case family.
-    const ordersProviders = caseId.startsWith('f556') ? {
+    const ordersProviders = caseId.startsWith('f556') || caseId === 'f521' ? {
       GCSP_APPROVALS_PROVIDER: caseId === 'f556-blocked' ? 'none' : 'synthetic',
       GCSP_DOCUMENTS_PROVIDER: 'synthetic', GCSP_APPOINTMENTS_PROVIDER: 'synthetic', GCSP_RETURNS_PROVIDER: 'synthetic',
     } : {};
@@ -404,7 +447,27 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
         fromRun: input.reference.runId, toRun: runId }, source: caseId === 'f559-learned'
           ? 'Retained account/source/clock input with no initial brief; the separate native covered scenario is created through public editor commands.'
           : 'Exact captured Main input; parent-authorized BuddyJourneySeed pattern' };
-      api = start('api', path.join(javaHome, 'bin/java'), apiArgs, replayApiEnv);
+      if (appointmentHost) {
+        writeFileSync(appointmentHost.control, JSON.stringify({ environmentId: envId, runId, orderUuid: 'f521-unselected',
+          offerUnavailable: false, writePending: false }));
+        const forkArgs = apiArgs.slice(0, -2);
+        const args = ['-f', 'services/gcsp-api/pom.xml', '-B', 'test', '-Dtest=gcsp.api.appointments.F521ProofHostTest',
+          `-DargLine=${forkArgs.join(' ')}`, `-Dquarkus.http.test-ssl-port=${ports.api}`];
+        api = start('api-f521-host', path.join(ROOT, 'services/gcsp-api/mvnw'), args, { ...replayApiEnv,
+          GCSP_F521_CONTROL_FILE: appointmentHost.control, GCSP_F521_READY_FILE: appointmentHost.ready,
+          GCSP_F521_STOP_FILE: appointmentHost.stop, GCSP_F521_API_PORT: String(ports.api),
+          MAVEN_OPTS: '-Xms64m -Xmx512m -XX:+UseSerialGC' }, true);
+        await until(() => {
+          if (api.exitCode !== null || api.signalCode) throw new Error('F521 test host exited; inspect the retained bounded API log');
+          if (!existsSync(appointmentHost.ready)) return false;
+          let marker;
+          try { marker = JSON.parse(readFileSync(appointmentHost.ready, 'utf8')); }
+          catch (error) { if (error instanceof SyntaxError) return false; throw error; }
+          assert.deepEqual(marker, { ready: true, port: ports.api, environmentId: envId, runId });
+          return true;
+        }, 'The scoped F521 test host becomes ready', 120000);
+        receipt.composition.appointmentHost = { kind: 'test-only Quarkus alternative', test: 'gcsp.api.appointments.F521ProofHostTest' };
+      } else api = start('api', path.join(javaHome, 'bin/java'), apiArgs, replayApiEnv);
       await waitForApi();
     } finally { await ready.dispose(); }
     async function restartApi() {
@@ -433,6 +496,28 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       lifecycle.readyAt = new Date().toISOString();
       return lifecycle;
     }
+    const appointments = appointmentHost ? {
+      configure(orderUuid, flags) {
+        assert.ok(typeof orderUuid === 'string' && orderUuid.length > 0 && orderUuid.length <= 128);
+        assert.ok(Object.keys(flags).every((key) => ['offerUnavailable', 'writePending'].includes(key) && typeof flags[key] === 'boolean'));
+        assert.ok(!appointmentControl || appointmentControl.orderUuid === orderUuid, 'One exact owned order per F521 host');
+        appointmentControl = { environmentId: envId, runId, orderUuid, offerUnavailable: false, writePending: false, ...appointmentControl, ...flags };
+        writeFileSync(appointmentHost.control + '.next', JSON.stringify(appointmentControl));
+        renameSync(appointmentHost.control + '.next', appointmentHost.control);
+        receipt.appointmentControls ??= []; receipt.appointmentControls.push({ ...appointmentControl });
+      },
+      persistence(orderUuid) {
+        assert.ok(typeof orderUuid === 'string' && orderUuid.length > 0 && orderUuid.length <= 128);
+        const prefix = `appointment:${sha(JSON.stringify([runId, orderUuid])).slice(0, 32)}:`;
+        const actual = JSON.parse(sql(`SELECT json_build_object('environmentId',${literal(envId)},'runId',${literal(runId)},'orderUuid',${literal(orderUuid)},
+          'appointments',(SELECT count(*) FROM appointments WHERE environment_id=${literal(envId)} AND run_id=${literal(runId)} AND order_uuid=${literal(orderUuid)}),
+          'pendingIntents',(SELECT count(*) FROM pending_operations WHERE environment_id=${literal(envId)} AND run_id=${literal(runId)} AND operation_id LIKE ${literal(prefix + '%')}),
+          'pendingStates',(SELECT coalesce(json_agg(state ORDER BY operation_id),'[]'::json) FROM pending_operations
+            WHERE environment_id=${literal(envId)} AND run_id=${literal(runId)} AND operation_id LIKE ${literal(prefix + '%')}));`).split('\n').at(-1));
+        receipt.appointmentPersistence ??= []; receipt.appointmentPersistence.push(actual);
+        return actual;
+      },
+    } : undefined;
     const type = process.env.GCSP_E2E_BROWSER === 'webkit' ? webkit : chromium;
     receipt.browsers.requested = type.name();
     const executablePath = process.env.GCSP_E2E_BROWSER_PATH;
@@ -720,7 +805,7 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
     }
     return { context, receipt, origins, apiBase, input, plan, newPage, call, prepareInitialBrief, releaseMainOffer,
       readImage: (page, locator) => imageObservers.get(page).read(locator),
-      readActualHold, readOfferPersistence, restartApi, screenshot, compareFrozenNode, visitFrozenNode, failProductionQueueWrites,
+      readActualHold, readOfferPersistence, restartApi, screenshot, compareFrozenNode, visitFrozenNode, failProductionQueueWrites, appointments,
       claims: { requests: claimRequests, pending() { claimMode = 'unknown'; }, rejectPending() { claimMode = 'rejected'; }, confirm() { claimMode = 'confirmed'; } },
       ordering: { requests: orderingRequests, rejectPending() { assert.equal(ordering, 'unknown-then-rejected'); rejectPending = true; } }, close };
   } catch (error) {
