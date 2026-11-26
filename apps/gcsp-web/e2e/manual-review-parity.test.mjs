@@ -162,7 +162,9 @@ test('FUCQ-554: authoritative manual review, six-card summary and safe navigatio
   await check('AC6: local discard restores saved details and a real conflict loads the newer saved values', async () => {
     const phone = employee.locator('#manual-contact-phone'); const saved = await phone.inputValue();
     await phone.fill('07700 900999'); const before = journal.writes.length;
-    await button(employee, 'Discard local edits').click(); assert.equal(await phone.inputValue(), saved);
+    await button(employee, 'Discard local edits').click();
+    await until(async () => await phone.inputValue() === saved, 'Local discard renders the saved phone');
+    assert.equal(await phone.inputValue(), saved);
     assert.equal(journal.writes.length, before, 'Local discard sends no command');
     await phone.fill('07700 900998');
     const current = good(await suite.call(employee, 'GET', '/manual/review-details'), 'Current details before concurrent save');
@@ -290,6 +292,7 @@ test('FUCQ-554: authoritative manual review, six-card summary and safe navigatio
     const details = good(await suite.call(employee, 'GET', '/manual/review-details'), 'Final saved details');
     const terms = good(await suite.call(employee, 'GET', '/manual/order/terms'), 'Actual current declarations');
     for (const field of await employee.locator('[id^="manual-declaration-"]').all()) await field.check();
+    await until(() => button(employee, 'Submit order').isEnabled(), 'Checked declarations render the enabled submit control');
     assert.equal(await button(employee, 'Submit order').isEnabled(), true);
     const before = journal.at('/manual/order').length;
     await employee.route('**/manual/order', async route => {
