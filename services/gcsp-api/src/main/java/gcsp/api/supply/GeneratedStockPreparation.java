@@ -182,20 +182,24 @@ public final class GeneratedStockPreparation {
 
     ArrayNode rows(String runId) throws SQLException {
         ArrayNode rows = F.arrayNode();
+        List<ObjectNode> ordered = new ArrayList<>();
         try (Connection c = source.getConnection(); PreparedStatement ps = c.prepareStatement(
                 "SELECT order_uuid, configuration_id, attributes::text FROM stock_cars "
-                        + "WHERE environment_id = ? AND run_id = ? AND attributes->'generatedIdentity' IS NOT NULL "
-                        + "ORDER BY attributes->>'orderNumber', order_uuid")) {
+                        + "WHERE environment_id = ? AND run_id = ? AND attributes->'generatedIdentity' IS NOT NULL")) {
             ps.setString(1, environmentId);
             ps.setString(2, runId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     ObjectNode row = json(rs.getString(3)).deepCopy();
                     row.put("orderUuid", rs.getString(1)).put("configurationId", rs.getString(2));
-                    rows.add(row);
+                    ordered.add(row);
                 }
             }
         }
+        // Sort references after closing the read to avoid a database sort of the complete JSON projection.
+        ordered.sort(Comparator.comparing((ObjectNode row) -> row.path("orderNumber").asText())
+                .thenComparing(row -> row.path("orderUuid").asText()));
+        ordered.forEach(rows::add);
         return rows;
     }
 

@@ -48,8 +48,10 @@ class GeneratedStockPreparationTest {
 
     @Test
     void completeGenerationCommitsOnceWithoutReleasingAndReplaysWithoutTheSource() throws Exception {
+        long started = System.nanoTime();
         ClockResult.Ok first = assertInstanceOf(ClockResult.Ok.class,
                 preparation(true).prepare(f.ctx(), "gcsp-policy-v1", SupplyFixture.T0, null, null));
+        long elapsed = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - started);
         assertTrue(f.cars("unreleased") > 0);
         assertEquals(0, f.cars("released"));
         assertEquals(0, f.count("SELECT count(*) FROM custody_holds"));
@@ -61,6 +63,16 @@ class GeneratedStockPreparationTest {
         assertEquals(first.value().path("report"), replay.value().path("report"));
         assertFalse(replay.value().path("generated").asBoolean(true));
         assertEquals(rows, f.cars("unreleased"));
+        var measured = SupplyFixture.JSON.createObjectNode().put("generationMillis", elapsed)
+                .put("rows", rows).put("generatedRowBytes", first.value().path("rowBytes").asLong())
+                .put("storedAttributeBytes", f.count("SELECT sum(octet_length(attributes::text)) FROM stock_cars"));
+        measured.set("inventoryPlan", SupplyFixture.JSON.readTree(f.text("EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) "
+                + "SELECT attributes->'generatedIdentity' FROM stock_cars WHERE environment_id = ? "
+                + "AND attributes->'generatedIdentity' IS NOT NULL", SupplyFixture.ENV)));
+        measured.set("pullPlan", SupplyFixture.JSON.readTree(f.text("EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) "
+                + "SELECT order_uuid, configuration_id, attributes::text FROM stock_cars WHERE environment_id = ? "
+                + "AND run_id = ? AND attributes->'generatedIdentity' IS NOT NULL", SupplyFixture.ENV, "run-1")));
+        System.out.println("F538_DATA_EVIDENCE " + measured);
         assertEquals(revision, f.revision());
         ClockResult.Failure changed = assertInstanceOf(ClockResult.Failure.class,
                 preparation(true).prepare(f.ctx(), "gcsp-policy-v1", SupplyFixture.T0.plus(Duration.ofDays(1)), null, null));
