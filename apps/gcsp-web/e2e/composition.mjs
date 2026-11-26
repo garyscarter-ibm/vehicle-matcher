@@ -2,11 +2,12 @@ import assert from 'node:assert/strict';
 import { spawn, spawnSync, execFileSync } from 'node:child_process';
 import { createHash, randomUUID } from 'node:crypto';
 import { createServer } from 'node:https';
-import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync, lstatSync, readlinkSync, createWriteStream, rmSync, renameSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync, createWriteStream, rmSync, renameSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { gunzipSync } from 'node:zlib';
 import { chromium, webkit } from 'playwright-core';
+import { local, localScratch } from './scratch-paths.mjs';
 import { assembleGcspStatic, GCSP_FIXED_ROUTES } from '../../../scripts/build-gcsp-static.mjs';
 import { runtimeConfigFromEnv } from '../../../scripts/gcsp-runtime-config.mjs';
 import { apiJvmArgs } from '../../../scripts/gcsp/proof-jvm.mjs';
@@ -38,29 +39,6 @@ const sanitizeReadback = (value) => {
   return value;
 };
 
-function local(value) {
-  assert.ok(path.isAbsolute(value), 'Composition paths must be absolute');
-  assert.ok(!/CloudStorage|OneDrive/i.test(value), 'Synced paths are forbidden before any filesystem inspection');
-  let pending = path.resolve(value).split(path.sep).filter(Boolean);
-  let resolved = path.sep; let links = 0;
-  while (pending.length) {
-    resolved = path.join(resolved, pending.shift());
-    assert.ok(!/CloudStorage|OneDrive/i.test(resolved));
-    let item;
-    try { item = lstatSync(resolved); } catch (error) {
-      if (error.code === 'ENOENT') return path.join(resolved, ...pending);
-      throw error;
-    }
-    if (item.isSymbolicLink()) {
-      assert.ok(++links <= 32);
-      const target = path.resolve(path.dirname(resolved), readlinkSync(resolved));
-      assert.ok(!/CloudStorage|OneDrive/i.test(target), 'Reject the link target before following it');
-      pending = [...target.split(path.sep).filter(Boolean), ...pending]; resolved = path.sep;
-    }
-  }
-  return resolved;
-}
-
 function identity(pid) {
   const read = spawnSync('/bin/ps', ['-p', String(pid), '-o', 'pid=', '-o', 'pgid=', '-o', 'lstart=', '-o', 'comm='], { encoding: 'utf8', timeout: 3000 });
   const parts = read.stdout.trim().split(/\s+/);
@@ -73,8 +51,7 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
   assert.ok(['synthetic', 'rejected', 'unknown-then-rejected'].includes(ordering));
   assert.ok(['local', 'controlled'].includes(claims));
   assert.ok(scenarioId === null || (caseId === 'f521' && ['normal-success', 'durable-pending'].includes(scenarioId)));
-  const scratch = local(process.env.SCRATCH ?? '');
-  assert.ok(scratch.startsWith('/private/tmp/'), 'The supervisor must own /private/tmp scratch');
+  const scratch = localScratch(process.env.SCRATCH ?? '');
   const runOutput = local(process.env.GCSP_E2E_OUTPUT ?? '');
   const caseOutput = caseId === 'f548' ? runOutput : path.join(runOutput, caseId);
   const output = scenarioId === null ? caseOutput : path.join(caseOutput, scenarioId);
