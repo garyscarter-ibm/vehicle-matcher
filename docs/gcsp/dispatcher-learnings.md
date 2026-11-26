@@ -4243,3 +4243,25 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 
 - During F538, native status showed Emmet completed a read-only generator analysis while the lead had sent implementation steering with send_message. That call queued context without starting implementation. Root identified the completed state; Pugh resumed the retained Emmet with followup_task and the complete implementation/resource brief. The earlier analysis is retained and no replacement or model change was made.
 - The lifecycle mistake recurs from the earlier F573 observation under this ID. Resumption is an applied mitigation; generator RED/GREEN and completed delivery remain pending. Existing adapter guidance already distinguishes steering a running child from waking an idle one; no new gate, acceptance scope or framework change is added.
+
+
+### 2026-11-26 09:02 UTC · usget-velko · DL-20261126-VELKO-23 · Native reconciliation and unsupported status provenance
+
+- The user queried stale Jira progress. The fresh 08:35:54Z 35-key read found 26 In Progress and nine In Review. Baymax verified and acknowledged 73 current-run operations, including ten preserved-label additions and 23 branch links; 121 historical/out-of-scope operations were untouched. Three proposed regressions of F549/F551/F552 to In Progress remain unacknowledged; native In Review is preserved. This is a bounded current-run reconciliation, not proof that every historical backlog record is current.
+- Dibble found no human quote or checkable phase supporting earlier “human-only In Review phase” wording. That claimed authority is unverified and must not be reused. Goopy reconciled F551’s latest Result against the six original criteria and retained hosted/signed evidence in b3c660866: development complete, with shared batch clearance and acceptance separate. Root read the exact four-line metadata diff; no tests or native transition were required. Proposed improvement: distinguish observed native state from instruction provenance; do not infer authority from an earlier agent’s report.
+
+### 2026-11-26 09:02 UTC · usget-velko · DL-20261117-GCC-009 · F522 repaired evidence recovered
+
+- An intake-only reading suggested missing terminal-state proof. Goopy recovered repair f06505772, F446 merge ec98360db and F446’s retained Result: 107 Angular and 141 connected post-fix checks, terminal captures and literal JVM stop/start/reload. The current guard/specs retain the repair; no unmet original criterion was established. The local historical capture directory is absent, so no fresh image inspection is claimed.
+- Intake reconciliation 47dd4323a is pushed. The diagnosis changed from possible missing repair/proof to record reconciliation; do not implement or retest an already evidenced fix just because the intake omitted its later evidence. “Capture/triage only” described the initial report, not a standing human hold. Proposed improvement: follow the linked originating Story’s final Result before allocating duplicate repair work.
+
+### 2026-11-26 09:02 UTC · usget-velko · DL-20261126-VELKO-24 · Cancelled automatic CI has incomplete cleanup evidence
+
+- CI-only workflow merge 7b84c3482 triggered redundant canonical run45785584080. Root cancelled it after Maven had started. Actions reached terminal cancelled and its Stop containers step succeeded; the browser job was skipped. No green gate or batch line is claimed.
+- The retained supervisor artifact is preflight with Maven running and scratch active; there is no terminal supervisor receipt. Remote Maven/process-group/scratch absence therefore remains unverified. Local artifact-inspection scratch was removed and absence checked. Evidence: .claude/poller/velko-ci-route-cancel-20261126/summary.json and three bounded original artifacts. Proposed improvement: make handled cancellation retain the supervisor finalizer outcome; terminal job state/container stop alone does not establish every owned allocation’s cleanup. No workflow scope or test gate is added here.
+
+### 2026-11-26 09:31 UTC · garyscarter-ibm-berengar · DL-20261126-BERENGAR-01 · Hand-over's due batch already run; CI route unusable from Gary's Mac
+
+- The aurelio hand-over (22:40 UTC) said web-e2e was due and must include f520. Batches.md shows velko ran it at 03:26 UTC on 7ab69ffda, all 18 registered families green, covering e919a2784 (F520) and the F513/F515/F516 merges; java (05:05, 08:07) and web (05:39) lines also cover those merges. No duplicate run was started.
+- Seven later merges make web-e2e due again (3.5 GiB, over the daytime cap). Russell's new CI browser route (f555-java-ci.yml, mode=browser, c487a9bdd) could run it now, but this Mac's `gh` has only an expired github.ibm.com token and no github.com auth: the dispatch returned HTTP 401. The batch claim taken for it was released at once; no line recorded. Plan: claim locally after 00:00 GMT unless another poller covers it in CI first.
+- Proposed improvement: a hand-over should name its batch as "due as of <time>" and the successor should re-read batches.md before acting; poller start could report whether CI dispatch is authenticated.
