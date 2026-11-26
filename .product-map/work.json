@@ -13806,6 +13806,66 @@
       ],
       "unsliced": false,
       "jira_observed_at": "2026-11-26T08:01:29.625Z"
+    },
+    {
+      "id": "FUCQ-597",
+      "title": "Registered browser composition rejects valid Linux supervisor scratch",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "type": "Bug",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-597",
+      "branch": "dev/DEV-2026-11-26-velko-002",
+      "native_parent": "FUCQ-75",
+      "note": "Native status InProgress/unassigned independently read by root10:18:45Z. AC1/2 scoped repair+tests complete; waiting named root originalf340 alone onLinuxCI, AC3unchecked. Separate18family batch and native acceptance remain.",
+      "workers": [
+        {
+          "name": "Pugh",
+          "harness": "codex",
+          "role": "story lead",
+          "status": "handoff-ready; waiting root Linux f340",
+          "observed_at": "2026-11-26T10:20:16Z",
+          "expires_at": "2026-11-26T10:20:16Z",
+          "source": "DEV-2026-11-26-velko-002 Result"
+        },
+        {
+          "name": "Beaky Buzzard",
+          "harness": "codex",
+          "role": "guard implementer",
+          "status": "complete; parent diff and covering28 verified",
+          "observed_at": "2026-11-26T10:20:16Z",
+          "expires_at": "2026-11-26T10:20:16Z",
+          "source": "F597 guard summary; Sol/medium requested/selected, no fallback"
+        }
+      ],
+      "observed_at": "2026-11-26T10:20:16Z",
+      "slices": [
+        {
+          "id": "scratch-guard",
+          "status": "complete",
+          "title": "Native scratch guard and safety regressions",
+          "observed_at": "2026-11-26T10:19:09Z",
+          "evidence": "Lead diff review and independent28/28 guard rerun; oldLinuxrootsRED4, existing absolute/symlink/synced guards preserved. See DEV-2026-11-26-velko-002 Result."
+        },
+        {
+          "id": "ci-selection",
+          "status": "complete",
+          "title": "Registered family selection and truthful receipts",
+          "observed_at": "2026-11-26T10:19:09Z",
+          "evidence": "Selector/default/receipt8/8; full18 registration validation and subset coverage distinction pass. Final direct-caller scoped command recorded in delivery receipt."
+        },
+        {
+          "id": "linux-ci",
+          "status": "in-progress",
+          "title": "Original f340 alone on Linux CI",
+          "observed_at": "2026-11-26T10:19:09Z",
+          "evidence": "Waiting for named root originalf340 alone on actualLinuxCI at final source freeze; no local browser/Java run or acceptance claim. Separate18family batch still required."
+        }
+      ],
+      "unsliced": false,
+      "native_observed_at": "2026-11-26T10:18:45Z",
+      "native_updated_at": "2026-11-26T10:08:59.317Z",
+      "engineering_observed_at": "2026-11-26T10:20:16Z"
     }
   ]
 }

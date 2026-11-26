@@ -17,6 +17,11 @@ on:
           - canonical
           - default-profile
           - browser
+      browser_case:
+        description: Optional registered browser family (for example f340); empty runs all 18
+        required: false
+        default: ''
+        type: string
 
 permissions:
   contents: read
@@ -1219,7 +1224,7 @@ jobs:
 
   registered-browser:
     if: github.event_name == 'workflow_dispatch' && inputs.mode == 'browser'
-    name: Registered 18-family browser batch
+    name: Registered browser families
     runs-on: ubuntu-24.04
     timeout-minutes: 270
     steps:
@@ -1274,6 +1279,7 @@ jobs:
           GCSP_PG_BIN: /usr/lib/postgresql/17/bin
           PROOF_PSQL_BIN: /usr/lib/postgresql/17/bin/psql
           SCAFFOLDING_HARNESS: codex
+          GCSP_BROWSER_CASE: ${{ inputs.browser_case }}
         run: python3 -B scripts/gcsp/browser-ci-batch.py
 
       - name: Retain browser checkpoints, counts, skips and cleanup evidence

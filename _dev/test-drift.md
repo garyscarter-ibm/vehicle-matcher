@@ -9,3 +9,4 @@ Add a new drift with `_tools/test_drift.py --add "name | concept | kind | arg"`.
 - stale-pin | A test still holds a value (version, hash, id) that the change replaced. | stale-pin | 
 - orphan-selector | A test looks for a CSS class or test id that no template or style defines any more. | orphan-selector | 
 - contract-callers | A changed public signature or contract whose callers' tests were not updated. | contract-callers | 
+- darwin-scratch-guard | A browser test hard-codes the macOS scratch prefix instead of accepting the supervisor's native local root. | regex | \.startsWith\(['"]/private/tmp/

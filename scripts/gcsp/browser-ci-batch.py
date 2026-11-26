@@ -35,6 +35,33 @@ def registration():
     return cases
 
 
+def parse_options(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--plan', action='store_true', help='List the selected registered families and budgets without running')
+    parser.add_argument('--case', action='append', choices=FAMILIES, dest='cases',
+                        help='Run this registered family; repeat to combine. Default: all 18 registered families.')
+    arguments = list(sys.argv[1:] if argv is None else argv)
+    # The workflow passes its optional single-family input as data, never shell source.
+    if selected := os.environ.get('GCSP_BROWSER_CASE'):
+        arguments.extend(['--case', selected])
+    options = parser.parse_args(arguments)
+    options.cases = list(dict.fromkeys(options.cases or FAMILIES))
+    return options
+
+
+def finish_summary(summary):
+    selected = summary['selected_cases']
+    executed = [row['family'] for row in summary['families']]
+    summary['unrun_selected_cases'] = [family for family in selected if family not in executed]
+    summary['unselected_cases'] = [family for family in FAMILIES if family not in selected]
+    summary['complete'] = (executed == selected and all(row['complete'] for row in summary['families']))
+    summary['full_union_complete'] = summary['complete'] and not summary['unselected_cases']
+    summary['counts'] = {name: sum(row['counts'].get(name, 0) for row in summary['families']) for name in COUNTS}
+    summary['green'] = (not summary['failure'] and summary['complete']
+                        and all(row['green'] for row in summary['families'])
+                        and summary['cleanup']['scratch_absent'])
+
+
 def git_value(root, *args):
     code, output, _ = scaffold_git.git(root, list(args))
     if code:
@@ -97,12 +124,14 @@ def owned_stack(scratch, env, summary, output):
         scratch.__exit__(None, None, None)
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--plan', action='store_true', help='List the exact registered union and budgets without running')
-    options = parser.parse_args()
+def main(argv=None):
+    options = parse_options(argv)
+    # Always validate the entire registration, including when only one family is selected.
     cases = registration()
-    plan = {'families': cases, 'serial': True, 'per_family_ram_mib': 3584,
+    coverage = 'registered-union' if set(options.cases) == set(cases) else 'registered-subset'
+    plan = {'families': {family: cases[family] for family in options.cases},
+            'registered_families': cases, 'selected_cases': options.cases, 'coverage_scope': coverage,
+            'serial': True, 'per_family_ram_mib': 3584,
             'per_family_scratch_mib': 2048, 'per_family_seconds': 600, 'node_reference': REFERENCE,
             'aggregate_install_cache_and_scratch_mib': 4096}
     if options.plan:
@@ -122,8 +151,11 @@ def main():
     output.mkdir(exist_ok=False)
     summary_path = output / 'batch-receipt.json'
     summary = {'schema': 'gcsp-browser-ci-batch/1', 'source_revision': source, 'node_reference_revision': REFERENCE,
+               'selected_cases': options.cases, 'coverage_scope': coverage,
                'plan': plan, 'started': time.time(), 'families': [], 'setup': [], 'cleanup': {},
-               'covering_disposition': 'pending-root-batch-reconciliation; skipped tests remain skipped'}
+               'covering_disposition': ('selected-family evidence only; full 18-family batch remains separate; '
+                                        if coverage == 'registered-subset' else 'pending-root-batch-reconciliation; ')
+                                       + 'skipped tests remain skipped'}
     policy = resources.Policy({'output_root': str(output), 'chunk_ram_mib': 3584, 'chunk_scratch_mib': 4096,
                                'local_scratch_reason': 'Ephemeral CI working data; no OneDrive access', 'log_mib': 2})
     scratch = resources.Scratch(output, ROOT, policy, expected=WORKING_DISK)
@@ -166,7 +198,7 @@ def main():
             for kind, variable in (('api', 'PROOF_API_JAR'), ('web', 'PROOF_WEB_BROWSER')):
                 built = command([sys.executable, '-B', '_tools/test_stack_build.py', 'build', kind, '--worktree', str(ROOT)], 'build-' + kind)
                 env[variable] = next(line.partition('=')[2] for line in built.splitlines() if line.startswith(variable + '='))
-            for family in FAMILIES:
+            for family in options.cases:
                 if git_value(ROOT, 'rev-parse', 'HEAD') != source:
                     raise RuntimeError('Source identity changed between chunks')
                 family_output = output / family
@@ -200,13 +232,10 @@ def main():
         summary['finished'] = time.time()
         summary['cleanup']['scratch_absent'] = not os.path.lexists(scratch.root)
         summary['cleanup']['ownership_manifest'] = str(scratch.manifest)
-        summary['complete'] = ([row['family'] for row in summary['families']] == list(FAMILIES)
-                               and all(row['complete'] for row in summary['families']))
-        summary['counts'] = {name: sum(row['counts'].get(name, 0) for row in summary['families']) for name in COUNTS}
-        summary['green'] = (not failure and summary['complete'] and all(row['green'] for row in summary['families'])
-                            and summary['cleanup']['scratch_absent'])
+        finish_summary(summary)
         resources.atomic_json(summary_path, summary)
-    print(json.dumps({'receipt': str(summary_path), 'complete': summary['complete'], 'green': summary['green'], 'counts': summary['counts']}))
+    print(json.dumps({key: summary[key] for key in ('selected_cases', 'coverage_scope', 'complete',
+                     'full_union_complete', 'green', 'counts')} | {'receipt': str(summary_path)}))
     return 0 if summary['green'] else 1
 
 
