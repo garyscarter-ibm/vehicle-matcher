@@ -1,0 +1,53 @@
+{
+  "story": "FUCQ-560",
+  "identity": "134037272a3abd188c49e685800949d888bd2e1346f7cbd8ae5dfc2469a3329e",
+  "base": "e23252cbf6a25f680415a2d6115a2076c8a02571",
+  "code_test_files": {
+    "apps/gcsp-web/src/app/comparison/comparison.client.spec.ts": "c56896a9a2273fde4a61eb0ed2d9d21eea0a2a853b11b16964ffeb0cb2a53925",
+    "apps/gcsp-web/src/app/comparison/comparison.client.ts": "c7a7e328384d96affec1eb504ebc2ab6eeb1026828066a7c42752efbde87bca4",
+    "apps/gcsp-web/src/app/comparison/comparison.component.css": "e522131cda7281f3753909a7be3f06ec1c704edc87f8f8e040cfd76210d473f8",
+    "apps/gcsp-web/src/app/comparison/comparison.component.html": "c60d639e3e24c78ab6fe61122f1694f382a3df2ba4eab1e3a2f708b565453545",
+    "apps/gcsp-web/src/app/comparison/comparison.component.spec.ts": "de490bfe672bb0f9d214528972aeadbe299755a51b860061eff1ccff4b123100",
+    "apps/gcsp-web/src/app/comparison/comparison.component.ts": "77322dce3d0cee7b0c629116ccbab8943c10de1675c901ad68fbe17a7bee1aa7",
+    "apps/gcsp-web/src/app/comparison/comparison.presentation.spec.ts": "6d83d3c4b630dadfee346a81ba1e8d5fc9822f5a81ce2979b8096e35816855b3",
+    "apps/gcsp-web/src/app/comparison/comparison.presentation.ts": "e94f2b5fafa22430ec57fd77b48a0312eccdb508be24bc713e9efaa447c1aca7",
+    "apps/gcsp-web/src/app/comparison/comparison.types.ts": "1ad9b1493ab57ca0dfdb0143d3cda8b64cdedc8d0e5963819a09c87511e73e8f",
+    "apps/gcsp-web/src/app/kit/range-bar.component.spec.ts": "418efece55ab721572ffc439062fc1668eace0f3201fa1727582619fe716264f",
+    "apps/gcsp-web/src/app/kit/range-bar.component.ts": "b222907b456f569c32f79ad5aa256077886ad1183e0408e4785b58e2e9145966"
+  },
+  "regression": "No JSON dumps in any result/request region; complete escaped nested labelled facts; frozen rangeDOM/text/sharedscale/null/flat/units; preserve picker/read/privacy/job state",
+  "selected": [
+    "src/app/comparison/comparison.component.spec.ts",
+    "src/app/comparison/comparison.client.spec.ts",
+    "src/app/comparison/comparison.presentation.spec.ts",
+    "src/app/kit/range-bar.component.spec.ts"
+  ],
+  "command": [
+    "/Users/usget/.npm/_npx/010ee680b2e968d8/node_modules/node/bin/node",
+    "node_modules/@angular/cli/bin/ng.js",
+    "test",
+    "--watch=false",
+    "--include=src/app/comparison/comparison.component.spec.ts",
+    "--include=src/app/comparison/comparison.client.spec.ts",
+    "--include=src/app/comparison/comparison.presentation.spec.ts",
+    "--include=src/app/kit/range-bar.component.spec.ts"
+  ],
+  "result": {
+    "pass": 71,
+    "files": 4,
+    "wall_s": 9.588426000002073,
+    "peak_rss_bytes": 1613086720,
+    "peak_scratch_bytes": 9405696,
+    "scratch_absent": true
+  },
+  "test_map": {
+    "comparisoncomponent": "comparison.component.spec.ts35tests",
+    "typedreadboundary": "comparison.client.spec.ts28unchangedtests",
+    "comparisonpresentation": "comparison.presentation.spec.ts4tests",
+    "rangebar": "range-bar.component.spec.ts4tests"
+  },
+  "boundaries": "ComparisonClient/transport/backend/math/policy/storage unchanged; app session/state methods preserved. Optional frozen comparison import/earlyGreg proof branch separate, runtime pending.",
+  "excluded": "Full suites deferred sharedbatch; ratchet pending F558fieldrelease; finalactualruntime/humanAC4 pending.",
+  "resources": "Parent one3GiBguardedworker; externalmanifest retained removed, scratch absent, .angular absent; shareddependency link preserved; no OneDriveaccess.",
+  "drift_rc": 0
+}

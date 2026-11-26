@@ -26,7 +26,7 @@
         @if (job.reason) { <p>{{ job.reason }}</p> }
         @if (job.status === 'failed' || job.status === 'interrupted') { <p>No result was stored. @if (selected()) { The result below is still the latest stored. }</p> }
         @if (job.status === 'succeeded') { <p>{{ newResultMatched() ? 'New result stored and read back.' : 'This job’s result has not been read back here. Refresh to check it.' }}</p> }
-        <details><summary>Run details</summary><dl><div><dt>Job</dt><dd>{{ job.jobId }}</dd></div><div><dt>Started</dt><dd>{{ job.startedAt }}</dd></div><div><dt>Finished</dt><dd>{{ job.finishedAt ?? 'Not finished' }}</dd></div><div><dt>Result identity</dt><dd>{{ job.resultId ?? 'No result' }}</dd></div></dl><pre>{{ json(job.request) }}</pre></details>
+        <details><summary>Run details</summary><dl><div><dt>Job</dt><dd>{{ job.jobId }}</dd></div><div><dt>Started</dt><dd>{{ job.startedAt }}</dd></div><div><dt>Finished</dt><dd>{{ job.finishedAt ?? 'Not finished' }}</dd></div><div><dt>Result identity</dt><dd>{{ job.resultId ?? 'No result' }}</dd></div></dl><gcsp-fact-list [rows]="facts(job.request)" presentation="source" /></details>
       </section>
     }
     @if (jobError()) { <p class="comparison-error" role="alert">{{ jobError() }}</p> }
@@ -58,22 +58,35 @@
         @if (!stored.policyCurrent) { <p class="comparison-policy">Older policy version. Made under policy {{ stored.policyVersion }}. The active policy is {{ stored.activePolicyVersion }}.</p> }
         <p>{{ plain(stored.result.caveat) }}</p>
         @if (stored.result.kind === 'process-comparison') {
-          @for (difference of stored.result.differences ?? []; track difference.measure) {
-            <section class="comparison-measure"><h3>{{ measure(difference.measure) }}</h3><p class="comparison-verdict">{{ verdict(difference.verdict) }}</p><p class="gcsp-note">{{ words(difference.betterWhen) }} is better · Mean and range across seeds</p><dl class="comparison-pair"><div><dt>Today's release route</dt><dd>{{ stats(difference.measure, difference.current) }}</dd></div><div><dt>Buddy route</dt><dd>{{ stats(difference.measure, difference.buddy) }}</dd></div></dl><p>Difference (buddy minus today): {{ stats(difference.measure, difference.difference, true) }}</p></section>
-          }
+          <div class="gcsp-comparison-measures">
+            @for (difference of stored.result.differences ?? []; track difference.measure) {
+              <article class="comparison-measure gcsp-comparison-measure" [attr.data-verdict]="difference.verdict">
+                <ng-container [ngTemplateOutlet]="measureBody" [ngTemplateOutletContext]="{ $implicit: difference, level: 4 }" />
+              </article>
+            }
+          </div>
         } @else {
           @for (arm of stored.result.arms ?? []; track arm.armId) {
-            <section class="comparison-measure"><h3>{{ arm.armId === 'baseline' ? "Today’s value" : 'Tried value' }}: {{ json(arm.value) }}</h3><p class="gcsp-note">Arm {{ arm.armId }} · Mean and range across seeds</p>
-              @for (difference of arm.differences; track difference.measure) { <h4>{{ measure(difference.measure) }}</h4><p>{{ verdict(difference.verdict) }}</p><dl class="comparison-pair"><div><dt>Today's release route</dt><dd>{{ stats(difference.measure, difference.current) }}</dd></div><div><dt>Buddy route</dt><dd>{{ stats(difference.measure, difference.buddy) }}</dd></div></dl><p>Difference (buddy minus today): {{ stats(difference.measure, difference.difference, true) }}</p> }
-              <details><summary>Arm measurements and per-seed results</summary><pre>{{ json(arm.measures) }}</pre><pre>{{ json(arm.perSeed) }}</pre></details>
+            <section class="comparison-measure" [attr.aria-label]="arm.armId === 'baseline' ? 'Today’s value' : 'Tried value'">
+              <h3>{{ arm.armId === 'baseline' ? 'Today’s value' : 'Tried value' }}@if (scalar(arm.value)) {<span>: {{ scalar(arm.value) }}</span>}</h3>
+              @if (!scalar(arm.value)) { <gcsp-fact-list [rows]="facts(arm.value)" presentation="source" /> }
+              <p class="gcsp-note">Arm {{ arm.armId }}</p>
+              <div class="gcsp-comparison-measures">
+                @for (difference of arm.differences; track difference.measure) {
+                  <article class="gcsp-comparison-measure" [attr.data-verdict]="difference.verdict">
+                    <ng-container [ngTemplateOutlet]="measureBody" [ngTemplateOutletContext]="{ $implicit: difference, level: 5 }" />
+                  </article>
+                }
+              </div>
+              <details><summary>Arm measurements and per-seed results</summary><h4>Measurements</h4><gcsp-fact-list [rows]="facts(arm.measures)" presentation="source" /><h4>Per-seed results</h4><gcsp-fact-list [rows]="facts(arm.perSeed)" presentation="source" /></details>
             </section>
           }
-          <details><summary>Effects of tried values against today’s value, by route</summary><pre>{{ json(stored.result.effects) }}</pre></details>
+          <details><summary>Effects of tried values against today’s value, by route</summary><gcsp-fact-list [rows]="facts(stored.result.effects)" presentation="source" /></details>
         }
         <details class="comparison-fold"><summary>Assumptions, seeds and provenance</summary>
-          <div class="comparison-table" role="region" aria-label="Comparison assumptions" tabindex="0"><table><caption>Assumptions supplied with this result</caption><thead><tr><th scope="col">Setting</th><th scope="col">Value</th><th scope="col">Unit</th><th scope="col">Status</th><th scope="col">Basis</th></tr></thead><tbody>@for (assumption of stored.result.assumptions; track assumption.key) { <tr><th scope="row">{{ assumption.key }}</th><td><pre>{{ json(assumption.value) }}</pre>@if (assumption.source !== undefined) { <p>Source: {{ json(assumption.source) }}</p> }@if (assumption.policyVersion) { <p>Policy: {{ assumption.policyVersion }}</p> }</td><td>{{ plain(assumption.unit) }}</td><td>{{ words(assumption.status) }}</td><td>{{ plain(assumption.basis) }}</td></tr> }</tbody></table></div>
+          <div class="comparison-table" role="region" aria-label="Comparison assumptions" tabindex="0"><table><caption>Assumptions supplied with this result</caption><thead><tr><th scope="col">Setting</th><th scope="col">Value</th><th scope="col">Unit</th><th scope="col">Status</th><th scope="col">Basis</th></tr></thead><tbody>@for (assumption of stored.result.assumptions; track assumption.key) { <tr><th scope="row">{{ assumption.key }}</th><td><gcsp-fact-list [rows]="facts(assumption.value)" presentation="source" />@if (assumption.source !== undefined) { <gcsp-fact-list [rows]="facts(assumption.source, 'Source')" presentation="source" /> }@if (assumption.policyVersion) { <p>Policy: {{ assumption.policyVersion }}</p> }</td><td>{{ plain(assumption.unit) }}</td><td>{{ words(assumption.status) }}</td><td>{{ plain(assumption.basis) }}</td></tr> }</tbody></table></div>
           <dl><div><dt>Seeds</dt><dd>{{ stored.result.manifest.seeds.join(', ') }}</dd></div><div><dt>Stored at</dt><dd>{{ stored.storedAt }}</dd></div><div><dt>Digest</dt><dd>{{ stored.resultDigest }}</dd></div></dl>
-          <h3>Manifest and unchanged workload</h3><pre>{{ json(stored.result.manifest) }}</pre><h3>Comparison rule</h3><pre>{{ json(stored.result.rule) }}</pre><h3>Measurements and per-seed results</h3><pre>{{ json(stored.result.measures) }}</pre><pre>{{ json(stored.result.perSeed) }}</pre>
+          <h3>Manifest and unchanged workload</h3><gcsp-fact-list [rows]="facts(stored.result.manifest)" presentation="source" /><h3>Comparison rule</h3><gcsp-fact-list [rows]="facts(stored.result.rule)" presentation="source" /><h3>Measurements</h3><gcsp-fact-list [rows]="facts(stored.result.measures)" presentation="source" /><h3>Per-seed results</h3><gcsp-fact-list [rows]="facts(stored.result.perSeed)" presentation="source" />
         </details>
         <section><h3>What this replay leaves out</h3><ul>@for (limitation of stored.result.limitations; track $index) { <li>{{ plain(limitation) }}</li> }</ul></section>
       </section>
@@ -81,4 +94,13 @@
   }
 </div>
 
+</ng-template>
+
+<ng-template #measureBody let-difference let-level="level">
+  @let display = measureView(difference);
+  @if (level === 5) { <h4 class="gcsp-comparison-h3">{{ measure(difference.measure) }}</h4> }
+  @else { <h3 class="gcsp-comparison-h3">{{ measure(difference.measure) }}</h3> }
+  <gcsp-range-bar label="Mean and range across seeds" [rows]="display.rows" [scale]="display.scale" [format]="display.format" [level]="level" />
+  <p class="gcsp-comparison-difference">{{ display.differenceText }}</p>
+  <p class="gcsp-comparison-verdict"><span class="gcsp-comparison-verdict-text">{{ verdict(difference.verdict) }}</span> <span class="gcsp-note">{{ words(difference.betterWhen) }} is better</span></p>
 </ng-template>
