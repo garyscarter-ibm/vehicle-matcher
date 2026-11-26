@@ -4026,12 +4026,35 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 - **Framework follow-up:** Preserve the existing proposal to distinguish absent fields from explicit empty lists. This pass does not verify that guard or prove the current native link state.
 
 
-### 2026-11-26 03:37 UTC · usget-velko · DL-20261126-VELKO-15 · Attachment capture corrected; staging uncertainty retained
+### 2026-11-26 03:33 UTC · usget-velko · DL-20261126-VELKO-15 · Attachment capture corrected; staging uncertainty retained
 
 - F554 phase-one upload commands exited 0 twice, but the inline wrapper discarded raw stdout before extracting the file ID. No phase-two attach was called. The exact lost responses cannot be reconstructed; both original staging outcomes remain unknown. Native `key = FUCQ-554 AND attachments IS EMPTY` matched before a corrected bounded retry.
 - Root retained upload stdout in memory before parsing, supplied signed curl configuration on stdin, persisted each returned file ID before phase two, then attached all four final review/summary 1280 pairs: 1647842–1647845. The native result comment/readback remain in progress. State: `.claude/poller/velko-f554-20261126/f554-jira-publication-state.json`. This verifies attachment operations, not human parity acceptance or cleanup of the unknown staged uploads.
 - Framework improvement proposed: preserve a bounded safe operation receipt before parsing a wrapped command result; retain uncertain outcomes across recovery. No helper patch or new delivery gate added.
 
-### 2026-11-26 03:37 UTC · usget-velko · DL-20261126-VELKO-16 · Product-map observation time preserved
+### 2026-11-26 03:33 UTC · usget-velko · DL-20261126-VELKO-16 · Product-map observation time preserved
 
 - The normal map importer stamps import time and ignores the retained native observation field. For F596, root invoked its normal CLI with an in-memory clock fixed to the actual 03:09:51Z native readback, then recorded explicit unsliced development and the verified demo-control association. All 357 existing story rows/order and other component facts were checked unchanged. No active worker or acceptance inferred. A generic source-observation parameter is proposed; no helper change made.
+
+
+### 2026-11-26 03:44:50 UTC · usget-velko · DL-20261118-RG-016 recurrence · Story ref publication
+
+- F521's first `sg.push(root)` published configured base, not the Story ref. The lead corrected it with an ordinary explicit Story-ref push through `sg.git`, verified remote334fa9fec, then used the explicit route for bc439356b. No force push, branch switch or false final publication claim. This re-observes the documented CLI limitation; proposed explicit branch publication/clear target messaging remains unimplemented.
+
+### 2026-11-26 03:44:50 UTC · usget-velko · DL-20261126-VELKO-17 · Screen success coverage missing from initial F521 proof
+
+- Root read committed browser proof bc439356b against original AC2. It sets writePending before the only recovered confirmation, proving a new pending202 write and uncertain-ack protection, while normal provider-recovered200 success is only in the separate signed HTTP test. It does not yet establish the original successful screen confirmation item.
+- Root directed the owning lead to add a separate actual recovered-provider200/requested screen path, retaining genuinepending/malformedACK coverage and original duplicate protection. Correction and execution remain pending; no acceptance claimed. This is original-criterion verification, no new gate or unrelated full suite. Framework proposal: map each original criterion to the actual terminal response/state observed by its screen test, within existing review.
+
+### 2026-11-26 03:55:06 UTC · usget-codex26 · DL-20261126-VELKO-11 · Linked-issue retries remain inconclusive
+
+- **New evidence:** after the first capture failed with `TextEncoder is not defined`, the exact `linkedIssues(FUCQ-590)` and `linkedIssues(FUCQ-591)` queries were each run twice. The saved retries from 03:08:54–03:08:55 UTC returned zero rows, one page per query.
+- **Impact/action:** this does not resolve the pass-4/5 response-layer discrepancy: direct issue reads still omit `issuelinks` in `content[0].text`, while `structuredContent` shows `[]`. FUCQ-590/591 link state remains unknown; no removed link is inferred and no origin was changed.
+- **Framework follow-up:** preserve the existing proposal to distinguish an omitted field from an explicit empty list and to retain the first raw response when serialization fails. No helper change or resolution is claimed.
+
+### 2026-11-26 03:55:06 UTC · usget-codex26 · DL-20261126-CODEX26-001 · Audit completion contract unavailable
+
+- **Issue/impact:** the project procedure requires `jira_sync.py audit --issues <file> --plan <saved-jql.json> --complete` to attest pagination and record the audit watermark. The checked-in parser accepts only `--issues`, `--origins` and `--check`; `cmd_audit` prints a report without saving a completion record. The completed search covered 284 issues and 102 referenced origin Stories; the supported audit reported 275 checked, clean, zero parent updates or mismatch findings, 37 `origin_unknown` and nine exempt. No completion watermark was recorded.
+- **Cause/uncertainty:** the documented audit workflow and helper interface do not match. No evidence establishes whether the helper implementation or the procedure is stale.
+- **Action/outcome:** ran the supported audit over all saved pages and origins, retained its report, and left Jira parenting unchanged. No helper or procedure was modified.
+- **Framework follow-up:** align the helper and documented procedure so the complete-page attestation and audit state are supported. No new gate or policy change is proposed.

@@ -35,6 +35,7 @@ CASES = {
     'f559': 'apps/gcsp-web/e2e/greg-planning-parity.test.mjs',
     'f561': 'apps/gcsp-web/e2e/presenter-parity.test.mjs',
     'f520': 'apps/gcsp-web/e2e/manual-review.test.mjs',
+    'f521': 'apps/gcsp-web/e2e/orders-no-effect-retry.test.mjs',
     'f595': 'apps/gcsp-web/e2e/account-release-parity.test.mjs',
 }
 
@@ -155,7 +156,18 @@ def journal_records(retained):
 
 
 def same_identity(record, current):
-    return current is not None and all(current.get(key) == record.get(key) for key in ('pid', 'pgid', 'start', 'executable'))
+    if current is None or not all(current.get(key) == record.get(key) for key in ('pid', 'pgid', 'start')):
+        return False
+    if current.get('executable') == record.get('executable'):
+        return True
+    transition = record.get('execTransition')
+    if not (record.get('caseId') == 'f521' and record.get('name') == 'api-f521-host'
+            and record.get('pgid') == record.get('pid') and isinstance(transition, dict)
+            and transition.get('kind') == 'f521-maven-to-java'):
+        return False
+    expected = transition.get('expectedExecutable')
+    return (isinstance(expected, str) and Path(expected).is_absolute()
+            and current.get('executable') == expected)
 
 
 def stop_recorded(retained):

@@ -9,7 +9,7 @@ const context = (): OrdersReadContext => ({ subject: 'subject', environmentId: '
 const identity = { orderUuid: 'order', employeeId: 'employee', runId: 'run' };
 const slot = { slotId: 'offered', start: '2026-11-15T09:00:00Z' };
 const ok = <T>(value: T): { status: 'ok'; value: T } => ({ status: 'ok', value });
-async function setup(appointmentState = 'not-requested') {
+async function setup(appointmentState = 'not-requested', commandId: () => string = () => 'command', appointmentVersion = 2) {
   let ctx: OrdersReadContext | null = context();
   const reads: OrdersReadPort = {
     readOrders: async () => ok({ orders: [{ ...identity, entitlementSlotId: 'entitlement' }], failed: [], failedCount: 0, nextAfter: null, pageEvidence: [] }),
@@ -17,7 +17,7 @@ async function setup(appointmentState = 'not-requested') {
     readDocuments: async () => ok({ contractVersion: 'lifecycle.documents.v1', orders: [{ ...identity, contractVersion: 'lifecycle.documents.v1', documentsRevision: 3, acknowledgementSupported: true,
       items: [{ itemId: 'agreement', label: 'Agreement', kind: 'document', owner: 'employee', status: 'waiting-for-employee' }], tasks: [{ itemId: 'agreement', status: 'waiting-for-employee', actionable: true }],
       readiness: { ready: false, state: 'waiting', documentsComplete: false, vehicleReady: true, blocking: ['agreement'], failed: [] } }] }),
-    readAppointment: async () => ok({ ...identity, contractVersion: 'lifecycle.appointments.v1', version: 2, state: appointmentState, booked: false,
+    readAppointment: async () => ok({ ...identity, contractVersion: 'lifecycle.appointments.v1', version: appointmentVersion, state: appointmentState, booked: false,
       offeredSlots: [slot], owner: 'employee', provider: { mode: 'configured' }, eligibility: { eligible: true } }),
     readReturnPlan: async () => ok({ ...identity, contractVersion: 'lifecycle.return-plan.v1', version: 4, state: 'not-planned', applicable: true,
       scheduled: false, choices: [{ id: 'same-visit', available: true }], offeredSlots: { 'same-visit': [slot] }, owner: 'employee', provider: { mode: 'configured' } }),
@@ -25,7 +25,7 @@ async function setup(appointmentState = 'not-requested') {
   const controller = new OrdersController(reads, () => ctx); await controller.load();
   let state = controller.state;
   const execute = vi.fn<OrdersCommandPort['execute']>(async () => ({ status: 'pending', operationId: 'operation', retryable: false }));
-  const actions = new OrdersActions({ execute }, () => state, () => ctx, () => {}, () => 'command');
+  const actions = new OrdersActions({ execute }, () => state, () => ctx, () => {}, commandId);
   return { actions, execute, controller, reads, setState: (s: OrdersControllerState) => { state = s; }, getState: () => state, setContext: (c: OrdersReadContext | null) => { ctx = c; } };
 }
 describe('reviewed employee lifecycle actions', () => {
@@ -80,6 +80,55 @@ describe('reviewed employee lifecycle actions', () => {
     expect(s.execute).toHaveBeenCalledOnce(); resolve({ status: 'uncertain', retryable: false }); await pending;
     s.actions.refreshing(); expect(s.actions.locked('appointment')).toBe(true); expect(s.actions.prepare({ kind: 'request-appointment', slotId: slot.slotId })).toBe(false);
     expect(s.actions.prepare({ kind: 'acknowledge', itemId: 'agreement' })).toBe(true);
+  });
+  it('requires an authoritative recovery read before a new deliberate command after a proven offer refusal', async () => {
+    let sequence = 0;
+    const s = await setup('not-requested', () => `command-${++sequence}`, 0);
+    s.execute.mockResolvedValueOnce({ status: 'unavailable', code: 'offer-unavailable', retryable: true, httpStatus: 503 });
+    expect(s.actions.prepare({ kind: 'request-appointment', slotId: slot.slotId })).toBe(true);
+    const first = s.actions.state.review!.command.commandId;
+    expect(s.actions.state.review!.command).toMatchObject({ expectedVersion: 0 });
+    await s.actions.confirm();
+    expect(s.actions.state.result).toMatchObject({ status: 'unavailable', code: 'offer-unavailable' });
+    expect(s.actions.locked('appointment')).toBe(true);
+    expect(s.actions.prepare({ kind: 'request-appointment', slotId: slot.slotId })).toBe(false);
+    s.actions.refreshing();
+    expect(s.actions.locked('appointment')).toBe(true);
+    await s.controller.refresh(); s.setState(s.controller.state);
+    expect(s.actions.locked('appointment')).toBe(false);
+    expect(s.actions.state.review).toBeNull();
+    expect(s.execute).toHaveBeenCalledOnce();
+    expect(s.actions.prepare({ kind: 'request-appointment', slotId: slot.slotId })).toBe(true);
+    expect(s.actions.state.review!.command.commandId).not.toBe(first);
+    expect(s.execute).toHaveBeenCalledOnce();
+    await s.actions.confirm();
+    expect(s.execute).toHaveBeenCalledTimes(2);
+    expect(s.actions.state.result?.status).toBe('pending');
+    expect(s.actions.locked('appointment')).toBe(true);
+  });
+  it.each([
+    { status: 'unavailable', code: 'lifecycle-response-scope-mismatch', retryable: true, httpStatus: 503 },
+    { status: 'unavailable', code: 'offer-unavailable', retryable: true, httpStatus: 503, operationId: 'possibly-recorded' },
+    { status: 'unavailable', code: 'offer-unavailable', retryable: true, httpStatus: 200 },
+    { status: 'pending', code: 'offer-unavailable', retryable: false, operationId: 'pending-operation', httpStatus: 202 },
+    { status: 'uncertain', code: 'offer-unavailable', retryable: false, httpStatus: 503 },
+    { status: 'unsupported', code: 'provider-refused', retryable: false, httpStatus: 422 },
+  ] as const)('preserves duplicate protection after $status $code rather than assuming no effect', async (result) => {
+    const s = await setup('not-requested', () => crypto.randomUUID(), 0);
+    s.execute.mockResolvedValueOnce(result);
+    s.actions.prepare({ kind: 'request-appointment', slotId: slot.slotId }); await s.actions.confirm();
+    s.actions.refreshing(); await s.controller.refresh(); s.setState(s.controller.state);
+    expect(s.actions.locked('appointment')).toBe(true);
+    expect(s.actions.prepare({ kind: 'request-appointment', slotId: slot.slotId })).toBe(false);
+    expect(s.execute).toHaveBeenCalledOnce();
+  });
+  it('does not treat an offer code on another lifecycle command as proof that its write had no effect', async () => {
+    const s = await setup();
+    s.execute.mockResolvedValueOnce({ status: 'unavailable', code: 'offer-unavailable', retryable: true, httpStatus: 503 });
+    s.actions.prepare({ kind: 'acknowledge', itemId: 'agreement' }); await s.actions.confirm();
+    s.actions.refreshing(); await s.controller.refresh(); s.setState(s.controller.state);
+    expect(s.actions.locked('documents')).toBe(true);
+    expect(s.actions.prepare({ kind: 'acknowledge', itemId: 'agreement' })).toBe(false);
   });
   it('drops a late command result and clears review on context notification/disposal', async () => {
     const s = await setup(); let resolve!: (r: LifecycleResult<OrdersCommandValue>) => void;
