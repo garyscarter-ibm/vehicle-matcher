@@ -342,6 +342,13 @@ test('FUCQ-554: authoritative manual review, six-card summary and safe navigatio
       const claim = sourceGood(await runtime.manualClaims.readClaim(principal), 'Frozen actual manual hold');
       assert.equal(claim.quote.orderUuid, chosenId); assert.equal(claim.hold.phase, 'preview');
       assert.equal(Date.parse(claim.hold.expiresAt), Date.parse(evidence.preview.hold.expiresAt), 'Same live preview deadline');
+      const reviewImage = page.locator('.gcsp-review-vehicle img.vm-card-photo');
+      await reviewImage.waitFor({ state: 'visible' }); await reviewImage.scrollIntoViewIfNeeded();
+      await until(() => reviewImage.evaluate(image => image.complete && image.naturalWidth > 0), 'Frozen review photo loads before capture');
+      await reviewImage.evaluate(image => image.decode());
+      const reviewMedia = await reviewImage.evaluate(image => ({ src: image.getAttribute('src'), complete: image.complete,
+        naturalWidth: image.naturalWidth, naturalHeight: image.naturalHeight }));
+      assert.equal(reviewMedia.src, claim.quote.facts.display.photo, 'Frozen review paints its exact pinned photo');
       await capture(suite, page, 'node-review-1280');
       await page.setViewportSize({ width: 375, height: 812 }); await capture(suite, page, 'node-review-375');
       await page.setViewportSize({ width: 1280, height: 800 });
@@ -355,7 +362,7 @@ test('FUCQ-554: authoritative manual review, six-card summary and safe navigatio
       assert.equal(Date.parse(phase.hold.expiresAt), Date.parse(evidence.summary.hold.expiresAt), 'Same live order-review deadline');
       await capture(suite, page, 'node-summary-1280');
       await page.setViewportSize({ width: 375, height: 812 }); await capture(suite, page, 'node-summary-375');
-      receipt.manualReview = { claim, summary: phase, choices: initial.choices, humanAcceptance: 'pending actual human pair review' };
+      receipt.manualReview = { claim, summary: phase, choices: initial.choices, reviewMedia, humanAcceptance: 'pending actual human pair review' };
       return {};
     });
     assert.equal(replay.state, 'matched', 'Frozen live composition actually ran');
