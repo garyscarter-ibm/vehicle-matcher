@@ -8,8 +8,11 @@ const chargingCode = 'charging-unconfirmed';
 const chargingLabel = 'Charging access not confirmed';
 const reasons = { paula: 'My replacement needs a charging check.', alex: 'Please review my renewal.', greg: 'Please review my later renewal.' };
 const good = (response, label) => {
-  assert.equal(response.status, 200, label);
-  assert.equal(response.body?.status, 'ok', label);
+  const key = value => typeof value === 'string' && /^[a-zA-Z0-9_.-]{1,96}$/.test(value) ? value : undefined;
+  const diagnostic = JSON.stringify({ httpStatus: response.status, status: key(response.body?.status), code: key(response.body?.code),
+    fields: Array.isArray(response.body?.reasons) ? response.body.reasons.slice(0, 5).map(item => key(item?.field)).filter(Boolean) : [] });
+  assert.equal(response.status, 200, `${label}: ${diagnostic}`);
+  assert.equal(response.body?.status, 'ok', `${label}: ${diagnostic}`);
   return response.body.value;
 };
 const serviceGood = (response, label) => {
@@ -58,9 +61,16 @@ async function openCases(callPaula, callAlex, callGreg) {
   good(await callAlex('POST', '/cases', { commandId: 'f557-alex-help', reason: reasons.alex }), 'Open actual Alex case');
   const greg = good(await callGreg('POST', '/cases', { commandId: 'f557-greg-help', reason: reasons.greg }), 'Open Greg’s actual employee case').case;
   assert.ok(greg.renewalDeadline > paula.renewalDeadline, 'The canonical Greg renewal supplies the later deadline');
-  good(await callGreg('POST', '/scheme-team/cases/update', { commandId: 'f557-progress', caseId: paula.caseId,
-    expectedVersion: paula.version, status: 'in-progress', reason: 'Checking the available charging evidence.',
-    nextAction: 'Confirm charging access with Paula.', dueAt: paula.dueAt }), 'Progress the real Paula case');
+  const options = good(await callGreg('GET', '/scheme-team/cases/options?caseId=' + encodeURIComponent(paula.caseId)),
+    'Read current Paula case options before preparing the update');
+  assert.equal(options.case.caseId, paula.caseId);
+  assert.ok(options.nextStatuses.includes('in-progress'), 'The actual case permits the intended status');
+  assert.ok(Number.isFinite(Date.parse(options.asOf)), 'Actual case options provide the run clock');
+  // The first release can open this case more than its response window before the final release.
+  const dueAt = new Date(Date.parse(options.asOf) + 60 * 60 * 1000).toISOString();
+  good(await callGreg('POST', '/scheme-team/cases/update', { commandId: 'f557-progress', caseId: options.case.caseId,
+    expectedVersion: options.case.version, status: 'in-progress', reason: 'Checking the available charging evidence.',
+    nextAction: 'Confirm charging access with Paula.', dueAt }), 'Progress the real Paula case');
   const queue = good(await callGreg('GET', '/scheme-team/cases'), 'Read actual queue after the case commands');
   assert.ok(queue.cases.some(row => row.employeeId === 'employee-paula' && row.status === 'in-progress'));
   assert.ok(queue.cases.some(row => row.employeeId === 'employee-alex' && row.status === 'open'));
