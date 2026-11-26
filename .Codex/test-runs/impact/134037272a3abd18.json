@@ -46,8 +46,104 @@
     "comparisonpresentation": "comparison.presentation.spec.ts4tests",
     "rangebar": "range-bar.component.spec.ts4tests"
   },
-  "boundaries": "ComparisonClient/transport/backend/math/policy/storage unchanged; app session/state methods preserved. Optional frozen comparison import/earlyGreg proof branch separate, runtime pending.",
-  "excluded": "Full suites deferred sharedbatch; ratchet pending F558fieldrelease; finalactualruntime/humanAC4 pending.",
+  "boundaries": "Existing ComparisonClient/transport/backend/math/policy/storage unchanged. Optional expected.comparison frozen import and early Greg branch preserve all other callers/defaults; same full HTTP result and digest observed before capture. Shared helper callers remain root covering batch scope.",
+  "excluded": "Full suites deferred to root shared batch; human originalAC4 pending actual collaborator verdict. No new job/full-size workload; no Safari/full assistive-technology/external live provider coverage claimed.",
   "resources": "Parent one3GiBguardedworker; externalmanifest retained removed, scratch absent, .angular absent; shareddependency link preserved; no OneDriveaccess.",
-  "drift_rc": 0
+  "drift_rc": 0,
+  "tested_product_identity_preserved_at_final_source": true,
+  "final_executable_source": "562bf8f558d9b24e39557a7c05709bab3744055f",
+  "proof_test_files": {
+    "apps/gcsp-web/e2e/comparison-parity.test.mjs": "be582535db578a3c11cc27d2f5b9ab92a1496f3b2cd90a954fd1eec10d63a033",
+    "apps/gcsp-web/e2e/node-replay.mjs": "a204cfcfcb5261f21a03e3fc2f5878713c1c1dc16430a798138ec587c0cee41e",
+    "apps/gcsp-web/e2e/run.py": "1db6b23292e529147ac622380f1d36c574f9aa96da83be41da2bf64565db64b5",
+    "apps/gcsp-web/e2e/composition.mjs": "4633204481df2fbcfe4bbacd86cf15ededb852c3f8ce18d885142f732e9efb22",
+    "server/test/ui-ratchet.json": "006286e754be8127a8547d6c734fda95417d6e9778ae6fc2c5bc9ecf03f30b88",
+    "COMPONENTS.md": "ddbed2af5c9ff29c4b1260ff406ba4abaf2aa8f00f4307c2217a3691b70d5dcf"
+  },
+  "ratchet": {
+    "command": "node --test --test-concurrency=1 server/test/ui-ratchet.test.js server/test/gcsp-source-kit-ratchet.test.js",
+    "pass": 340,
+    "fail": 0,
+    "skip": 0,
+    "wall_s": 0.49406966600508895,
+    "peak_rss_bytes": 124092416,
+    "scratch_absent": true,
+    "measured_unported_components": 17,
+    "baseline_change": "18 -> 17 only"
+  },
+  "connected": {
+    "command": "npm --prefix apps/gcsp-web run test:e2e -- --case f560",
+    "source": "562bf8f558d9b24e39557a7c05709bab3744055f",
+    "run": "web-e2e-20261126-054402-572490",
+    "reported_tests": 6,
+    "leaf_groups": 5,
+    "pass": 6,
+    "fail": 0,
+    "skip": 0,
+    "actual_read": {
+      "experimentId": "process-only",
+      "resultId": "process-comparison-94c7760154fa5a05d5d6dc9b7c768fa0",
+      "resultDigest": "d388e3371ea4a7f3c3665102e9452e7ccd0940b685b64fa2d623e7e47a3f3027",
+      "policyVersion": "gcsp-policy-v1",
+      "activePolicyVersion": "gcsp-policy-v1+offer-journey-v1",
+      "origin": "retained",
+      "storedAt": "2026-11-26T05:44:12.054310Z",
+      "measures": [
+        "acceptableCoverage",
+        "carsNeverAllocated",
+        "heldNotTakenCarDays",
+        "declinedOffers",
+        "expiredOffers",
+        "failedClaims",
+        "retries",
+        "meanAcceptedFit",
+        "accessGroupCoverage:delayed-access",
+        "accessGroupCoverage:immediate-access",
+        "accessGroupCoverage:intermittent-access"
+      ]
+    },
+    "measure_bars": 11,
+    "viewports": [
+      1280,
+      375
+    ],
+    "keyboard_choices_per_width": 4,
+    "boundary_states": [
+      "actual null catalogue and per-experiment404",
+      "actual transport abort and recovery",
+      "signed employee403 and access-denied"
+    ],
+    "job_posts": 0,
+    "scratch_removed_and_observed_absent": true,
+    "database_dropped": true,
+    "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f560-20261126/final-browser-summary.json"
+  },
+  "failure_history": [
+    "Initial product compile red was setup-only, not actual red proof. Corrected actual DOM red had intended JSONpre failure; six productrun receipts retained.",
+    "Product green expectations corrected against source labels/flat range and real mapper nested value ambiguity; final71 passed.",
+    "cbffb352 proof failed strict key expectation omitted retained observedSeeds; full result/digest equality retained.",
+    "241876da0 passed6/6 but top-anchor capture framing superseded by bd3948a3 final6/6; product unchanged.",
+    "bd3948a3a execution6/6 retained as earlier insufficient375 unavailable capture. Isolated B caught old-heading race;562bf8f55 recovers to ready before second actual abort and asserts no Loadingheading. Final6/6 and both A/B personally confirmed correctederrorimages. DetectorJSON[]0findings; B had one concrete evidencefinding, resolved."
+  ],
+  "root_independent_replay": {
+    "source": "bd3948a3a36d00c3d7a830a89c2a16eb255cff1f",
+    "reused_at": "562bf8f558d9b24e39557a7c05709bab3744055f",
+    "basis": "Only proof +8 correction after replay; product/unit/ratchet input identities unchanged; root read exactdelta and approvedreuse",
+    "angular": {
+      "pass": 71,
+      "files": 4,
+      "wall_s": 9.675,
+      "peak_rss_bytes": 1678770176,
+      "peak_scratch_bytes": 9405696
+    },
+    "ratchet": {
+      "pass": 340,
+      "wall_s": 0.494,
+      "peak_rss_bytes": 124092416,
+      "peak_scratch_bytes": 0
+    },
+    "scratch_observed_absent": true,
+    "shared_web_boundary": "2175 tests /135specs at696db20a predatesF560; root coveringmerge batchpending"
+  },
+  "final_metadata_equivalence": "Result, impact, critique and COMPONENTS range-bar evidence text only; ported status, component path and ratchet inputs/meaning unchanged. Executable source remains562bf8f55."
 }
