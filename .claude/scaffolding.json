@@ -155,5 +155,10 @@
       "site_assembly": "Existing explicit retail assets, overlaid with product-map",
       "data_branch": "gcsp-poc"
     }
+  },
+  "extensions": {
+    "jira_sync": [
+      "ui"
+    ]
   }
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.5.0+vehicle-matcher.2"  # Project-owned UI-plan fix; see docs/gcsp/poller-tooling-2026-11-05.md.
+VERSION = "1.8.0"      # first, so the update check finds it within its first lines, ahead of the long docstring
 __doc__ = """jira_sync.py -- the story sync between a Jira-backed project's Jira issues and its dev inbox. Vendored into a
 project's `_tools/` by project-scaffolding, beside scaffold_git.py and dev_mail.py, which it loads by path (sys.path is
 never touched): `inbox.git_tool` in .claude/scaffolding.json names the first (default _tools/scaffold_git.py).
@@ -29,7 +29,8 @@ Subcommands (exit 0 done, 2 refused, 3 git or tool failure)
                                skipped, not imported.
                            Then the last pass is set to --now (else the newest `updated` seen) in .claude/jira-sync.json.
                            Prints a JSON report: imported, updated, changed_in_progress, skipped, comments, notify, failed,
-                           evidence_downloads, unparented ({key, type} for each open non-Epic in FILE with no parent: run
+                           evidence_downloads, deferred ({key, reason}: dirty/import_lease), ignored ({key, reason}:
+                           closed), unparented ({key, type} for each open non-Epic in FILE with no parent: run
                            `audit` for the fix). Each evidence item is {key, story, attachment_id, filename, mime_type, size?};
                            no URLs. Requests repeat for every open local Bug, even on an empty input page, until the
                            session verifies its local cache. Metadata is never treated as delivered bytes.
@@ -56,7 +57,9 @@ Subcommands (exit 0 done, 2 refused, 3 git or tool failure)
                                plus label `review`, Rejected is Done plus label `wont-do`). `label` and `resolution` are in
                                the op when the entry has them; `clear_labels` lists the labels of the other statuses, for
                                the poller to remove from the issue.
-                             {"op": "start_date", "key", "date": "YYYY-MM-DD", "only_if_empty": true}
+                             {"op": "start_date", "key", "date": "YYYY-MM-DD", "only_if_empty": true, "field"?}
+                               `field` is the record's `start_date_field` (customfield_NNNNN) when it has a valid one;
+                               without it the poller resolves the field from the story or epic type's metadata.
                                emitted from claim/history evidence for every adopted item and its epic, including
                                first sync after release, merge or rejection, independent of type, points or assignee.
                                Uses the first committed claim date, then lease date, else this sync's local day for
@@ -97,7 +100,7 @@ Subcommands (exit 0 done, 2 refused, 3 git or tool failure)
                            git state prints nothing on the next pass.
                            --mark-done FILE takes the ops the poller applied (the list push printed, or a subset) and records
                            them as pushed; ops not marked are printed again next time. Prints {"marked": [...]}.
-  audit --issues FILE [--origins FILE ...] [--check]
+  audit --issues FILE [--origins FILE ...] [--check] [--plan JQL_JSON --complete]
                            the parenting check, offline. FILE holds every page of `jql`'s `audit` query (unparented
                            non-Epics and open Bugs). A Story/Task needs an Epic parent. A Bug needs its origin (bug_origin's
                            rule: one native story link) and that Story's Epic as parent; with origin unknown it needs some
@@ -109,35 +112,74 @@ Subcommands (exit 0 done, 2 refused, 3 git or tool failure)
                            poller applies it with editJiraIssue `parent`; needs_epic and parent_mismatch go to a person.
                            `fetch` lists origin Stories not in FILE: fetch them (parent, issuetype) and pass --origins.
                            --check exits 1 unless clean (origin_unknown alone is clean: it is tracked, not silent).
+                           For incremental planning save `jql`'s JSON before fetching. Its `audit` block keeps jql/fields
+                           and adds version, mode (full/delta), since, started_at, config_digest and base. Fetch every
+                           page of that exact query, then pass --plan JQL_JSON --complete, including on empty deltas.
+                           --complete attests complete pagination; explicit partial-page metadata is always refused.
+                           A first/config-changed/new-day pass is full; deltas query all updated project issue types,
+                           including origin Stories whose Epic or type changed. Only changed candidates/dependants
+                           are evaluated. Input must contain requested fields and fresh origin dependencies (fetch
+                           unknown ones and rerun the same plan with --origins). Missing dependencies leave the cache
+                           unrecorded; stale plans refuse. `cache` reports recorded, mode, evaluated keys and retained
+                           candidate/origin counts. Main report lists newly evaluated rows; `outstanding` retains all
+                           current unresolved rows for visibility. --check checks outstanding. Pending set_parent
+                           operations repeat until Jira confirms the change, so failed writes remain retryable; retain
+                           outstanding manual findings without repeating unchanged owner requests.
+                           The cursor advances to captured started_at, never newest row or audit completion time;
+                           inclusive minute queries preserve changes during fetch. A daily full pass rebuilds/prunes
+                           current evidence. No --plan preserves the original stateless offline audit.
+                           `jql --now ISO` overrides captured audit start for deterministic/replayed planning.
   status                   print the state file and the import leases (refs/leases/jira/*).
 
 State: <shared checkout>/.claude/jira-sync.json, per machine, kept out of git (scaffold_git's LOCAL_FILES):
   {"last_pass": "yyyy-MM-dd HH:mm", "commented": {"SCAF-12": "goal,validate"}, "told": {"SCAF-12": "<digest>"},
+   "parenting_audit": {version, config_digest, last_pass, full_at, candidates, origins, reports, evidence_digest},
    "pushed": {"SCAF-12": {"transition": "<hash>", "assign": "<hash>", "fields": "<hash>", "labels": "<hash>",
                           "link": "<hash>"}}, "start_dates": {"SCAF-12": "yyyy-MM-dd"}}
+  `parenting_audit`: versioned current derived parenting snapshots/reports, not authored history. Only candidates
+  matching the full query and their linked endpoints are retained; Bug and origin changes invalidate dependants.
+  Its cache identity includes site, cloud, project and parenting configuration. Missing/corrupt/incompatible state
+  rebuilds from Jira; full refresh is required each calendar day. Existing state writes share the checkout mutex.
   `commented`: the missing-fields comment each issue has had, keyed by the set it named. `told`: a digest of the last
   change to a claimed story that was reported, so the same change is not reported twice. `pushed`: the hash of each op
   acknowledged by the poller. `start_dates`: first planned dates still awaiting acknowledgement, retried independently
   of the current workflow status and removed only after the date operation is acknowledged.
 
-Fields: Jira owns a story's title, kind, design_impact, ui, requested, epic, priority, priority_reason, size, depends_on,
-preconditions, goal, acceptance, files_or_areas, decided, out_of_scope and validate; git owns the
+Fields: Jira owns a story's title, kind, design_impact, requested, epic, priority, priority_reason, size, depends_on,
+preconditions, security, goal, acceptance, files_or_areas, decided, out_of_scope and validate; git owns the
 claim (story_points, claimed_by, status). Bugs also carry work_item_type, related_story, story_link_basis,
 reproduction_steps, expected_behaviour, actual_behaviour, optional environment and evidence metadata. Native configured
 Story links are independent from the Epic parent and blocking links. Missing or conflicting origin is unresolved.
 The description is read by markdown headings: Goal, Acceptance criteria (or
-Acceptance), Files or areas, Decided, Out of scope, Validate. An explicit `ui:` line anywhere in the description
-also supplies the top-level component plan. Any other line of a story (suggested_approach, say) is
+Acceptance), Files or areas, Decided, Out of scope, Validate, and optional Security. Any other line of a story (suggested_approach, say) is
 left as it is. Text before the first heading is the
 goal when there is no Goal heading. A field with no heading is left out, so dev_mail.py check-story names it.
-Labels: kind:<code|data|ui|docs> (default code), design-impact, size:<XS|S|M|L|XL> (default M).
+Labels: kind:<code|data|ui|docs> (default code), design-impact, size:<XS|S|M|L|XL> (default M). The kind: and size: labels
+are read by the kit's own always-on plugin, _tools/plugins/jira_sync/labels.py (see Extensions); the allowed values and the
+defaults stay here.
 The priority comes back through the record's backlog.priorities map (level -> Jira name); an unknown name is P3.
 `depends_on` lists the stories of imported issues this one "is blocked by"; a blocker not imported yet goes on a
 `preconditions:` line as "Jira <KEY> done", and moves to depends_on when that blocker is imported.
 
+Extensions (SCAF-70; _tools/kit_ext.py is the loader, references/extensions.md the contract). A plugin adds story fields; it
+never changes or removes the core ones (ORDER/OWNED, SECTION_WORDS, KINDS/SIZES stay here, passed to plugins as tuples,
+read-only mappings and copies). Two hooks, both on_error="skip": a failing plugin is skipped with one stderr line and pull and
+push carry on (the fields it declared then stay out of the Jira-owned set, so a story's existing lines are never removed on
+its account).
+  story_field_defs(root) -> [{"name", "after" (a field to follow; default size), "owned" (default False)}]
+  story_fields(root, issue, ctx) -> {field: "value" | ["lines", ...]} (written as `field: value`) for the issue (a copy of parse_issue's dict); ctx
+      has rec, key_to_story, sections (what `sections` gave), is_bug, kinds, sizes, defaults, label_value (a read-only mapping).
+A declared field named like a core field (or a git-owned line such as story_points) is refused with a warning. `owned: true`
+makes the field Jira-owned: rewritten, and removed when Jira lacks it, on every pull, and reported as changed on a claimed
+story; otherwise the field is written when the story is first imported and left alone after. kind and size are the one
+exception to "no core names": a plugin may return a valid value for them (the kit's labels plugin always does; the first
+valid answer wins). The kit's opt-in plugin `ui` (extensions.jira_sync: ["ui"]) imports an explicit `ui:` line of the
+description as the Jira-owned component plan. A tracker hook point (search, transition, comment) is planned, not built.
+
 Stdlib only; Python 3.9.
 """
 import argparse
+import copy
 import datetime
 import hashlib
 import importlib.util
@@ -147,6 +189,7 @@ import re
 import socket
 import sys
 import time
+import types
 
 STATE_REL = os.path.join(".claude", "jira-sync.json")
 LEASE_PREFIX = "jira/"
@@ -159,11 +202,12 @@ RASTER_MIMES = frozenset(("image/png", "image/jpeg", "image/gif", "image/webp", 
 # Fields in the order a story file carries them; the ones after `jira` that Jira owns are OWNED.
 ORDER = ["id", "jira", "title", "work_item_type", "related_story", "story_link_basis",
          "reproduction_steps", "expected_behaviour", "actual_behaviour", "environment", "evidence", "kind",
-         "design_impact", "ui", "requested", "epic", "priority", "priority_reason", "size",
+         "design_impact", "security", "requested", "epic", "priority", "priority_reason", "size",
          "depends_on", "preconditions", "goal", "acceptance", "files_or_areas", "decided", "out_of_scope", "validate"]
 OWNED = set(ORDER[2:])
+OPTIONAL_SECTION_FIELDS = ["security"]
 SECTION_FIELDS = ["goal", "acceptance", "files_or_areas", "decided", "out_of_scope", "validate"]
-SECTION_WORDS = {"goal": "Goal", "acceptance": "Acceptance criteria", "files_or_areas": "Files or areas",
+SECTION_WORDS = {"security": "Security", "goal": "Goal", "acceptance": "Acceptance criteria", "files_or_areas": "Files or areas",
                  "decided": "Decided", "out_of_scope": "Out of scope", "validate": "Validate"}
 HEADINGS = {"goal": "goal", "acceptance criteria": "acceptance", "acceptance": "acceptance",
             "files or areas": "files_or_areas", "files and areas": "files_or_areas", "files": "files_or_areas",
@@ -171,6 +215,7 @@ HEADINGS = {"goal": "goal", "acceptance criteria": "acceptance", "acceptance": "
             "validation": "validate"}
 BUG_FIELDS = ("related_story", "story_link_basis", "reproduction_steps", "expected_behaviour", "actual_behaviour")
 BUG_RECONCILIATION_VERSION = 1
+PARENTING_AUDIT_VERSION = 1
 SECTION_WORDS.update({"related_story": "Related story", "story_link_basis": "Story link basis",
                       "reproduction_steps": "Steps to reproduce", "expected_behaviour": "Expected behaviour",
                       "actual_behaviour": "Actual behaviour", "environment": "Environment"})
@@ -403,7 +448,13 @@ def parse_issue(raw):
             "labels": [l for l in (f.get("labels") or []) if isinstance(l, str)],
             "priority": _name(f.get("priority")), "updated": f.get("updated") or "", "created": f.get("created") or "",
             "reporter": _name(f.get("reporter")), "parent": parent.get("key") if isinstance(parent, dict) else None,
-            "blockers": blockers}
+            "blockers": blockers,
+            "audit_known": (all(k in f for k in ("summary", "description", "status", "issuetype", "labels",
+                                                  "issuelinks", "updated")) and
+                            bool(_name(f.get("issuetype"))) and bool(_name(status)) and bool(cat) and
+                            isinstance(f.get("labels"), list) and isinstance(f.get("issuelinks"), list) and
+                            bool(wall(f.get("updated")))),
+            "origin_known": bool(_name(f.get("issuetype"))) and bool(wall(f.get("updated")))}
 
 
 def read_issues(path):
@@ -413,12 +464,24 @@ def read_issues(path):
             data = json.load(f)
     except (OSError, ValueError) as e:
         raise Refused("cannot read %s: %s" % (path, e))
+    containers = []
     if isinstance(data, dict) and isinstance(data.get("data"), dict):
+        containers.append(data)
         data = data["data"]
     if isinstance(data, dict):
+        containers.append(data)
         data = data.get("issues")
     if isinstance(data, dict):                  # the MCP's newer {"issues": {"nodes": [...]}} page shape
+        containers.append(data)
         data = data.get("nodes")
+    for page in containers:
+        info = page.get("pageInfo") or {}
+        if (page.get("isLast") is False or page.get("hasNextPage") is True or
+                page.get("nextPageToken") or page.get("nextPage") or
+                (isinstance(info, dict) and info.get("hasNextPage") is True) or
+                (isinstance(page.get("total"), int) and isinstance(data, list) and
+                 (page.get("startAt", 0) != 0 or page["total"] > len(data)))):
+            raise Refused("%s is an incomplete Jira page; fetch and combine every page first" % path)
     if not isinstance(data, list):
         raise Refused("%s holds no list of issues (expected a list, or an object with `issues`)" % path)
     out = []
@@ -561,21 +624,194 @@ def bug_origin(issue, rec, key_to_story, secs):
     return next(iter(native))
 
 
-def issue_blocks(issue, rec, key_to_story):
-    """{field: file lines} for the fields Jira owns, from a parsed issue. `key_to_story` maps an imported issue's key to
-    its story id."""
-    key, labels = issue["key"], issue["labels"]
-    blocks = {"title": ["title: " + clean_title(issue["summary"], key)]}
+# ---------------------------------------------------------------- story-field plugins (kit_ext.py hook points, SCAF-70)
+
+DEFAULTS = {"kind": "code", "size": "M"}       # what a story gets when no plugin gives a valid kind: or size: label value
+LABEL_FIELDS = ("kind", "size")                # the core fields a KIT plugin (never a project extension) may give a value for
+# Lines the git side writes or reads in a story file (claims, triage, dev_mail's gates): a plugin can never declare one,
+# because an owned extension field is rewritten on every pull and would strip it.
+GIT_OWNED_LINES = {"jira_changed", "story_points", "claimed_by", "claimed_poller", "agent", "paused", "retires",
+                   "ports_screen", "expedite", "defect", "origin", "estimate", "tests", "prereqs", "triage", "id", "jira",
+                   "ui", "suggested_approach", "closed", "lease", "chain", "depth", "spawned"}
+# Names a plugin can never declare: every core field, and the lines the git side owns in a story file. (`ui` is listed
+# above only for project extensions: the kit's ui plugin declares it, see _field_allowed.)
+RESERVED = (set(ORDER) | set(SECTION_WORDS) | set(HEADINGS.values()) | set(BUG_FIELDS) | set(OPTIONAL_SECTION_FIELDS) |
+            GIT_OWNED_LINES)
+FIELD_NAME_RE = re.compile(r"^[a-z][a-z_]*$")   # split_story's KEYLINE only knows letters and underscores
+_KIT_EXT = []
+
+
+class Blocks(dict):
+    """issue_blocks' answer: {field: file lines}, plus `.fields`, the validated extension field definitions that apply
+    ({"name", "after", "owned", "plugin"}); render_new, merge_owned and differing read them from here."""
+    fields = ()
+
+
+def _kit_ext():
+    """The shared loader kit_ext.py next to this file, loaded by path, or None when it is absent or unusable (an older or
+    broken vendored copy); the kind: and size: labels are then not read and a story gets the defaults, with one warning."""
+    if not _KIT_EXT:
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "kit_ext.py")
+        mod, why = None, "it is missing"
+        if os.path.isfile(path):
+            try:
+                spec = importlib.util.spec_from_file_location("kit_ext_for_jira_sync", path)
+                mod = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(mod)
+                for needed in ("HookPoint", "run", "warn_once", "default_warn"):
+                    if not hasattr(mod, needed):
+                        raise AttributeError("no %s" % needed)
+            except (Exception, SystemExit) as e:
+                mod, why = None, "%s: %s" % (type(e).__name__, " ".join(str(e).split()))
+        if mod is None:
+            sys.stderr.write("jira_sync: _tools/kit_ext.py is unusable (%s): story-field plugins are not loaded, and the "
+                             "kind:/size: labels are read by jira_sync itself\n" % (why,))
+        _KIT_EXT.append(mod)
+    return _KIT_EXT[0]
+
+
+def _check_defs(answer):
+    if not isinstance(answer, (list, tuple)):
+        return "not a list of field definitions"
+    for d in answer:
+        if not isinstance(d, dict) or not isinstance(d.get("name"), str):
+            return "a definition is not a dict with a string name"
+        if not isinstance(d.get("after", ""), str) or not isinstance(d.get("owned", False), bool):
+            return "after must be a string and owned a bool"
+    return None
+
+
+def _check_fields(answer):
+    if not isinstance(answer, dict):
+        return "not a dict of field to value"
+    for k, v in answer.items():
+        lines = v if isinstance(v, (list, tuple)) else [v]
+        if not isinstance(k, str) or not all(isinstance(l, str) and "\n" not in l and "\r" not in l for l in lines):
+            return "a value is not one line of text, or a list of such lines"
+    return None
+
+
+def _hooks(ke):
+    return (ke.HookPoint("jira_sync", "story_field_defs", ("root",), _check_defs, "skip",
+                         "the story fields the plugin adds: [{name, after, owned}]"),
+            ke.HookPoint("jira_sync", "story_fields", ("root", "issue", "ctx"), _check_fields, "skip",
+                         "{field: value or [lines]} for one issue"))
+
+
+KIT_DECLARES = {"ui": "ui"}     # git-owned names a kit plugin (name -> field) may still declare: the kit's ui plugin, opt-in
+
+
+def _is_kit_plugin(root, plugin):
+    return os.path.isfile(os.path.join(root, "_tools", "plugins", "jira_sync", plugin + ".py"))
+
+
+def _kit_may_declare(root, plugin, name):
+    return KIT_DECLARES.get(plugin) == name and _is_kit_plugin(root, plugin)
+
+
+def field_defs(root):
+    """The validated extension story fields for `root`, in plugin order: [{"name", "after", "owned", "plugin"}]. A
+    definition that collides with a core field, a git-owned line or an earlier plugin's field is refused with one warning;
+    a plugin that failed gives none (so its lines in a story file are left alone)."""
+    ke = _kit_ext()
+    if ke is None:
+        return []
+    out, seen = [], set()
+    for plugin, defs in ke.run(root, _hooks(ke)[0], root):
+        for d in defs:
+            name = d["name"]
+            reserved = name in RESERVED and not _kit_may_declare(root, plugin, name)
+            if not FIELD_NAME_RE.match(name) or reserved or name in seen:
+                why = ("it is not a letters-and-underscores name" if not FIELD_NAME_RE.match(name) else
+                       "it is a core or git-owned field" if reserved else "an earlier plugin declared it")
+                ke.warn_once(root, "extension jira_sync/%s: field %s refused: %s" % (plugin, name, why), ke.default_warn)
+                continue
+            seen.add(name)
+            out.append({"name": name, "after": d.get("after") or "size", "owned": bool(d.get("owned", False)),
+                        "plugin": plugin})
+    return out
+
+
+def order_for(fields):
+    """ORDER with the extension fields inserted after the field each names (the end when that field is not known)."""
+    order = list(ORDER)
+    for d in fields:
+        order.insert(order.index(d["after"]) + 1 if d["after"] in order else len(order), d["name"])
+    return order
+
+
+def owned_for(fields):
+    return OWNED | {d["name"] for d in fields if d["owned"]}
+
+
+def story_field_blocks(root, issue, rec, key_to_story, secs, is_bug):
+    """({"kind"|"size": value}, {field: file lines}, [field defs]): what the plugins give for one issue. The plugin is
+    handed copies and read-only views, so it cannot change the core tables or the issue."""
+    ke = _kit_ext()
+    if ke is None:
+        return core_labels(issue), {}, []
+    if not _is_kit_plugin(root, "labels"):
+        ke.warn_once(root, "jira_sync: _tools/plugins/jira_sync/labels.py is missing (run project-scaffolding update): the "
+                           "kind:/size: labels are read by jira_sync itself", ke.default_warn)
+    ctx = types.MappingProxyType({"rec": copy.deepcopy(rec), "key_to_story": dict(key_to_story), "sections": dict(secs),
+                                  "is_bug": is_bug, "kinds": KINDS, "sizes": SIZES, "defaults": dict(DEFAULTS),
+                                  "label_value": label_value})
+    answers = ke.run(root, _hooks(ke)[1], root, copy.deepcopy(issue), ctx)
+    defs = field_defs(root)         # after the run: a plugin that failed just now has no fields
+    allowed = {"kind": KINDS, "size": SIZES}
+    labels, extra = {}, {}
+    answered = False
+    for plugin, answer in answers:
+        mine = {d["name"] for d in defs if d["plugin"] == plugin}
+        kit = _is_kit_plugin(root, plugin)
+        answered = answered or (plugin == "labels" and kit)
+        for field, value in answer.items():
+            lines = [l for l in (value if isinstance(value, (list, tuple)) else [value]) if l.strip()]
+            if field in LABEL_FIELDS and kit:
+                if lines and lines[0] in allowed[field] and field not in labels:
+                    labels[field] = lines[0]
+            elif field in mine and lines and field not in extra:
+                extra[field] = block(field, lines)
+            elif field not in mine:
+                ke.warn_once(root, "extension jira_sync/%s: field %s ignored: it did not declare it (or it is a core "
+                                   "field)" % (plugin, field), ke.default_warn)
+    if not answered:
+        # The kit's labels plugin is missing or failed: kind: and size: are Jira-owned, so a default here would rewrite every
+        # waiting story (and open the ui intake gate for a kind:ui story). jira_sync reads the labels itself instead.
+        labels = core_labels(issue)
+    return labels, extra, defs
+
+
+def core_labels(issue):
+    """{"kind"|"size": value} straight from the issue's labels: the same answer as the kit's labels plugin, used when that
+    plugin (or the loader) cannot give one."""
+    out = {}
+    for field, allowed in (("kind", KINDS), ("size", SIZES)):
+        value = label_value(issue.get("labels") or [], field + ":", allowed)
+        if value:
+            out[field] = value
+    return out
+
+
+def issue_blocks(issue, rec, key_to_story, root=None):
+    """{field: file lines} (a Blocks) for the fields Jira owns, from a parsed issue. `key_to_story` maps an imported
+    issue's key to its story id. `root` is the project whose story-field plugins apply (default: the one this file is in)."""
+    key = issue["key"]
+    blocks = Blocks({"title": ["title: " + clean_title(issue["summary"], key)]})
     is_bug = issue.get("issue_type", "").casefold() == (rec.get("bug_type") or "Bug").casefold()
     blocks["work_item_type"] = ["work_item_type: " + ("bug" if is_bug else "story")]
-    blocks["kind"] = ["kind: " + (label_value(labels, "kind:", KINDS) or "code")]
-    blocks["design_impact"] = ["design_impact: " + ("yes" if "design-impact" in [l.lower() for l in labels] else "no")]
+    secs = sections(issue["description"])
+    labels, extra, blocks.fields = story_field_blocks(project_root(root),
+                                                      issue, rec, key_to_story, secs, is_bug)
+    blocks.update(extra)
+    blocks["kind"] = ["kind: " + labels.get("kind", DEFAULTS["kind"])]
+    blocks["design_impact"] = ["design_impact: " + ("yes" if "design-impact" in [l.lower() for l in issue["labels"]] else "no")]
     day = (wall(issue["created"]) or ("", ""))[0] or issue["created"][:10]
     blocks["requested"] = ["requested: %s, by %s via Jira %s" % (day, issue["reporter"] or "Jira", key)]
     blocks["epic"] = ["epic: " + (issue["parent"] or "none")]
     blocks["priority"] = ["priority: P%d" % priority_level(issue["priority"], rec)]
     blocks["priority_reason"] = ["priority_reason: set in Jira (%s)" % key]
-    blocks["size"] = ["size: " + (label_value(labels, "size:", SIZES) or "M")]
+    blocks["size"] = ["size: " + labels.get("size", DEFAULTS["size"])]
     ids, waits = [], []
     for b in issue["blockers"]:
         if b in key_to_story:
@@ -586,14 +822,10 @@ def issue_blocks(issue, rec, key_to_story):
     blocks["depends_on"] = ["depends_on: " + (", ".join(sorted(ids)) if ids else "none")]
     if waits:
         blocks["preconditions"] = ["preconditions: " + "; ".join(waits)]
-    secs = sections(issue["description"])
-    ui = re.search(r"(?m)^[ \t]*ui:[ \t]*([^\n]*)$", issue["description"])
-    if ui and ui.group(1).strip():
-        blocks["ui"] = ["ui: " + ui.group(1).strip()]
     if is_bug:
         blocks["related_story"] = ["related_story: " + bug_origin(issue, rec, key_to_story, secs)]
         blocks["evidence"] = ["evidence: " + json.dumps(issue.get("attachments", []), sort_keys=True)]
-    for field in SECTION_FIELDS + (list(BUG_FIELDS[1:]) + ["environment"] if is_bug else []):
+    for field in SECTION_FIELDS + OPTIONAL_SECTION_FIELDS + (list(BUG_FIELDS[1:]) + ["environment"] if is_bug else []):
         if field not in secs:
             continue
         if field == "acceptance":
@@ -642,6 +874,8 @@ def audit_parenting(issues, rec):
         epic = parents[origin]
         if not epic:
             out["needs_epic"].append(dict(row, reason="originating Story %s has no Epic" % origin))
+        elif i["parent"] == epic:
+            continue
         elif not i["parent"] or i["parent"] == triage or "origin-unknown" in [l.casefold() for l in i["labels"]]:
             out["set_parent"].append({"op": "set_parent", "key": i["key"], "parent": epic,
                                       "basis": "originating Story %s is in %s" % (origin, epic)})
@@ -657,6 +891,146 @@ def audit_jql(rec):
     return ("project = %s AND issuetype != %s AND issuetype not in subTaskIssueTypes() AND (parent is EMPTY OR "
             "(issuetype = %s AND statusCategory != Done)) ORDER BY key ASC"
             % (rec["project"], jql_name(rec.get("epic_type") or "Epic"), bug))
+
+
+# Current parenting evidence only: no history, and no second source of authored Jira fields.
+def audit_digest(value):
+    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+
+def audit_config(rec):
+    return {k: rec.get(k) for k in ("site", "cloud_id", "project", "story_type", "bug_type", "epic_type",
+                                   "story_link_type", "triage_epic")}
+
+
+def audit_plan(rec, state, now=None):
+    day, hhmm = now_wall(now)
+    started = "%s %s" % (day, hhmm)
+    cache = state.get("parenting_audit")
+    if not isinstance(cache, dict):
+        cache = {}
+    config = audit_digest(audit_config(rec))
+    valid = (isinstance(cache, dict) and cache.get("version") == PARENTING_AUDIT_VERSION and
+             cache.get("config_digest") == config and bool(wall(cache.get("last_pass"))) and
+             isinstance(cache.get("candidates"), dict) and isinstance(cache.get("origins"), dict) and
+             isinstance(cache.get("reports"), dict) and
+             cache.get("evidence_digest") == audit_digest({k: cache[k] for k in ("candidates", "origins", "reports")}))
+    full = not valid or (cache.get("full_at") or "")[:10] != day
+    since = cache.get("last_pass") if valid else None
+    if since and since > started:
+        full = True                         # clock moved backwards: rebuild rather than skip a window
+    query = audit_jql(rec) if full else ('project = %s AND updated >= "%s" ORDER BY updated ASC' %
+                                        (rec["project"], since))
+    return {"jql": query, "fields": FIELDS, "version": PARENTING_AUDIT_VERSION,
+            "mode": "full" if full else "delta", "since": None if full else since,
+            "started_at": started, "config_digest": config, "base": audit_digest(cache)}
+
+
+def audit_snapshot(issue):
+    snap = {k: issue[k] for k in ("key", "summary", "issue_type", "subtask", "relationships", "status",
+                                  "status_category", "labels", "updated", "parent", "audit_known", "origin_known")}
+    related = sections(issue["description"]).get("related_story")
+    snap["description"] = "## Related story\n" + related if related else ""
+    return snap
+
+
+def audit_candidate(issue, rec):
+    return (issue["issue_type"].casefold() != (rec.get("epic_type") or "Epic").casefold() and
+            not issue.get("subtask") and (not issue["parent"] or
+            (issue["issue_type"].casefold() == (rec.get("bug_type") or "Bug").casefold() and
+             issue["status_category"] != "done")))
+
+
+def audit_combine(reports):
+    out = {"checked": 0, "clean": True, "set_parent": [], "needs_epic": [], "parent_mismatch": [], "fetch": [],
+           "origin_unknown": [], "exempt": []}
+    for report in reports:
+        out["checked"] += report["checked"]
+        for key in ("set_parent", "needs_epic", "parent_mismatch", "fetch", "origin_unknown", "exempt"):
+            out[key] += [r for r in report[key] if r not in out[key]]
+    out["clean"] = not any(out[k] for k in ("set_parent", "needs_epic", "parent_mismatch", "fetch"))
+    return out
+
+
+def planned_audit(root, sg, rec, issues, plan, complete):
+    """Commit a complete query's current evidence, under the same short mutex as the sync watermark."""
+    if not complete:
+        raise Refused("audit --plan requires --complete after fetching and combining every query page")
+    if not isinstance(plan, dict) or plan.get("version") != PARENTING_AUDIT_VERSION:
+        raise Refused("unsupported parenting audit plan; rerun jql")
+    try:
+        with sg.checkout_mutex(root):
+            state = load_state(root, sg)
+            expected = audit_plan(rec, state, plan.get("started_at"))
+            if plan != expected:
+                raise Refused("parenting audit plan is stale or changed; rerun jql and its query")
+            if any(not i.get("origin_known") if i.get("role") == "origin" else not i.get("audit_known")
+                   for i in issues):
+                raise Refused("parenting audit input is not hydrated; fetch all requested fields before recording")
+            old = state.get("parenting_audit") or {}
+            full = plan["mode"] == "full"
+            candidates = {} if full else dict(old["candidates"])
+            origins = {} if full else dict(old["origins"])
+            reports = {} if full else dict(old["reports"])
+            incoming = {i["key"]: audit_snapshot(i) for i in issues}
+            changes = {k for k, i in incoming.items() if i != candidates.get(k, origins.get(k))}
+            affected = set()
+            for issue in issues:
+                key = issue["key"]
+                if issue.get("role") != "origin":
+                    if audit_candidate(issue, rec):
+                        candidates[key] = incoming[key]
+                        if full or key in changes:
+                            affected.add(key)
+                    else:
+                        candidates.pop(key, None)
+                        reports.pop(key, None)
+                origins[key] = incoming[key]
+            # Every linked endpoint is a dependency, including unresolved/reclassified origins.
+            for key, issue in candidates.items():
+                if any(r["key"] in changes for r in issue["relationships"]):
+                    affected.add(key)
+            required = {r["key"] for i in candidates.values() for r in i["relationships"]
+                        if r["key"].startswith(rec["project"] + "-")}
+            origins = {k: i for k, i in origins.items() if k in required and k not in candidates}
+            available = dict(origins, **candidates)
+            changed_reports = []
+            for key in sorted(affected):
+                item = dict(candidates[key])
+                item["relationships"] = [dict(r, issue_type=available[r["key"]]["issue_type"])
+                                         if r["key"] in available else r for r in item["relationships"]]
+                dependencies = {r["key"] for r in item["relationships"] if r["key"] != key}
+                context = [dict(available[k], role="origin") for k in sorted(dependencies) if k in available]
+                report = audit_parenting([item] + context, rec)
+                unknown = {r["key"] for r in item["relationships"] if not r["issue_type"] and
+                           r["key"] not in available and r["key"].startswith(rec["project"] + "-") and
+                           r["link_type"].casefold() == (rec.get("story_link_type") or "Relates").casefold()}
+                if unknown:
+                    report["fetch"] = sorted(set(report["fetch"]) | unknown)
+                    report["clean"] = False
+                reports[key] = report
+                changed_reports.append(report)
+            result = audit_combine(changed_reports)
+            outstanding = audit_combine(reports[k] for k in sorted(reports))
+            # Pending idempotent edits remain retryable until Jira confirms the new parent.
+            result["set_parent"] = outstanding["set_parent"]
+            result["clean"] = not any(result[k] for k in ("set_parent", "needs_epic", "parent_mismatch", "fetch"))
+            # A missing dependency is a resumable fetch request, never evidence of a completed audit.
+            recorded = not outstanding["fetch"]
+            result.update({"outstanding": outstanding,
+                           "cache": {"recorded": recorded, "mode": plan["mode"],
+                                     "evaluated": sorted(affected), "candidates": len(candidates),
+                                     "origins": len(origins)}})
+            if recorded:
+                state["parenting_audit"] = {"version": PARENTING_AUDIT_VERSION,
+                    "config_digest": plan["config_digest"], "last_pass": plan["started_at"],
+                    "full_at": plan["started_at"] if full else old["full_at"],
+                    "candidates": candidates, "origins": origins, "reports": reports,
+                    "evidence_digest": audit_digest({"candidates": candidates, "origins": origins, "reports": reports})}
+                save_state(root, sg, state)
+            return result
+    except sg.MutexBusy as e:
+        raise Refused(str(e))
 
 
 def missing_fields(blocks):
@@ -678,7 +1052,7 @@ def comment_body(key, missing):
 
 def render_new(key, story_id, blocks):
     lines = ["id: " + story_id, "jira: " + key]
-    for k in ORDER[2:]:
+    for k in order_for(getattr(blocks, "fields", ()))[2:]:
         if k in blocks:
             lines += blocks[k]
     return "\n".join(lines) + "\n"
@@ -726,21 +1100,23 @@ def jira_key_of(text):
 def merge_owned(text, blocks_new):
     """The story text with its Jira-owned blocks replaced by blocks_new (a field Jira lacks is removed), every other
     line kept."""
+    fields = getattr(blocks_new, "fields", ())
+    order, owned = order_for(fields), owned_for(fields)
     blocks, tail, nl = split_story(text)
     out, seen = [], set()
     for key, lines in blocks:
-        if key in OWNED:
+        if key in owned:
             if key in blocks_new:
                 out.append([key, blocks_new[key]])
                 seen.add(key)
         else:
             out.append([key, lines])
-    for key in ORDER:
-        if key in OWNED and key in blocks_new and key not in seen:
-            rank = ORDER.index(key)
+    for key in order:
+        if key in owned and key in blocks_new and key not in seen:
+            rank = order.index(key)
             at = -1
             for i, (k, _) in enumerate(out):
-                if k in ORDER and ORDER.index(k) < rank:
+                if k in order and order.index(k) < rank:
                     at = i
             out.insert(at + 1, [key, blocks_new[key]])
     return join_story(out, tail, nl)
@@ -748,8 +1124,10 @@ def merge_owned(text, blocks_new):
 
 def differing(text, blocks_new):
     """The Jira-owned fields (in file order) the issue has and the story's text has differently."""
-    have = {k: norm(ls) for k, ls in split_story(text)[0] if k in OWNED}
-    return [k for k in ORDER[2:] if (k in blocks_new or k in have) and
+    fields = getattr(blocks_new, "fields", ())
+    owned = owned_for(fields)
+    have = {k: norm(ls) for k, ls in split_story(text)[0] if k in owned}
+    return [k for k in order_for(fields)[2:] if k in owned and (k in blocks_new or k in have) and
             have.get(k) != (norm(blocks_new[k]) if k in blocks_new else None)]
 
 
@@ -774,7 +1152,8 @@ class Pass:
         self.login = sg.member_login(root)
         self.team = sg.team_block(root)
         self.report = {"imported": [], "updated": [], "changed_in_progress": [], "skipped": [], "comments": [],
-                       "notify": [], "failed": [], "evidence_downloads": [], "unparented": []}
+                       "notify": [], "failed": [], "evidence_downloads": [], "unparented": [],
+                       "deferred": [], "ignored": []}
         self.known = {}
         self.reserved = set()
 
@@ -903,6 +1282,7 @@ class Pass:
         if issue["status_category"] == "done" or issue["status"].lower() in ("done", "rejected") \
                 or "wont-do" in [l.lower() for l in issue["labels"]]:
             self.report["skipped"].append("SKIP %s: already %s in Jira, not imported" % (key, issue["status"] or "done"))
+            self.report["ignored"].append({"key": key, "reason": "closed"})
             return
         sg, ref = self.sg, "refs/leases/%s%s" % (LEASE_PREFIX, key)
         rc, msg, held = sg.lease_read(self.root, ref)
@@ -912,6 +1292,7 @@ class Pass:
         if held and not sg.lease_ours(self.root, held, login):
             self.report["skipped"].append("SKIP %s: imported by %s as %s" % (key, held.get("login", "?"),
                                                                               held.get("story", "?")))
+            self.report["deferred"].append({"key": key, "reason": "import_lease"})
             return
         if held:
             sid = held.get("story")
@@ -932,11 +1313,12 @@ class Pass:
                 elif rc2 == 0 and h2 and not sg.lease_ours(self.root, h2, login):
                     self.report["skipped"].append("SKIP %s: imported by %s as %s" % (key, h2.get("login", "?"),
                                                                                       h2.get("story", "?")))
+                    self.report["deferred"].append({"key": key, "reason": "import_lease"})
                     return
                 else:
                     return self.fail(issue, sid, "lease", "push of the import lease failed: %s" % msg)
         self.reserved.add(sid)
-        blocks = issue_blocks(issue, self.rec, self.key_to_story())
+        blocks = issue_blocks(issue, self.rec, self.key_to_story(), self.root)
         path = os.path.join(self.root, sg.INBOX, sid + ".md")
         try:
             self.write(path, render_new(key, sid, blocks))
@@ -969,7 +1351,7 @@ class Pass:
             text = self.read(path)
         except OSError as e:
             return self.fail(issue, sid, "read", str(e))
-        blocks = issue_blocks(issue, self.rec, self.key_to_story())
+        blocks = issue_blocks(issue, self.rec, self.key_to_story(), self.root)
         if where == "in-progress":
             names = differing(text, blocks)
             if not names:
@@ -999,6 +1381,7 @@ class Pass:
             return self.fail(issue, sid, "status", "git status failed")
         if state and not all(l.startswith("??") for l in state):
             self.report["skipped"].append("SKIP %s: %s has uncommitted changes" % (key, sid))
+            self.report["deferred"].append({"key": key, "reason": "dirty"})
             return
         new = merge_owned(text, blocks)
         if new != text:
@@ -1121,7 +1504,7 @@ class Pass:
                 self.state["last_pass"] = "%s %s" % (self.day, self.hhmm)
             elif newest:
                 self.state["last_pass"] = max(self.state.get("last_pass", ""), "%s %s" % newest)
-            if self.reconcile_bugs and not self.report["skipped"]:
+            if self.reconcile_bugs and not self.report["deferred"]:
                 self.state["bug_reconciliation_version"] = BUG_RECONCILIATION_VERSION
         self.pending_evidence()
         save_state(self.root, sg, self.state)
@@ -1168,6 +1551,16 @@ OP_IDENTITY = {"transition": ("to", "board_status", "label", "resolution"), "ass
                "fields": ("story_points", "field"), "labels": ("add",), "link": ("branch", "pr"),
                "start_date": ("date", "only_if_empty")}
 POINTS_FIELD_RE = re.compile(r"^customfield_\d+$")
+
+
+def start_date_op(rec, key, date):
+    """A start_date op; it names the record's Start date field when there is a valid one. `field` is left out of
+    OP_IDENTITY, so an op already marked pushed stays marked when the field is recorded later."""
+    op = {"op": "start_date", "key": key, "date": date, "only_if_empty": True}
+    field = rec.get("start_date_field")
+    if isinstance(field, str) and POINTS_FIELD_RE.match(field):
+        op["field"] = field
+    return op
 TOKEN_MAX = 64
 HARNESS_ALIASES = {"claude": "claude-code"}
 
@@ -1477,8 +1870,7 @@ class Push:
                     dates[epic] = min(date, dates.get(epic, date))
         ops += self.epic_ops()
         # Claim history survives merge, release and rejection, including when Jira was unavailable throughout.
-        return ops + [{"op": "start_date", "key": key, "date": date, "only_if_empty": True}
-                      for key, date in dates.items()]
+        return ops + [start_date_op(self.rec, key, date) for key, date in dates.items()]
 
 
 def pending(ops, pushed):
@@ -1519,7 +1911,7 @@ def push_ops(root, sg=None, dm=None):
                     datetime.date.fromisoformat(date)
                 except (TypeError, ValueError):
                     raise Refused("invalid pending Start date for %s" % key)
-            ops += [{"op": "start_date", "key": key, "date": dates[key], "only_if_empty": True}
+            ops += [start_date_op(rec, key, dates[key])
                     for key in sorted(dates, key=lambda k: int(k.rsplit("-", 1)[1]))]
             if dates != before:
                 save_state(root, sg, state)
@@ -1588,7 +1980,7 @@ def op_line(op):
     if k == "labels":
         return "LABELS %s add %s" % (op["key"], " ".join(op["add"]))
     if k == "start_date":
-        return "START_DATE %s %s (only if empty)" % (op["key"], op["date"])
+        return "START_DATE %s %s (only if empty)%s" % (op["key"], op["date"], " field=" + op["field"] if op.get("field") else "")
     return "LINK %s branch=%s pr=%s" % (op["key"], op["branch"], op["pr"] or "none")
 
 
@@ -1606,7 +1998,7 @@ def cmd_jql(args, root):
             (rec["project"], jql_name(rec.get("bug_type") or "Bug")), "fields": FIELDS}
     print(json.dumps({"jql": build_jql(rec, state.get("last_pass")), "fields": FIELDS,
                       "reconcile_bugs": reconciliation,
-                      "audit": {"jql": audit_jql(rec), "fields": FIELDS}}, indent=2))
+                      "audit": audit_plan(rec, state, args.now)}, indent=2))
     return 0
 
 
@@ -1632,9 +2024,20 @@ def cmd_audit(args, root):
             issues += [dict(o, role="origin") for o in read_issues(path) if o["key"] not in seen]
     except ValueError as e:
         raise Refused(str(e))
-    report = audit_parenting(issues, rec)
+    if args.plan:
+        try:
+            with open(args.plan, encoding="utf-8") as f:
+                plan = json.load(f)
+        except (OSError, ValueError) as e:
+            raise Refused("cannot read parenting audit plan: %s" % e)
+        if isinstance(plan, dict) and "audit" in plan:
+            plan = plan["audit"]
+        sg, _ = load_tools(root)
+        report = planned_audit(root, sg, rec, issues, plan, args.complete)
+    else:
+        report = audit_parenting(issues, rec)
     print(json.dumps(report, indent=2))
-    return 1 if args.check and not report["clean"] else 0
+    return 1 if args.check and not report.get("outstanding", report)["clean"] else 0
 
 
 def cmd_push(args, root):
@@ -1664,7 +2067,9 @@ def build_parser():
                                                                   "does the fetching and the writing to Jira).")
     ap.add_argument("--root", help="the project folder (default: the parent of this file's folder)")
     sub = ap.add_subparsers(dest="cmd", required=True)
-    sub.add_parser("jql", help="print the poller's JQL and field list").set_defaults(func=cmd_jql)
+    p = sub.add_parser("jql", help="print the poller's JQL and field list")
+    p.add_argument("--now", metavar="ISO", help="capture the audit query start (default: now)")
+    p.set_defaults(func=cmd_jql)
     p = sub.add_parser("pull", help="import and update stories from the issues the poller fetched")
     p.add_argument("--issues", required=True, metavar="FILE")
     p.add_argument("--reconcile-bugs", type=int, choices=[BUG_RECONCILIATION_VERSION],
@@ -1678,7 +2083,9 @@ def build_parser():
     p = sub.add_parser("audit", help="report items without the Epic parent or Bug origin they need (offline)")
     p.add_argument("--issues", required=True, metavar="FILE")
     p.add_argument("--origins", action="append", default=[], metavar="FILE",
-                   help="issues fetched for `fetch` (origin Stories); read for their parent only")
+                   help="issues fetched for `fetch` (origin Stories); planned audits need parent, issuetype and updated")
+    p.add_argument("--plan", metavar="FILE", help="saved jql JSON (or its audit block) for incremental audit caching")
+    p.add_argument("--complete", action="store_true", help="attest that every page of the audit query was fetched")
     p.add_argument("--check", action="store_true", help="exit 1 when anything but origin_unknown is reported")
     p.set_defaults(func=cmd_audit)
     sub.add_parser("status", help="print the state file and the import leases").set_defaults(func=cmd_status)
