@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, computed, effect, inject, input, untracked } from '@angular/core';
 import { ButtonDirective } from '../kit/button.directive';
 import { FactListComponent } from '../kit/fact-list.component';
+import { LoadingSkeletonComponent } from '../kit/loading-skeleton.component';
 import { LabelledFieldComponent } from '../kit/labelled-field.component';
 import { ScreenIntroComponent } from '../kit/screen-intro.component';
 import { StatusScreenComponent } from '../kit/status-screen.component';
@@ -11,7 +12,7 @@ import { HelpStore } from './help.store';
 let instance = 0;
 @Component({
   selector: 'gcsp-help',
-  imports: [ButtonDirective, FactListComponent, LabelledFieldComponent, ScreenIntroComponent, StatusScreenComponent],
+  imports: [ButtonDirective, FactListComponent, LabelledFieldComponent, LoadingSkeletonComponent, ScreenIntroComponent, StatusScreenComponent],
   providers: [HelpStore],
   templateUrl: './help.component.html',
   styleUrl: './help.component.css',

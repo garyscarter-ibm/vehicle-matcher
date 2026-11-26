@@ -210,6 +210,11 @@ export function sortCases(rows: readonly CaseRecord[], order: 'deadline' | 'stat
     : terminal(a) - terminal(b) || deadline(a, b) || rank(a) - rank(b)) || a.caseId.localeCompare(b.caseId));
 }
 
+/** The current case suitability provider emits charging-unconfirmed for an incomplete charging answer. */
+export function caseGateLabel(value: unknown): string {
+  return value === 'charging-unconfirmed' ? 'Charging access not confirmed' : 'Needs confirmation';
+}
+
 /** Disambiguate supplied same-name cars without replacing their exact orderUuid identity. */
 export function carOptionNames(cars: readonly CaseEvidence[]): string[] {
   const name = (car: CaseEvidence): unknown => object(car['snapshot']) && object(car['snapshot']['display']) ? car['snapshot']['display']['name'] : null;

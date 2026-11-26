@@ -17,7 +17,7 @@ const record = (patch: Partial<CaseRecord> = {}): CaseRecord => ({ caseId: 'rene
   history: [{ at, actorId: 'paula', actorRole: 'employee', status: 'open', reason: 'Please help', nextAction: 'Review renewal', dueAt: at, remedy: null }],
   remedy: null, fictional: true, version: 3, ...patch });
 const options = (row = record()): CaseOptions => ({ case: row, asOf: at, policyVersion: 'policy-1', automaticRecoveryPriority: false, nextStatuses: row.status === 'closed' ? [] : ['in-progress', 'closed'],
-  options: { alternativeCars: { available: false, items: [], needsConfirmation: [{ type: 'alternative-car', orderUuid: 'unknown-1', unknowns: ['Boot space'] }], reason: 'No suitable stock' },
+  options: { alternativeCars: { available: false, items: [], needsConfirmation: [{ type: 'alternative-car', orderUuid: 'unknown-1', unknowns: ['charging-unconfirmed'] }], reason: 'No suitable stock' },
     preferenceRelaxations: { available: false, items: [], reason: 'Preference confirmation unavailable' }, laterRelease: { available: false, items: [], reason: 'No reviewed release' },
     manualDecision: { available: true, type: 'manual-decision', requiresDecision: true },
     contractExtension: { available: false, type: 'contract-extension', contractEndDate: null, requiresUntil: true, reason: 'Policy does not permit extension' } } });
@@ -60,6 +60,26 @@ describe('actual Greg route, native controls and case focus', () => {
     expect(root().querySelector('img')).toBeNull(); expect(routes.find(r => r.path === 'help')?.data).toEqual({ title: 'Renewal help', roles: ['employee'] });
     expect(routes.find(r => r.path === 'offers/:offerId')?.loadComponent).toBeTypeOf('function'); expect(client.updateCase).not.toHaveBeenCalled();
   });
+  it('sorts displayed cases by the native deadline or status choice and preserves focus and exact open identity', async () => {
+    const early = record({ caseId: 'early', employeeName: 'Early', status: 'in-progress', renewalDeadline: '2026-11-20' });
+    const later = record({ caseId: 'later', employeeName: 'Later', status: 'open', renewalDeadline: '2026-12-01' });
+    const terminal = record({ caseId: 'closed', employeeName: 'Closed', status: 'closed', renewalDeadline: '2026-11-01' });
+    client.readQueue.mockResolvedValue(queue([terminal, later, early]));
+    await enter();
+    const names = () => Array.from(root().querySelectorAll('gcsp-data-table tbody button')).map(b => b.getAttribute('aria-label'));
+    expect(names()).toEqual(['Open case for Early', 'Open case for Later', 'Open case for Closed']);
+    const select = root().querySelector<HTMLSelectElement>(`#${page.control('sort')}`)!;
+    expect(select).not.toBeNull(); expect(root().querySelector(`label[for="${select.id}"]`)?.textContent).toContain('Sort cases');
+    expect(Array.from(select.options).map(o => [o.value, o.textContent])).toEqual([
+      ['deadline', 'Deadline, active cases first'], ['status', 'Status, then deadline']]);
+    select.focus(); select.value = 'status'; select.dispatchEvent(new Event('change', { bubbles: true })); await settle();
+    expect(names()).toEqual(['Open case for Later', 'Open case for Early', 'Open case for Closed']);
+    expect(document.activeElement).toBe(select);
+    client.readOptions.mockResolvedValueOnce(ok(options(later)));
+    root().querySelector<HTMLButtonElement>('button[aria-label="Open case for Later"]')!.click();
+    await wait(() => expect(page.view().detailPhase).toBe('ready'));
+    expect(client.readOptions.mock.calls.at(-1)?.[0]).toBe('later');
+  });
   it('renders the offered preference value control and explicit employee-confirmation consequence in review', async () => {
     const current = options();
     client.readOptions.mockResolvedValueOnce(ok({ ...current, options: { ...current.options, preferenceRelaxations: { available: true, items: [
@@ -73,7 +93,7 @@ describe('actual Greg route, native controls and case focus', () => {
     await open(); expect(document.activeElement).toBe(root().querySelector('[data-case-heading]'));
     const table = root().querySelector('gcsp-data-table')!; expect(table.querySelector('.gcsp-table-wrap.is-stack')).not.toBeNull(); expect(table.querySelector('button')?.getAttribute('aria-label')).toBe('Open case for Paula'); expect(table.querySelectorAll('thead th')).toHaveLength(8);
     expect(text()).toContain('Paula · 12345678'); expect(text()).toContain('Dated case history'); expect(text()).toContain('Please help');
-    expect(text()).toContain('No suitable stock'); expect(text()).toContain('Preference confirmation unavailable'); expect(text()).toContain('Boot space');
+    expect(text()).toContain('No suitable stock'); expect(text()).toContain('Preference confirmation unavailable'); expect(text()).toContain('Charging access not confirmed'); expect(text()).not.toContain('charging-unconfirmed');
     const status = root().querySelector<HTMLSelectElement>(`#${page.control('status')}`)!;
     expect(Array.from(status.options).map(o => o.value)).toEqual(['', 'in-progress', 'closed']);
     expect(root().querySelectorAll('option[value="unknown-1"]')).toHaveLength(0);

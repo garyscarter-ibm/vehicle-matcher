@@ -89,6 +89,23 @@ describe('native Help body, review and current case presentation', () => {
     expect(root(f).querySelectorAll('[role="status"], [role="alert"]')).toHaveLength(1);
     expect(client.requestHelp).not.toHaveBeenCalled(); expect(client.prepareHelp).not.toHaveBeenCalled();
   });
+  it('shows a card skeleton during refresh and identifies retained case information after failure', async () => {
+    client.readOwnCases.mockResolvedValueOnce(ok(list([row()]))); const f = await mount();
+    const pending = deferred<CaseClientResult<ReturnType<typeof list>>>(); client.readOwnCases.mockReturnValueOnce(pending.promise);
+    const refreshing = f.componentInstance.refresh(); f.detectChanges();
+    const skeleton = root(f).querySelector('[gcspLoadingSkeleton][data-layout="card"]');
+    expect(skeleton).not.toBeNull(); expect(skeleton?.getAttribute('aria-busy')).toBe('true');
+    expect(root(f).querySelector('[data-case-id]')).toBeNull();
+    expect(root(f).querySelectorAll('[role="status"], [role="alert"], [aria-live]')).toHaveLength(1);
+    pending.resolve({ state: 'failed', value: null, problem: 'transport-unavailable' }); await refreshing; f.detectChanges();
+    expect(content(f)).toContain('Previously loaded case information is shown below. Refresh to check its current state.');
+    expect(root(f).querySelector('[data-case-id]')?.getAttribute('data-case-id')).toBe(row().caseId);
+    expect(content(f)).toContain('Please check the handover date.');
+    expect(root(f).querySelector('[data-preference-confirm]')).toBeNull();
+    await f.componentInstance.refresh(); f.detectChanges();
+    expect(content(f)).not.toContain('Previously loaded case information');
+    expect(root(f).querySelector('[data-case-id]')).toBeNull();
+  });
   it('shows the current and proposed preference, focuses review and sends no change before confirmation', async () => {
     client.readOwnCases.mockResolvedValueOnce(ok(list([row({ status: 'remedy-proposed', remedy: { type: 'preference-relaxation', decisionId: 'decline-1',
       expectedBriefVersion: 2, path: 'preferences.body.value', value: 'estate' },
@@ -212,7 +229,8 @@ describe('native Help body, review and current case presentation', () => {
       expect(outline(f)).toEqual([...section, `${level} ${notice.textContent!.trim()}`]);
       for (const [session, title] of sessions) {
         state.set(session); f.detectChanges();
-        expect(outline(f)).toEqual([...section, `${level} ${title}`]);
+        expect(outline(f)).toEqual(session.status === 'loading' ? section : [...section, `${level} ${title}`]);
+        if (session.status === 'loading') expect(root(f).querySelector('[gcspLoadingSkeleton][data-layout="card"]')).not.toBeNull();
         expect(root(f).querySelector('gcsp-status-screen [role]')).toBeNull();
       }
     }

@@ -9,7 +9,7 @@
       @if (view().phase === 'auth-required') { <button gcspButton type="button" (click)="store.signIn()">Sign in</button> }
     </gcsp-status-screen>
   } @else if (view().phase === 'loading' || view().phase === 'auth-loading') {
-    <gcsp-status-screen title="Loading renewal help" [busy]="true" [level]="childLevel()" [announcement]="null" />
+    <div gcspLoadingSkeleton label="Loading your cases" layout="card" [role]="null"></div>
   } @else if (view().phase === 'signed-out') {
     <gcsp-status-screen title="Sign in to continue" [level]="childLevel()" [announcement]="null">
       <button gcspButton type="button" (click)="store.signIn()">Sign in</button>
@@ -89,6 +89,10 @@
   @if (view().phase === 'empty' && !view().editing && !view().reviewReason && !view().preferenceReview) {
     <p class="gcsp-note">No renewal case. Help is available if you need the scheme team to review your renewal.</p>
   }
+  @if (view().notice && view().cases.length) {
+    <p class="gcsp-note">Previously loaded case information is shown below. Refresh to check its current state.</p>
+  }
+  @if (view().phase !== 'loading') {
   <div class="help-cases">
     @for (record of view().cases; track record.caseId; let index = $index) {
       <article class="help-detail" [attr.data-case-id]="record.caseId" [attr.aria-labelledby]="id + '-case-' + index">
@@ -113,6 +117,7 @@
       </article>
     }
   </div>
+  }
   @if (view().help) {
     <div class="gcsp-actions"><button gcspButton type="button" variant="ghost" [disabled]="view().pending" (click)="refresh()">Refresh cases</button></div>
   }

@@ -19,6 +19,12 @@
     @if (view().phase === 'empty') { <p class="gcsp-note">No renewal cases were returned for your current run.</p> }
     @if (view().phase === 'ready') {
       <p class="gcsp-note">{{ notice }}</p>
+      <gcsp-labelled-field [controlId]="control('sort')" label="Sort cases">
+        <select [id]="control('sort')" [value]="order()" [disabled]="view().pending" (change)="sort($event)">
+          <option value="deadline">Deadline, active cases first</option>
+          <option value="status">Status, then deadline</option>
+        </select>
+      </gcsp-labelled-field>
       <gcsp-data-table caption="Renewal case queue" [rowAction]="rowAction" [stack]="true" emptyText="No cases to show." [columns]="columns" [rows]="rows()" [disabled]="view().pending || view().uncertain" (opened)="open($event)" />
     }
     @if (view().selected) {

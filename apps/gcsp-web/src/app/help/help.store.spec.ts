@@ -142,6 +142,24 @@ describe('employee HelpStore intent, readback and privacy boundary', () => {
     expect(client.requestHelp).not.toHaveBeenCalled();
     expect(client.readQueue).not.toHaveBeenCalled(); expect(client.readOptions).not.toHaveBeenCalled(); expect(client.updateCase).not.toHaveBeenCalled();
   });
+  it('retains same-context prior cases through a failed refresh and replaces them on a successful read', async () => {
+    await ready(); client.readOwnCases.mockResolvedValueOnce(ok(list([row()]))); await store.refresh();
+    const pending = deferred<CaseClientResult<CaseList>>(); client.readOwnCases.mockReturnValueOnce(pending.promise);
+    const refreshing = store.refresh();
+    expect(store.view().phase).toBe('loading'); expect(store.view().cases.map(c => c.caseId)).toEqual([row().caseId]);
+    pending.resolve(refused('unavailable')); await refreshing;
+    expect(store.view()).toMatchObject({ phase: 'unavailable', canAsk: false, canConfirm: false });
+    expect(store.view().cases.map(c => c.caseId)).toEqual([row().caseId]);
+    await store.refresh(); expect(store.view()).toMatchObject({ phase: 'empty', cases: [] });
+  });
+  it.each(['forbidden', 'unauthenticated'] as const)('clears retained prior cases immediately on %s even while the other refresh read is pending', async status => {
+    await ready(); client.readOwnCases.mockResolvedValueOnce(ok(list([row()]))); await store.refresh();
+    const pending = deferred<CaseClientResult<CaseList>>(); client.readOwnCases.mockReturnValueOnce(pending.promise);
+    client.readHelp.mockResolvedValueOnce(refused(status)); const refreshing = store.refresh();
+    await vi.waitFor(() => expect(store.view().cases).toEqual([]));
+    expect(store.view().canConfirm).toBe(false);
+    pending.resolve(ok(list([row()]))); await refreshing; expect(store.view().cases).toEqual([]);
+  });
   it('validates empty and overlong reasons before preparing a command', async () => {
     await ready(); store.beginRequest();
     for (const reason of ['   ', 'x'.repeat(2001)]) {
