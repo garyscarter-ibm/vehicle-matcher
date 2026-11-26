@@ -18,6 +18,8 @@ export interface GalleryReservation {
   readonly state: GalleryReservationState; readonly blocked: boolean; readonly selection: ManualHandoff | null;
   readonly claim: ManualClaim | null; readonly failure: string | null; readonly refresh: number;
   readonly takenIds: readonly string[];
+  /** Presentation lookup only; a resolved attempt's command and pins are never retained here. */
+  readonly retryTargetId?: string | null;
 }
 interface GalleryAttempt { readonly selection: ManualHandoff; readonly command: ManualClaimCommand; receipt: ManualResult<ManualClaim> | null }
 const initialReservation = (): GalleryReservation => ({ state: 'checking', blocked: true, selection: null, claim: null, failure: null, refresh: 0, takenIds: [] });
@@ -69,7 +71,7 @@ export class GalleryReservationController {
     this.active = true; return this.run(false);
   }
   checkStatus(): Promise<void> { return this.active ? this.run(false) : this.load(); }
-  dismissFailure(): void { if (!this.state().blocked) this.publish('ready', false, { failure: null, takenIds: [] }); }
+  dismissFailure(): void { if (!this.state().blocked) this.publish('ready', false, { failure: null, takenIds: [], retryTargetId: null }); }
   reserve(selection: ManualHandoff): Promise<void> {
     if (this.operation) return this.operation;
     if (!this.active || this.state().blocked || this.state().takenIds.includes(selection.orderUuid) || !selection.claimInput) return Promise.resolve();
@@ -88,7 +90,7 @@ export class GalleryReservationController {
     const scope = this.scope(); if (!this.active || this.owner() !== scope || !scope || this.destroyed) return Promise.resolve();
     this.request = new AbortController(); const epoch = ++this.epoch; const options = { signal: this.request.signal };
     const valid = () => this.active && !this.destroyed && epoch === this.epoch && scope === this.scope();
-    this.publish(dispatch ? 'claiming' : 'checking', true, dispatch ? { failure: null } : {});
+    this.publish(dispatch ? 'claiming' : 'checking', true, dispatch ? { failure: null, retryTargetId: null } : {});
     const operation = (async () => {
       if (dispatch && this.attempt) {
         try { this.attempt.receipt = await this.client.claim(this.attempt.command, options); }
@@ -112,7 +114,10 @@ export class GalleryReservationController {
       } else if (nonoccupying(result) && (!attempt || definitive(attempt.receipt) || attempt.receipt?.status === 'ok'
         && attempt.receipt.value.hold.holdId === result.value.hold.holdId && attempt.receipt.value.quote.quoteId === result.value.quote.quoteId
         && result.value.hold.orderUuid === attempt.selection.orderUuid && result.value.quote.configurationId === attempt.selection.configurationId)) {
-        this.attempt = null; this.publish('released', false, { claim, failure: null, refresh: this.value().refresh + 1 });
+        const failed = result.value.state === 'claim-failed';
+        const retryTargetId = failed ? attempt?.selection.orderUuid ?? result.value.hold.orderUuid : null;
+        this.attempt = null; this.publish(failed ? 'failed' : 'released', false,
+          { claim, failure: failed ? 'claim-failed' : null, retryTargetId, refresh: this.value().refresh + 1 });
       } else if (result.status === 'not-found' && (!attempt || definitive(attempt.receipt))) {
         const failure = attempt?.receipt; this.attempt = null;
         this.publish(failure ? 'failed' : 'ready', false, { claim: null, failure: galleryFailure(failure ?? null) });

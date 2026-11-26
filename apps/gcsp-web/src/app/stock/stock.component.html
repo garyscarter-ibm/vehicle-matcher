@@ -7,6 +7,9 @@
         <button gcspButton type="button" variant="ghost" [disabled]="reservation()?.state === 'checking' || reservation()?.state === 'claiming'" (click)="checkReservation.emit()">Check status</button>
       }
       @if (reservation()?.state === 'retry-available') { <button gcspButton type="button" (click)="retryReservation.emit()">Retry this reservation</button> }
+      @if (reservation()?.state === 'failed' && reservation()?.retryTargetId) {
+        <button gcspButton type="button" [disabled]="!freshRetryCar()" (click)="retryFailedReservation()">Retry this reservation</button>
+      }
     </section>
   }
   @if (store.allCars().length) { <p class="gcsp-stock-allowance">{{ allowance() }}</p> }
