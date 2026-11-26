@@ -13806,6 +13806,52 @@
       ],
       "unsliced": false,
       "jira_observed_at": "2026-11-26T08:01:29.625Z"
+    },
+    {
+      "id": "FUCQ-546",
+      "title": "Report Node's submission constraint changes in the Java Production replan status",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-546",
+      "branch": "dev/DEV-2026-11-22-vesper-021",
+      "workers": [
+        {
+          "name": "Wile E. Coyote",
+          "harness": "claude-code",
+          "role": "story-lead",
+          "observed_at": "2026-11-26T09:45:00Z",
+          "expires_at": "2026-11-26T10:45:00Z",
+          "source": "story-lead finished: built, Result committed",
+          "status": "completed"
+        }
+      ],
+      "unsliced": false,
+      "observed_at": "2026-11-26T10:41:00Z",
+      "slices": [
+        {
+          "id": "changes-source",
+          "status": "complete",
+          "title": "AC1 submission constraint changes stored and reported in the replan value",
+          "observed_at": "2026-11-26T10:40:44Z",
+          "evidence": "Lead review of c5da6159d; story set 316/0 on 8287dad5a incl. ProductionDeployedJourneyHttpTest @Order(8) vs Node golden"
+        },
+        {
+          "id": "queue-fault",
+          "status": "complete",
+          "title": "AC2 supply-side fault drives the queue 503 path, replan stays truthful",
+          "observed_at": "2026-11-26T10:40:44Z",
+          "evidence": "Lead review of 8287dad5a; @Order(9) supply-side trigger fault 503 and truthful replan; story set 316/0"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Story test set, migration full suite and result",
+          "observed_at": "2026-11-26T10:40:45Z",
+          "evidence": "Story test set 316/0, test_drift 0 hits on 8287dad5a; full java suite deferred to dispatcher batch (V546_1)"
+        }
+      ]
     }
   ]
 }

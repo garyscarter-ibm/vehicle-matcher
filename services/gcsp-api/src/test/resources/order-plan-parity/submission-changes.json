@@ -1,0 +1,110 @@
+{
+  "input": [
+    {
+      "key": "orderPlan.derivativeBounds",
+      "value": [
+        {
+          "derivativeId": "g61-i5-40",
+          "min": 0,
+          "max": 2
+        },
+        {
+          "derivativeId": "g21-touring-320i",
+          "min": 2,
+          "max": 3
+        },
+        {
+          "derivativeId": "g20-saloon-330e",
+          "min": 0,
+          "max": 2
+        },
+        {
+          "derivativeId": "g20-saloon-320i",
+          "min": 0,
+          "max": 3
+        },
+        {
+          "derivativeId": "f70-hatch-120",
+          "min": 0,
+          "max": 2
+        }
+      ]
+    },
+    {
+      "key": "orderPlan.budgetMinor",
+      "value": 18000000
+    }
+  ],
+  "expected": [
+    {
+      "key": "orderPlan.budgetMinor",
+      "value": 18000000
+    },
+    {
+      "key": "orderPlan.derivativeBounds",
+      "value": [
+        {
+          "derivativeId": "f70-hatch-120",
+          "min": 0,
+          "max": 2
+        },
+        {
+          "derivativeId": "g20-saloon-320i",
+          "min": 0,
+          "max": 3
+        },
+        {
+          "derivativeId": "g20-saloon-330e",
+          "min": 0,
+          "max": 2
+        },
+        {
+          "derivativeId": "g21-touring-320i",
+          "min": 2,
+          "max": 3
+        },
+        {
+          "derivativeId": "g61-i5-40",
+          "min": 0,
+          "max": 2
+        }
+      ]
+    }
+  ],
+  "submittedChanges": [
+    {
+      "key": "orderPlan.budgetMinor",
+      "value": 18000000
+    },
+    {
+      "key": "orderPlan.derivativeBounds",
+      "value": [
+        {
+          "derivativeId": "f70-hatch-120",
+          "min": 0,
+          "max": 2
+        },
+        {
+          "derivativeId": "g20-saloon-320i",
+          "min": 0,
+          "max": 3
+        },
+        {
+          "derivativeId": "g20-saloon-330e",
+          "min": 0,
+          "max": 2
+        },
+        {
+          "derivativeId": "g21-touring-320i",
+          "min": 2,
+          "max": 3
+        },
+        {
+          "derivativeId": "g61-i5-40",
+          "min": 0,
+          "max": 2
+        }
+      ]
+    }
+  ]
+}

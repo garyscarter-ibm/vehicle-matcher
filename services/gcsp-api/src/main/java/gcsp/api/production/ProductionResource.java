@@ -85,13 +85,14 @@ public class ProductionResource {
         Response early = noQuery(uri);
         if (early != null) return early;
         List<String[]> reasons = new ArrayList<>();
-        ObjectNode node = object(body, Set.of("commandId", "planId", "versions"), false, reasons);
+        ObjectNode node = object(body, Set.of("commandId", "planId", "versions", "changes"), false, reasons);
         String commandId = text(node, "commandId", 200, true, reasons);
         String planId = text(node, "planId", 512, true, reasons);
         Map<String, String> versions = versions(node, reasons);
+        JsonNode changes = node == null || !node.has("changes") ? null : node.get("changes");
         if (!reasons.isEmpty()) return invalid(reasons);
         return serve(principal, (service, scope) -> mapped(
-                service.submit(scope, principal, new ProductionService.SubmitInput(commandId, planId, versions))));
+                service.submit(scope, principal, new ProductionService.SubmitInput(commandId, planId, versions, changes))));
     }
 
     /** Presenter scenario control: scripts one answer on the synthetic provider, then reconciles that request. Never submits. */
