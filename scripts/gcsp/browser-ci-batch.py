@@ -278,9 +278,6 @@ def owned_stack(scratch, env, summary, output, browser_temps):
         # A refused/failed stop preserves scratch and its external manifest for investigation.
         cleanup = summary['cleanup']
         cleanup['browser_temps'] = browser_temps.finalize()
-        if not cleanup['browser_temps']['complete']:
-            resources.atomic_json(output / 'batch-receipt.json', summary)
-            raise RuntimeError('Browser temp cleanup unverified; named roots preserved')
         cleanup['inner_scratch_manifests_removed'] = all(
             resources.read_json(path, {}).get('state') == 'removed'
             for path in output.glob('f*/ownership/*.json'))
@@ -296,6 +293,9 @@ def owned_stack(scratch, env, summary, output, browser_temps):
                 cleanup['postgres'].get('stopped') is True or cleanup['postgres'].get('reason') == 'not running'):
             resources.atomic_json(output / 'batch-receipt.json', summary)
             raise RuntimeError('Native PostgreSQL cleanup unverified; owned scratch preserved')
+        if not cleanup['browser_temps']['complete']:
+            resources.atomic_json(output / 'batch-receipt.json', summary)
+            raise RuntimeError('Browser temp cleanup unverified; named roots preserved')
         scratch.__exit__(None, None, None)
 
 

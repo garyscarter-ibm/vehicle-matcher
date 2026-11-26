@@ -9,7 +9,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 from types import SimpleNamespace
 
 SCRIPT = Path(__file__).with_name('browser-ci-batch.py')
@@ -129,6 +129,40 @@ class ReceiptTest(unittest.TestCase):
                     result = batch.family_result(output, 'f340', 'a' * 40)
                     self.assertEqual(result['complete'], expected)
                     self.assertEqual(result['green'], expected)
+
+    def test_incomplete_browser_cleanup_still_records_postgres_stop_and_preserves_scratch(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            for name, rc, postgres in [('stopped', 0, {'stopped': True}),
+                                       ('refused', 0, {'refused': True, 'reason': 'owned database held'}),
+                                       ('failed', 1, {'stopped': False, 'reason': 'stop failed'})]:
+                with self.subTest(name=name):
+                    output = base / name
+                    root = output / 'scratch'
+                    browser_root = output / 'browser-root'
+                    root.mkdir(parents=True)
+                    browser_root.mkdir()
+                    browser_cleanup = {'complete': False, 'allocations': [],
+                                       'leftovers': [{'root': str(browser_root), 'reason': 'open files'}]}
+                    scratch = SimpleNamespace(root=root, __enter__=Mock(), env=lambda env: dict(env), __exit__=Mock())
+                    browser_temps = SimpleNamespace(account=lambda scratch: contextlib.nullcontext(),
+                                                    finalize=lambda: browser_cleanup)
+                    summary = {'cleanup': {}}
+                    stop_result = SimpleNamespace(returncode=rc, stdout=json.dumps(postgres))
+                    with patch.object(batch.subprocess, 'run', return_value=stop_result) as stop:
+                        with self.assertRaises(RuntimeError) as raised:
+                            with batch.owned_stack(scratch, {}, summary, output, browser_temps):
+                                pass
+                    stop.assert_called_once()
+                    self.assertEqual(stop.call_args.args[0], [sys.executable, '-B', '_tools/test_stack.py',
+                                                             'pg', 'down', '--if-idle'])
+                    self.assertEqual(summary['cleanup']['browser_temps'], browser_cleanup)
+                    self.assertEqual(summary['cleanup']['postgres'], postgres)
+                    self.assertEqual(json.loads((output / 'batch-receipt.json').read_text())['cleanup'], summary['cleanup'])
+                    self.assertIn('Browser temp' if name == 'stopped' else 'PostgreSQL', str(raised.exception))
+                    scratch.__exit__.assert_not_called()
+                    self.assertTrue(root.exists())
+                    self.assertTrue(browser_root.exists())
 
 
 class BrowserTempsTest(unittest.TestCase):
