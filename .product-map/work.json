@@ -13544,6 +13544,55 @@
         "kind:ui"
       ],
       "native_updated": "2026-11-25T18:44:07.379-0600"
+    },
+    {
+      "id": "FUCQ-320",
+      "title": "Retrain the learned forecast so it covers hatchbacks",
+      "type": "Story",
+      "status": "In Progress",
+      "branch": "dev/DEV-2026-11-16-029",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-320",
+      "workers": [
+        {
+          "name": "Sulley",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-26T06:22:05.290914+00:00",
+          "expires_at": "2026-11-26T10:22:05.291146+00:00",
+          "status": "running",
+          "source": "thread 01a21682-db90-7031-b64e-a29e1c927af6"
+        },
+        {
+          "name": "Captain Flack",
+          "harness": "codex",
+          "role": "implementer/dataset",
+          "observed_at": "2026-11-26T06:26:46Z",
+          "expires_at": "2026-11-26T06:42:42.457820+00:00",
+          "status": "stopped; dataset reviewed31/31",
+          "source": "/root/sulley/captain_flack"
+        }
+      ],
+      "observed_at": "2026-11-26T06:42:42Z",
+      "slices": [
+        {
+          "id": "dataset",
+          "status": "complete",
+          "title": "Reproducible-hatchback-dataset-and-artifact",
+          "observed_at": "2026-11-26T06:42:42Z",
+          "evidence": "Lead reviewed script, baseline clock delta, regressions and immutable artifact metrics; independently31/31 model+forecast tests passed23.11s/RSS350093312B; actual dated320record CLI/replay; artifact e5205f65. docs/gcsp/models/fucq320-result.md; activation/integration still pending."
+        },
+        {
+          "id": "activation",
+          "status": "not-started",
+          "title": "Dated-model-activation-and-history"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Real-composition-and-final-validation"
+        }
+      ],
+      "unsliced": false
     }
   ]
 }

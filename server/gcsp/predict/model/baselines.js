@@ -53,7 +53,7 @@ export async function prepareActualChoiceBaselines({ training, settings, policyS
     import('../../greg/index.js'), import('../../../scenarios/employee/index.js'), import('../../clock/index.js'), import('../../repository/index.js'),
   ]);
   const { createMemoryRepository, createMemoryStore, inputDigest, ok } = repositoryModule;
-  const repository = createMemoryRepository({ store: createMemoryStore() });
+  const repository = createMemoryRepository({ store: createMemoryStore(), now: () => read.asOf });
   requireChoice((await repository.open()).status === 'ok', 'baseline.repository', 'baseline-unavailable');
   try {
     const runtime = await createDemoRuntime({ repository, policy: policyService,
