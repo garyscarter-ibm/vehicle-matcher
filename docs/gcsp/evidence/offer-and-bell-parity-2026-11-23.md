@@ -364,3 +364,19 @@ Agent inspection observes existing shell/navigation insets, queue/table labels, 
 
 
 Native F557 publication verified on 26 November 2026 at05:01:41 UTC: queue Angular1647886(375085B), Node1647891(306025B); Help Angular1647889(73520B), Node1647890(66676B), all image/png. Existing Result comment5068813 records functionalAC1–4, partial status and coveringbatchpending. All human verdict/reviewer/date/source cells above remain blank. One earlier Node-queue phase-one response was discarded; its staging outcome remains unknown. Root recovered publication through fresh verified HTTP201 uploads, preserving each response before parsing and attaching each known ID once; no orphan removal is claimed.
+
+## Greg demand — FUCQ-558 original AC3 — 26 November
+
+The same-scenario pair uses Main initial inputs and the actual public release, at a 1280px CSS viewport. Final tested source `0a07ba17b869f64f76f55e62c5a4c5443c5be9ea`; frozen Node `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`; merge `696db20a21eadc68a0c3ad58c594a9951aac69b3`. Native FUCQ-558 comment `5068885` and both attachments were verified at `2026-11-26T05:56:47Z`.
+
+| Angular post-release | Frozen Node post-release |
+| --- | --- |
+| [angular-demand-post-release-1280.png, attachment1647902](https://jira-prod-us-mc-62-3.prod.atl-paas.net/rest/api/3/attachment/content/1647902) | [node-demand-post-release-1280.png, attachment1647904](https://jira-prod-us-mc-62-3.prod.atl-paas.net/rest/api/3/attachment/content/1647904) |
+
+Engineering:51focused/340ratchet/registered5of5; independent A30of40 and detector0, no actionable in-scope correction. Angular deliberately retains existing provenance/refusal wording and has a taller panel; agent checks do not establish the human comparison. Shared web2175tests/135specs at the merge is green; later covering browser/Node lines remain pending. Earlier upload uncertainty and bounded recovery are retained in the native comment/local receipt; no unknown staging-object cleanup is claimed.
+
+| Original criterion | Reviewer | Reviewed at | Verdict | Source |
+| --- | --- | --- | --- | --- |
+| FUCQ-558 AC3: A reviewed1280 screenshot pair, Node and Angular, same scenario. | | | | |
+
+This extends the existing consolidated evidence artifact passively. No new question or review thread was created, and AC3 remains unchecked.

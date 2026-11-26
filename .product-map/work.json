@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-26T05:16:20Z",
+  "observed_at": "2026-11-26T05:56:47Z",
   "version": 1,
   "stories": [
     {
@@ -13487,10 +13487,10 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Bug",
-      "observed_at": "2026-11-26T05:22:37Z",
+      "observed_at": "2026-11-26T05:56:47Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-558",
-      "native_observed_at": "2026-11-26T04:50:23Z",
-      "jira_observed_at": "2026-11-26T04:50:23Z",
+      "native_observed_at": "2026-11-26T05:56:47Z",
+      "jira_observed_at": "2026-11-26T05:56:47Z",
       "branch": "dev/DEV-2026-11-22-vesper-031",
       "evidence": "Source0a07ba17b;51focused/340ratchet/drift0; final registered browser5/5, actual Node1280/375pair, independent renderedA/B30/40 detector0. Partial: original humanAC3 and covering shared batch pending; no acceptance inferred.",
       "unsliced": false,
@@ -13520,17 +13520,25 @@
           "id": "human-pair",
           "status": "not-started",
           "title": "Original AC3 human-reviewed 1280 same-scenario Node/Angular pair",
-          "observed_at": "2026-11-26T05:22:36Z",
-          "evidence": "OriginalAC3 pending root-held human review batch; thread none verified. Actual1280same-scenario pair captured atsource0a07ba17b; reviewer/date/verdict/source remain blank in final-proof3/f558/greg-demand-pairs.json. No human verdict inferred."
+          "observed_at": "2026-11-26T05:56:47Z",
+          "evidence": "Original AC3 remains blank. Verified native pair1647902/1647904 and consolidated docs/gcsp/evidence/offer-and-bell-parity-2026-11-23.md appendix; no new question/thread or human verdict."
         },
         {
           "id": "covering-batch",
-          "status": "not-started",
+          "status": "in-progress",
           "title": "Covering shared validation batch after merge",
-          "observed_at": "2026-11-26T05:22:37Z",
-          "evidence": "Root owns post-merge covering shared validation batch; no covering batch or acceptance inferred from focused or final registered story check."
+          "observed_at": "2026-11-26T05:56:47Z",
+          "evidence": "Shared web at696db20a2 green2175/135specs covers merge; later browser and Node full lines still pending. Java unchanged. No acceptance inferred."
         }
-      ]
+      ],
+      "native_parent": "FUCQ-432",
+      "native_story_points": 8,
+      "native_start_date": "2026-11-26",
+      "native_links": [
+        "FUCQ-448"
+      ],
+      "workers": [],
+      "note": "Merged696db20a2; original AC1/2 engineering51focused/340ratchet/registered5/5 at0a07ba17. Independent A30/40/Bdetector0, no in-scope correction. Native comment5068885 and exactly two1280PNG attachments1647902/1647904 verified05:56:47Z. Shared web2175/135 at696 covers merge; later browser/Node coverage remains pending. Original humanAC3 verdict blank. Dependency link removed; partial claim/branch/worktree retained. Earlier Node staging unknown; one subsequent HTTP201 upload attached known ID once, no unknown-object cleanup claimed."
     }
   ]
 }
