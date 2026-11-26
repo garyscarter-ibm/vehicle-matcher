@@ -33,6 +33,9 @@ final class ReturnHttpSupport {
     static final String PROGRESS = "/api/gcsp/v1/presenter/returns/progress";
     static final String EMPLOYEE_A = "E-1001";
     private static final Instant FIRST = Instant.parse("2026-11-05T09:00:00Z");
+    private static final String SCENARIO_VERSION = "gcsp-clock-scenario-v1";
+    private static final String FIXTURE_VERSION = "gcsp-clock-fixtures-v1";
+    private static final String NAMED_TIMES = "{\"release\":\"2026-11-05T09:30:00Z\",\"expiry\":\"2026-11-05T11:00:00Z\"}";
     private static final DateTimeFormatter SLOT_ID = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmm'Z'").withZone(ZoneOffset.UTC);
 
     private ReturnHttpSupport() {}
@@ -75,36 +78,52 @@ final class ReturnHttpSupport {
         return new AppointmentSlot("slot-" + SLOT_ID.format(start), start, start.plus(1, ChronoUnit.HOURS));
     }
 
-    /** Delivers a completed tick that moves the run's demo clock on by the given seconds; returns the new clock. */
+    /** Advances the test run clock from the FUCQ-479 scenario time by the given seconds; returns the new clock. */
     static Instant tick(AgroalDataSource ds, Persistence persistence, long plusSeconds) throws SQLException {
         EnvironmentGuard.RunState run = persistence.guard().currentRun();
         try (Connection c = ds.getConnection()) {
-            long version = 1;
+            c.setAutoCommit(false);
+            long version = 2;
             Instant top = FIRST;
-            try (PreparedStatement ps = c.prepareStatement("SELECT clock_version, tick_now FROM supply_release_ticks "
-                    + "WHERE environment_id = ? AND run_id = ? ORDER BY clock_version DESC, delivered_seq DESC LIMIT 1")) {
+            boolean exists = false;
+            try (PreparedStatement ps = c.prepareStatement("SELECT clock_version, clock_instant FROM run_clocks "
+                    + "WHERE environment_id = ? AND run_id = ? FOR UPDATE")) {
                 ps.setString(1, run.environmentId());
                 ps.setString(2, run.runId());
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
+                        exists = true;
                         version = rs.getLong(1) + 1;
                         Instant t = rs.getObject(2, OffsetDateTime.class).toInstant();
                         if (t.isAfter(FIRST)) top = t;
                     }
                 }
             }
-            Instant now = top.plusSeconds(plusSeconds);
-            try (PreparedStatement ps = c.prepareStatement("INSERT INTO supply_release_ticks (environment_id, run_id, "
-                    + "tick_id, tick_now, clock_version, input_digest, state, last_outcome) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, 'completed', '{}'::jsonb)")) {
-                ps.setString(1, run.environmentId());
-                ps.setString(2, run.runId());
-                ps.setString(3, "ret-http-" + UUID.randomUUID());
-                ps.setObject(4, now.atOffset(ZoneOffset.UTC));
-                ps.setLong(5, version);
-                ps.setString(6, "0".repeat(64));
-                ps.executeUpdate();
+            if (!exists) {
+                try (PreparedStatement insert = c.prepareStatement("INSERT INTO run_clocks "
+                        + "(environment_id, run_id, clock_instant, clock_version, scenario_version, "
+                        + "fixture_version, starts_at, named_times) VALUES (?, ?, ?, 1, ?, ?, ?, ?::jsonb)")) {
+                    insert.setString(1, run.environmentId());
+                    insert.setString(2, run.runId());
+                    insert.setObject(3, FIRST.atOffset(ZoneOffset.UTC));
+                    insert.setString(4, SCENARIO_VERSION);
+                    insert.setString(5, FIXTURE_VERSION);
+                    insert.setObject(6, FIRST.atOffset(ZoneOffset.UTC));
+                    insert.setString(7, NAMED_TIMES);
+                    insert.executeUpdate();
+                }
             }
+            Instant now = top.plusSeconds(plusSeconds);
+            try (PreparedStatement ps = c.prepareStatement("UPDATE run_clocks SET clock_instant = ?, clock_version = ?, "
+                    + "last_tick_id = NULL, version = version + 1, updated_at = now() "
+                    + "WHERE environment_id = ? AND run_id = ?")) {
+                ps.setObject(1, now.atOffset(ZoneOffset.UTC));
+                ps.setLong(2, version);
+                ps.setString(3, run.environmentId());
+                ps.setString(4, run.runId());
+                if (ps.executeUpdate() != 1) throw new SQLException("The run clock fixture was not updated.");
+            }
+            c.commit();
             return now;
         }
     }

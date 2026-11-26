@@ -1,5 +1,6 @@
 package gcsp.api.returns;
 
+import gcsp.api.clock.RunClockHolder;
 import gcsp.api.persistence.Persistence;
 import gcsp.api.policy.PolicyService;
 import io.agroal.api.AgroalDataSource;
@@ -47,6 +48,9 @@ public class ReturnSelection {
     Persistence persistence;
 
     @Inject
+    RunClockHolder runClockHolder;
+
+    @Inject
     Instance<AgroalDataSource> dataSource;
 
     private volatile Selected selected;
@@ -81,7 +85,7 @@ public class ReturnSelection {
     }
 
     public synchronized ReturnClock clock() {
-        if (clock == null) clock = new TickReturnClock(dataSource());
+        if (clock == null) clock = new TickReturnClock(runClockHolder);
         return clock;
     }
 

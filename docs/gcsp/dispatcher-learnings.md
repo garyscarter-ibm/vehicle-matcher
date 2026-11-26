@@ -4215,3 +4215,31 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 
 - Final registered F555 family passed all 6 cases, zero skips, on unchanged F544 source with supported installed Chromium 159 and exact frozen Node reference. All six refused receipt/current signed-reread/restart views at 1280/390 have zero active timing; pending countdown and frozen-reference comparison pass. Actual cleanup confirms owned scratch, database, process groups and links absent. Attempts 1/2 remain setup failures; no product assertion was weakened.
 - Root read the complete two-module test/helper diff, passed Node24 syntax checks and independently reran 165/165 direct offer tests on refreshed `cd297ae3a`: 9.8s, peak group RSS 2,073,477,120 B, scratch 12,056,544 B. Exact scratch/group/link/build-output absence was checked. Final metadata refresh preserved all executable identities; merge `b1d19fc18` is pushed. Shared 18-family browser coverage remains pending. The shared cache was retained at 10,458,880 KiB, above its 8 GiB target; this is not per-run scratch or a new Bug acceptance gate.
+
+### 2026-11-26 07:59 UTC · usget-velko · DL-20261126-VELKO-20 · Browser preparation corrected before launch
+
+- The inherited 0410 adapter had 16 families; the current registered set has 18. A one-family checkpoint plan was prepared with current mappings. Root's static review caught the inherited missing headless-shell path, assumed browser version, raw Git probes and absent phase/resume handling before any claim/worktree/test. These were corrected against F544's actual supported environment and helper API.
+- Lower historical family RSS did not establish a daytime budget: the registered runner fixes `chunk_ram_mib=3584`. Root therefore retained 3.5 GiB for all 18 families, overnight/CI only, without adding a shim or changing product/test source. The prepared adapter remains UNSET and unlaunched; its two checkpoint groups must both run on the same source. This is a corrected plan, not executed coverage. Proposed improvement: include the registered runner's policy request when sizing a wrapper; avoid an infrastructure rewrite to force a narrower reservation.
+
+### 2026-11-26 07:59 UTC · usget-velko · DL-20261125-SORREL-15 · F544 publication filename mismatch identified
+
+- Native readback names desktop receipt1647965 and narrow receipt1647966; the requested second artifact was narrow API-restart. Both uploaded files are valid retained captures, but that pair does not match the concrete publication request. Root asked the same worker to preserve those known attachments, add only the missing narrow restart once, and make comment5069096's state labels exact. Correction/readback remain pending; no deletion, duplicate upload or test rerun is requested. Existing publication proposal: verify actual file role as well as returned media identity before reporting completion.
+
+### 2026-11-26 08:07 UTC · usget-velko · DL-20261126-VELKO-24 · F542 full integration verified
+
+- Root reviewed the six-file return-clock repair and unchanged scoped205-test evidence. Required canonical CI45775454699 on integrated75e1d539 completed clean verify:2340cases/2337executed/0fail/0error/3existing conditional skips, all106returns plus none-supply HTTP/clock/startup callers passed. All380 reports validate. Peak inclusive RSS4,174,303,232B and actual scratch+target102,187,008B include the JVM/target, correcting attribution for this final run; the old RED JVM/disk peaks remain unverified. Owned groups/scratch/target are absent and cleanup has no issues.
+- Metadata refresh preserved exact Java/Node-parity/fixture/workflow objects; root merged/pushed8bee4b3c7 and records this full result once for F320/F542 after scope reconciliation. Three manual-host/full-size skips remain explicit and prove no full-size criterion. Browser coverage remains pending overnight/CI. The same worker's restored context and final validation resolved the delivery interruption without duplicating RED or replacing the worker; its original context-loss cause remains unknown.
+
+### 2026-11-26 08:08 UTC · usget-velko · DL-20261125-SORREL-15 · F544 publication role corrected
+
+- Native readback now shows the requested narrow restart102021B as1647968, added once after reconciling existing valid receipt1647965/1647966. Comment5069096 explicitly labels receipt1280,receipt390,restart390 and separates signed handler reread from physical visibility; exact text read back. Native08:01:06.724Z remains In Progress. This verifies the filename-role correction without deleting valid evidence or rerunning tests; the earlier mismatch remains recorded.
+
+### 2026-11-26 08:10 UTC · usget-velko · DL-20261126-VELKO-23 · Native CI/source provenance clarified
+
+- Native F542 comment5069102 initially called CI source75e1d539 the final integration head. Root caught the label mismatch in readback: actual final branch5801ccfaa/merge8bee4b3c7 have identical relevant Java/Node-parity/fixture/workflow objects, while CI executed75e. The same comment now states those roles exactly, read back at08:09:08.766Z; all other fields remain InProgress/Russell/3/start26Nov/parent433/origin473/Low. This corrects provenance wording, not a failed test or changed runtime; no duplicate run/comment was created.
+
+
+### 2026-11-26 08:23 UTC · usget-velko · DL-20261123-F555-23 · Completed child steering needs an active turn
+
+- During F538, native status showed Emmet completed a read-only generator analysis while the lead had sent implementation steering with send_message. That call queued context without starting implementation. Root identified the completed state; Pugh resumed the retained Emmet with followup_task and the complete implementation/resource brief. The earlier analysis is retained and no replacement or model change was made.
+- The lifecycle mistake recurs from the earlier F573 observation under this ID. Resumption is an applied mitigation; generator RED/GREEN and completed delivery remain pending. Existing adapter guidance already distinguishes steering a running child from waking an idle one; no new gate, acceptance scope or framework change is added.
