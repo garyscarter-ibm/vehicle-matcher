@@ -79,3 +79,11 @@ The fork is now `1.5.0+vehicle-matcher.1`: upstream scaffolding 1.5.0's `partial
 In Progress in Jira, and so does its epic; only a fully met `built` story goes to In Review. The
 `test_jira_sync_ui.py` checks still pass. Cause: DL-20261116-RG-002 in `dispatcher-learnings.md`.
 
+
+## 26 November 2026: push speed
+
+The fork is now `1.5.0+vehicle-matcher.2`: upstream scaffolding jira_sync 1.7.1's push-speed fix applied by hand.
+`push` read claim dates with one `git log --all` per story and checked branches with two `show-ref` calls per story,
+about 450 git processes and 74 s here. Sol stopped it at 30 s as hung on 26 November, wrote Jira by hand and left 73
+sync gaps. It now reads history once and lists refs once per run: 13 s, and the same ops as the unpatched tool on the
+same state. The `test_jira_sync_ui.py` checks still pass.
