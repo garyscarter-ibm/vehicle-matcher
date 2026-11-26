@@ -306,7 +306,7 @@ Original AC4 remains partial even though the scripted groups pass: frozen Node's
 
 ## F553 — recovered terminal Retry — original AC5 pair revision d0364260b
 
-Registered f553 at d0364260b passed7/7 with actual signed OIDC/Java/PostgreSQL and frozen Node e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38. The same exact car enters pending then terminal claim-failed in both engines before the1280×800 captures. Angular now retains the visible Retry action after retiring the resolved command; it waits for refreshed stock and explicitly reserves with fresh pins/new identity. Original functional AC4 is evidenced. Root and independent engineering inspection found this action legible at1280/375; they do not approve overall parity. Original AC5 remains open; native publication is in progress.
+Registered f553 at d0364260b passed7/7 with actual signed OIDC/Java/PostgreSQL and frozen Node e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38. The same exact car enters pending then terminal claim-failed in both engines before the1280×800 captures. Angular now retains the visible Retry action after retiring the resolved command; it waits for refreshed stock and explicitly reserves with fresh pins/new identity. Original functional AC4 is evidenced. Root and independent engineering inspection found this action legible at1280/375; they do not approve overall parity. Original AC5 remains open; native publication was read back at2026-11-26T01:49:36Z, existing comment5068545, with AC1–4checked/AC5unchecked and statusInProgress.
 
 Retained root: /Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f553-retry-20261126/browser-d0364260b-chromium159/f553/. The parent run-receipt.json and browser-receipt.json retain actual source/readbacks. Earlier pairs remain historical. Broader visible release-history/filter/media-badge differences remain subject to baseline triage and human comparison.
 
@@ -314,3 +314,10 @@ Retained root: /Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f553-ret
 | --- | --- | --- | --- | --- | --- | --- |
 | Stock gallery — F553 AC5 | Same exact car, reservation pending,1280×800 | node-reservation-pending-1280.png / angular-reservation-pending-1280.png, revised retained root above | | | | |
 | Stock gallery — F553 AC5 | Same exact car, terminal claim-failed,1280×800 | node-reservation-failed-1280.png / angular-reservation-failed-1280.png, revised retained root above | | | | |
+
+Fresh native attachments (older four retained; Jira added UUID suffixes to duplicate filenames):
+
+| State | Frozen Node | Angular / Java |
+| --- | --- | --- |
+| Pending | [node-reservation-pending-1280 (a3b6cae8-6604-47c0-887b-6f049e3d6e41).png](https://ibm-consulting.atlassian.net/secure/attachment/1647795/node-reservation-pending-1280%20%28a3b6cae8-6604-47c0-887b-6f049e3d6e41%29.png) (1647795, 180,436B) | [angular-reservation-pending-1280 (737fef6c-cf46-4ba7-adb0-2b0b3c0112a6).png](https://ibm-consulting.atlassian.net/secure/attachment/1647796/angular-reservation-pending-1280%20%28737fef6c-cf46-4ba7-adb0-2b0b3c0112a6%29.png) (1647796, 376,536B) |
+| Terminal claim-failed | [node-reservation-failed-1280 (63ab019b-c727-46b8-bdf4-c5eac4856993).png](https://ibm-consulting.atlassian.net/secure/attachment/1647797/node-reservation-failed-1280%20%2863ab019b-c727-46b8-bdf4-c5eac4856993%29.png) (1647797, 242,800B) | [angular-reservation-failed-1280 (84c8e4ba-e720-4345-8ee0-032d5f8391e9).png](https://ibm-consulting.atlassian.net/secure/attachment/1647798/angular-reservation-failed-1280%20%2884c8e4ba-e720-4345-8ee0-032d5f8391e9%29.png) (1647798, 364,389B) |
