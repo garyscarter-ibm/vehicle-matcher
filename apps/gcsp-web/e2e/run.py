@@ -32,6 +32,7 @@ CASES = {
     'f554': 'apps/gcsp-web/e2e/manual-review-parity.test.mjs',
     'f555': 'apps/gcsp-web/e2e/offer-parity.test.mjs',
     'f556': 'apps/gcsp-web/e2e/orders-parity.test.mjs',
+    'f557': 'apps/gcsp-web/e2e/case-help-parity.test.mjs',
     'f559': 'apps/gcsp-web/e2e/greg-planning-parity.test.mjs',
     'f561': 'apps/gcsp-web/e2e/presenter-parity.test.mjs',
     'f520': 'apps/gcsp-web/e2e/manual-review.test.mjs',

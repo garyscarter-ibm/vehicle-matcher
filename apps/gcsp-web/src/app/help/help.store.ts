@@ -223,7 +223,7 @@ export class HelpStore {
     if (!this.current(scope)) return false;
     const operation = this.start();
     const options = { signal: operation.controller.signal };
-    this.snapshot.update(s => ({ ...s, phase: 'loading', help: null, cases: [], notice: null, reconciled: false,
+    this.snapshot.update(s => ({ ...s, phase: 'loading', help: null, notice: null, reconciled: false,
       review: !s.uncertain && s.review?.kind === 'confirm-preference' ? null : s.review,
       preferenceCaseId: !s.uncertain ? null : s.preferenceCaseId,
       message: s.successMessage ? `${s.successMessage} Loading current cases.` : 'Loading renewal help.' }));
@@ -246,7 +246,7 @@ export class HelpStore {
     const failures = [help, cases, ...(detail ? [detail] : [])].filter(result => result.state !== 'ready');
     const failure = failures.find(result => result.state === 'scope-mismatch'
       || result.state === 'refused' && ['unauthenticated', 'forbidden'].includes(result.refusal.status)) ?? failures[0];
-    if (failure) { this.applyFailure(failure, scope); return true; }
+    if (failure) { this.applyFailure(failure, scope, true); return true; }
     if (help.state !== 'ready' || cases.state !== 'ready' || detail && detail.state !== 'ready') return false;
     const rows: CaseRecord[] = [...cases.value.cases];
     if (detail?.state === 'ready') {
@@ -288,7 +288,7 @@ export class HelpStore {
     return result.state === 'scope-mismatch' || result.state === 'refused' && ['unauthenticated', 'forbidden'].includes(result.refusal.status)
       || result.state === 'failed' && ['context-changed', 'authentication-required', 'role-required', 'context-unavailable', 'environment-mismatch'].includes(result.problem);
   }
-  private applyFailure(result: CaseClientResult<unknown>, scope: Scope): void {
+  private applyFailure(result: CaseClientResult<unknown>, scope: Scope, retainCases = false): void {
     if (!this.current(scope)) return;
     const old = this.snapshot();
     const lost = this.losesAccess(result);
@@ -303,7 +303,7 @@ export class HelpStore {
       : caseReadNotice(result) ?? { title: 'Renewal help is unavailable', text: 'Refresh cases before trying again.' };
     const s = lost ? blank(scope) : old;
     this.snapshot.set({ ...s, phase: denied ? 'denied' : auth ? 'auth-required' : stale ? 'stale' : 'unavailable',
-      help: null, cases: [], pending: false, reconciled: false, notice,
+      help: null, cases: retainCases && !lost ? s.cases : [], pending: false, reconciled: false, notice,
       // Refused commands need a fresh read/review. An unknown intent survives failed reads only.
       review: lost || stale || !s.uncertain ? null : s.review,
       uncertain: !lost && !stale && s.uncertain,

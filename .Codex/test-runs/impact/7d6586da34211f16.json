@@ -1,0 +1,69 @@
+{
+  "identity": "7d6586da34211f16964dc9d5e74036fff8e653d9649a8713db0a4c51a0a3a2b2",
+  "base": "1bb1b5af1d0a5a410bc35a6bc6c9ef9481ac15a3",
+  "changed_paths": [
+    "apps/gcsp-web/src/app/cases/case-queue.component.html",
+    "apps/gcsp-web/src/app/cases/case-queue.component.spec.ts",
+    "apps/gcsp-web/src/app/cases/case-queue.component.ts",
+    "apps/gcsp-web/src/app/cases/case.projection.ts",
+    "apps/gcsp-web/src/app/help/help.component.html",
+    "apps/gcsp-web/src/app/help/help.component.spec.ts",
+    "apps/gcsp-web/src/app/help/help.component.ts",
+    "apps/gcsp-web/src/app/help/help.store.spec.ts",
+    "apps/gcsp-web/src/app/help/help.store.ts"
+  ],
+  "regression": "sort order/focus/exact case id; actual charging-unconfirmed label; retain same-context failed-read case info and clear access loss; card skeleton",
+  "tests": {
+    "command": "npx -y -p node@24.22.3 -p npm@11.19.1 npm test -- --include=src/app/cases/case-queue.component.spec.ts --include=src/app/cases/case-queue.store.spec.ts --include=src/app/cases/case.client.spec.ts --include=src/app/cases/case.projection.spec.ts --include=src/app/help/help-route.spec.ts --include=src/app/help/help.component.spec.ts --include=src/app/help/help.projection.spec.ts --include=src/app/help/help.store.spec.ts",
+    "red": "4 expected failures;68 passed;10.8s;RSS1244921856",
+    "green": "198/198;8 files;11.46s;RSS1261649920"
+  },
+  "boundaries": "CaseClient unchanged; HelpStore HTTP read/write behavior tests included; no backend/schema/fixture contract edit; browser delegated parent",
+  "excluded": "Full suites deferred to parent shared batch; original humanAC5 remains pending actual collaborator verdict; no hosted/AT/Safari/overlay claim.",
+  "drift_rc": 0,
+  "resources": {
+    "scratch_bytes_at_completion": 8815668,
+    "angular_cache_bytes": 0,
+    "node_cache": "shared hit a02ca099d6a226bc2eda2055; link retained for parent",
+    "children": "subprocess.run joined on each chunk"
+  },
+  "product_checkpoint": "a1aa11d6c2218149650fa547e6ea5743e7619baa",
+  "unchanged_boundaries": "scaffold_git diff from a1 through d090 is empty for cases/help/auth/core/kit/styles/package paths;198 product specs and135 ratchet reused.",
+  "connected": {
+    "command": "npm --prefix apps/gcsp-web run test:e2e -- --case f557",
+    "source": "d090b83d0bdee537a5bdc47c636e4be56ce2cdf6",
+    "frozen_source": "e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38",
+    "pass": 7,
+    "fail": 0,
+    "groups": 6,
+    "wall_s": 32.37779124999361,
+    "total_wall_s": 40.60582399368286,
+    "peak_rss_bytes": 3211296768,
+    "peak_scratch_bytes": 130776032,
+    "boundaries": [
+      "native select keyboard/order/focus and selected-case heading at1280/375",
+      "actual charging-unconfirmed through canonical public editor/options",
+      "actual pendingHelp read/card skeleton; abortedread retains exactcase text/note; recovery",
+      "frozen canonical account prep+real initial tick/release; publiccasecommands and fullcase-field equality",
+      "signedOIDC signout/accountswitch privatecase clearing"
+    ],
+    "fixture_config_subprocess_edges": [
+      "registeredrun.py shared3.5GiB reservation/ownedfreshPG17DB",
+      "optional caseHelp Node replay branch only; existing/defaultbranches unchanged",
+      "pinnedNode24.22.3/Chromium159/Java21/frozenmemorysource"
+    ],
+    "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f557-20261126/browser-d090b83d0-chromium159/run-receipt.json",
+    "cleanup": "DB dropped;scratch absent;manifest retained removed;PIDs absent;.angular absent;cleanupErrors[]"
+  },
+  "failed_attempts": "/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f557-20261126/failed-attempts.json",
+  "rendered_quality": {
+    "method": "isolated A then separate B; A finished before detector",
+    "a_score": "28/40; noP0/P1 or in-scope repair",
+    "a_source": "f1732809a,explicitly equivalent product/input assessed against finald090",
+    "b_source": "d090b83d0bdee537a5bdc47c636e4be56ce2cdf6",
+    "b_detector": "one exact run,two changed HTMLtargets,exit0,0findings",
+    "b_captures": 10,
+    "limitations": "No live overlay/AT/zoom/Safari; fullpage fixedheader offset observation not a reproduced UI defect",
+    "snapshot": ".impeccable/critique/2026-11-26T04-37-39Z__pps-gcsp-web-src-app-cases-case-queue-component-ts.md"
+  }
+}

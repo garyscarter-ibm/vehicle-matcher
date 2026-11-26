@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, computed, inject, viewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, computed, inject, signal, viewChild } from '@angular/core';
 import { GregNavigationComponent } from '../kit/greg-navigation.component';
 import { ButtonDirective } from '../kit/button.directive';
 import { DataTableComponent, DataTableColumn, DataTableRow, DataTableRowAction } from '../kit/data-table.component';
@@ -7,7 +7,7 @@ import { FactListComponent } from '../kit/fact-list.component';
 import { LabelledFieldComponent } from '../kit/labelled-field.component';
 import { ScreenIntroComponent } from '../kit/screen-intro.component';
 import { StatusScreenComponent } from '../kit/status-screen.component';
-import { carOptionNames, caseNotice, caseTime, preferenceLabel, preferenceText } from './case.projection';
+import { carOptionNames, caseGateLabel, caseNotice, caseTime, preferenceLabel, preferenceText, sortCases } from './case.projection';
 import { CaseQueueStore, QueueDraft } from './case-queue.store';
 
 let serial = 0;
@@ -30,15 +30,20 @@ export class CaseQueueComponent implements OnDestroy {
     { key: 'owner', label: 'Owner' }, { key: 'due', label: 'Due (UTC)' },
   ];
   readonly rowAction: DataTableRowAction = { header: 'Action', label: 'Open', name: row => `Open case for ${row.label}` };
-  readonly rows = computed<readonly DataTableRow[]>(() => this.view().rows.map(row => ({ id: row.caseId, label: row.employee || row.reference,
+  readonly order = signal<'deadline' | 'status'>('deadline');
+  readonly rows = computed<readonly DataTableRow[]>(() => {
+    const displayed = this.view().rows;
+    const byId = new Map(displayed.map(row => [row.caseId, row]));
+    return sortCases(displayed.map(row => row.source), this.order()).map(source => byId.get(source.caseId)!).map(row => ({ id: row.caseId, label: row.employee || row.reference,
     cells: { employee: `${row.employee} · ${row.reference}`, deadline: row.source.renewalDeadline || 'Needs confirmation',
       trigger: row.facts.find(f => f.label === 'Opened from')?.value || 'Not supplied', reason: row.source.reason,
-      status: row.status, owner: row.owner, due: caseTime(row.source.dueAt, 'scheme-team') } })));
+      status: row.status, owner: row.owner, due: caseTime(row.source.dueAt, 'scheme-team') } }));
+  });
   readonly errors = computed(() => Object.entries(this.view().errors).map(([field, message]) => ({ controlId: this.control(field), message })));
   readonly textFields = [{ key: 'reason' as const, label: 'Reason for this update' }, { key: 'nextAction' as const, label: 'Next action' }];
   readonly needsConfirmation = computed(() => {
     const cars = this.view().options?.options.alternativeCars.needsConfirmation || [];
-    return carOptionNames(cars).map((name, i) => `${name}: ${cars[i].unknowns?.map(String).join(', ') || 'suitability needs confirmation'}`);
+    return carOptionNames(cars).map((name, i) => `${name}: ${cars[i].unknowns?.map(caseGateLabel).join(', ') || 'suitability needs confirmation'}`);
   });
   readonly reviewFacts = computed(() => {
     const input = this.view().review?.input;
@@ -59,6 +64,7 @@ export class CaseQueueComponent implements OnDestroy {
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly detector = inject(ChangeDetectorRef);
   private destroyed = false;
+  sort(event: Event): void { this.order.set((event.target as HTMLSelectElement).value === 'status' ? 'status' : 'deadline'); }
   control(field: string): string { return `${this.id}-${field}`; }
   described(field: keyof QueueDraft): string | null { return this.view().errors[field] ? `${this.control(field)}-error` : null; }
   edit(field: keyof QueueDraft, event: Event): void { this.store.edit(field, (event.target as HTMLInputElement).value); }
