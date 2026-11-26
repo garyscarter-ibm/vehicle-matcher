@@ -4340,3 +4340,10 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 - **Impact:** applying the queue blind would have moved other members' issues on stale git facts; it also buries a claim's real ops among hundreds.
 - **Action/outcome:** applied and read back FUCQ-599's ops; marked done only the 522 Jira-verified ops; left the 26 and the 110 links unmarked and unapplied for the issues' owners. No status was regressed.
 - **Proposed improvement:** `push` should read current Jira state (or another clone's pushed marks) before emitting, or `--mark-done` should accept a verified-state file, so a fresh clone's queue holds only its own claim's ops.
+
+### 2026-11-26 23:00 UTC · garyscarter-ibm-ishbel · DL-20261126-ISHBEL-02 · FUCQ-599 story-lead blocked on push and browser run
+- **Evidence:** story-lead Heihei built DEV-2026-11-19-GC-ishbel-001 (FUCQ-599) to `f62a86be0` (code `ce29de193`): 74 spec files, 1423 passed on pinned Node 24.22.3, `check:boundaries` pass, drift 0 new. Two actions were refused by the Claude Code permission classifier in the subagent: an explicit push of `dev/DEV-2026-11-19-GC-ishbel-001` (`scaffold_git.py push` pushes only the base branch) and starting `apps/gcsp-web/e2e/run.py`. The kit test stack (8329d6099) also refuses `run.py`'s 3.5 GiB outside 00:00 to 07:30, and most registered cases need `GCSP_NODE_REFERENCE` (a clean `e44ed08a` checkout) that this Mac lacks.
+- **Other traps:** e2e temp-path tests fail under macOS's default TMPDIR and pass with TMPDIR under `/tmp`; zsh does not word-split `$paths` for `commit --paths`.
+- **Impact:** the story is `waiting`, not built; its branch exists only in this clone's worktree; 11 browser cases unrun.
+- **Action/outcome:** dispatcher did not retry either refused action on the subagent's behalf; recorded for Gary. Story stays In Progress.
+- **Proposed improvement:** `scaffold_git.py push --branch dev/<id>` (or the worktree command) should publish the story branch so no hand-typed git push is needed; the e2e runner should create or document its Node reference checkout.
