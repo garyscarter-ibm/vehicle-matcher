@@ -342,3 +342,22 @@ Retained receipts and cleanup: parent `run-receipt.json`, `f554/browser-receipt.
 | --- | --- | --- | --- | --- | --- | --- |
 | Manual review — F554 AC7 | Same car/choices/deadline,1280×800 | node-review-1280.png / angular-review-1280.png, retained root above | | | | |
 | Manual summary — F554 AC7 | Same saved facts/deadline,1280×800 | node-summary-1280.png / angular-summary-1280.png, retained root above | | | | |
+
+
+## F557 — case queue and employee Help — original AC5 — awaiting human verdict
+
+Registered `f557` passed all seven entries (six engineering groups plus parent) at actual source `d090b83d0bdee537a5bdc47c636e4be56ce2cdf6`, using signed OIDC, Angular/Java/native PostgreSQL and immutable Node `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`. The same public case/editor commands produce Alex and Paula's automatic 1 December cases and Greg Lawson's later 15 December help-request case. Paula is in progress, with the same next action and due instant. The proof compares employee, renewal deadline, status, reason, next action, due instant and policy version for every case before capture; it preserves actual generated stock and history. Frozen identity/account preparation and the initial clock tick use the existing services before release.
+
+The full-page pairs below use a 1280×800 viewport. Both show the actual unanswered-charging case with **Charging access not confirmed**; Angular's native two-choice sorting, focused control and actual row ordering also passed at 375px. The failed-read Help capture separately retains the same case text and the exact prior-information note; card loading and sign-out/account isolation passed. These are engineering checks. Original AC5 still needs an actual collaborator verdict, and no human reviewer/date/source is recorded. F557 remains partial; the covering shared batch is parent-owned and pending.
+
+| State | Frozen Node | Angular / Java |
+| --- | --- | --- |
+| Queue with Paula's charging case open | [node-case-queue-charging-1280.png](/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f557-20261126/browser-d090b83d0-chromium159/f557/node-case-queue-charging-1280.png) | [angular-case-queue-charging-1280.png](/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f557-20261126/browser-d090b83d0-chromium159/f557/angular-case-queue-charging-1280.png) |
+| Employee Help, same in-progress case | [node-help-current-1280.png](/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f557-20261126/browser-d090b83d0-chromium159/f557/node-help-current-1280.png) | [angular-help-current-1280.png](/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f557-20261126/browser-d090b83d0-chromium159/f557/angular-help-current-1280.png) |
+
+Agent inspection observes existing shell/navigation insets, queue/table labels, form/option section order and unconfirmed-car presentation differences; the Help pair also differs in refresh/current-status chrome. Equal case fields and readable restored controls do not establish general visual parity or accept these differences. Retained evidence: parent `run-receipt.json`, `f557/browser-receipt.json`, `final-browser-summary.json` and `capture-review-equivalence.json` under `.claude/poller/velko-f557-20261126/`.
+
+| Screen / original criterion | State and viewport | Pair | Verdict | Human reviewer | Date | Source |
+| --- | --- | --- | --- | --- | --- | --- |
+| Renewal cases — F557 AC5 | Same three actual cases; Paula in progress,1280×800 | `node-case-queue-charging-1280.png` / `angular-case-queue-charging-1280.png`, retained root above | | | | |
+| Employee Help — F557 AC5 | Same Paula case and next action,1280×800 | `node-help-current-1280.png` / `angular-help-current-1280.png`, retained root above | | | | |
