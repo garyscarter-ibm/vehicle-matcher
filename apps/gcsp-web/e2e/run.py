@@ -240,7 +240,7 @@ def main():
     os.environ.setdefault("SCAFFOLDING_HARNESS", "codex")
     # Enter the shared slot before allocating/building. The inner supervisor launches the actual
     # Node session itself, so its RSS monitor covers that session rather than just the queue wrapper.
-    if not os.environ.get("GCSP_HEAVY_SLOT"):
+    if not os.environ.get("AGENT_HEAVY_SLOT"):
         return subprocess.call([sys.executable, "-B", str(ROOT / "_tools/test_stack.py"), "heavy", "--label", "gcsp-web-e2e",
                                 "--ram-gib", "3.5", "--", sys.executable, "-B", str(Path(__file__).resolve()), *sys.argv[1:]], cwd=ROOT)
     run_id = "web-e2e-" + time.strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:6]
@@ -302,7 +302,7 @@ def main():
             # The shared helper reuses lockfile installs and builds; it never creates a new PG cluster per run.
             for kind, variable, key in (("api", "PROOF_API_JAR", "PROOF_API_JAR"), ("web", "PROOF_WEB_BROWSER", "PROOF_WEB_BROWSER")):
                 if not env.get(variable):
-                    output = bounded([sys.executable, "-B", "_tools/test_stack_build.py", "build", kind, "--worktree", str(ROOT)], 'build-' + kind, capture=True)
+                    output = bounded([sys.executable, "-B", "_tools/test_stack.py", "build", kind, "--worktree", str(ROOT)], 'build-' + kind, capture=True)
                     matches = [line.partition("=")[2] for line in output.splitlines() if line.startswith(key + "=")]
                     if not matches:
                         raise RuntimeError("Shared build did not return " + key)

@@ -84,7 +84,7 @@ brief/account/clock, then saves through the editor and follows Activity and an a
 Supply the frozen reference below; this family fails an omitted comparison rather than claiming a pair.
 Run once on the final committed source. Screenshots await human parity review; full suites remain in the batch.
 
-Use `_tools/test_stack_build.py node link --app <absolute-app-path>` for the lockfile-keyed install first.
+Use `_tools/test_stack.py node link --app <absolute-app-path>` for the lockfile-keyed install first.
 The only added development dependency is `playwright-core@1.60.0`; Node's test runner owns the tests. Install
 its matching Chromium browser once using the team's normal local browser setup. No browser download happens
 inside the suite. `GCSP_E2E_BROWSER_PATH` can select an already-installed compatible browser executable.

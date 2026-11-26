@@ -165,6 +165,29 @@ class ReceiptTest(unittest.TestCase):
                     self.assertTrue(browser_root.exists())
 
 
+    def test_read_only_kit_cache_entries_in_the_owned_state_root_are_removed_with_scratch(self):
+        # SCAF-71 review: the kit publishes clean builds read-only; the plain rmtree in Scratch.__exit__ must still work.
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / 'output'
+            root = Path(directory) / 'scratch'
+            entry = root / 'stack' / 'cache' / 'build-api' / 'k1' / 'output' / 'sub'
+            entry.mkdir(parents=True)
+            (entry / 'quarkus-run.jar').write_bytes(b'x')
+            for path in [entry, *entry.parents]:
+                if path == root:
+                    break
+                os.chmod(path, 0o555)
+            scratch = SimpleNamespace(root=root, __enter__=Mock(), env=lambda env: dict(env),
+                                      __exit__=lambda *a: batch.shutil.rmtree(root))
+            browser_temps = SimpleNamespace(account=lambda scratch: contextlib.nullcontext(),
+                                            finalize=lambda: {'complete': True, 'allocations': [], 'leftovers': []})
+            stop_result = SimpleNamespace(returncode=0, stdout=json.dumps({'stopped': True}))
+            env = {}
+            with patch.object(batch.subprocess, 'run', return_value=stop_result):
+                with batch.owned_stack(scratch, env, {'cleanup': {}}, output, browser_temps):
+                    self.assertEqual(env['AGENT_TEST_STACK_DIR'], str(root / 'stack'))
+            self.assertFalse(root.exists())
+
 class BrowserTempsTest(unittest.TestCase):
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory()
