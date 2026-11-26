@@ -11226,12 +11226,62 @@
     {
       "assignee": "",
       "id": "FUCQ-566",
-      "observed_at": "2026-11-23T14:42:21Z",
+      "observed_at": "2026-11-26T00:32:11Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Notification panel clips its heading and vehicle off the left of narrow screens",
       "type": "Bug",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-566"
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-566",
+      "slices": [
+        {
+          "id": "ui",
+          "status": "in-progress",
+          "title": "Contain active Angular notification panel and note at narrow widths; preserve desktop and interaction behavior (AC1–2)",
+          "observed_at": "2026-11-26T00:29:13Z",
+          "evidence": "Claim93528eb31 under usget/velko; formal3point intake382429ae4 and source-backed diagnosis. Original active/frozen375captures inspected; presentation repair beginning, no pass claim."
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Focused caller tests, actual registered desktop/narrow proof and independent visual critique (AC3)"
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-23-002",
+      "component_ids": [
+        "entry",
+        "shared-experience"
+      ],
+      "note": "Local development claim93528eb31, usget/velko; native tracker snapshot remains To Do as observed2026-11-23, not freshly queried here. Original3AC and3points retained; active work is explicit below.",
+      "workers": [
+        {
+          "name": "Scooby Doo",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-26T00:32:11Z",
+          "expires_at": "2026-11-26T01:32:11Z",
+          "source": "Native child start/follow-up observed by F566 story lead",
+          "status": "working"
+        },
+        {
+          "name": "Mushu",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-26T00:32:11Z",
+          "expires_at": "2026-11-26T01:32:11Z",
+          "source": "Native child start/follow-up observed by F566 story lead",
+          "status": "working"
+        },
+        {
+          "name": "Foxy",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-26T00:32:11Z",
+          "expires_at": "2026-11-26T01:32:11Z",
+          "source": "Native child start/follow-up observed by F566 story lead",
+          "status": "working"
+        }
+      ]
     },
     {
       "assignee": "",
