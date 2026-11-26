@@ -1,0 +1,116 @@
+{
+  "story": "FUCQ-320",
+  "observed": "2026-11-26T07:02:48.039303+00:00",
+  "source": "dataset checkpoint1336d4c76; final activation product/test source hashes below",
+  "identityKind": "git-blob",
+  "files": {
+    "docs/gcsp/models/artifacts/e5205f65966d87d6895509bda13fa861e87476d843aabecce7bd76bf0e4fffc2.json": "8e342d0df14f750b422544208d87e625527b0858",
+    "docs/gcsp/models/fucq320-choice-training-dataset.json": "4041c29b6bb2912a43b4ad1be101602b2feb1b62",
+    "scripts/gcsp/retrain-hatchback-choice-model.mjs": "62f9778664cffba5504fcf32691ed89ae61b4d50",
+    "server/gcsp/predict/model/baselines.js": "a226a920ecb893ac93ce8f608bd2404e71b2863b",
+    "server/test/gcsp-choice-model.test.js": "1c39ff64ad1c194b20a2227dc39f1a33880af80a",
+    "server/test/gcsp-demand-forecast.test.js": "8c8c375f2e7f85f70d9b7f013597788f9118420c"
+  },
+  "map": {
+    "retrainHatchbackChoiceModel (new offline CLI)": [
+      "gcsp-choice-model.test.js / fixed offline training reproduces actual baseline provenance and immutable artifact bytes",
+      "Existing generate/train CLI invoked through actual reviewed policy/data/baseline interfaces"
+    ],
+    "prepareActualChoiceBaselines / repository clock port": [
+      "gcsp-choice-model.test.js actual reproducibility regression with26Nov/27Nov mocked walltime",
+      "gcsp-demand-forecast.test.js immutable artifact/inference consumers"
+    ],
+    "new immutable dataset+artifact": [
+      "gcsp-demand-forecast.test.js FUCQ320 real permitted hatch brief available",
+      "same file genuinely unseen coupe whole-cohort fallback",
+      "historical FUCQ312 outside-coverage and oldartifact pins retained"
+    ],
+    "LearnedModelActivation.reference (metadata only)": [
+      "LearnedModelActivationTest8 cases old/newsource/date/optimizer/fallback",
+      "LearnedPlanJourneyHttpTest7 historicalconfiguredstartup/read/preview/refusalcases",
+      "LearnedPlanDefaultHttpTest1 defaultinactivecase",
+      "10 mandatory startup/wiring classes56cases"
+    ],
+    "dated successor activation and forecast adapter": [
+      "gcsp-choice-model-activation.test.js5 datedpublication/default/historychecks",
+      "LearnedHatchbackHttpTest1 actualPG/OIDC/PolicyService/nonemptypermittedhatchsuccess+unseencoupewholefallbackcase"
+    ]
+  },
+  "fixtureConfigEdges": [
+    "server/gcsp/policy/seed-v1.json",
+    "reviewed offer-decline-reasons-v1/fucq113-learning-v1/fucq115-choice-model-v1",
+    "isolated dated needs hatchweight25; original35/40/25 weights otherwise preserved",
+    "new dataset full snapshot and digest-pinned artifact; original dataset/artifact unchanged"
+  ],
+  "subprocessEdges": "Final explicit14class Java run through shared nativePG17/heavy slot, real signedOIDC and actualproviders; processgroupRSS/target+TMPsupervised. Node tests serial; shareddependencycachelinks removed aftervalidation.",
+  "checks": [
+    {
+      "command": "node --test --test-concurrency=1 server/test/gcsp-choice-model.test.js server/test/gcsp-demand-forecast.test.js",
+      "tests": 31,
+      "pass": 31,
+      "fail": 0,
+      "skip": 0,
+      "seconds": 23.11117925,
+      "peakRssBytes": 350093312,
+      "peakScratchBytes": 10384288,
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f320-20261126/dataset-review/receipt.json"
+    },
+    {
+      "command": "node --test --test-concurrency=1 server/test/gcsp-choice-model-activation.test.js",
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "skip": 0,
+      "seconds": 1.631,
+      "peakRssBytes": 320733184,
+      "targetedEvidence": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-73cb07876f45a23954143b63aa688b12e196c7bac1c9678ee1f0e2147d861afe-default-1795676446152783000.json",
+      "variant": "default"
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-16-029/_tools/test_stack.py",
+        "java-test",
+        "--worktree",
+        "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-16-029",
+        "--run",
+        "java-final-review",
+        "--running",
+        "--",
+        "-Dtest=gcsp.api.learning.LearnedHatchbackHttpTest,gcsp.api.learning.LearnedModelActivationTest,gcsp.api.learning.LearnedPlanJourneyHttpTest,gcsp.api.learning.LearnedPlanDefaultHttpTest,gcsp.api.DefaultProfileTest,gcsp.api.OidcContextTest,gcsp.api.OidcIdentityTest,gcsp.api.IdentitySelectionTest,gcsp.api.persistence.PersistenceWiringTest,gcsp.api.persistence.NotConfiguredReadinessTest,gcsp.api.claims.ClaimWiringTest,gcsp.api.notify.NotificationDrainWiringTest,gcsp.api.appointments.AppointmentsWiringTest,gcsp.api.ordering.RemoteOrderingStartupTest"
+      ],
+      "tests": 73,
+      "pass": 73,
+      "fail": 0,
+      "skip": 0,
+      "seconds": 27.83918954100227,
+      "peakRssBytes": 1837318144,
+      "peakTargetPlusTmpBytes": 34219968,
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f320-20261126/java-final-review/receipt.json"
+    },
+    {
+      "command": "test_drift.py explicit5 changedtestpaths --diff e1a0a69ec1b1dae03eedd235e37356ffd51db699",
+      "exit": 1,
+      "hits": 2,
+      "review": "clock-mix heuristic falsepositives: staticprovenance dates plus mocked/controlledclocks; no walltoday comparison",
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f320-20261126/drift-review/receipt.json"
+    }
+  ],
+  "selection": "Explicit own modules/direct callers; no broad selector fallback executed. Full suites deferred to dispatcher batch.",
+  "coverageBoundary": "Explicit ownership/import/contract review and actual configuredPG/OIDCHTTP, not instrumentedlinecoverage. No hosteddeployment/browser proof claimed. Fullsuites deferred to dispatcherbatch; no fallbackselectionexecuted.",
+  "activationFilesSha256": {
+    "server/test/gcsp-choice-model-activation.test.js": "6580a0e98199b0f80862402a6211e9099db51098cb070042cdff3e31a11ce4ef",
+    "services/gcsp-api/src/main/java/gcsp/api/learning/LearnedModelActivation.java": "2ee29bd4024754601d815f98bde2deca84aed8db38921621096453fd6634fdf4",
+    "services/gcsp-api/src/test/java/gcsp/api/learning/LearnedModelActivationTest.java": "19c27d2bcc7f4541527903c4dfdebd5e2780fe7ea0176a787a1fd43da667a14f",
+    "services/gcsp-api/src/test/java/gcsp/api/learning/LearnedHatchbackHttpTest.java": "0f1f79df0aa3a54d21970ba19b8c97ea024e7160961687edd785b4ac82fc8fc2"
+  },
+  "cleanup": {
+    "javaScratchRemoved": true,
+    "targetRemoved": true,
+    "ownedProcessesLiveOrUnknown": [],
+    "actualFixedDatabasesRemaining": "",
+    "dependencyLinksAbsent": true,
+    "OneDrive": "Noaccess; absoluteprohibition"
+  }
+}

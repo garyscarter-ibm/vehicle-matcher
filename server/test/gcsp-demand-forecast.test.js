@@ -16,6 +16,7 @@ import { withContractEnd } from './helpers/order-plan-input.js';
 const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url)));
 const ARTIFACTS = fileURLToPath(new URL('../../docs/gcsp/models/artifacts/', import.meta.url));
 const FIXTURE_ID = 'sha256:2ce1109d986c7709bf9505f8e388e9c1479ff3c36e7cae86f656ff29bb973c7d';
+const HATCHBACK_FIXTURE_ID = 'sha256:e5205f65966d87d6895509bda13fa861e87476d843aabecce7bd76bf0e4fffc2';
 const FIXTURE = await readModelArtifact(`${ARTIFACTS}${FIXTURE_ID.slice(7)}.json`, FIXTURE_ID);
 const TOURING = 'g21-touring-320i';
 const REFERENCE = 'choice.model.reference';
@@ -362,6 +363,32 @@ test('FUCQ-312 coverage regression: a brief that permits the orderable hatch fal
   const out = await learned(f, active(settings({ waitExclusionThreshold: 1 }))).readForecast(f.context, await readOf(f));
   assert.equal(out.status, 'unavailable', JSON.stringify(out)); assert.equal(out.code, 'learned-forecast-fallback');
   assert.equal(out.fallback.reason, 'outside-coverage'); assert.deepEqual(out.fallback.coverage.vehicleClasses, ['hatchback']);
+});
+
+test('FUCQ-320 successor covers a real permitted hatchback brief', async () => {
+  const policy = variant(withModel(HATCHBACK_FIXTURE_ID));
+  const f = await fixture({ ...saved(), preferences: { body: preference('hatchback'), fuel: preference('petrol') },
+    essentials: { seats: essential(5) } });
+  const read = await readOf(f);
+  const { input } = await inputFor(f, policy, read);
+  assert.ok(input.cohort.entitlements[0].permittedChoices.some((c) => c.derivativeId === 'f70-hatch-120' && c.vehicleClass === 'hatchback'));
+  const out = await providerFor(policy).forecast(f.context, input, { runId: read.runId, asOf: read.asOf });
+  assert.equal(out.status, 'ok', JSON.stringify(out));
+  assert.ok(out.employees[0].choices.find((c) => c.derivativeId === 'f70-hatch-120').probability > 0);
+  assert.equal((await learned(f, policy).readForecast(f.context, read)).status, 'ok');
+});
+
+test('FUCQ-320 successor refuses the whole cohort for a genuinely unseen coupe class', async () => {
+  const policy = variant(withModel(HATCHBACK_FIXTURE_ID));
+  const f = await fixture(); const read = await readOf(f);
+  const { input } = await inputFor(f, policy, read);
+  const unseen = structuredClone(input);
+  const choice = unseen.cohort.entitlements[0].permittedChoices[0];
+  unseen.cohort.entitlements[0].permittedChoices.push({ ...structuredClone(choice), derivativeId: 'unseen-coupe',
+    configurationId: 'unseen-coupe-configuration', vehicleClass: 'coupe', attributes: { ...choice.attributes, body: 'coupe' } });
+  const out = await providerFor(policy).forecast(f.context, unseen, { runId: read.runId, asOf: read.asOf });
+  assert.deepEqual([out.status, out.reason, out.coverage], ['fallback', 'outside-coverage', { cohorts: [], vehicleClasses: ['coupe'] }]);
+  assert.equal(Object.hasOwn(out, 'employees'), false);
 });
 
 // FUCQ-123 slice 2: Greg's plan operations carry the learned plan beside the baseline one.
