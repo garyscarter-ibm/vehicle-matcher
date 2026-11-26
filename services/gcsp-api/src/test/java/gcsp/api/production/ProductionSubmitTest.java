@@ -259,4 +259,65 @@ class ProductionSubmitTest {
             }
         }
     }
+
+    private static JsonNode json(String text) throws Exception {
+        return new com.fasterxml.jackson.databind.ObjectMapper().readTree(text);
+    }
+
+    private static ProductionService.SubmitInput withChanges(String commandId, JsonNode changes) {
+        return new ProductionService.SubmitInput(commandId, ProductionFixture.PLAN, ProductionFixture.VERSIONS, changes);
+    }
+
+    @Test
+    void aSubmissionWithChangesStoresThemCanonicallyAndTheReplanReportsThem() throws Exception {
+        try (ProductionFixture f = ProductionFixture.create()) {
+            JsonNode raw = json("[{\"key\":\"orderPlan.derivativeBounds\",\"value\":[{\"min\":2,\"max\":9,\"derivativeId\":\"d1\"}]},"
+                    + "{\"key\":\"orderPlan.budgetMinor\",\"value\":5000}]");
+            JsonNode canonical = json("[{\"key\":\"orderPlan.budgetMinor\",\"value\":5000},"
+                    + "{\"key\":\"orderPlan.derivativeBounds\",\"value\":[{\"min\":2,\"max\":9,\"derivativeId\":\"d1\"}]}]");
+            assertInstanceOf(ProductionResult.Ok.class, f.service.submit(f.ctx(), f.principal(), withChanges("cmd-1", raw)));
+            assertEquals(canonical, json(f.text("SELECT constraint_changes::text FROM production_submissions")));
+            ProductionResult.Ok replan = assertInstanceOf(ProductionResult.Ok.class, f.service.replanFor(f.ctx(), "plan-1"));
+            assertEquals(canonical, replan.value().get("changes"));
+        }
+    }
+
+    @Test
+    void aSubmissionWithoutChangesStoresAndReportsAnEmptyList() throws Exception {
+        try (ProductionFixture f = ProductionFixture.create()) {
+            f.submit("cmd-1");
+            assertEquals("[]", f.text("SELECT constraint_changes::text FROM production_submissions"));
+            ProductionResult.Ok replan = assertInstanceOf(ProductionResult.Ok.class, f.service.replanFor(f.ctx(), "plan-1"));
+            assertEquals(0, replan.value().get("changes").size());
+        }
+    }
+
+    @Test
+    void aReplayWithTheSameChangesReplaysAndDifferentChangesConflict() throws Exception {
+        try (ProductionFixture f = ProductionFixture.create()) {
+            JsonNode changes = json("[{\"key\":\"orderPlan.budgetMinor\",\"value\":5000}]");
+            f.service.submit(f.ctx(), f.principal(), withChanges("cmd-1", changes));
+            List<Long> before = f.footprint();
+            assertTrue(assertInstanceOf(ProductionResult.Ok.class,
+                    f.service.submit(f.ctx(), f.principal(), withChanges("cmd-1", changes))).replayed());
+            ProductionResult other = f.service.submit(f.ctx(), f.principal(),
+                    withChanges("cmd-1", json("[{\"key\":\"orderPlan.budgetMinor\",\"value\":6000}]")));
+            assertEquals("idempotency-input-changed", assertInstanceOf(ProductionResult.Conflict.class, other).code());
+            ProductionResult none = f.submit("cmd-1");
+            assertEquals("idempotency-input-changed", assertInstanceOf(ProductionResult.Conflict.class, none).code());
+            assertEquals(before, f.footprint());
+        }
+    }
+
+    @Test
+    void invalidChangesAreRefusedAndNothingIsWritten() throws Exception {
+        try (ProductionFixture f = ProductionFixture.create()) {
+            f.plan.rejectChanges = true;
+            List<Long> before = f.footprint();
+            ProductionResult.Invalid bad = assertInstanceOf(ProductionResult.Invalid.class,
+                    f.service.submit(f.ctx(), f.principal(), withChanges("cmd-1", json("[{\"key\":\"nope\",\"value\":1}]"))));
+            assertEquals("invalid-changes", bad.code());
+            assertEquals(before, f.footprint());
+        }
+    }
 }

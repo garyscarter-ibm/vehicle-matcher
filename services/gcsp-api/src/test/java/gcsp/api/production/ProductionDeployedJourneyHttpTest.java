@@ -87,6 +87,7 @@ class ProductionDeployedJourneyHttpTest {
     private static JsonNode samPlan;
     private static String samSubmission;
     private static String samRequest;
+    private static String changesRequest;
 
     @ConfigProperty(name = "gcsp.test.signing-jwk")
     String jwk;
@@ -459,6 +460,43 @@ class ProductionDeployedJourneyHttpTest {
         assertEquals(2, confirmed);
         assertEquals(ordersBefore + 2, plan3.at("/unallocatedStockRisk/totalSupply").asLong(), "the confirmed cars are planned supply");
         assertEquals(0, count("SELECT count(*) FROM stock_cars WHERE attributes->'release'->>'supplyId' IS NOT NULL"));
+    }
+
+    // ---- 8: FUCQ-546, the replan reports the constraint changes the plan was submitted under ----
+
+    @Test
+    @Order(8)
+    void aPlanSubmittedUnderDraftChangesReportsThoseChangesInTheReplanOnceSupplyMoves() throws Exception {
+        JsonNode golden = M.readTree(getClass().getResourceAsStream("/order-plan-parity/submission-changes.json"));
+        JsonNode input = golden.get("input");
+        Resp preview = post(greg, API + "/greg/order-plan/preview", M.createObjectNode().set("changes", input).toString());
+        assertEquals(200, preview.status(), preview.toString());
+        JsonNode draft = preview.body().at("/value/plan");
+        ObjectNode body = M.createObjectNode().put("commandId", "cmd-proddep-plan-changes").put("planId", draft.get("planId").asText());
+        body.set("versions", draft.get("versions"));
+        body.set("changes", input);
+        Resp sent = post(greg, PLAN_REQUESTS, body.toString());
+        assertEquals(200, sent.status(), sent.toString());
+        String submission = sent.body().at("/value/submissionId").asText();
+        JsonNode touring = null;
+        for (JsonNode r : sent.body().at("/value/requests")) if ("g21-touring-320i".equals(r.get("lineId").asText())) touring = r;
+        assertTrue(touring != null && touring.get("quantity").asInt() >= 2, sent.body().toString());
+        changesRequest = touring.get("requestId").asText();
+        assertEquals(golden.get("expected"), M.readTree(text("SELECT constraint_changes::text FROM production_submissions WHERE submission_id = ?", submission)));
+
+        Resp step = post(presenter, STEP, step(cmd(), changesRequest, request(changesRequest).get("version").asLong(), 1));
+        assertEquals(200, step.status(), step.toString());
+
+        Resp after = get(greg, PLAN);
+        assertEquals(200, after.status(), after.toString());
+        JsonNode replan = after.body().at("/value/replan");
+        assertEquals("replanned", replan.get("status").asText(), replan.toString());
+        assertEquals(draft.get("planId").asText(), replan.get("submittedPlanId").asText());
+        // The plan also orders Sam's 330e, which the synthetic Production refuses at once, so `after` may be that line.
+        boolean answered = false;
+        for (JsonNode h : replan.get("responses")) answered |= changesRequest.equals(h.get("requestId").asText()) && "partly-confirmed".equals(h.get("state").asText());
+        assertTrue(answered, replan.toString());
+        assertEquals(golden.get("expected"), replan.get("changes"));
     }
 
     // ---- helpers ----

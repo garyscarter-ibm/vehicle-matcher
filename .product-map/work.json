@@ -13719,12 +13719,14 @@
         }
       ],
       "unsliced": false,
-      "observed_at": "2026-11-26T10:02:22Z",
+      "observed_at": "2026-11-26T10:31:31Z",
       "slices": [
         {
           "id": "changes-source",
-          "status": "not-started",
-          "title": "AC1 submission constraint changes stored and reported in the replan value"
+          "status": "in-progress",
+          "title": "AC1 submission constraint changes stored and reported in the replan value",
+          "observed_at": "2026-11-26T10:31:31Z",
+          "evidence": "Dibble slice committed; f546c 75/75 by implementer; lead rerun pending in story test set"
         },
         {
           "id": "queue-fault",

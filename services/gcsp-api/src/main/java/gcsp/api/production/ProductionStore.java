@@ -108,16 +108,16 @@ final class ProductionStore {
         return Canonical.digest(rows);
     }
 
-    record SubmissionRow(String submissionId, String planId, Instant requestedAt) {}
+    record SubmissionRow(String submissionId, String planId, Instant requestedAt, String constraintChanges) {}
 
     static List<SubmissionRow> submissionsOfRun(Connection c, RunContext ctx) throws SQLException {
         List<SubmissionRow> out = new ArrayList<>();
-        try (PreparedStatement ps = c.prepareStatement("SELECT submission_id, plan_id, requested_at FROM production_submissions "
+        try (PreparedStatement ps = c.prepareStatement("SELECT submission_id, plan_id, requested_at, constraint_changes::text FROM production_submissions "
                 + "WHERE environment_id = ? AND run_id = ? ORDER BY requested_at, submission_id")) {
             ps.setString(1, ctx.environmentId());
             ps.setString(2, ctx.runId());
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) out.add(new SubmissionRow(rs.getString(1), rs.getString(2), rs.getObject(3, OffsetDateTime.class).toInstant()));
+                while (rs.next()) out.add(new SubmissionRow(rs.getString(1), rs.getString(2), rs.getObject(3, OffsetDateTime.class).toInstant(), rs.getString(4)));
             }
         }
         return out;
