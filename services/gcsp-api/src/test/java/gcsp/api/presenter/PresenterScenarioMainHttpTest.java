@@ -23,6 +23,7 @@ import jakarta.inject.Inject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.nio.file.Path;
 import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
@@ -49,6 +50,11 @@ class PresenterScenarioMainHttpTest {
         public Map<String, String> getConfigOverrides() {
             Map<String, String> c = super.getConfigOverrides();
             c.put("gcsp.environment.policy-version", POLICY);
+            c.put("gcsp.supply.provider", "generated-stock");
+            Path root = Path.of("../..").toAbsolutePath().normalize();
+            c.put("gcsp.evidence.store", root.resolve("server/data/gcsp/vehicle-evidence/demo-fleet.v1").toString());
+            c.put("gcsp.evidence.reference-dir", root.resolve("server/data/gcsp/vehicle-evidence").toString());
+            c.put("gcsp.evidence.assets-root", root.toString());
             c.put("gcsp.allocation.candidates.provider", "recommendation");
             c.put("gcsp.mail.transport", "");
             c.put("gcsp.notify.drain-interval", "10m");
@@ -104,25 +110,31 @@ class PresenterScenarioMainHttpTest {
         assertNotEquals(retired, run);
         assertEquals(run, current().getString("value.runId"));
         assertFrozenBrief(run);
-        for (String table : new String[] {"stock_cars", "stock_releases", "custody_holds", "buddy_offers", "notification_deliveries"}) {
+        long generatedCars = count(run, "SELECT count(*) FROM stock_cars WHERE run_id = ? AND state = 'unreleased'");
+        assertTrue(generatedCars > 0, "Main preparation must generate its real retained-corpus tranche before release");
+        assertEquals(0, count(run, "SELECT count(*) FROM stock_cars WHERE run_id = ? AND state <> 'unreleased'"));
+        for (String table : new String[] {"stock_releases", "custody_holds", "buddy_offers", "notification_deliveries"}) {
             assertEquals(0, count(run, "SELECT count(*) FROM " + table + " WHERE run_id = ?"), table);
         }
         assertEquals(0, count(run, "SELECT count(*) FROM outbox_events WHERE run_id = ? AND event_type LIKE 'notification.%'"));
         assertResetReplay(body, run);
 
-        JsonPath clock = get(presenter, "/clock").then().statusCode(200).extract().jsonPath();
-        Instant release = Instant.parse(clock.getString("value.namedTimes.release"));
+        JsonPath clock = get(presenter, "/controls").then().statusCode(200).extract().jsonPath();
+        String nextRelease = clock.getString("value.controls.nextRelease.at");
+        assertEquals("release-window", clock.getString("value.controls.nextRelease.to"));
+        Instant release = Instant.parse(nextRelease);
         assertTrue(Instant.parse(clock.getString("value.now")).isBefore(release));
         String releaseBody = "{\"commandId\":\"" + id() + "\",\"expectedClockVersion\":"
                 + clock.getLong("value.clockVersion") + ",\"mode\":\"next-release\"}";
         JsonPath released = post(presenter, "/controls/tick", releaseBody).then().statusCode(200)
-                .body("value.advance.now", equalTo(clock.getString("value.namedTimes.release"))).body("value.tick.state", equalTo("completed"))
+                .body("value.advance.now", equalTo(nextRelease)).body("value.tick.state", equalTo("completed"))
                 .body("value.tick.outcomes.find { it.handlerId == 'stock-release' }.outcome.value.kind", equalTo("stock-released"))
-                .body("value.tick.outcomes.find { it.handlerId == 'stock-release' }.outcome.value.windowId", equalTo("demo-release-1"))
+                .body("value.tick.outcomes.find { it.handlerId == 'stock-release' }.outcome.value.source.version", equalTo("stock-generator.v1:" + POLICY))
                 .body("value.tick.outcomes.find { it.handlerId == 'buddy-allocation' }.outcome.status", equalTo("ok"))
                 .body("value.tick.outcomes.find { it.handlerId == 'captured-outbox' }.outcome.status", equalTo("ok"))
                 .extract().jsonPath();
-        assertEquals(6, count(run, "SELECT count(*) FROM stock_cars WHERE run_id = ?"));
+        assertEquals(generatedCars, count(run, "SELECT count(*) FROM stock_cars WHERE run_id = ?"));
+        assertTrue(count(run, "SELECT count(*) FROM stock_cars WHERE run_id = ? AND state = 'released'") > 0);
         assertEquals(1, count(run, "SELECT count(*) FROM buddy_offers o JOIN custody_holds h USING "
                 + "(environment_id, run_id, hold_id) WHERE o.run_id = ? AND o.employee_id = 'employee-paula' "
                 + "AND o.state = 'active' AND o.brief_version = 1 AND h.state = 'active' AND h.hold_type = 'buddy-offer' "
@@ -137,7 +149,7 @@ class PresenterScenarioMainHttpTest {
                 .body("value.tick.tickId", equalTo(released.getString("value.tick.tickId")));
         assertEquals(revision, count(run, "SELECT revision FROM runs WHERE run_id = ?"));
         assertResetReplay(body, run);
-        assertEquals(clock.getString("value.namedTimes.release"), get(presenter, "/clock").jsonPath().getString("value.now"));
+        assertEquals(nextRelease, get(presenter, "/clock").jsonPath().getString("value.now"));
         assertEquals(1, count(run, "SELECT count(*) FROM buddy_offers WHERE run_id = ?"));
         assertFrozenBrief(run);
     }
@@ -201,7 +213,7 @@ class PresenterScenarioMainHttpTest {
         assertEquals(1, count(pending, "SELECT count(*) FROM run_resets WHERE activated_run_id = ?"));
         assertFrozenBrief(pending);
         assertResetReplay(body, pending);
-        JsonPath preparedClock = get(presenter, "/clock").then().statusCode(200).extract().jsonPath();
+        JsonPath preparedClock = get(presenter, "/controls").then().statusCode(200).extract().jsonPath();
         assertEquals(frozenClock.getString("value.now"), preparedClock.getString("value.now"));
         assertEquals(frozenVersion, preparedClock.getLong("value.clockVersion"));
         String oneSecondLater = new java.time.format.DateTimeFormatterBuilder().appendInstant(3).toFormatter()
@@ -212,7 +224,7 @@ class PresenterScenarioMainHttpTest {
         JsonPath advanced = get(presenter, "/clock").then().statusCode(200).extract().jsonPath();
         post(presenter, "/controls/tick", "{\"commandId\":\"" + id() + "\",\"expectedClockVersion\":"
                 + advanced.getLong("value.clockVersion") + ",\"mode\":\"next-release\"}").then().statusCode(200)
-                .body("value.advance.now", equalTo(preparedClock.getString("value.namedTimes.release")))
+                .body("value.advance.now", equalTo(preparedClock.getString("value.controls.nextRelease.at")))
                 .body("value.tick.state", equalTo("completed"));
         assertEquals(1, count(pending, "SELECT count(*) FROM buddy_offers WHERE run_id = ? AND employee_id = 'employee-paula' AND state = 'active'"));
     }
@@ -250,12 +262,12 @@ class PresenterScenarioMainHttpTest {
         assertEquals(pending, current().getString("value.runId"));
         assertEquals(SCENARIO, current().getString("value.currentScenario.scenarioId"));
         assertFrozenBrief(pending);
-        JsonPath preparedClock = get(presenter, "/clock").then().statusCode(200).extract().jsonPath();
+        JsonPath preparedClock = get(presenter, "/controls").then().statusCode(200).extract().jsonPath();
         assertEquals(frozenClock.getString("value.now"), preparedClock.getString("value.now"));
         assertEquals(frozenClock.getLong("value.clockVersion"), preparedClock.getLong("value.clockVersion"));
         post(presenter, "/controls/tick", "{\"commandId\":\"" + id() + "\",\"expectedClockVersion\":"
                 + preparedClock.getLong("value.clockVersion") + ",\"mode\":\"next-release\"}").then().statusCode(200)
-                .body("value.advance.now", equalTo(preparedClock.getString("value.namedTimes.release")))
+                .body("value.advance.now", equalTo(preparedClock.getString("value.controls.nextRelease.at")))
                 .body("value.tick.state", equalTo("completed"));
         assertEquals(1, count(pending, "SELECT count(*) FROM buddy_offers WHERE run_id = ? AND employee_id = 'employee-paula' AND state = 'active'"));
     }

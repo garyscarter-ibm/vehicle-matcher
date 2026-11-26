@@ -95,7 +95,7 @@ public final class DemoSupplyProvider implements SupplyProvider {
     }
 
     // Confirmed supply releases first; a non-tranche answer falls through to the demo windows.
-    private ProviderResponse confirmedSupply(PullRequest request) {
+    ProviderResponse confirmedSupply(PullRequest request) {
         List<String> ids = request.queuedSupply().stream().map(PullRequest.QueuedSupply::supplyId).distinct().toList();
         if (ids.isEmpty()) return null;
         Map<String, ConfirmedSupplyLookup.Confirmed> found;
