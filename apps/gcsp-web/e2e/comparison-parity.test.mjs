@@ -112,7 +112,8 @@ test('FUCQ-560: stored comparison labelled values, source range bars and native 
       assert.equal(stored.policyVersion, stored.result.manifest.policyVersion);
       for (const difference of stored.result.differences) {
         for (const arm of ['current', 'buddy', 'difference']) {
-          assert.deepEqual(Object.keys(difference[arm]).sort(), ['max', 'mean', 'min']);
+          assert.deepEqual(Object.keys(difference[arm]).sort(),
+            arm === 'difference' ? ['max', 'mean', 'min'] : ['max', 'mean', 'min', 'observedSeeds']);
           for (const key of ['mean', 'min', 'max']) assert.ok(difference[arm][key] === null || Number.isFinite(difference[arm][key]));
         }
       }
