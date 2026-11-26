@@ -3982,3 +3982,10 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 
 - The final full unfiltered npm test atfc8c99de7 completedRED in574.629s:4285tests/4182pass/37fail/66skip, zero cancellation. The full37-title multiset and six-module counts exactly match the prior canonical run; existing once-alone results were reused, with no new failure and no redundant isolation. PeakRSS974602240B/scratch127555328B stayed inside the actual outer1.5GiB/inner0 reservation and2GiB scratch limit. Receipt shows owned groups/slot/reservation/journal absent, links removed, clean batch worktree. The two setup attempts remain NOTEST; raw-readonly-Git procedure deviation remains recorded.
 - The earlier handoff named absent apps/gcsp-web/tools/ui-ratchet.json. Actual tracked server/test/ui-ratchet.json is consumed by the included server/test/ui-ratchet.test.js, whose baseline test passed. This corrects the path/coverage claim without changing the recorded source or broadening the run. Root read the concise result and actual command. No product fix, all-green suite or generalF555 exception was inferred; existing F577 validation hold remains.
+
+
+### 2026-11-26 02:35 UTC · usget-velko · DL-20261126-VELKO-13 · Prep used a raw read-only Git query
+
+- **Evidence/impact:** The first diagnostic command in the 14-family prep used `git status --short` directly, contrary to the all-Git-through-`scaffold_git` rule. It was read-only; no product, helper, test or registration files were changed by that query.
+- **Action/outcome:** Stopped using direct Git commands. The prepared launcher uses the imported `scaffold_git` API for SHA, cleanliness and live-claim checks; its syntax checks pass. No worktree, lease, build or test was started. This is a local mitigation, not a verified framework fix.
+- **Framework follow-up:** Reuse the existing helper-only Git guidance and DL-20261126-VELKO-13 follow-up; no new gate proposed.
