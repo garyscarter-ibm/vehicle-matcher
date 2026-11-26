@@ -173,15 +173,21 @@ test('FUCQ-557: actual queue sorting, plain unknown gate, retained Help refresh 
         await paula.setViewportSize({ width, height: width === 1280 ? 800 : 812 });
         const pattern = suite.apiBase + '/help';
         let release; const hold = new Promise(resolve => { release = resolve; }); let delayed = 0;
-        const delayRead = async route => { delayed++; await hold; await route.continue(); };
+        const pendingReads = [];
+        const delayRead = route => {
+          delayed++;
+          const pending = hold.then(() => route.continue()); pendingReads.push(pending);
+          return pending;
+        };
         await paula.route(pattern, delayRead);
         try {
           await paula.reload({ waitUntil: 'domcontentloaded' });
+          await until(async () => delayed > 0, 'The actual Help read is pending');
           const skeleton = paula.locator('gcsp-help div[gcspLoadingSkeleton][data-layout="card"]');
           await skeleton.waitFor(); assert.equal(await skeleton.getAttribute('aria-busy'), 'true');
           assert.ok(delayed > 0, 'The actual Help read is pending');
           await suite.screenshot(paula, `angular-help-loading-${width}`, { fullPage: true });
-        } finally { release(); await paula.unroute(pattern, delayRead); }
+        } finally { release(); await Promise.all(pendingReads); await paula.unroute(pattern, delayRead); }
         const cases = paula.locator('.help-cases article[data-case-id]');
         await paula.locator(`.help-cases article[data-case-id="${paulaCase.caseId}"]`).waitFor();
         const before = await cases.evaluateAll(nodes => nodes.map(node => ({ id: node.dataset.caseId, text: node.textContent })));
