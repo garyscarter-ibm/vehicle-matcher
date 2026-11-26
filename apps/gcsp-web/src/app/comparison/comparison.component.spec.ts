@@ -58,6 +58,30 @@ describe('comparison inspection and supported Greg commands', () => {
     expect(text()).toContain('brief.slider.maximum'); expect(text()).toContain('integer slider units'); expect(text()).toContain('Assumed `brief.slider.scale`'); expect(text()).toContain('comparison-a, comparison-b, comparison-c'); expect(text()).toContain('669fbc2f'); expect(text()).toContain('Calculated fit is not observed satisfaction.'); expect(root().querySelectorAll('h1')).toHaveLength(1); expect(text()).toContain('versioned buddy behaviour'); expect(text()).toContain('versioned manual behaviour'); expect(text()).not.toContain('synthetic'); expect(units).toEqual(['versioned synthetic buddy behaviour', 'versioned synthetic manual behaviour']);
     expect(root().querySelector('table caption')?.textContent).toContain('Assumptions'); expect(root().querySelector('th[scope="row"]')?.textContent).toBe('brief.slider.maximum');
   });
+  it('replaces every structured result and request region with escaped labelled values', async () => {
+    const stored = retained(); const hostile = '<img src=x onerror="alert(1)">';
+    const nested = { outerSetting: { label: hostile, value: 0, enabled: false, missing: null }, empty: [] };
+    readJob.mockResolvedValue({ status: 'ok', value: { job: job({ request: { experimentId: 'process-only', change: nested } }), reruns: true } });
+    readResults.mockResolvedValue(catalogue({ ...stored, result: { ...stored.result,
+      manifest: { ...stored.result.manifest, inputHashes: { retained: 'input-digest' }, overlays: nested },
+      assumptions: [{ ...stored.result.assumptions[0], value: nested, source: { document: 'Source document', revision: 2 } }],
+      measures: { current: { retries: { mean: 1189, min: 1102, max: 1234 } } },
+      perSeed: [{ seed: 'comparison-a', current: { retries: 1102 } }], rule: { lower: 'Lower rule', exact: 0.123456789 },
+    } }));
+    await render();
+    expect(root().querySelector('pre')).toBeNull(); expect(root().querySelector('img')).toBeNull();
+    for (const value of [hostile, 'Outer setting', 'Enabled', 'false', 'Missing', 'Not supplied', 'No entries', 'Source document', 'input-digest', 'Lower rule', '0.123456789', '1102', stored.resultDigest]) expect(text()).toContain(value);
+    expect(root().querySelectorAll('gcsp-range-bar figure')).toHaveLength(1);
+    const rows = root().querySelectorAll('.gcsp-range-bar-row');
+    expect(rows).toHaveLength(2); expect(rows[0].textContent).toContain("Today's release route"); expect(rows[1].textContent).toContain('Buddy route');
+    expect(root().querySelector('.gcsp-range-bar-track')?.getAttribute('aria-hidden')).toBe('true');
+    expect(stored.result.differences![0].current.mean).toBe(1189);
+  });
+  it('keeps the four experiments selectable with distinct honest missing-result states', async () => {
+    await render();
+    expect(Array.from(root().querySelectorAll<HTMLOptionElement>('#comparison-experiment option')).map(option => option.value)).toEqual([...COMPARISON_EXPERIMENTS]);
+    for (const id of COMPARISON_EXPERIMENTS) { select(id); expect(root().querySelector<HTMLSelectElement>('#comparison-experiment')!.value).toBe(id); expect(text()).toContain(id === 'process-only' ? 'Retained baseline' : 'No stored result yet'); }
+  });
   it('shows older policy explicitly while retaining the historical result', async () => {
     readResults.mockResolvedValue(catalogue({ ...retained(), policyCurrent: false, activePolicyVersion: 'policy-new' })); await render();
     expect(text()).toContain('Older policy version'); expect(text()).toContain('policy-new'); expect(text()).toContain('1189');
@@ -68,7 +92,7 @@ describe('comparison inspection and supported Greg commands', () => {
   });
   it('renders actual experiment arms, differences, effects and the supplied change', async () => {
     const base = retained(); readResults.mockResolvedValue(catalogue({ ...base, result: { ...base.result, kind: 'experiment-comparison', experimentId: 'points', manifest: { ...base.result.manifest, experimentId: 'points', change: { value: 1.2, basis: 'Actual basis' } }, arms: [{ armId: 'baseline', value: 1, differences: base.result.differences!, measures: { supplied: 7 }, perSeed: [] }, { armId: 'variant', value: 1.2, differences: [{ ...base.result.differences![0], current: { mean: 800, min: 800, max: 800 }, buddy: { mean: 40, min: 40, max: 40 }, difference: { mean: -760, min: -760, max: -760 } }], measures: { supplied: 9 }, perSeed: [] }], effects: [{ armId: 'variant', value: 1.2, routes: { current: [{ effect: 'Actual current-route effect' }], buddy: [{ effect: 'Actual buddy-route effect' }] } }] } }));
-    await render(); select('points'); expect(text()).toContain('Tried value: 1.2'); expect(text()).toContain('Today’s value: 1'); expect(text()).toContain('Buddy route better'); expect(text()).toContain('Actual current-route effect'); expect(text()).toContain('Actual buddy-route effect'); expect(text()).toContain('800 (800 to 800)'); expect(text()).toContain('40 (40 to 40)'); expect(text()).toContain('Difference (buddy minus today): -760'); expect(text()).not.toContain('Difference (tried value minus today)'); const arms = root().querySelectorAll('.comparison-measure'); expect(arms).toHaveLength(2); expect(arms[1].querySelectorAll('dt')[0].textContent).toBe("Today's release route"); expect(arms[1].querySelectorAll('dt')[1].textContent).toBe('Buddy route'); expect(text()).toContain('Actual basis'); expect(text()).toContain('supplied');
+    await render(); select('points'); expect(text()).toContain('Tried value: 1.2'); expect(text()).toContain('Today’s value: 1'); expect(text()).toContain('Buddy route better'); expect(text()).toContain('Actual current-route effect'); expect(text()).toContain('Actual buddy-route effect'); expect(Array.from(root().querySelectorAll('.gcsp-range-bar-value')).map(value => value.textContent)).toEqual(['1189 (1102 to 1234)', '3.7 (3 to 4)', '800', '40']); expect(text()).toContain('Difference (buddy minus today): -760'); expect(text()).not.toContain('Difference (tried value minus today)'); const arms = root().querySelectorAll('.comparison-measure'); expect(arms).toHaveLength(2); expect(arms[1].querySelectorAll('.gcsp-range-bar-label')[0].textContent).toBe("Today's release route"); expect(arms[1].querySelectorAll('.gcsp-range-bar-label')[1].textContent).toBe('Buddy route'); expect(root().querySelector('pre')).toBeNull(); expect(root().querySelectorAll('gcsp-range-bar')).toHaveLength(2); expect(text()).toContain('Actual basis'); expect(text()).toContain('supplied');
   });
   it('retains the selected native option through a loading refresh', async () => {
     await render(); select('hold-sweep'); const waiting = deferred<ComparisonResponse<ComparisonCatalogue>>(); readResults.mockReturnValueOnce(waiting.promise);

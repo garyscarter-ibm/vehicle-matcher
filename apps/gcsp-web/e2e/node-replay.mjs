@@ -155,6 +155,7 @@ export async function withNodeReplay({ browser, input, plan, cert, key, output, 
     runtime = good(await createGcspRuntime({ mode: 'memory', repository, environmentId: NODE_REPLAY_IDENTITY.environmentId,
       commandId: NODE_REPLAY_IDENTITY.bootstrapCommandId, policyAsOf: input.clock.now, wallNow: () => new Date(wallInstant),
       stockProvider, production: createDemoUpstream().production, adoptOfferJourney: true,
+      ...(expected.comparison ? { comparisonResultFile: path.join(reference, 'server/data/gcsp/comparison/process-only.json') } : {}),
       offerLandingUrl: 'https://gcsp-proof.example.test/gcsp-offer.html',
       mail: { env: { GCSP_PUBLIC_ORIGIN: 'http://127.0.0.1:7548' } } }), 'Node runtime');
     if (expected.stockGallery) {
@@ -307,7 +308,7 @@ export async function withNodeReplay({ browser, input, plan, cert, key, output, 
       }), 'Frozen first public supply tick');
       assert.equal(receipt.firstPublicTick.state, 'completed');
     }
-    if (expected.gregPlanning || expected.gregPresentation) {
+    if (expected.gregPlanning || expected.gregPresentation || expected.comparison) {
       // Use the frozen login service and its configured Greg, with the separate real Presenter
       // cookie for source Production controls. Credentials never leave this in-memory closure.
       const [{ loadDemoPrincipalSeed }, { demoLoginProfile }] = await Promise.all([

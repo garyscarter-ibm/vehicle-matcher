@@ -7,7 +7,10 @@ import { LabelledFieldComponent } from '../kit/labelled-field.component';
 import { ScreenIntroComponent } from '../kit/screen-intro.component';
 import { StatusScreenComponent } from '../kit/status-screen.component';
 import { ComparisonClient } from './comparison.client';
-import { COMPARISON_EXPERIMENTS, ComparisonCatalogue, ComparisonDifference, ComparisonExperimentId, ComparisonFailure, ComparisonJob, ComparisonResponse, ComparisonStartInput, ComparisonStartResponse, ComparisonStats } from './comparison.types';
+import { FactListComponent } from '../kit/fact-list.component';
+import { RangeBarComponent } from '../kit/range-bar.component';
+import { comparisonFacts, comparisonMeasure } from './comparison.presentation';
+import { COMPARISON_EXPERIMENTS, ComparisonCatalogue, ComparisonDifference, ComparisonExperimentId, ComparisonFailure, ComparisonJob, ComparisonResponse, ComparisonStartInput, ComparisonStartResponse } from './comparison.types';
 
 type Phase = 'loading' | 'ready' | ComparisonFailure['status'];
 // Survives the sign-in redirect after expiry; same tab, same account and run only.
@@ -16,7 +19,7 @@ interface SavedProgress { readonly owner: string; readonly selectedId: Compariso
 const LABELS: Record<ComparisonExperimentId, string> = { 'process-only': 'Process only', 'order-mix': 'Order mix', points: 'Points allowance', 'hold-sweep': 'Hold duration' };
 const MEASURES: Record<string, string> = { acceptableCoverage: 'Covered before renewal', carsNeverAllocated: 'Cars never allocated', heldNotTakenCarDays: 'Car time held but not taken', declinedOffers: 'Offers declined', expiredOffers: 'Offers expired', failedClaims: 'Holds that expired untaken', retries: 'Retries after a lost claim', meanAcceptedFit: 'Calculated fit of accepted cars' };
 const VERDICTS: Record<string, string> = { 'buddy-better': 'Buddy route better', 'current-better': "Today's release route better", 'variant-better': 'Tried value better', 'baseline-better': "Today's value better", 'no-clear-difference': 'No clear difference', 'insufficient-seeds': 'Too few seeds to compare' };
-@Component({ selector: 'gcsp-comparison', imports: [NgTemplateOutlet, GregNavigationComponent, ButtonDirective, LabelledFieldComponent, ScreenIntroComponent, StatusScreenComponent], templateUrl: './comparison.component.html', styleUrl: './comparison.component.css' })
+@Component({ selector: 'gcsp-comparison', imports: [NgTemplateOutlet, GregNavigationComponent, ButtonDirective, LabelledFieldComponent, ScreenIntroComponent, StatusScreenComponent, FactListComponent, RangeBarComponent], templateUrl: './comparison.component.html', styleUrl: './comparison.component.css' })
 export class ComparisonComponent implements OnDestroy {
   private readonly auth = inject(AuthPort);
   private readonly client = inject(ComparisonClient);
@@ -175,8 +178,8 @@ export class ComparisonComponent implements OnDestroy {
     const out = replacements.reduce((text, [from, to]) => text.replace(from, to), value);
     return /^(?:synthetic|fictional|demo)/i.test(value) && out !== value ? out.charAt(0).toUpperCase() + out.slice(1) : out;
   }
-  json(value: unknown): string { return value === undefined ? 'Not supplied' : typeof value === 'string' ? this.plain(value) : JSON.stringify(value, (_key, item: unknown) => typeof item === 'string' ? this.plain(item) : item, 2); }
-  number(key: string, value: number | null, difference = false): string { if (value === null) return 'Not observed'; const share = key === 'acceptableCoverage' || key.startsWith('accessGroupCoverage:'); const amount = Math.round(value * (share ? 1000 : 10)) / 10; return `${difference && amount > 0 ? '+' : ''}${amount}${share ? difference ? ' pts' : '%' : key === 'heldNotTakenCarDays' ? ' days' : ''}`; }
-  stats(key: string, value: ComparisonStats, difference = false): string { return `${this.number(key, value.mean, difference)} (${this.number(key, value.min, difference)} to ${this.number(key, value.max, difference)})`; }
+  facts(value: unknown, label = 'Value') { return comparisonFacts(value, label, text => this.plain(text)); }
+  readonly measureView = comparisonMeasure;
+  scalar(value: unknown): string { return value !== null && typeof value === 'object' ? '' : value === null || value === undefined ? 'Not supplied' : typeof value === 'string' ? this.plain(value) : String(value); }
   trackDifference(_index: number, difference: ComparisonDifference): string { return difference.measure; }
 }

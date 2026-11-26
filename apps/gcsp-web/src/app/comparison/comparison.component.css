@@ -18,7 +18,6 @@ dl { margin: var(--gcsp-space-2) 0; display: grid; gap: var(--gcsp-space-3); }
 dt { color: var(--gcsp-text-muted); }
 dd { margin: 0; overflow-wrap: anywhere; }
 summary { cursor: pointer; min-height: 44px; align-content: center; font-weight: var(--gcsp-font-strong-weight); }
-pre { margin: var(--gcsp-space-2) 0; white-space: pre-wrap; overflow-wrap: anywhere; font: var(--gcsp-font-weight) var(--gcsp-font-size-label)/var(--gcsp-font-line-label) var(--gcsp-font-code); }
 .comparison-table { max-width: 100%; overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; }
 caption { text-align: left; padding-block: var(--gcsp-space-3); }

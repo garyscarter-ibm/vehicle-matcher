@@ -1070,7 +1070,7 @@ Frozen source: `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`. The assembled global 
 | `presenter-actions` (`blocks/gcsp/kit/presenter-actions.js`) | none (utility) | `apps/gcsp-web/src/app/kit/presenter-actions.ts` | ported | yes |
 | `presenter-bar` (`blocks/gcsp/kit/presenter-bar.js`) | `.gcsp-presenter-bar` | | not yet | pending |
 | renderRangeSlider.single (subcomposition only) | `.vm-slider-single` | `apps/gcsp-web/src/app/kit/range-slider.component.ts` | ported | yes: source readout/input/bounds siblings and unknown/disabled state |
-| `range-bar` (`blocks/gcsp/kit/range-bar.js`) | `.gcsp-range-bar` | | not yet | pending |
+| `range-bar` (`blocks/gcsp/kit/range-bar.js`) | `.gcsp-range-bar` | `apps/gcsp-web/src/app/kit/range-bar.component.ts` | ported | yes: labelled figure, shared scale, finite/null/flat/clamped positions and CSSOM properties; FUCQ-560 focused/connected checks pass, human pair review pending |
 | `rating-gallery` (`blocks/gcsp/kit/rating-gallery.js`) | none (gallery composition) | | not yet | pending |
 | `release-grid` (`blocks/gcsp/kit/release-grid.js`) | `.gcsp-release-grid` | `apps/gcsp-web/src/app/kit/release-grid.component.ts` | ported | yes |
 | `run-restarted` (`blocks/gcsp/kit/run-restarted.js`) | `.gcsp-run-restarted` | | not yet | pending |

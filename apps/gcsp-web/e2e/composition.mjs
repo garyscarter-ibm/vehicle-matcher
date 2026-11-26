@@ -69,7 +69,7 @@ function identity(pid) {
 }
 
 export async function startComposition({ caseId = 'f548', ordering = 'synthetic', claims = 'local', scenarioId = null } = {}) {
-  assert.ok(['f340', 'f548', 'f549', 'f550', 'f551', 'f552', 'f553', 'f554', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked', 'f557', 'f558', 'f561', 'f520', 'f521', 'f595', 'f559', 'f559-learned'].includes(caseId));
+  assert.ok(['f340', 'f548', 'f549', 'f550', 'f551', 'f552', 'f553', 'f554', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain', 'f556', 'f556-blocked', 'f557', 'f558', 'f561', 'f520', 'f521', 'f595', 'f559', 'f559-learned', 'f560'].includes(caseId));
   assert.ok(['synthetic', 'rejected', 'unknown-then-rejected'].includes(ordering));
   assert.ok(['local', 'controlled'].includes(claims));
   assert.ok(scenarioId === null || (caseId === 'f521' && ['normal-success', 'durable-pending'].includes(scenarioId)));
