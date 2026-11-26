@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { startComposition } from './composition.mjs';
+import { showAdvanced, startComposition } from './composition.mjs';
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 async function until(check, message, timeout = 15000) {
@@ -278,6 +278,7 @@ test('FUCQ-550: live Java/OIDC screen refresh and frozen status presentation', {
       assert.equal(replay.state, 'matched', 'A live frozen same-input runtime is required for the engineering pair');
       evidence.frozen = { state: replay.state, pair: replay.liveRefresh, humanAcceptance: 'pending' };
       await presenter.getByRole('link', { name: 'Presenter controls', exact: true }).click();
+      await showAdvanced(presenter);
       await presenter.getByRole('button', { name: 'Next release', exact: true }).waitFor();
     });
 
