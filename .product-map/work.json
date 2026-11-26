@@ -13951,30 +13951,33 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-598",
       "branch": "dev/DEV-2026-11-26-001",
       "native_parent": "FUCQ-75",
-      "note": "Original acceptance retained. Test-harness repair in progress; actual Ubuntu f340 assertions and cleanup pending rootLinuxf340. No product or SUV assertion changes.",
-      "observed_at": "2026-11-26T11:50:32Z",
+      "note": "All original F598 criteria evidenced: independent70scoped checks and actual Ubuntu45814486813A1 selectedf3405/5 at4d2fca8b4, unchanged assertions, verified process/database/PG/browser-temp/inner+outer scratch cleanup. Full18browser union unrun; integration/native acceptance/batches separate.",
+      "observed_at": "2026-11-26T12:08:56Z",
       "slices": [
         {
           "id": "browser-temp",
           "status": "complete",
           "title": "Short Linux browser temp ownership and launch lifecycle",
-          "observed_at": "2026-11-26T11:45:37Z",
-          "evidence": "Lead diff/guard review and covering20helper+28guard tests passed; independent path/lifecycle review passed. Existing profile/options and originalSUVassertions preserved. ActualUbuntuCI remains rootLinuxf340 pending."
+          "observed_at": "2026-11-26T12:08:56Z",
+          "evidence": "Lead diff/guard review and covering20helper+28guard tests passed; independent path/lifecycle review passed. Existing profile/options and originalSUVassertions preserved. ActualUbuntu45814486813A1 f3405/5 and cleanup now passed at4d2fca8b4."
         },
         {
           "id": "ci-accounting",
           "status": "complete",
           "title": "CI aggregate accounting and abandoned-root recovery",
-          "observed_at": "2026-11-26T11:50:32Z",
-          "evidence": "Lead18adapter+4directrunnercaller checks passed; parent PG-finalizer finding RED zero stop calls then GREEN stopped/refused/failed; outcomes retained and scratch preserved. Existing independent ownership review reused; actualUbuntuCI pending."
+          "observed_at": "2026-11-26T12:08:56Z",
+          "evidence": "Lead18adapter+4directrunnercaller checks passed; parent PG-finalizer finding RED zero stop calls then GREEN stopped/refused/failed; outcomes retained and scratch preserved. Existing independent ownership review reused; actualUbuntu45814486813A1 f3405/5 and cleanup now passed at4d2fca8b4."
         },
         {
           "id": "linux-ci",
-          "status": "not-started",
-          "title": "Original f340 assertions on actual Ubuntu CI"
+          "status": "complete",
+          "title": "Original f340 assertions on actual Ubuntu CI",
+          "observed_at": "2026-11-26T12:08:56Z",
+          "evidence": "Actual Ubuntu45814486813attempt1 at4d2fca8b4: selectedf3405/5, original estate/SUV1280+390 assertions passed unchanged; owned browser temp removed, PG stopped/DBs empty/API+Chrome ended/inner+outer scratch absent. Retained run-summary.json observed12:05:27Z; full18unrun."
         }
       ],
-      "unsliced": false
+      "unsliced": false,
+      "engineering_observed_at": "2026-11-26T12:08:56Z"
     }
   ]
 }
