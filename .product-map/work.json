@@ -13412,16 +13412,16 @@
         "FUCQ-447"
       ],
       "branch": "dev/DEV-2026-11-22-vesper-030",
-      "note": "Original5AC govern; nativeadoption8points verified. Product198focused/135ratchet and independent retained-read source review pass at a1aa11d6c. Proof preparation8b5bb788a unrun; sharedcomposition changes wait F521 merge. Original AC5 human same-state1280 pair remains blank.",
+      "note": "Original5AC unchanged. Product198focused/135ratchet and independent source/state review passed on unchanged covering feature code a1aa11d6c. Refreshed onto integratedF521; final proof attempts a6b882129 and0046515fa stopped in source-fixture setup before engineering groups. Canonical third public employee case replaces unnecessary source-copy helper; first attempt cleanup verified, second cleanup pending lead receipt. HTTP400 dueAt premise is under causal tracing, not a product defect finding. Final browser/A/B, original humanAC5 and covering batches remain pending.",
       "workers": [
         {
           "name": "Scooby Doo",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-26T03:48:58Z",
-          "expires_at": "2026-11-26T04:03:58Z",
-          "status": "Preparing proof; waiting for shared helper integration",
-          "source": "Native lead progress message read by usget-velko"
+          "observed_at": "2026-11-26T04:15:26Z",
+          "expires_at": "2026-11-26T04:30:26Z",
+          "status": "Tracing real public case-update inputs after setup-only HTTP400; no engineering browser groups passed",
+          "source": "Native lead progress messages read by usget-velko; proof0046515fa stopped during preparation"
         }
       ]
     }
