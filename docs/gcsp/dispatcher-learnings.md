@@ -4035,3 +4035,13 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 ### 2026-11-26 03:33 UTC · usget-velko · DL-20261126-VELKO-16 · Product-map observation time preserved
 
 - The normal map importer stamps import time and ignores the retained native observation field. For F596, root invoked its normal CLI with an in-memory clock fixed to the actual 03:09:51Z native readback, then recorded explicit unsliced development and the verified demo-control association. All 357 existing story rows/order and other component facts were checked unchanged. No active worker or acceptance inferred. A generic source-observation parameter is proposed; no helper change made.
+
+
+### 2026-11-26 03:44:50 UTC · usget-velko · DL-20261118-RG-016 recurrence · Story ref publication
+
+- F521's first `sg.push(root)` published configured base, not the Story ref. The lead corrected it with an ordinary explicit Story-ref push through `sg.git`, verified remote334fa9fec, then used the explicit route for bc439356b. No force push, branch switch or false final publication claim. This re-observes the documented CLI limitation; proposed explicit branch publication/clear target messaging remains unimplemented.
+
+### 2026-11-26 03:44:50 UTC · usget-velko · DL-20261126-VELKO-17 · Screen success coverage missing from initial F521 proof
+
+- Root read committed browser proof bc439356b against original AC2. It sets writePending before the only recovered confirmation, proving a new pending202 write and uncertain-ack protection, while normal provider-recovered200 success is only in the separate signed HTTP test. It does not yet establish the original successful screen confirmation item.
+- Root directed the owning lead to add a separate actual recovered-provider200/requested screen path, retaining genuinepending/malformedACK coverage and original duplicate protection. Correction and execution remain pending; no acceptance claimed. This is original-criterion verification, no new gate or unrelated full suite. Framework proposal: map each original criterion to the actual terminal response/state observed by its screen test, within existing review.
