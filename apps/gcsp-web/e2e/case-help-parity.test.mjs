@@ -45,7 +45,8 @@ const cloneAlex = value => {
 async function unansweredCharging(call) {
   const editor = good(await call('GET', '/brief/editor'), 'Read the actual editor before changing its practical answer');
   const brief = structuredClone(editor.initial.brief);
-  brief.essentials.charging = { operator: 'includes', unit: null, source: 'employee', state: 'needs-confirmation', value: null };
+  const definition = editor.context.essentials.charging;
+  brief.essentials.charging = { operator: definition.operator, unit: definition.unit, source: 'employee', state: 'needs-confirmation', value: null };
   good(await call('POST', '/brief/draft', { commandId: 'f557-charging-draft', expectedBriefVersion: editor.initial.briefVersion,
     expectedDraftVersion: editor.initial.draftVersion, brief }), 'Save the unanswered charging answer through the actual editor');
   let current = good(await call('GET', '/brief'), 'Read the actual saved brief').brief;
