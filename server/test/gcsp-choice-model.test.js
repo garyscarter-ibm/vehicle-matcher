@@ -12,6 +12,7 @@ import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/in
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { normalizeBaselineWeights, expressedDemandBaseline } from '../gcsp/predict/model/baselines.js';
 import { runCli } from '../../scripts/gcsp/train-choice-model.mjs';
+import { retrainHatchbackChoiceModel } from '../../scripts/gcsp/retrain-hatchback-choice-model.mjs';
 
 const optimizer = { maxIterations: 1000, gradientTolerance: 0.000001, initialStep: 4, maxBacktracks: 30 };
 function random(seed) { let x = seed; return () => { x = (Math.imul(x, 1664525) + 1013904223) >>> 0; return x / 2 ** 32; }; }
@@ -278,4 +279,20 @@ test('offline CLI has a finite help contract and returns typed unavailable for m
   assert.equal(JSON.parse(error).code, 'dataset-unavailable');
   assert.equal(await runCli({ argv: ['--unsupported'], writeError: (s) => { error = s; } }), 2);
   assert.equal(JSON.parse(error).code, 'invalid-arguments');
+});
+
+test('fixed offline training reproduces actual baseline provenance and immutable artifact bytes', async (t) => {
+  const directory = await mkdtemp(join(tmpdir(), 'choice-reproduction-'));
+  try {
+    t.mock.timers.enable({ apis: ['Date'], now: new Date('2026-11-26T10:00:00.000Z') });
+    const first = await retrainHatchbackChoiceModel(join(directory, 'first'));
+    t.mock.timers.setTime(Date.parse('2026-11-27T10:00:00.000Z'));
+    const second = await retrainHatchbackChoiceModel(join(directory, 'second'));
+    assert.equal(first.dataHash, second.dataHash);
+    assert.deepEqual(first.evaluation.metrics.expressedDemand.provenance, second.evaluation.metrics.expressedDemand.provenance);
+    assert.equal(first.artifactId, second.artifactId);
+    const filename = `${first.artifactId.slice(7)}.json`;
+    assert.deepEqual(await readFile(join(directory, 'first', 'artifacts', filename)),
+      await readFile(join(directory, 'second', 'artifacts', filename)));
+  } finally { await rm(directory, { recursive: true, force: true }); }
 });

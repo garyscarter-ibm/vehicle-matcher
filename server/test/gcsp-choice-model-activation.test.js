@@ -36,7 +36,7 @@ async function adoptedRuntime(t) {
   };
   const step = async () => { const time = await now();
     good(await clock.advance(presenter, { commandId: `step:${time.clockVersion}`, expectedClockVersion: time.clockVersion, bySeconds: 1 })); };
-  return { store, policy, publisher, greg, presenter, runId: greg.runId, adopt, step, now };
+  return { store, policy, publisher, clock, greg, presenter, runId: greg.runId, adopt, step, now };
 }
 
 test('seed-v1 and every committed default carry no active learned model', async () => {
@@ -98,6 +98,36 @@ test('trainer policy adoption reads training keys through PolicyService and narr
     assert.match(short.policyVersion, /\+evaluation-cycles$/);
     assert.equal(good(await narrow.policyService.getAssumption(REFERENCE, narrow.policyRead)).value.artifactId, 'unavailable');
   } finally { await full.close(); await narrow.close(); }
+});
+
+test('the hatchback artifact replaces the historical reference only in a distinct dated version', async (t) => {
+  const f = await adoptedRuntime(t);
+  const base = good(await f.policy.getActiveVersion({ runId: f.runId, asOf: START }));
+  const learning = await f.adopt('fucq113-learning-v1', base.policyVersion); await f.step();
+  const choice = await f.adopt('fucq115-choice-model-v1', learning.policyVersion);
+  const publish = async (id, version, from, expected) => good(await f.publisher.publishPolicyVersion(f.greg, {
+    commandId: version, expectedActiveVersion: expected, policyVersion: version, effectiveFrom: from,
+    changes: [{ table: 'assumptions', key: REFERENCE, patch: {
+      value: { artifactId: id, featureVersion: 'vehicle-preference-v1', schemaVersion: 1 }, status: 'assumed',
+      source: `docs/gcsp/models/artifacts/${id.slice(7)}.json`, sourceDate: from.slice(0, 10),
+      basis: 'Dated synthetic-trained model reference; retained evaluation is reviewed and the baseline remains recommended.' } }],
+  }));
+  const historical = await publish(ARTIFACT_ID, 'fucq320-historical-model', ACTIVE_FROM, choice.policyVersion);
+  const time = await f.now();
+  good(await f.clock.advance(f.presenter, { commandId: 'fucq320-reach-historical-reference',
+    expectedClockVersion: time.clockVersion, to: ACTIVE_FROM }));
+  const oldRead = { runId: f.runId, asOf: ACTIVE_FROM, policyVersion: historical.policyVersion };
+  const retained = good(await f.policy.getPolicySnapshot(oldRead));
+  const nextId = 'sha256:e5205f65966d87d6895509bda13fa861e87476d843aabecce7bd76bf0e4fffc2';
+  const nextAt = '2026-11-26T09:00:04.000Z';
+  const successor = await publish(nextId, 'fucq320-hatchback-model-v1', nextAt, historical.policyVersion);
+  const activeAt = async (asOf, policyVersion) => good(await readActiveChoiceModel({ policyService: f.policy,
+    policyRead: { runId: f.runId, asOf, ...(policyVersion ? { policyVersion } : {}) }, artifactDirectory: ARTIFACTS }));
+  assert.equal((await activeAt('2026-11-26T09:00:03.999Z')).artifact.artifactId, ARTIFACT_ID);
+  assert.equal((await activeAt(nextAt)).artifact.artifactId, nextId);
+  assert.equal((await activeAt(nextAt)).activation.policyVersion, successor.policyVersion);
+  assert.equal((await activeAt(nextAt, historical.policyVersion)).artifact.artifactId, ARTIFACT_ID);
+  assert.deepEqual(good(await f.policy.getPolicySnapshot(oldRead)), retained);
 });
 
 test('offline sensitivity is one dated successor changing only the two learning keys; the earlier version stays readable', async () => {
