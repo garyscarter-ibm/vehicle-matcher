@@ -13652,6 +13652,79 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "id": "FUCQ-538",
+      "title": "Port the Node generated-stock provider and its scenario tranche to Java supply",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-538",
+      "branch": "dev/DEV-2026-11-22-vesper-014",
+      "observed_at": "2026-11-26T08:37:51Z",
+      "workers": [
+        {
+          "name": "Pugh",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-26T08:09:19Z",
+          "expires_at": "2026-11-26T12:09:19Z",
+          "source": "Pugh verified native child report and allocated F538 work",
+          "status": "running"
+        },
+        {
+          "name": "Emmet",
+          "harness": "codex",
+          "role": "implementer: pure native generator",
+          "observed_at": "2026-11-26T08:09:19Z",
+          "expires_at": "2026-11-26T12:09:19Z",
+          "source": "Pugh verified native child report and allocated F538 work",
+          "status": "running"
+        },
+        {
+          "name": "Daffy Duck",
+          "harness": "codex",
+          "role": "implementer: corpus/policy inputs",
+          "observed_at": "2026-11-26T08:37:50Z",
+          "expires_at": "2026-11-26T08:37:50Z",
+          "source": "Pugh verified native child report and allocated F538 work",
+          "status": "completed"
+        }
+      ],
+      "slices": [
+        {
+          "id": "contract",
+          "status": "complete",
+          "title": "Source and durable generation contract",
+          "observed_at": "2026-11-26T08:37:51Z",
+          "evidence": "Parent source/data/HLD topology review and actual corpus/input parity checks; docs/gcsp/evidence/fucq538/generated-stock-port-2026-11-26.md"
+        },
+        {
+          "id": "generation",
+          "status": "in-progress",
+          "title": "Native deterministic generation and retained corpus inputs",
+          "observed_at": "2026-11-26T08:09:19Z"
+        },
+        {
+          "id": "durability",
+          "status": "in-progress",
+          "title": "Atomic generation, replay and generated pull provider",
+          "observed_at": "2026-11-26T08:09:20Z"
+        },
+        {
+          "id": "main-integration",
+          "status": "not-started",
+          "title": "Main preparation, tick release and allocation integration"
+        },
+        {
+          "id": "validation-review",
+          "status": "not-started",
+          "title": "Scoped parity, restart, concurrency and covering review"
+        }
+      ],
+      "unsliced": false,
+      "jira_observed_at": "2026-11-26T08:01:29.625Z"
     }
   ]
 }
