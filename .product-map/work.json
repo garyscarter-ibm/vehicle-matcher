@@ -13679,7 +13679,7 @@
           "status": "stopped: source66bb592d pushed; lead205/205 verified"
         }
       ],
-      "observed_at": "2026-11-26T07:21:19Z",
+      "observed_at": "2026-11-26T08:04:17Z",
       "slices": [
         {
           "id": "repair",
@@ -13690,10 +13690,10 @@
         },
         {
           "id": "integration",
-          "status": "blocked",
+          "status": "complete",
           "title": "Lead validation and matching Java support gate",
-          "observed_at": "2026-11-26T07:16:57Z",
-          "evidence": "Lead scoped/startup205/205 passed. Pending root matching full Java CI on final integrated ref because shared ReturnHttpSupport/Profile changed; no full-green claim."
+          "observed_at": "2026-11-26T08:04:17Z",
+          "evidence": "Required canonical Java CI45775454699 at75e1d539e982b048642da345b92f41ff470814fe passed clean verify:2340cases/2337executed/0fail/0error/3explicit unrelated environmentgatedskips; all106returns and actual none-supply/clock/startupwiring passed. Reports/collector/cleanup valid; peak4174303232B/scratch102187008B. Finalmetadatarefresh3f4e27447 Java/Nodeparity/fixture/workflow objectidentities equal CI. Root reviewed fullsixfiledelta. Sharedbrowserbatch/native reconciliation pending."
         }
       ],
       "unsliced": false
