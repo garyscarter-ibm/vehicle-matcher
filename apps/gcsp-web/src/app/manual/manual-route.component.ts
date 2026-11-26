@@ -1,5 +1,6 @@
-import { afterNextRender, Component, computed, DestroyRef, effect, ElementRef, inject, Injector, untracked } from '@angular/core';
+import { afterNextRender, Component, computed, DestroyRef, effect, ElementRef, inject, Injector, signal, untracked } from '@angular/core';
 import { CanDeactivateFn, Router } from '@angular/router';
+import { LiveRefreshService } from '../live-refresh.service';
 import { AuthPort } from '../auth/auth.port';
 import { ButtonDirective } from '../kit/button.directive';
 import { StatusScreenComponent } from '../kit/status-screen.component';
@@ -37,16 +38,16 @@ const copy: Partial<Record<ManualState, readonly [string, string]>> = {
       </gcsp-status-screen>
     }
     @if (showSummary()) {
-      <gcsp-manual-summary [projection]="store.projection()" [declarations]="store.declarations()" [busy]="store.loading()" [resumeRequired]="store.resumeRequired()"
+      <gcsp-manual-summary [readback]="store.readback()" [announcement]="store.announcement()" [projection]="store.projection()" [declarations]="store.declarations()" [busy]="store.loading()" [resumeRequired]="store.resumeRequired()"
         [detailsDraft]="store.detailsDraft()" [detailsDirty]="store.detailsDirty()" [canSaveDetails]="store.canSaveReviewDetails()"
         (detailsChange)="store.setReviewDetails($event)" (saveDetails)="store.saveReviewDetails()" (submit)="store.submit()"
         (declarationChange)="store.setDeclaration($event.id, $event.checked)" (resume)="store.confirmResume()"
-        (edit)="edit()" (browse)="browse()" (check)="store.checkStatus()" (orders)="orders()" (help)="help()" />
+        (edit)="edit()" (browse)="changeCar()" (back)="back()" (cancel)="cancel()" (editDetails)="editDetails()" (finish)="finish()" (check)="store.checkStatus()" (orders)="orders()" (help)="help()" />
     } @else if (hasBody()) {
-      <gcsp-manual-review [projection]="store.projection()" [selection]="store.handoff()" [busy]="store.loading()"
+      <gcsp-manual-review [readback]="store.readback()" [announcement]="store.announcement()" [canDiscard]="store.canDiscardLocalEdits()" [editingSummary]="detailsEditing()" (discard)="store.discardLocalEdits()" [projection]="store.projection()" [selection]="store.handoff()" [busy]="store.loading()"
         [detailsDraft]="store.detailsDraft()" [detailsDirty]="store.detailsDirty()" [canSaveDetails]="store.canSaveReviewDetails()"
         (detailsChange)="store.setReviewDetails($event)" (saveDetails)="store.saveReviewDetails()"
-        (continue)="store.beginReview()" (resume)="store.confirmResume()" (edit)="edit()" (browse)="browse()" (check)="store.checkStatus()" />
+        (continue)="continueReview()" (resume)="store.confirmResume()" (edit)="edit()" (browse)="changeCar()" (back)="back()" (cancel)="cancel()" (check)="store.checkStatus()" />
     }
   `,
 })
@@ -57,14 +58,17 @@ export class ManualRouteComponent {
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly injector = inject(Injector);
   private destroyed = false;
-  readonly showSummary = computed(() => !!this.store.projection().order || this.store.projection().claim?.hold.phase === 'order-review');
+  readonly detailsEditing = signal(false);
+  readonly showSummary = computed(() => !!this.store.projection().order || !this.detailsEditing() && this.store.projection().claim?.hold.phase === 'order-review');
   readonly hasBody = computed(() => !!this.store.projection().claim || !!this.store.projection().order || this.store.state() === 'selection-ready');
   readonly notice = computed(() => this.store.projection().order ? null : copy[this.store.state()] ?? null);
   readonly failureReason = computed(() => this.store.projection().failure?.reason ?? null);
 
   constructor() {
     void this.store.enter();
-    inject(DestroyRef).onDestroy(() => { this.destroyed = true; this.store.dispose(); });
+    const stopRefresh = inject(LiveRefreshService).subscribe(() => this.store.refresh());
+    inject(DestroyRef).onDestroy(() => { this.destroyed = true; stopRefresh(); this.store.dispose(); });
+    effect(() => { this.store.scope(); untracked(() => this.detailsEditing.set(false)); });
     effect(() => {
       const key = `${this.store.state()}:${this.showSummary()}`;
       untracked(() => afterNextRender(() => {
@@ -79,6 +83,17 @@ export class ManualRouteComponent {
     const state = this.store.state();
     if (['selection-ready', 'no-claim', 'released', 'expired'].includes(state) || await this.store.release('back')) await this.router.navigateByUrl('/stock');
   }
+  async changeCar(): Promise<void> { if (await this.store.release('change')) await this.router.navigateByUrl('/stock'); }
+  async back(): Promise<void> { if (await this.store.release('back')) await this.router.navigateByUrl('/stock'); }
+  async cancel(): Promise<void> { if (await this.store.release('cancel')) await this.router.navigateByUrl('/account'); }
+  editDetails(): void { if (this.store.beginDetailsEdit()) this.detailsEditing.set(true); }
+  continueReview(): void {
+    if (this.detailsEditing()) {
+      const details = this.store.projection().reviewDetails;
+      if (!this.store.loading() && !this.store.resumeRequired() && !this.store.detailsDirty() && details?.editable && details.reviewDetailsVersion > 0) this.detailsEditing.set(false);
+    } else void this.store.beginReview();
+  }
+  finish(): void { if (this.store.projection().order) void this.router.navigateByUrl('/account'); }
   orders(): void { if (this.store.projection().order) void this.router.navigateByUrl('/orders'); }
   help(): void { if (this.store.projection().order) void this.router.navigateByUrl('/help'); }
   /** Rail and browser navigation must not leave an unresolved reservation behind. */

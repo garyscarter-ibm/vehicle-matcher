@@ -13288,6 +13288,56 @@
         "kind:ui"
       ],
       "native_updated": "2026-11-25T18:44:07.379-0600"
+    },
+    {
+      "id": "FUCQ-554",
+      "type": "Bug",
+      "title": "Angular manual review and summary show internal IDs and lost the reservation countdown and read-back cards",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-22-vesper-036",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-554",
+      "native_story_points": 8,
+      "native_start_date": "2026-11-26",
+      "native_parent": "FUCQ-432",
+      "native_links": [
+        "FUCQ-443"
+      ],
+      "native_labels": [
+        "backlog",
+        "defect",
+        "gcsp",
+        "kind:ui"
+      ],
+      "native_updated": "2026-11-25T19:24:45.646-0600",
+      "native_observed_at": "2026-11-26T01:26:26Z",
+      "note": "Native claim observed 2026-11-26T01:26:26Z: In Progress/Russell/8/start 26 November/F432/link 443. Local original AC1–6 now evidenced at final F554 source 2a7515bd2; F520/all 7 F553 green at 6132628a with matching unchanged caller inputs. A/B final confirmation 30/40 and detector 0 findings; loaded same-state pairs ready. Original AC7 human verdict and covering shared browser batch remain open; native publication/integration belongs to root. No Done/acceptance inferred.",
+      "observed_at": "2026-11-26T03:04:00Z",
+      "slices": [
+        {
+          "id": "manual-readback-countdown",
+          "status": "complete",
+          "title": "Restore authoritative countdown and plain readback joins",
+          "observed_at": "2026-11-26T03:04:00Z",
+          "evidence": "Original AC1/2 evidenced in final actual F554 source 2a7515bd2: authoritative preview/review countdown, deduplicated low/expiry announcements, plain context and bound readback. Root independent core 169 and final 38 covering checks pass; no human verdict inferred."
+        },
+        {
+          "id": "summary-navigation-outcome",
+          "status": "complete",
+          "title": "Restore six cards, declarations, edit/navigation and outcome controls",
+          "observed_at": "2026-11-26T03:04:00Z",
+          "evidence": "Original AC3–6 evidenced in final actual F554 source 2a7515bd2: six cards and supported edits/hints, declarations, one pinned submit/lostACK GET, stages/Next steps/Finish/Print, exact release intents, dirty/conflict discard and retained hold/deadline. F520/all 7 F553 green at 6132628a; matching caller inputs/product retained."
+        },
+        {
+          "id": "connected-review-and-human-pair",
+          "status": "in-progress",
+          "title": "Connected acceptance evidence, independent critique and original human pair verdict",
+          "observed_at": "2026-11-26T03:04:00Z",
+          "evidence": "Final F554 source 2a7515bd2 all 8 groups pass; same-state 1280 review/summary pairs show loaded exact published reference media. Code review and isolated A/B confirmation passed (30/40; detector 0 findings). Original AC7 collaborator verdict unrecorded; covering shared browser batch open. Human acceptance/Done not inferred."
+        }
+      ],
+      "unsliced": false
     }
   ]
 }

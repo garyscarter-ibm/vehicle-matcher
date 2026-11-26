@@ -1,6 +1,7 @@
-import { signal } from '@angular/core';
+import { effect, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { AccountClient } from '../account/account.client';
 import { AuthPort, RecoveryNotice, SessionState } from '../auth/auth.port';
 import { ManualClient } from './manual.client';
 import { ManualStore } from './manual.store';
@@ -53,9 +54,11 @@ const changedDetails = (): ManualEditableDetails => ({ contact: { phone: '01234 
 
 describe('manual claim and ordering command lane', () => {
   let store: ManualStore; const auth = signal<SessionState>(ready()); const recovery = signal<RecoveryNotice | null>(null);
+  const accountClient = { readAccount: vi.fn(), readDraft: vi.fn() };
   const client = { context: vi.fn(), readOrder: vi.fn(), readClaim: vi.fn(), readTerms: vi.fn(), readReviewDetails: vi.fn(), saveReviewDetails: vi.fn(),
     claim: vi.fn(), review: vi.fn(), release: vi.fn(), submit: vi.fn() };
   beforeEach(() => {
+    accountClient.readAccount.mockReset().mockResolvedValue(absent); accountClient.readDraft.mockReset().mockResolvedValue(absent);
     auth.set(ready()); recovery.set(null); Object.values(client).forEach((fn) => fn.mockReset());
     client.context.mockImplementation(() => { const state = auth(); return state.status === 'ready'
       ? { subject: state.context.subject, environmentId: state.context.environmentId, runId: state.context.runId, employeeId: state.context.employeeId } : null; });
@@ -65,11 +68,50 @@ describe('manual claim and ordering command lane', () => {
     client.claim.mockResolvedValue(ok(claim('preview', 2))); client.review.mockResolvedValue(ok(claim())); client.submit.mockResolvedValue(ok(order()));
     const c = claim(); client.release.mockResolvedValue(ok({ ...c, state: 'released', hold: { ...c.hold, state: 'released', releaseReason: 'change' },
       view: { ...c.view, state: 'released', action: 'browse-stock' } }));
-    TestBed.configureTestingModule({ providers: [ManualStore, { provide: AuthPort, useValue: { state: auth, recovery } }, { provide: ManualClient, useValue: client }] });
+    TestBed.configureTestingModule({ providers: [ManualStore, { provide: AccountClient, useValue: accountClient }, { provide: AuthPort, useValue: { state: auth, recovery } }, { provide: ManualClient, useValue: client }] });
     store = TestBed.inject(ManualStore); TestBed.tick();
   });
   afterEach(() => TestBed.resetTestingModule());
   async function readyToSubmit(): Promise<void> { await store.enter(); store.confirmResume(); store.setDeclaration('read', true); store.setDeclaration('return', true); }
+  it('loads exact account and saved choices readback and drops its private join on disposal or scope change', async () => {
+    accountClient.readAccount.mockResolvedValue(ok({ state: 'ready', actions: [], account: { employeeId: 'employee', name: 'Avery' } }));
+    accountClient.readDraft.mockResolvedValue(ok({ draftVersion: 7, contextVersion: 'context', choices: { mode: 'replacement', slotId: 'slot', oldContractId: 'current', schemeId: 'scheme' } }));
+    await store.enter(); expect(store.readback()?.account.account?.name).toBe('Avery');
+    store.dispose(); expect(store.readback()).toBeNull();
+    await store.enter(); expect(store.readback()).not.toBeNull(); auth.set(ready({ runId: 'different' })); TestBed.tick(); expect(store.readback()).toBeNull();
+  });
+  it('preserves dirty same-binding fields through clock refresh and announces each deadline threshold once', async () => {
+    const c = claim('preview', 2); const low = { ...c, now: '2026-11-16T13:59:30Z' };
+    client.readClaim.mockResolvedValue(ok(low)); client.readReviewDetails.mockResolvedValue(ok({ ...details(low), now: low.now }));
+    const spoken: string[] = []; TestBed.runInInjectionContext(() => effect(() => { spoken.push(store.announcement()); }));
+    await store.enter(); store.confirmResume(); store.setReviewDetails(changedDetails()); TestBed.tick();
+    expect(store.announcement()).toContain('nearly over');
+    await store.refresh(); TestBed.tick(); expect(spoken.filter((value) => value.includes('nearly over'))).toHaveLength(1); expect(store.detailsDraft()).toEqual(changedDetails());
+    const expired = { ...low, now: later }; client.readClaim.mockResolvedValue(ok(expired));
+    client.readReviewDetails.mockResolvedValue(ok({ ...details(expired), now: later, editable: false, canContinue: false, view: { state: 'expired', editable: false, action: 'refresh-claim', supportOwner: 'employee' } }));
+    await store.refresh(); TestBed.tick(); expect(store.announcement()).toContain('expired'); expect(store.projection().canSubmit).toBe(false);
+  });
+  it('never discards an unresolved save identity or enables another save after a local discard request', async () => {
+    await readyToSubmit(); store.setReviewDetails(changedDetails());
+    client.saveReviewDetails.mockResolvedValueOnce({ status: 'uncertain', code: 'manual-transport-unavailable', retryable: false });
+    client.readReviewDetails.mockResolvedValueOnce(absent); await store.saveReviewDetails();
+    expect(store.canDiscardLocalEdits()).toBe(false); store.discardLocalEdits();
+    expect(store.detailsDraft()).toEqual(changedDetails()); await store.saveReviewDetails(); expect(client.saveReviewDetails).toHaveBeenCalledOnce();
+    expect(store.state()).toBe('uncertain');
+  });
+  it('discards only local edits back to the latest saved review and clears declarations', async () => {
+    await readyToSubmit(); store.setReviewDetails(changedDetails());
+    expect(store.detailsDirty()).toBe(true);
+    store.discardLocalEdits();
+    expect(store.detailsDraft()?.contact.email).toBe('employee@example.test');
+    expect(store.detailsDirty()).toBe(false); expect(store.declarations()).toEqual({});
+    expect(client.saveReviewDetails).not.toHaveBeenCalled(); expect(client.release).not.toHaveBeenCalled();
+  });
+  it('keeps the review hold when details are reopened and continued', async () => {
+    await readyToSubmit(); await store.beginReview();
+    expect(client.review).not.toHaveBeenCalled(); expect(client.claim).not.toHaveBeenCalled();
+    expect(store.projection().claim?.hold.phase).toBe('order-review');
+  });
   it('reads existing order first on direct entry and never implicitly claims or submits', async () => {
     const response = deferred<unknown>(); client.readOrder.mockReturnValueOnce(response.promise);
     const entering = store.enter(handoff()); expect(client.readOrder).toHaveBeenCalledOnce(); expect(client.readClaim).not.toHaveBeenCalled();

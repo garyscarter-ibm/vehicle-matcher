@@ -18,17 +18,39 @@ describe('manual selected-car review composition', () => {
   afterEach(() => { fixture.destroy(); TestBed.resetTestingModule(); });
   const text = () => (fixture.nativeElement as HTMLElement).textContent ?? '';
   const button = (label: string) => Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('button')).find((b) => b.textContent?.trim() === label)!;
+  it('shows server-owned remaining time and distinct release intents without internal identifiers', () => {
+    fixture.componentRef.setInput('projection', { ...projection(), claim: { ...claim, now: '2026-11-16T17:58:30Z',
+      hold: { ...claim.hold, phase: 'preview', holdId: 'private-hold' },
+      quote: { ...claim.quote, quoteId: 'private-quote', timing: { previewSeconds: 120, reviewSeconds: 600, transition: 'once-from-preview' } } } });
+    fixture.detectChanges();
+    expect(text()).toContain('Car reservation: 1:30 remaining');
+    expect(text()).toContain('Continuing does not place an order.');
+    expect(text()).not.toContain('Car ID'); expect(text()).not.toContain('Reserved until');
+    for (const label of ['Back', 'Change car', 'Cancel review']) expect(button(label)).toBeDefined();
+  });
   it('renders pinned exact-car facts and zero terms without substituting the navigation snapshot', () => {
     fixture.componentRef.setInput('selection', { orderUuid: 'other', snapshot: { display: { name: 'Wrong gallery car', photo: '/wrong.webp' } } } as unknown as ManualHandoff);
-    fixture.detectChanges(); expect(text()).toContain('Pinned BMW'); expect(text()).toContain('Car ID exact-car'); expect(text()).not.toContain('Wrong gallery car');
+    fixture.detectChanges(); expect(text()).toContain('Pinned BMW'); expect(text()).not.toContain('Car ID'); expect(text()).not.toContain('Wrong gallery car');
     expect(text()).toContain('0 GBP / month'); expect((fixture.nativeElement as HTMLElement).querySelector('img')?.getAttribute('src')).toBe('/assets/gcsp-vehicle-evidence/000cfa6bd4d71e51611f32283003aacf383c9c9d12f1a29f25b600a98d496490.webp');
     expect((fixture.nativeElement as HTMLElement).querySelectorAll('h1')).toHaveLength(1);
+  });
+  it.each([
+    [{ kind: 'employee-scheme', contribution: null }, 'None'],
+    [{ kind: 'employee-scheme', contribution: { amount: 0, currency: 'GBP', period: 'month' } }, 'None'],
+    [{ kind: 'employee-scheme' }, null],
+    [{ kind: 'employee-scheme', contribution: { status: 'unknown', amount: 0, currency: 'GBP' } }, null],
+    [{ kind: 'employee-scheme', contribution: { amount: 25, currency: 'GBP', period: 'month' } }, '25 GBP / month'],
+    [{ kind: 'employee-scheme', contribution: { amount: 25, currency: 'GBP' } }, '25 GBP'],
+    [{ kind: 'employee-scheme', contribution: { amount: 25 } }, null],
+  ] as const)('distinguishes no contribution from unknown and supplied monetary terms: %j', (terms, expected) => {
+    const vehicle = manualVehicle({ ...claim.quote, terms });
+    expect(vehicle.termRows.find((row) => row.label === 'Contribution')?.value).toBe(expected);
   });
   it('reads name, photo and facts from the Java quote envelope (FUCQ-520)', () => {
     const snapshot = { display: { name: 'BMW 3 Series Touring 320i', photo: '/java.webp' }, facts: { model: { status: 'known', value: '320i', unit: null } }, snapshotVersion: 1 };
     const vehicle = manualVehicle({ ...claim.quote, facts: { facts: snapshot } } as unknown as ManualQuote);
     expect(vehicle.name).toBe('BMW 3 Series Touring 320i'); expect(vehicle.images).toEqual([{ src: '/java.webp', alt: 'BMW 3 Series Touring 320i' }]);
-    expect(vehicle.rows[0].value).toBe('320i'); expect(vehicle.identity).toBe('Car ID exact-car');
+    expect(vehicle.rows[0].value).toBe('320i'); expect(vehicle.identity).toBe('');
     expect(manualVehicle({ ...claim.quote, facts: { facts: {} } } as unknown as ManualQuote).name).toBe('Car name not supplied');
   });
   it('uses the shared missing-image frame when no image is supplied', () => {
@@ -69,12 +91,12 @@ describe('manual controlled review details composition', () => {
     fixture.componentRef.setInput('canSaveDetails', true); fixture.detectChanges();
   });
   afterEach(() => { fixture.destroy(); TestBed.resetTestingModule(); });
-  it('renders actual contract collection and saved review pins with zero mileage', () => {
-    expect(root().textContent).toContain('actual-centre'); expect(root().textContent).toContain('2026-12-02'); expect(root().textContent).toContain('old-contract');
-    expect(root().textContent).toContain('Current BMW'); expect(root().textContent).toContain('twelve-month'); expect(root().textContent).toContain('0 mi');
+  it('renders plain contract and collection context with zero saved mileage', () => {
+    expect(root().textContent).not.toContain('actual-centre'); expect(root().textContent).toContain('Wednesday 2 December 2026'); expect(root().textContent).not.toContain('old-contract');
+    expect(root().textContent).toContain('Current BMW'); expect(root().textContent).toContain('12 months'); expect(root().textContent).toContain('0 mi');
     expect(root().querySelector<HTMLInputElement>('#manual-return-mileage')!.value).toBe('0');
     expect(root().querySelector<HTMLInputElement>('#manual-return-mileage')!.max).toBe('250000'); expect(root().querySelector('textarea')!.maxLength).toBe(43);
-    expect(root().textContent).toContain('43 UTF-16 code units');
+    expect(root().textContent).toContain('43 characters');
   });
   it('emits controlled edits without mutating the saved values and saves only intentionally', () => {
     const changed = vi.fn(); const saved = vi.fn(); fixture.componentInstance.detailsChange.subscribe(changed); fixture.componentInstance.saveDetails.subscribe(saved);

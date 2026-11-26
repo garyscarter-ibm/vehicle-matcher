@@ -24,12 +24,45 @@ describe('manual final review and actual outcome composition', () => {
     fixture.componentRef.setInput('projection', projection()); fixture.detectChanges(); });
   afterEach(() => { fixture.destroy(); TestBed.resetTestingModule(); });
   const text = () => (fixture.nativeElement as HTMLElement).textContent ?? '';
+  it('reads back six cards with mapped edit controls before explicit submission', () => {
+    const root = fixture.nativeElement as HTMLElement;
+    const headings = Array.from(root.querySelectorAll('h2')).map((node) => node.textContent?.trim());
+    for (const title of ['Your replacement order', 'Driver and licence', 'Points and contract', 'Collection', 'Contact and requirements', 'Car you are returning', 'Before you submit']) expect(headings).toContain(title);
+    expect(root.querySelector('button[type="submit"]')?.textContent?.trim()).toBe('Submit order');
+    expect(text()).not.toContain('dated-terms'); expect(text()).not.toContain('Terms valid until');
+    expect(root.querySelectorAll('.gcsp-summary-section[data-card] button')).toHaveLength(6);
+  });
+  it('shows no cash contribution for the actual pinned employee-scheme null value', () => {
+    fixture.componentRef.setInput('projection', { ...projection(), claim: { ...claim, quote: { ...claim.quote,
+      terms: { kind: 'employee-scheme', contribution: null } } } }); fixture.detectChanges();
+    const card = (fixture.nativeElement as HTMLElement).querySelector('[data-card="points"]')!;
+    const label = Array.from(card.querySelectorAll('dt')).find((entry) => entry.textContent?.trim() === 'Cash contribution')!;
+    expect(label.nextElementSibling?.textContent?.trim()).toBe('None');
+    const heroLabel = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.manual-vehicle dt')).find((entry) => entry.textContent?.trim() === 'Contribution')!;
+    expect(heroLabel.nextElementSibling?.textContent?.trim()).toBe('None');
+  });
+  it('offers finish and printing for an actual saved outcome without exposing its internal car key', () => {
+    fixture.componentRef.setInput('projection', { ...projection(), order: order('pending'), claim: null }); fixture.detectChanges();
+    expect(text()).toContain('Next steps'); expect(text()).toContain('Finish'); expect(text()).toContain('Print order');
+    expect(text()).not.toContain('exact-car'); expect(text()).not.toContain('Car ID');
+    expect((fixture.nativeElement as HTMLElement).querySelector('gcsp-stage-list')).not.toBeNull();
+  });
   it('retains supplied terms and declarations while missing details authority blocks submission', () => {
     fixture.componentRef.setInput('declarations', { required: true }); fixture.detectChanges();
-    expect(text()).toContain('Pinned BMW'); expect(text()).toContain('Actual supplied scheme wording.'); expect(text()).toContain('dated-terms');
+    expect(text()).toContain('Pinned BMW'); expect(text()).toContain('Actual supplied scheme wording.'); expect(text()).not.toContain('dated-terms');
     const submit = (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('button[type="submit"]')!;
     expect(submit.disabled).toBe(true); expect(submit.getAttribute('aria-describedby')).toBe('manual-details-status'); expect(text()).toContain('contact and collection details are unavailable');
     const event = new Event('submit', { cancelable: true }); (fixture.nativeElement as HTMLElement).querySelector('form')!.dispatchEvent(event); expect(event.defaultPrevented).toBe(true);
+  });
+  it.each([false, true])('gives terminal expiry recovery before missing details or dirty guidance (dirty=%s)', (dirty) => {
+    fixture.componentRef.setInput('projection', { ...projection(), state: 'expired', canRelease: false, canSubmit: false });
+    fixture.componentRef.setInput('detailsDirty', dirty); fixture.detectChanges();
+    const root = fixture.nativeElement as HTMLElement; const status = root.querySelector('#manual-details-status')!.textContent ?? '';
+    expect(status).toContain('Your reservation has expired.'); expect(status).toContain('Refresh stock to choose again.');
+    expect(status).not.toContain('details are unavailable'); expect(status).not.toContain('Save your details');
+    const submitted = vi.fn(); fixture.componentInstance.submit.subscribe(submitted);
+    expect(root.querySelector<HTMLButtonElement>('button[type="submit"]')!.disabled).toBe(true);
+    root.querySelector('form')!.dispatchEvent(new Event('submit', { cancelable: true })); expect(submitted).not.toHaveBeenCalled();
   });
   it('emits submission only from a deliberate valid native submit with server permission', () => {
     const submitted = vi.fn(); fixture.componentInstance.submit.subscribe(submitted);
@@ -51,8 +84,8 @@ describe('manual final review and actual outcome composition', () => {
       requestedCollection: { date: '2026-12-01', locationId: 'supplied-centre' }, oldContractId: 'old-contract', currentContract: null, contract: null,
       hold: { holdId: 'held-car' }, quote: { quoteId: 'actual-quote' }, orderNumber: '1234567' } as unknown as ManualReviewDetails });
     fixture.componentRef.setInput('detailsDraft', { contact: { phone: '01632 960000', email: 'actual@example.test' }, expectedReturnMileage: 7000, specialRequirements: 'Actual saved request' }); fixture.detectChanges();
-    expect(text()).toContain('actual@example.test'); expect(text()).toContain('Actual saved request'); expect(text()).toContain('supplied-centre');
-    expect(text()).not.toContain('details are unavailable'); expect((fixture.nativeElement as HTMLElement).querySelectorAll('form')).toHaveLength(2);
+    expect(text()).toContain('actual@example.test'); expect(text()).toContain('Actual saved request'); expect(text()).not.toContain('supplied-centre'); expect(text()).toContain('Tuesday 1 December 2026');
+    expect(text()).not.toContain('details are unavailable'); expect((fixture.nativeElement as HTMLElement).querySelectorAll('form')).toHaveLength(1);
     expect((fixture.nativeElement as HTMLElement).querySelectorAll('form form')).toHaveLength(0);
   });
   it('associates each native checkbox and emits only its actual declaration ID', () => {
@@ -74,10 +107,10 @@ describe('manual final review and actual outcome composition', () => {
     fixture.componentRef.setInput('projection', { ...projection(), order: order('pending'), reviewDetails: { details: { contact: { email: 'unmatched@example.test' } } } as unknown as ManualReviewDetails }); fixture.detectChanges();
     expect(text()).not.toContain('unmatched@example.test'); expect((fixture.nativeElement as HTMLElement).querySelector('gcsp-manual-review-details')).toBeNull();
   });
-  it('offers only a status read for a pending handoff', () => {
+  it('offers status read, finish and print for a pending handoff without another submit', () => {
     fixture.componentRef.setInput('projection', { ...projection(), order: order('pending'), claim: null }); fixture.detectChanges();
     const checked = vi.fn(); fixture.componentInstance.check.subscribe(checked);
-    const buttons = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('button')); expect(buttons).toHaveLength(1);
-    expect(buttons[0].textContent?.trim()).toBe('Check order status'); buttons[0].click(); expect(checked).toHaveBeenCalledOnce();
+    const buttons = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('button')); expect(buttons).toHaveLength(3);
+    expect(buttons.map((button) => button.textContent?.trim())).toEqual(['Finish', 'Print order', 'Check order status']); buttons[2].click(); expect(checked).toHaveBeenCalledOnce();
   });
 });

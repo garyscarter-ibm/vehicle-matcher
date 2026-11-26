@@ -1,14 +1,17 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { StageListComponent } from '../kit/stage-list.component';
+import { manualCountdown, manualReadbackCards, ManualReadbackSource, ManualEditIntent } from './manual.readback';
 import { ButtonDirective } from '../kit/button.directive';
 import { FactListComponent } from '../kit/fact-list.component';
 import { MediaGalleryComponent } from '../kit/media-gallery.component';
 import { ScreenIntroComponent } from '../kit/screen-intro.component';
-import { ManualReviewDetailsComponent, manualVehicle } from './manual-review.component';
+import { manualVehicle } from './manual-review.component';
 import type { ManualEditableDetails, ManualProjection } from './manual.types';
 
 @Component({
   selector: 'gcsp-manual-summary',
-  imports: [ButtonDirective, FactListComponent, MediaGalleryComponent, ScreenIntroComponent, ManualReviewDetailsComponent],
+  imports: [ButtonDirective, FactListComponent, MediaGalleryComponent, ScreenIntroComponent, StageListComponent],
   templateUrl: './manual-summary.component.html', styleUrl: './manual-summary.component.css',
 })
 export class ManualSummaryComponent {
@@ -18,6 +21,22 @@ export class ManualSummaryComponent {
   readonly resumeRequired = input(false);
   readonly detailsDraft = input<ManualEditableDetails | null>(null);
   readonly detailsDirty = input(false); readonly canSaveDetails = input(false);
+  readonly readback = input<ManualReadbackSource | null>(null); readonly announcement = input('');
+  readonly cards = computed(() => manualReadbackCards(this.projection(), this.readback()));
+  readonly countdown = computed(() => manualCountdown(this.projection()));
+  readonly editDetails = output<ManualEditIntent>(); readonly back = output<void>(); readonly cancel = output<void>();
+  readonly finish = output<void>();
+  private readonly document = inject(DOCUMENT);
+  readonly stages = computed(() => this.projection().order?.progress.stages.map((stage) => ({ ...stage, name: this.stageLabel(stage.name) })) ?? []);
+  printOrder(): void { if (this.projection().order) { try { this.document.defaultView?.print(); } catch { /* Printing cannot alter the saved order. */ } } }
+  editCard(intent: ManualEditIntent): void {
+    if (this.busy() || this.resumeRequired() || this.projection().order) return;
+    if ((intent === 'car' || intent === 'choices') && !this.projection().canRelease
+      || (intent === 'contact' || intent === 'return') && !this.projection().reviewDetails?.editable) return;
+    if (intent === 'car') this.browse.emit();
+    else if (intent === 'choices') this.edit.emit();
+    else this.editDetails.emit(intent);
+  }
   readonly detailsChange = output<ManualEditableDetails>(); readonly saveDetails = output<void>(); readonly submit = output<void>();
   readonly declarationChange = output<{ readonly id: string; readonly checked: boolean }>();
   readonly resume = output<void>(); readonly edit = output<void>(); readonly browse = output<void>();
@@ -41,5 +60,5 @@ export class ManualSummaryComponent {
       this.declarationChange.emit({ id, checked: (event.target as HTMLInputElement).checked });
     }
   }
-  stageLabel(value: string): string { return value ? value[0].toUpperCase() + value.slice(1) : value; }
+  stageLabel(value: string): string { return ({ 'sales-manager approval': 'Sales manager approval', 'sent to ordering': 'Sent to ordering', 'selection received': 'Selection received' } as Record<string, string>)[value] ?? value; }
 }
