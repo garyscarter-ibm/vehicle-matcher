@@ -4207,6 +4207,6 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 
 ### 2026-11-26 07:37 UTC · Codex · DL-20261126-VELKO-23 follow-up · Jira cursor offset
 
-- **Evidence/impact:** The complete FUCQ-320 delta matched `attachments IS EMPTY` and `issueLinkType IS EMPTY` at Jira's exact `2026-11-26T01:29:27.913-0600` update. The normal pull recorded the acceptance change in `156d726fb`, but left the retained `06:58` cursor unchanged.
+- **Evidence/impact:** The complete FUCQ-320 delta matched `attachments IS EMPTY` and `issueLinkType IS EMPTY` at Jira's exact `2026-11-26T01:29:27.913-0600` update. The normal pull recorded an `acceptance` field difference in `156d726fb`, but left the retained `06:58` cursor unchanged; this does not establish that the acceptance text changed in the delta.
 - **Action/outcome:** The same issue was pulled with the documented `--now 2026-11-26T07:29:27.913Z` after verifying the UTC JQL minute; the cursor advanced to `07:29`. The repeat was idempotent (0 changes, notifications or failures). The report's 72 evidence-download requests for other open Bugs were not fetched.
 - **Cause/proposal:** `wall()` drops the `-0600` offset, then compares `01:29` lexically with the UTC-formatted watermark. Normalize Jira `updated` timestamps to the empirically confirmed JQL timezone before comparing/storing cursors. No helper source or tests changed in this pass.
