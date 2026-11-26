@@ -13551,7 +13551,7 @@
       "status": "In Progress",
       "type": "Bug",
       "branch": "dev/DEV-2026-11-22-vesper-020",
-      "observed_at": "2026-11-26T07:09:14Z",
+      "observed_at": "2026-11-26T07:36:31Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-544",
       "workers": [
         {
@@ -13559,8 +13559,8 @@
           "harness": "codex",
           "role": "story-lead",
           "observed_at": "2026-11-26T06:59:22.429522+00:00",
-          "expires_at": "2026-11-26T08:59:22.429522+00:00",
-          "status": "active",
+          "expires_at": "2026-11-26T07:36:31.163600+00:00",
+          "status": "complete",
           "source": "claimed a9acfddc9; native 2026-11-26T06:57:49.258Z"
         },
         {
@@ -13568,7 +13568,7 @@
           "harness": "codex",
           "role": "mechanic",
           "observed_at": "2026-11-26T06:59:22.429522+00:00",
-          "expires_at": "2026-11-26T07:09:14.301722+00:00",
+          "expires_at": "2026-11-26T07:36:31.163600+00:00",
           "status": "complete",
           "source": "Title/thread01a216a7-7a92-7533-883b-387c07c00b55; two-module syntaxpass; lead corrected allocated state/API prefix before browserproof."
         },
@@ -13577,25 +13577,25 @@
           "harness": "codex",
           "role": "runner",
           "observed_at": "2026-11-26T07:07:35Z",
-          "expires_at": "2026-11-26T08:09:14.301722+00:00",
-          "status": "active",
+          "expires_at": "2026-11-26T07:36:31.163600+00:00",
+          "status": "complete",
           "source": "Requested/selected gpt-6-luna/high; focused units and registered f555 at unchanged executable/testcommit6e484e4e7."
         }
       ],
       "slices": [
         {
           "id": "evidence",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Terminal-refusal-regression",
-          "observed_at": "2026-11-26T06:59:22Z",
-          "evidence": "Current product guards already present; extending registered f555 refused state only."
+          "observed_at": "2026-11-26T07:36:31Z",
+          "evidence": "Lead full diff and six rendered captures reviewed;165 direct tests and6 registered f555 tests passed. Exact identities and setup failures in docs/gcsp/evidence/fucq544/terminal-deadline-2026-11-26.md."
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Final-composition-proof-and-reconciliation",
-          "observed_at": "2026-11-26T07:09:14Z",
-          "evidence": "Lead reviewed final test/helper diff and reran syntax; Hubie is executing focused unit and registered real-composition proof."
+          "observed_at": "2026-11-26T07:36:31Z",
+          "evidence": "Real refused receipt/current signed refresh/literal API restart at 1280/390 all show zero active timing; accepted/allocated/handoff-failed identity preserved, one ordering POST, old JVM absent/new ready, owned cleanup verified. Refreshed to 660770092 with unchanged F544 paths; root 165 rerun passes; shared batch remains dispatcher-owned."
         }
       ],
       "unsliced": false

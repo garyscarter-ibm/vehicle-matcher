@@ -1,0 +1,72 @@
+{
+  "story": "FUCQ-544",
+  "observed_at": "2026-11-26T07:36:31.163600+00:00",
+  "changed_executable_paths": [
+    "apps/gcsp-web/e2e/offer-parity.test.mjs",
+    "apps/gcsp-web/e2e/composition.mjs"
+  ],
+  "regression": "Terminal accepted/refused offer has no active deadline through current signed refresh and API restart at desktop/narrow widths.",
+  "callers": "restartApi: existing f555-pending plus newly allowed f555-rejected; no product API or schema change.",
+  "integration_edges": [
+    "real OIDC/JWKS",
+    "native PostgreSQL17",
+    "Java offer/ordering projection",
+    "owned headless Chromium159",
+    "frozen Node e44ed08 source comparison in unchanged pending case"
+  ],
+  "selected_commands": [
+    "npx ng test --watch=false --include src/app/offers/offer-screen.component.spec.ts --include src/app/offers/offer-view-model.spec.ts",
+    "npm --prefix apps/gcsp-web run test:e2e -- --case f555"
+  ],
+  "results": {
+    "units": 165,
+    "browser": 6,
+    "failures": 0,
+    "skipped": 0
+  },
+  "source_test_commit": "6e484e4e7",
+  "tested_head": "6518669087d475096ff67487fc6b846a72a56d04",
+  "tested_tree": "634d13eb0c093d0de565884979e3c76a02c1f509",
+  "tested_base": "a9acfddc93db495fcd086f73ff65a78ca6d402a5",
+  "refreshed_head": "cd297ae3a12c68680a590cd6e12a633b003c6433",
+  "integration": "660770092",
+  "refreshed_F544_path_delta": [],
+  "per_test_contexts": "No measured per-test coverage contexts exposed by these Angular/browser runners; reviewed caller/fixture boundaries and actual per-test execution are retained.",
+  "full_suites": "Deferred to dispatcher batch; no full Java run for JS-test-only delta.",
+  "evidence": "docs/gcsp/evidence/fucq544/terminal-deadline-2026-11-26.md",
+  "captures": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f544-20261126/browser-attempt3/f555-rejected/refused-stages-1280.png",
+      "bytes": 106018,
+      "sha256": "ef52e064c62c47026bf6e35e212faad2e4fd2b66b371f357d9be035c1947bb8b"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f544-20261126/browser-attempt3/f555-rejected/refused-stages-390.png",
+      "bytes": 103034,
+      "sha256": "b2d2811acebba14b8c87dd88b42a1c74cc19a05bd33a78e17c3c7d42fe2d222d"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f544-20261126/browser-attempt3/f555-rejected/refused-current-1280.png",
+      "bytes": 104978,
+      "sha256": "14f2b1369ca4aea61473908d95e7eb3d0435a27cbff555b71f1d2c87c957b823"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f544-20261126/browser-attempt3/f555-rejected/refused-current-390.png",
+      "bytes": 102018,
+      "sha256": "ad4ba3c04360b990f0dc04445f54ac2b067af46fbcf2a9332ad11a1cb168e4e0"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f544-20261126/browser-attempt3/f555-rejected/refused-restart-1280.png",
+      "bytes": 104978,
+      "sha256": "14f2b1369ca4aea61473908d95e7eb3d0435a27cbff555b71f1d2c87c957b823"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f544-20261126/browser-attempt3/f555-rejected/refused-restart-390.png",
+      "bytes": 102021,
+      "sha256": "54f6accda55ab4c6a16e3644ba5806713b8d40b38a226b00255a63ebc29077bd"
+    }
+  ],
+  "root_unit_targeted_head": "cd297ae3a12c68680a590cd6e12a633b003c6433",
+  "root_unit_targeted_tree": "b7d0abf3711100aab2f8e89c98b39de8383b138c",
+  "root_unit_log": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-22-vesper-020/.claude/poller/velko-f544-20261126/root-targeted/logs/20261126-073312-dunkfcu0/chunk-0001.log"
+}
