@@ -13128,28 +13128,28 @@
         "shared-experience"
       ],
       "note": "Local F553 delivery plan only; no current native tracker observation was supplied. Original five acceptance criteria and 13 points retained; human pending/failed1280 pairs and shared batch remain required.",
-      "observed_at": "2026-11-25T22:29:45Z",
+      "observed_at": "2026-11-26T00:08:47Z",
       "slices": [
         {
           "id": "notices-and-choices-facts",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Restore offer/car-taken notices and read-only employee/driver/licence facts (3 points)",
-          "observed_at": "2026-11-25T22:29:45Z",
-          "evidence": "Actual signed-OIDC/nativePG producers2/2; child focused choices19/19; parent rerun and composition pending."
+          "observed_at": "2026-11-26T00:08:47Z",
+          "evidence": "Prepared source315494b3b: actual signed-OIDC/nativePG producers2/2 and registered browser groups prove originalAC1/3; focused Angular and rendered reviews passed. Delivery boundary and remainingAC4/5 in DEV-2026-11-22-vesper-034 Result; refreshed-source validation assigned dispatcher."
         },
         {
           "id": "VehicleCard-source-parity",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Port frozen explicit matchCard structure and eligibility (3 points)",
-          "observed_at": "2026-11-25T22:29:45Z",
-          "evidence": "Child source-card12/12; parent covering rerun and same-state visual review pending."
+          "observed_at": "2026-11-26T00:08:47Z",
+          "evidence": "Prepared source315494b3b: frozen explicit matchCard port, eligibility/component regressions and actual rendered1280/375 critique; final stock183/183 and registered source-card group passed. OriginalAC2 delivery recorded in DEV-2026-11-22-vesper-034 Result; humanAC5 remains blank."
         },
         {
           "id": "gallery-claim-held-review-and-integration",
           "status": "in-progress",
           "title": "Restore reservation status/retry and confirmed held review; connected and human parity evidence (7 points)",
-          "observed_at": "2026-11-25T22:29:45Z",
-          "evidence": "Controller scoped25/26 pass (all12new reservation cases); remaining existing gallery caption expectation reconciled with incoming F559 table. Connected/human parity pending."
+          "observed_at": "2026-11-26T00:08:47Z",
+          "evidence": "Registered actual Angular/Java/nativePG+frozenNode315494b3b7/7green; held handover and GET-only status proven. OriginalAC4 still differs after uncertain→durableclaim-failed (frozen retry-available/current matching-GET release+refresh); originalAC5 human1280pending/failed verdicts blank. Remains F553work; dispatcher final integrated checks/batches pending."
         }
       ],
       "unsliced": false
