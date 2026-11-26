@@ -7,8 +7,11 @@ import json
 import os
 from pathlib import Path
 import re
+import shutil
+import stat
 import subprocess
 import sys
+import tempfile
 import time
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -23,6 +26,172 @@ REFERENCE = 'e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38'
 RAM = 3584 * resources.MIB
 WORKING_DISK = 4 * resources.GIB  # Shared installs/cache plus the runner's independently bounded 2 GiB scratch.
 COUNTS = ('tests', 'suites', 'pass', 'fail', 'cancelled', 'skipped', 'todo')
+
+
+def local_path(value):
+    """Reject synced paths and link targets before inspecting them."""
+    path = Path(value)
+    if not path.is_absolute() or re.search('OneDrive|CloudStorage', str(path), re.I):
+        raise ValueError('Browser temp paths must be absolute and outside synced folders')
+    pending, resolved, links = list(path.parts[1:]), Path('/'), 0
+    while pending:
+        resolved /= pending.pop(0)
+        try:
+            item = resolved.lstat()
+        except FileNotFoundError:
+            return resolved.joinpath(*pending)
+        if stat.S_ISLNK(item.st_mode):
+            links += 1
+            target = Path(os.path.abspath(resolved.parent / os.readlink(resolved)))
+            if links > 32 or re.search('OneDrive|CloudStorage', str(target), re.I):
+                raise ValueError('Browser temp path link is forbidden')
+            pending, resolved = list(target.parts[1:]) + pending, Path('/')
+    return resolved
+
+
+def native_temp_base(env):
+    # tempfile may probe candidates: reject all supplied candidates before asking it.
+    for key in ('TMPDIR', 'TMP', 'TEMP'):
+        if candidate := env.get(key):
+            local_path(candidate)
+    return local_path(tempfile.gettempdir())
+
+
+def browser_root_stat(root):
+    try:
+        return root.lstat()
+    except FileNotFoundError:
+        return None
+
+
+class BrowserTemps:
+    """Account and recover only this batch's separately journalled Linux browser roots."""
+    def __init__(self, output, source, base, outer):
+        self.output, self.source = Path(output), source
+        self.base, self.outer = local_path(base), Path(outer)
+        self.peaks = {}
+
+    def records(self, family=None):
+        for folder in ([Path(family)] if family else sorted(self.output.glob('f*'))):
+            for manifest in sorted(folder.glob('**/browser-temp-ownership/*.json')):
+                if local_path(manifest) != manifest:
+                    raise ValueError('Browser ownership manifest path changed')
+                yield folder, manifest, resources.read_json(manifest, {})
+
+    def validate(self, family, manifest, record):
+        token = record.get('token', '')
+        root = Path(record.get('root', ''))
+        scratch = Path(record.get('scratch', ''))
+        owner = record.get('owner_pid')
+        if (record.get('schema') != 'gcsp-browser-temp/1' or not isinstance(token, str)
+                or not re.fullmatch('[0-9a-f]{32}', token) or manifest.name != token + '.json'
+                or record.get('source_revision') != self.source or not record.get('run_id')
+                or type(owner) is not int or owner <= 0
+                or record.get('state') not in ('planned', 'active', 'cleanup-pending', 'removed')
+                or record.get('base') != str(self.base) or root.parent != self.base
+                or root.name != 'gcsp-b-' + token or not root.is_absolute()
+                or re.search('OneDrive|CloudStorage', str(root), re.I)
+                or self.outer not in scratch.parents or scratch.parent != self.outer):
+            raise ValueError('Invalid browser temp ownership metadata')
+        registered = False
+        for inner_manifest in (family / 'ownership').glob('*.json'):
+            if local_path(inner_manifest) != inner_manifest:
+                raise ValueError('Inner ownership manifest path changed')
+            inner = resources.read_json(inner_manifest, {})
+            if (inner.get('version') == 1 and inner.get('root') == str(scratch)
+                    and scratch.name == 'test-stamp-shard-' + str(inner.get('token'))):
+                registered = True
+        if not registered:
+            raise ValueError('Browser temp scratch is not registered to this family')
+        if local_path(self.base) != self.base:
+            raise ValueError('Native browser temp base path changed')
+        return root
+
+    def identity(self, root, record):
+        item = browser_root_stat(root)
+        if item is not None and (not stat.S_ISDIR(item.st_mode)
+                or (item.st_dev, item.st_ino) != (record.get('device'), record.get('inode'))):
+            raise ValueError('Browser temp root identity changed or is unowned')
+        return item
+
+    def sample(self):
+        used = 0
+        for family, manifest, record in self.records():
+            root = self.validate(family, manifest, record)
+            # Publication precedes mkdir; the child publishes inode/device immediately afterwards.
+            if record['state'] == 'planned':
+                continue
+            item = self.identity(root, record)
+            if record['state'] == 'removed' and item is not None:
+                raise ValueError('Removed browser temp root is still present')
+            amount = resources.allocated_bytes(root) if item is not None else 0
+            self.peaks[str(manifest)] = max(self.peaks.get(str(manifest), 0), amount, record.get('peak_bytes', 0))
+            used += amount
+        return used
+
+    @contextlib.contextmanager
+    def account(self, scratch):
+        original = scratch.sample
+
+        def sample():
+            amount = original() + self.sample()
+            scratch.record['peak'] = max(scratch.record['peak'], amount)
+            return amount
+
+        scratch.sample = sample
+        try:
+            yield
+        finally:
+            scratch.sample = original
+
+    def finalize(self, family=None):
+        result = {'complete': True, 'allocations': [], 'leftovers': []}
+        try:
+            records = list(self.records(family))
+        except (OSError, ValueError) as error:
+            result.update(complete=False, leftovers=[{'manifest': str(family or self.output), 'reason': str(error)}])
+            return result
+        for folder, manifest, record in records:
+            row = {'manifest': str(manifest), 'root': record.get('root'), 'cleanup': 'unverified'}
+            result['allocations'].append(row)
+            try:
+                root = self.validate(folder, manifest, record)
+                item = self.identity(root, record)
+                peak = max(self.peaks.get(str(manifest), 0), record.get('peak_bytes', 0))
+                if item is not None:
+                    peak = max(peak, resources.allocated_bytes(root))
+                    if resources.process_alive({'pid': record['owner_pid']}):
+                        raise ValueError('Browser temp owner is still live or unverified')
+                    cleanup = resources.read_json(folder / 'process-cleanup.json', {})
+                    if cleanup.get('remaining') != []:
+                        raise ValueError('Browser child process cleanup is unverified')
+                    if record['state'] == 'removed':
+                        raise ValueError('Removed browser temp root is still present')
+                    # A launch can fail before Playwright returns a journalled browser handle.
+                    # Match the existing abandoned-scratch contract: uncertain users preserve it.
+                    record.update(state='cleanup-pending', peak_bytes=peak)
+                    resources.atomic_json(manifest, record)
+                    try:
+                        opened = subprocess.run([shutil.which('lsof') or '/usr/sbin/lsof', '-t', '+D', str(root)],
+                                                capture_output=True, timeout=5)
+                    except (OSError, subprocess.TimeoutExpired) as error:
+                        raise ValueError('Browser temp open-file status is unverified') from error
+                    if opened.returncode != 1 or opened.stdout or opened.stderr:
+                        raise ValueError('Browser temp has open files or uncertain status')
+                    self.identity(root, record)
+                    shutil.rmtree(root)
+                    if os.path.lexists(root):
+                        raise ValueError('Browser temp root cleanup incomplete')
+                    row['cleanup'] = 'recovered'
+                else:
+                    row['cleanup'] = 'removed' if record['state'] == 'removed' else 'already-absent'
+                row['peak_bytes'] = peak
+                record.update(state='removed', peak_bytes=peak)
+                resources.atomic_json(manifest, record)
+            except (OSError, ValueError, TypeError) as error:
+                result['complete'] = False
+                result['leftovers'].append({**row, 'reason': str(error)})
+        return result
 
 
 def registration():
@@ -59,6 +228,7 @@ def finish_summary(summary):
     summary['counts'] = {name: sum(row['counts'].get(name, 0) for row in summary['families']) for name in COUNTS}
     summary['green'] = (not summary['failure'] and summary['complete']
                         and all(row['green'] for row in summary['families'])
+                        and summary['cleanup'].get('browser_temps', {'complete': True})['complete']
                         and summary['cleanup']['scratch_absent'])
 
 
@@ -96,16 +266,18 @@ def family_result(output, family, source):
 
 
 @contextlib.contextmanager
-def owned_stack(scratch, env, summary, output):
+def owned_stack(scratch, env, summary, output, browser_temps):
     scratch.__enter__()
     env.update(scratch.env(env))
     env['GCSP_TEST_STACK_DIR'] = str(scratch.root / 'stack')
     try:
-        yield
+        with browser_temps.account(scratch):
+            yield
     finally:
         # Stop the owned native cluster before removing its data, including on setup failure.
         # A refused/failed stop preserves scratch and its external manifest for investigation.
         cleanup = summary['cleanup']
+        cleanup['browser_temps'] = browser_temps.finalize()
         cleanup['inner_scratch_manifests_removed'] = all(
             resources.read_json(path, {}).get('state') == 'removed'
             for path in output.glob('f*/ownership/*.json'))
@@ -121,6 +293,9 @@ def owned_stack(scratch, env, summary, output):
                 cleanup['postgres'].get('stopped') is True or cleanup['postgres'].get('reason') == 'not running'):
             resources.atomic_json(output / 'batch-receipt.json', summary)
             raise RuntimeError('Native PostgreSQL cleanup unverified; owned scratch preserved')
+        if not cleanup['browser_temps']['complete']:
+            resources.atomic_json(output / 'batch-receipt.json', summary)
+            raise RuntimeError('Browser temp cleanup unverified; named roots preserved')
         scratch.__exit__(None, None, None)
 
 
@@ -156,15 +331,18 @@ def main(argv=None):
                'covering_disposition': ('selected-family evidence only; full 18-family batch remains separate; '
                                         if coverage == 'registered-subset' else 'pending-root-batch-reconciliation; ')
                                        + 'skipped tests remain skipped'}
+    native_base = native_temp_base(os.environ)
     policy = resources.Policy({'output_root': str(output), 'chunk_ram_mib': 3584, 'chunk_scratch_mib': 4096,
                                'local_scratch_reason': 'Ephemeral CI working data; no OneDrive access', 'log_mib': 2})
     scratch = resources.Scratch(output, ROOT, policy, expected=WORKING_DISK)
+    browser_temps = BrowserTemps(output, source, native_base, scratch.root)
     # The external ownership manifest is written before allocation. The context is the supervisor finalizer.
     resources.atomic_json(summary_path, summary)
     env = os.environ.copy()
+    env['GCSP_E2E_NATIVE_TMPDIR'] = str(native_base)
     failure = None
     try:
-        with resources.handled_termination(), owned_stack(scratch, env, summary, output):
+        with resources.handled_termination(), owned_stack(scratch, env, summary, output, browser_temps):
             env.update(GCSP_E2E_PG_MODULE=str(ROOT / 'server/node_modules/pg/lib/index.js'),
                        GCSP_NODE_REFERENCE=str(reference))
             env.pop('GCSP_HEAVY_SLOT', None)
@@ -212,8 +390,10 @@ def main(argv=None):
                                                ROOT, env, output / (family + '-launcher.log'), scratch, policy,
                                                WORKING_DISK, RAM, 690)
                 record = family_result(family_output, family, source)
+                record['browser_temps'] = browser_temps.finalize(family_output)
+                record['complete'] = record['complete'] and record['browser_temps']['complete']
                 record['launcher'] = result
-                record['green'] = record['green'] and result['rc'] == 0 and not result['issue']
+                record['green'] = record['green'] and record['complete'] and result['rc'] == 0 and not result['issue']
                 summary['families'].append(record)
                 resources.atomic_json(summary_path, summary)
                 print(json.dumps({'family': family, 'complete': record['complete'], 'green': record['green'], 'counts': record['counts']}), flush=True)

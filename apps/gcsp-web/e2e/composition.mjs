@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { gunzipSync } from 'node:zlib';
 import { chromium, webkit } from 'playwright-core';
 import { local, localScratch } from './scratch-paths.mjs';
+import { prepareBrowserTemp } from './browser-temp.mjs';
 import { assembleGcspStatic, GCSP_FIXED_ROUTES } from '../../../scripts/build-gcsp-static.mjs';
 import { runtimeConfigFromEnv } from '../../../scripts/gcsp-runtime-config.mjs';
 import { apiJvmArgs } from '../../../scripts/gcsp/proof-jvm.mjs';
@@ -123,6 +124,8 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
   let server;
   let browser;
   let browserServer;
+  let browserTemp;
+  let browserLaunchAttempted = false;
   const imageObservers = new Map();
   let closed = false;
   const claimToken = randomUUID();
@@ -219,13 +222,25 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
     closed = true;
     const errors = [];
     let apiStopped = false;
+    let browserStopped = !browserLaunchAttempted;
     for (const action of [async () => {
       if (appointmentHost && api?.ownsGroup) {
         writeFileSync(appointmentHost.stop, '{}');
         await Promise.race([api.joined, delay(5000)]);
       }
     }, () => browser?.close(), () => Promise.all([...imageObservers.values()].map((observer) => observer.stop())),
-      () => browserServer?.close(), async () => { await stop(api); apiStopped = true; }, () => server && new Promise((resolve) => {
+      async () => {
+        if (!browserServer) return;
+        const child = browserServer.process();
+        const joined = child.exitCode !== null || child.signalCode ? Promise.resolve() : new Promise((resolve) => child.once('exit', resolve));
+        await browserServer.close();
+        await joined;
+        browserStopped = child.exitCode !== null || Boolean(child.signalCode);
+      }, async () => {
+        if (!browserTemp) return;
+        await browserTemp.close({ browserStopped });
+        receipt.browserTemp = { manifest: browserTemp.manifest, ...browserTemp.snapshot() };
+      }, async () => { await stop(api); apiStopped = true; }, () => server && new Promise((resolve) => {
       server.closeAllConnections?.(); server.close(resolve);
     })]) {
       try { await action(); } catch (error) { errors.push(error.message); }
@@ -503,9 +518,12 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
     const executablePath = process.env.GCSP_E2E_BROWSER_PATH;
     const hostRules = caseId === 'f561' && type === chromium ? [`--host-resolver-rules=MAP ${webHost} 127.0.0.1`] : [];
     if (hostRules.length) receipt.browsers.hostResolution = { hostname: webHost, address: '127.0.0.1', scope: 'owned Chromium process' };
-    browserServer = await type.launchServer({ headless: true, ...(executablePath ? { executablePath: local(executablePath) } : {}),
+    browserTemp = await prepareBrowserTemp({ scratch, output });
+    receipt.browserTemp = { manifest: browserTemp.manifest, ...browserTemp.snapshot() };
+    browserLaunchAttempted = true;
+    browserServer = await type.launchServer(browserTemp.launchOptions({ headless: true, ...(executablePath ? { executablePath: local(executablePath) } : {}),
       ...(hostRules.length ? { args: hostRules } : {}),
-      downloadsPath: path.join(dirs.tmp, 'downloads'), timeout: 30000 });
+      downloadsPath: path.join(dirs.tmp, 'downloads'), timeout: 30000 }));
     recordProcess('browser', browserServer.process());
     browser = await type.connect(browserServer.wsEndpoint());
     receipt.browsers.actual = browser.version();
