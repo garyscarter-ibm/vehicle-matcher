@@ -6,12 +6,13 @@ topic: technical
 story: DEV-2026-11-22-vesper-021
 chain: DEV-2026-11-22-vesper-021
 depth: 0
-status: answered
+status: closed
 opened: 2026-11-26
 counter_questions_used: 0
 acks: usget-velko 2026-11-26T10:39
 spawned: none
 subject: FUCQ-546 checkpoint c5da6159d: exact production paths (AC1 committed, AC2 building)
+closed: 2026-11-26
 
 ## Turn 1
 from: garyscarter-ibm-berengar
