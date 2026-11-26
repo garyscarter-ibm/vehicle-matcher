@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.5.0+vehicle-matcher.1"  # Project-owned UI-plan fix; see docs/gcsp/poller-tooling-2026-11-05.md.
+VERSION = "1.5.0+vehicle-matcher.2"  # Project-owned UI-plan fix; see docs/gcsp/poller-tooling-2026-11-05.md.
 __doc__ = """jira_sync.py -- the story sync between a Jira-backed project's Jira issues and its dev inbox. Vendored into a
 project's `_tools/` by project-scaffolding, beside scaffold_git.py and dev_mail.py, which it loads by path (sys.path is
 never touched): `inbox.git_tool` in .claude/scaffolding.json names the first (default _tools/scaffold_git.py).
@@ -1232,6 +1232,7 @@ class Push:
         self.project = rec["project"]
         self.team = sg.team_block(root)
         self.stories = {}                     # id -> {id, where, path, text, fields}
+        self._claim_dates = self._dev_branches = None   # read once per run, on first use
 
     # --- reading git
     def scan(self):
@@ -1277,11 +1278,15 @@ class Push:
         return out
 
     def branch_exists(self, sid):
-        sg = self.sg
-        for ref in ("refs/heads/dev/" + sid, "refs/remotes/%s/dev/%s" % (sg.remote_name(self.root), sid)):
-            if sg.git(self.root, ["show-ref", "--verify", "--quiet", ref])[0] == 0:
-                return True
-        return False
+        """Whether a local or remote-tracking dev/<sid> branch exists. One ref listing per run, not two git calls per
+        story: per-story calls made a push on a 540-story repo take over a minute, and pollers stopped it as hung."""
+        if self._dev_branches is None:
+            prefixes = ("refs/heads/dev/", "refs/remotes/%s/dev/" % self.sg.remote_name(self.root))
+            rc, out, err = self.sg.git(self.root, ["for-each-ref", "--format=%(refname)"] + list(prefixes))
+            if rc != 0:
+                raise Failed("listing dev branches failed: %s" % (err or out).strip()[:300])
+            self._dev_branches = {ref[len(p):] for ref in out.splitlines() for p in prefixes if ref.startswith(p)}
+        return sid in self._dev_branches
 
     # --- what a story is
     def is_partial(self, s):
@@ -1306,15 +1311,30 @@ class Push:
         v = (s["fields"].get("epic") or "").strip()
         return v if re.match(r"^%s-\d+$" % re.escape(self.project), v) else None
 
+    def claim_dates(self):
+        """{story id: the earliest date its _dev/in-progress/<id>.md was added on any ref}. One history read per run,
+        not one full `git log --all` per story (see branch_exists for why)."""
+        if self._claim_dates is None:
+            rc, out, err = self.sg.git(self.root, ["log", "--all", "--no-renames", "--diff-filter=A", "--format=@%cs",
+                                                   "--name-only", "--", "_dev/in-progress/"])
+            if rc != 0:
+                raise Failed("reading claim history failed: %s" % (err or out).strip()[:300])
+            first, date = {}, None
+            for line in out.splitlines():
+                if line.startswith("@") and re.fullmatch(r"\d{4}-\d{2}-\d{2}", line[1:]):
+                    date = line[1:]
+                elif date and line.startswith("_dev/in-progress/") and line.endswith(".md"):
+                    sid = line[len("_dev/in-progress/"):-3]
+                    if "/" not in sid and (sid not in first or date < first[sid]):
+                        first[sid] = date
+            self._claim_dates = first
+        return self._claim_dates
+
     def adoption_date(self, s, lease):
         """First committed claim date, then lease date; legacy claim evidence falls back to this sync's local day."""
-        path = "_dev/in-progress/" + s["id"] + ".md"
-        rc, out, err = self.sg.git(self.root, ["log", "--all", "--no-renames", "--diff-filter=A", "--format=%cs", "--", path])
-        if rc != 0:
-            raise Failed("reading claim history failed: %s" % (err or out).strip()[:300])
-        dates = [line for line in out.splitlines() if re.fullmatch(r"\d{4}-\d{2}-\d{2}", line)]
-        if dates:
-            return min(dates)
+        first = self.claim_dates()
+        if s["id"] in first:
+            return first[s["id"]]
         taken = self.sg.parse_iso((lease or {}).get("taken"))
         if taken is not None:
             return datetime.datetime.fromtimestamp(taken).date().isoformat()
