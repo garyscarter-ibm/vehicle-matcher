@@ -15,7 +15,7 @@ async function until(check, label, timeout = 15000) {
 const button = (page, name) => page.getByRole('button', { name, exact: true });
 const claimCommand = claim => ({ holdId: claim.hold.holdId, expectedHoldVersion: claim.hold.version,
   expectedDraftVersion: claim.quote.draftVersion });
-const releasePaths = ['/manual/claim', '/manual/claim/review', '/manual/claim/release', '/manual/order'];
+const releasePaths = ['/manual/claim', '/manual/claim/review', '/manual/claim/release', '/manual/order', '/manual/review-details'];
 function observeWrites(page) {
   const writes = [];
   page.on('request', request => {

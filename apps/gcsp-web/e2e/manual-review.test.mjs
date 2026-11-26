@@ -127,7 +127,7 @@ test('FUCQ-520: the actual manual review shows the pinned car name and photo at 
     const manualWrites = [];
     employee.on('request', request => {
       const path = new URL(request.url()).pathname;
-      if (request.method() === 'POST' && ['/manual/claim', '/manual/claim/review', '/manual/claim/release', '/manual/order'].some(suffix => path.endsWith(suffix))) manualWrites.push(path);
+      if (request.method() === 'POST' && ['/manual/claim', '/manual/claim/review', '/manual/claim/release', '/manual/order', '/manual/review-details'].some(suffix => path.endsWith(suffix))) manualWrites.push(path);
     });
     const claimed = employee.waitForResponse((row) => row.request().method() === 'POST' && new URL(row.url()).pathname.endsWith('/manual/claim'));
     await card.locator('[data-review-id]').click();
