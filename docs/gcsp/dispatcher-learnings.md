@@ -4026,12 +4026,12 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 - **Framework follow-up:** Preserve the existing proposal to distinguish absent fields from explicit empty lists. This pass does not verify that guard or prove the current native link state.
 
 
-### 2026-11-26 03:37 UTC · usget-velko · DL-20261126-VELKO-15 · Attachment capture corrected; staging uncertainty retained
+### 2026-11-26 03:33 UTC · usget-velko · DL-20261126-VELKO-15 · Attachment capture corrected; staging uncertainty retained
 
 - F554 phase-one upload commands exited 0 twice, but the inline wrapper discarded raw stdout before extracting the file ID. No phase-two attach was called. The exact lost responses cannot be reconstructed; both original staging outcomes remain unknown. Native `key = FUCQ-554 AND attachments IS EMPTY` matched before a corrected bounded retry.
 - Root retained upload stdout in memory before parsing, supplied signed curl configuration on stdin, persisted each returned file ID before phase two, then attached all four final review/summary 1280 pairs: 1647842–1647845. The native result comment/readback remain in progress. State: `.claude/poller/velko-f554-20261126/f554-jira-publication-state.json`. This verifies attachment operations, not human parity acceptance or cleanup of the unknown staged uploads.
 - Framework improvement proposed: preserve a bounded safe operation receipt before parsing a wrapped command result; retain uncertain outcomes across recovery. No helper patch or new delivery gate added.
 
-### 2026-11-26 03:37 UTC · usget-velko · DL-20261126-VELKO-16 · Product-map observation time preserved
+### 2026-11-26 03:33 UTC · usget-velko · DL-20261126-VELKO-16 · Product-map observation time preserved
 
 - The normal map importer stamps import time and ignores the retained native observation field. For F596, root invoked its normal CLI with an in-memory clock fixed to the actual 03:09:51Z native readback, then recorded explicit unsliced development and the verified demo-control association. All 357 existing story rows/order and other component facts were checked unchanged. No active worker or acceptance inferred. A generic source-observation parameter is proposed; no helper change made.
