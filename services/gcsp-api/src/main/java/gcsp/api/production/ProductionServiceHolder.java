@@ -1,6 +1,7 @@
 package gcsp.api.production;
 
 import gcsp.api.persistence.Persistence;
+import gcsp.api.supply.ReleasePolicy;
 import gcsp.api.supply.SupplyRelease;
 import io.agroal.api.AgroalDataSource;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -30,6 +31,9 @@ public class ProductionServiceHolder {
     @Inject
     SupplyRelease supply;
 
+    @Inject
+    ReleasePolicy releasePolicy;
+
     private ProductionProviderPort provider;
     private ProductionService service;
 
@@ -52,7 +56,7 @@ public class ProductionServiceHolder {
         if (!persistence.active()) return Optional.empty();
         if (service == null) {
             AgroalDataSource ds = dataSource.get();
-            service = new ProductionService(ds, provider(), plans, clock, new StockReleaseSupplyQueue(supply.release()));
+            service = new ProductionService(ds, provider(), plans, clock, new StockReleaseSupplyQueue(supply.release()), releasePolicy);
         }
         return Optional.of(service);
     }

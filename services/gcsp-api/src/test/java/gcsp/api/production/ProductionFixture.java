@@ -146,7 +146,8 @@ final class ProductionFixture implements AutoCloseable {
     }
 
     ProductionService service(PGSimpleDataSource pool, ProductionProviderPort p) {
-        return new ProductionService(pool, p, plan, new TickProductionClock(pool), queue);
+        return new ProductionService(pool, p, plan, new TickProductionClock(pool), queue,
+                (runId, asOf) -> new PolicyReading.Ok("gcsp-policy-v1", 10, 3, 60));
     }
 
     /** Moves the demo clock forward by delivering a later tick. */
