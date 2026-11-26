@@ -361,3 +361,6 @@ Agent inspection observes existing shell/navigation insets, queue/table labels, 
 | --- | --- | --- | --- | --- | --- | --- |
 | Renewal cases — F557 AC5 | Same three actual cases; Paula in progress,1280×800 | `node-case-queue-charging-1280.png` / `angular-case-queue-charging-1280.png`, retained root above | | | | |
 | Employee Help — F557 AC5 | Same Paula case and next action,1280×800 | `node-help-current-1280.png` / `angular-help-current-1280.png`, retained root above | | | | |
+
+
+Native F557 publication verified on 26 November 2026 at05:01:41 UTC: queue Angular1647886(375085B), Node1647891(306025B); Help Angular1647889(73520B), Node1647890(66676B), all image/png. Existing Result comment5068813 records functionalAC1–4, partial status and coveringbatchpending. All human verdict/reviewer/date/source cells above remain blank. One earlier Node-queue phase-one response was discarded; its staging outcome remains unknown. Root recovered publication through fresh verified HTTP201 uploads, preserving each response before parsing and attaching each known ID once; no orphan removal is claimed.
