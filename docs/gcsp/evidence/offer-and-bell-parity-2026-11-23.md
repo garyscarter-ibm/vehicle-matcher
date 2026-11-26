@@ -287,9 +287,9 @@ Native status, description, six intended issue attachments and comment `5068522`
 
 ## F553 — stock reservation pending and failed — original AC5 — 26 November
 
-Prepared-source engineering evidence only: registered `f553` ran all seven checks at `315494b3b77044255cf1683888aa26c053598a2c` against actual Angular/Java/PostgreSQL and frozen Node `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`, with signed test OIDC and controlled remote acknowledgements. Each engine prepares the same exact car and pending-then-terminal-failed custody states through its actual claim services; the suite asserts exact selected-car equality before capture. The full-page screenshots below use a 1280×800 viewport. They are retained local evidence; this continuation has not published Jira attachments or recorded human approval.
+Final refreshed-source engineering evidence only: registered `f553` ran all seven checks at `0725938484ed7647e74ad8ac6d9dba187c747e2c` against actual Angular/Java/PostgreSQL and frozen Node `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`, with signed test OIDC and controlled remote acknowledgements. Each engine prepares the same exact car and pending-then-terminal-failed custody states through its actual claim services; the suite asserts exact selected-car equality before capture. The full-page screenshots below use a 1280×800 viewport. They are retained local evidence; this continuation has not published Jira attachments or recorded human approval.
 
-Retained root: `/Users/usget/Claude/vehicle-matcher/.claude/poller/f553/hugo/browser-315494b3b-chromium159/f553/`. The parent `run-receipt.json` and this directory's `browser-receipt.json` record the tested source, real readbacks and capture paths.
+Retained root: `/Users/usget/Claude/vehicle-matcher/.claude/poller/velko-f553-20261126/browser-072593848-chromium159/f553/`. The parent `run-receipt.json` and this directory's `browser-receipt.json` record the tested source, real readbacks and capture paths.
 
 | State | Frozen Node capture | Angular / Java capture |
 | --- | --- | --- |
