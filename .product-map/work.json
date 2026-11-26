@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-26T05:56:47Z",
+  "observed_at": "2026-11-26T09:50:32Z",
   "version": 1,
   "stories": [
     {
@@ -11270,7 +11270,7 @@
       "assignee": "",
       "branch": "dev/DEV-2026-11-23-001",
       "id": "FUCQ-565",
-      "observed_at": "2026-11-23T16:17:14Z",
+      "observed_at": "2026-11-26T09:27:32Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -11296,8 +11296,10 @@
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Merged registered browser and covering batch proof"
+          "status": "in-progress",
+          "title": "Merged registered browser and covering batch proof",
+          "observed_at": "2026-11-26T09:26:13Z",
+          "evidence": "Later actual registered f555 source 6518669087 passed 6/6, including Main 1100/800/300 at 1280/390 and literal JVM restart on unchanged repair product files. Current canonical Java/final integrated 18-family browser batch and human parity remain root-owned pending."
         }
       ],
       "status": "In Progress",
@@ -11314,6 +11316,24 @@
           "role": "story-lead",
           "source": "lead final321 checks/review passed; root original integrated acceptance pending",
           "status": "handoff-ready"
+        },
+        {
+          "name": "Pugh",
+          "harness": "codex",
+          "role": "story-lead: retained evidence reconciliation",
+          "status": "completed",
+          "observed_at": "2026-11-26T09:26:13Z",
+          "expires_at": "2026-11-26T09:26:13Z",
+          "source": "Read actual proof source and retained Main surfaces; product-source compatibility verified; no runtime work or product changes"
+        },
+        {
+          "name": "Hippety Hopper",
+          "harness": "codex",
+          "role": "read-only evidence scoper",
+          "status": "completed",
+          "observed_at": "2026-11-26T09:26:13Z",
+          "expires_at": "2026-11-26T09:26:13Z",
+          "source": "Native title verified; executed six-case result/restart/source scope reconciled, no tests/writes"
         }
       ]
     },
@@ -11642,8 +11662,8 @@
       "native_status_observed_at": "2026-11-23T21:32:21.487Z",
       "native_updated_at": "2026-11-23T15:32:10.580-0600",
       "note": "Merged/pushed88778822a, exact one-line configured derivative expectation. Final owning4/4PASS, no skips; independent source/spec/security PASS and root exact owner/group45318/scratch/token/link audit PASS;11protected inputs equal current main. Covering Node/native acceptance pending.",
-      "observed_at": "2026-11-23T22:20:29Z",
-      "original_status": "In Progress",
+      "observed_at": "2026-11-26T09:50:32Z",
+      "original_status": "Done",
       "slices": [
         {
           "evidence": "Final exact4test owning module passes, including raw original source/history, laterlabel/source/audit and all3negative cases unchanged. TestSHA42e222f65c252eb63d4e4e834994c9d4e171378a0f06587f213155b2ba782115; independent review and root cleanup PASS.",
@@ -11664,7 +11684,7 @@
           "title": "Integrated review and covering Node batch"
         }
       ],
-      "status": "In Progress",
+      "status": "Done",
       "title": "Reconcile retained-image regression with configured display gallery",
       "type": "Bug",
       "unsliced": false,
@@ -12030,8 +12050,8 @@
       "id": "FUCQ-588",
       "title": "Notification deadline shows the full date in WebKit instead of HH:MM",
       "type": "Bug",
-      "status": "In Progress",
-      "original_status": "In Progress",
+      "status": "Done",
+      "original_status": "Done",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-588",
       "branch": "dev/DEV-2026-11-23-vesper-017",
       "unsliced": false,
@@ -12070,7 +12090,8 @@
           "evidence": "Actual registered changed-source WebKit c22 RED9pass/3fail, all5 F555flowspass. Rootaudit66b8ddf5 reconciles1834inputs/14seals/cleanup; viewed375row/1280note13:30. Unchanged frozenNode date comparator differs; refresh evaluation context destroyed after GET200. OriginalAC3partial; humanverdicts remainpending."
         }
       ],
-      "observed_at": "2026-11-24T07:42:33Z"
+      "observed_at": "2026-11-26T09:50:32Z",
+      "assignee": "Russell Gowers"
     },
     {
       "id": "FUCQ-547",
@@ -13697,6 +13718,94 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "id": "FUCQ-538",
+      "title": "Port the Node generated-stock provider and its scenario tranche to Java supply",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-538",
+      "branch": "dev/DEV-2026-11-22-vesper-014",
+      "observed_at": "2026-11-26T09:37:39Z",
+      "workers": [
+        {
+          "name": "Pugh",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-26T09:00:43Z",
+          "expires_at": "2026-11-26T09:00:43Z",
+          "source": "Implementation, scoped validation, review and cleanup complete; root owns remaining canonical CI/merge",
+          "status": "completed"
+        },
+        {
+          "name": "Emmet",
+          "harness": "codex",
+          "role": "implementer: pure native generator",
+          "observed_at": "2026-11-26T09:00:01Z",
+          "expires_at": "2026-11-26T09:00:01Z",
+          "source": "Pugh read completed native child result and verified covering tests",
+          "status": "completed"
+        },
+        {
+          "name": "Daffy Duck",
+          "harness": "codex",
+          "role": "implementer: corpus/policy inputs",
+          "observed_at": "2026-11-26T09:00:01Z",
+          "expires_at": "2026-11-26T09:00:01Z",
+          "source": "Pugh read completed native child result and verified covering tests",
+          "status": "completed"
+        },
+        {
+          "name": "Doug the Dog",
+          "harness": "codex",
+          "role": "independent risk reviewer",
+          "observed_at": "2026-11-26T09:00:01Z",
+          "expires_at": "2026-11-26T09:00:01Z",
+          "status": "completed",
+          "source": "Native title verified and complete source plus final query delta PASS; no tests/writes"
+        }
+      ],
+      "slices": [
+        {
+          "id": "contract",
+          "status": "complete",
+          "title": "Source and durable generation contract",
+          "observed_at": "2026-11-26T08:37:51Z",
+          "evidence": "Parent source/data/HLD topology review and actual corpus/input parity checks; docs/gcsp/evidence/fucq538/generated-stock-port-2026-11-26.md"
+        },
+        {
+          "id": "generation",
+          "status": "complete",
+          "title": "Native deterministic generation and retained corpus inputs",
+          "observed_at": "2026-11-26T08:50:47Z",
+          "evidence": "Full500-row/report/inventory independent Node oracle; six variants GREEN on f63b8783a; no acceptance implied"
+        },
+        {
+          "id": "durability",
+          "status": "complete",
+          "title": "Atomic generation, replay and generated pull provider",
+          "observed_at": "2026-11-26T08:50:47Z",
+          "evidence": "Native PG atomic rollback/races/conflicts/stale/refusal/F231 and actual two-JVM restart; durability-green11/11; no acceptance implied"
+        },
+        {
+          "id": "main-integration",
+          "status": "complete",
+          "title": "Main preparation, tick release and allocation integration",
+          "observed_at": "2026-11-26T08:52:35Z",
+          "evidence": "Native signedOIDC Main5/5 and generated next-release clock2/2; refreshed supply/scenario133/133; final callers running, acceptance remains human"
+        },
+        {
+          "id": "validation-review",
+          "status": "in-progress",
+          "title": "Scoped parity, restart, concurrency and covering review",
+          "observed_at": "2026-11-26T09:37:39Z",
+          "evidence": "Scoped293Java+44Node and independent risk review PASS; root canonical CI45788335920 at81eb2eab1:2362executed/0fail-errors/3conditional skips,384validreports,cleanup verified. Current integrated18-family browser batch pending."
+        }
+      ],
+      "unsliced": false,
+      "jira_observed_at": "2026-11-26T08:01:29.625Z"
     },
     {
       "id": "FUCQ-546",
