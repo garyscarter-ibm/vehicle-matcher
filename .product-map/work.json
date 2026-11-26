@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-26T05:56:47Z",
+  "observed_at": "2026-11-26T09:50:32Z",
   "version": 1,
   "stories": [
     {
@@ -11642,8 +11642,8 @@
       "native_status_observed_at": "2026-11-23T21:32:21.487Z",
       "native_updated_at": "2026-11-23T15:32:10.580-0600",
       "note": "Merged/pushed88778822a, exact one-line configured derivative expectation. Final owning4/4PASS, no skips; independent source/spec/security PASS and root exact owner/group45318/scratch/token/link audit PASS;11protected inputs equal current main. Covering Node/native acceptance pending.",
-      "observed_at": "2026-11-23T22:20:29Z",
-      "original_status": "In Progress",
+      "observed_at": "2026-11-26T09:50:32Z",
+      "original_status": "Done",
       "slices": [
         {
           "evidence": "Final exact4test owning module passes, including raw original source/history, laterlabel/source/audit and all3negative cases unchanged. TestSHA42e222f65c252eb63d4e4e834994c9d4e171378a0f06587f213155b2ba782115; independent review and root cleanup PASS.",
@@ -11664,7 +11664,7 @@
           "title": "Integrated review and covering Node batch"
         }
       ],
-      "status": "In Progress",
+      "status": "Done",
       "title": "Reconcile retained-image regression with configured display gallery",
       "type": "Bug",
       "unsliced": false,
@@ -12030,8 +12030,8 @@
       "id": "FUCQ-588",
       "title": "Notification deadline shows the full date in WebKit instead of HH:MM",
       "type": "Bug",
-      "status": "In Progress",
-      "original_status": "In Progress",
+      "status": "Done",
+      "original_status": "Done",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-588",
       "branch": "dev/DEV-2026-11-23-vesper-017",
       "unsliced": false,
@@ -12070,7 +12070,8 @@
           "evidence": "Actual registered changed-source WebKit c22 RED9pass/3fail, all5 F555flowspass. Rootaudit66b8ddf5 reconciles1834inputs/14seals/cleanup; viewed375row/1280note13:30. Unchanged frozenNode date comparator differs; refresh evaluation context destroyed after GET200. OriginalAC3partial; humanverdicts remainpending."
         }
       ],
-      "observed_at": "2026-11-24T07:42:33Z"
+      "observed_at": "2026-11-26T09:50:32Z",
+      "assignee": "Russell Gowers"
     },
     {
       "id": "FUCQ-547",
