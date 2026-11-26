@@ -13479,6 +13479,58 @@
         }
       ],
       "note": "Claimed bounded comparison presentation parity. Existing four-experiment picker retained; process-only artifact byte equality verified, runtime identity/digest pending registered proof. Original human AC4 remains blank. Full shared batch is a development slice. No backend, storage, query, math or workload change."
+    },
+    {
+      "id": "FUCQ-558",
+      "title": "Greg's Angular demand view lost the metric tiles and the Node dashboard layout",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Bug",
+      "observed_at": "2026-11-26T05:22:37Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-558",
+      "native_observed_at": "2026-11-26T04:50:23Z",
+      "jira_observed_at": "2026-11-26T04:50:23Z",
+      "branch": "dev/DEV-2026-11-22-vesper-031",
+      "evidence": "Source0a07ba17b;51focused/340ratchet/drift0; final registered browser5/5, actual Node1280/375pair, independent renderedA/B30/40 detector0. Partial: original humanAC3 and covering shared batch pending; no acceptance inferred.",
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "frontend-port",
+          "status": "complete",
+          "title": "Metric tile and demand/dashboard route port with focused direct-boundary validation",
+          "observed_at": "2026-11-26T05:22:36Z",
+          "evidence": "Lead source review +51focused/340ratchet/drift0; root independently reran51/340 ated5; product unchanged through finalsource0a07ba17b. Final registered real-composition proof5/5 now supports AC1/2. Receipt: .claude/poller/velko-f558-20261126/final-proof3/run-receipt.json"
+        },
+        {
+          "id": "connected-parity",
+          "status": "complete",
+          "title": "Real Java/native PostgreSQL and signed OIDC; same actual release and frozen Node 1280/375 proof",
+          "observed_at": "2026-11-26T05:22:36Z",
+          "evidence": "Finalsource0a07ba17b: registered f558 Chromium5/5 on real Java/nativePG/signedOIDC, actual public release and live frozenNode e44ed08a9 samefacts1280/375. Receipt .claude/poller/velko-f558-20261126/final-proof3/f558/browser-receipt.json. HumanAC3 remains separate/pending."
+        },
+        {
+          "id": "visual-critique",
+          "status": "complete",
+          "title": "Independent rendered assessments A and B and any required in-scope corrections",
+          "observed_at": "2026-11-26T05:22:36Z",
+          "evidence": "Independent unanchoredA ElmerSol/high +B CharlieLuna/high inspected6actual finalcaptures; lead inspected too. Nielsen30/40; detector once exit0/[]; no actionable in-scope correction. .claude/poller/velko-f558-20261126/final-critique.md. Agent precheck is not humanAC3."
+        },
+        {
+          "id": "human-pair",
+          "status": "not-started",
+          "title": "Original AC3 human-reviewed 1280 same-scenario Node/Angular pair",
+          "observed_at": "2026-11-26T05:22:36Z",
+          "evidence": "OriginalAC3 pending root-held human review batch; thread none verified. Actual1280same-scenario pair captured atsource0a07ba17b; reviewer/date/verdict/source remain blank in final-proof3/f558/greg-demand-pairs.json. No human verdict inferred."
+        },
+        {
+          "id": "covering-batch",
+          "status": "not-started",
+          "title": "Covering shared validation batch after merge",
+          "observed_at": "2026-11-26T05:22:37Z",
+          "evidence": "Root owns post-merge covering shared validation batch; no covering batch or acceptance inferred from focused or final registered story check."
+        }
+      ]
     }
   ]
 }

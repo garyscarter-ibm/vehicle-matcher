@@ -48,6 +48,30 @@ describe('Greg demand screen', () => {
     expect(root().querySelectorAll('table caption').length).toBe(7); expect(root().querySelectorAll('th[scope="col"]').length).toBeGreaterThan(10);
     expect(text()).not.toContain('Clock version'); expect(root().querySelectorAll('input')).toHaveLength(0);
   });
+  it('ports the frozen headline, grouped tables, lower grid and standard offer tiles', () => {
+    expect(Array.from(root().querySelectorAll('.gcsp-greg-headline .gcsp-tile-label'), item => item.textContent)).toEqual([
+      'Active briefs', 'Briefs with no suitable car', 'Offers made', 'Selected',
+    ]);
+    expect(root().querySelectorAll('.gcsp-greg-headline .gcsp-tile-headline')).toHaveLength(4);
+    expect(root().querySelectorAll('.gcsp-greg-tables gcsp-data-table')).toHaveLength(3);
+    expect(Array.from(root().querySelectorAll('.gcsp-greg-grid > section > h2'), item => item.textContent)).toEqual(['Unmet needs', 'Stock']);
+    expect(root().querySelectorAll('.gcsp-greg-tiles .gcsp-tile-standard')).toHaveLength(5);
+    expect(root().querySelectorAll('.gcsp-table')).toHaveLength(7);
+    expect(root().querySelector('.gcsp-greg-headline')?.tagName).toBe('DIV');
+    const band = root().querySelector('.gcsp-greg-headline .gcsp-tile-figure.is-band')!;
+    expect(band.querySelector('[aria-hidden="true"]')?.textContent).toBe('<5');
+    expect(band.querySelector('.gcsp-vh')?.textContent).toBe('fewer than 5');
+    expect(root().querySelector('.gcsp-greg-headline .gcsp-tile-figure')?.textContent).toBe('12 recorded');
+  });
+  it('keeps the frozen empty-brief composition with current stock rather than invented demand tiles', () => {
+    const d = demand(); state.update(v => ({ ...v, demand: { ...d, demand: { ...d.demand, byModelLine: [] } } })); fixture.detectChanges();
+    expect(text()).toContain('No briefs yet');
+    expect(root().querySelector('.gcsp-greg-headline')).toBeNull();
+    expect(root().querySelector('.gcsp-greg-tables')).toBeNull();
+    expect(root().querySelector('.gcsp-greg-tiles')).toBeNull();
+    expect(root().querySelectorAll('.gcsp-table')).toHaveLength(1);
+    expect(text()).toContain('Stock source unavailable');
+  });
   it('distinguishes unavailable stock and its unmet gate from a proven empty source', () => {
     expect(text()).toContain('Stock source unavailable'); expect(text()).toContain('New stock could not be checked.'); expect(text()).not.toContain('No stock has been released yet.');
     const d = demand(); state.update(v => ({ ...v, demand: { ...d, stock: { ...d.stock, source: { status: 'ok' }, unavailable: false, empty: true } } })); fixture.detectChanges();
@@ -58,6 +82,12 @@ describe('Greg demand screen', () => {
     expect(text()).toContain('<img src=x onerror=alert(1)>'); expect(root().querySelector('img')).toBeNull();
     expect(button('Retry sign-in connection')).toBeUndefined(); button('Refresh demand and policy').click(); expect(store.refresh).toHaveBeenCalledOnce();
     authState.set({ status: 'unavailable', message: 'Unavailable', retryable: true }); fixture.detectChanges(); button('Retry sign-in connection').click(); expect(store.retryAuthentication).toHaveBeenCalledOnce();
+  });
+  it.each([['unavailable', 'Demand figures unavailable'], ['stale', 'The demand figures changed']] as const)('clears private tiles and tables for %s reads', (demandState, title) => {
+    state.update(v => ({ ...v, demand: null, demandState, demandMessage: 'Refresh the current figures.' })); fixture.detectChanges();
+    expect(text()).toContain(title); expect(text()).toContain('Refresh the current figures.');
+    expect(root().querySelector('.gcsp-tile, .gcsp-table')).toBeNull(); expect(text()).not.toContain('12 recorded');
+    expect(button('Refresh demand and policy').disabled).toBe(false);
   });
   it('replaces private figures with loading, denied and sign-in states', () => {
     state.update(v => ({ ...v, demand: null, demandState: 'loading', pending: true })); fixture.detectChanges(); expect(text()).toContain('Loading the demand figures'); expect(root().querySelector('table')).toBeNull();
