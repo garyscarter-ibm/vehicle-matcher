@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-26T03:28:20Z",
+  "observed_at": "2026-11-26T03:39:56Z",
   "version": 1,
   "stories": [
     {
@@ -11226,9 +11226,9 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-566",
-      "observed_at": "2026-11-26T01:02:01Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
+      "observed_at": "2026-11-26T03:39:56Z",
+      "original_status": "In Review",
+      "status": "In Review",
       "title": "Notification panel clips its heading and vehicle off the left of narrow screens",
       "type": "Bug",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-566",
@@ -11237,15 +11237,15 @@
           "id": "ui",
           "status": "complete",
           "title": "Contain active Angular notification panel and note at narrow widths; preserve desktop and interaction behavior (AC1–2)",
-          "observed_at": "2026-11-26T00:52:46Z",
-          "evidence": "c20879e04; actual 375/390 panel x=8, notes contained; six actual responsive captures; 45 Angular / 135 ratchet including root independent rerun; final registered f548 6/6; dual-agent visualcritique 31/36 no in-scope actionable findings. Result in DEV-2026-11-23-002."
+          "observed_at": "2026-11-26T03:48:58Z",
+          "evidence": "Original3AC and focused45/ratchet135/f548six checks passed; coveringweb2097 and browserbatch7ab69ffda72pass/0fail/1unrelatedF556skip. Rootclosed and normalcleanupcomplete83cb48705."
         },
         {
           "id": "integration",
           "status": "complete",
           "title": "Focused caller tests, actual registered desktop/narrow proof and independent visual critique (AC3)",
-          "observed_at": "2026-11-26T00:52:46Z",
-          "evidence": "c20879e04; actual 375/390 panel x=8, notes contained; six actual responsive captures; 45 Angular / 135 ratchet including root independent rerun; final registered f548 6/6; dual-agent visualcritique 31/36 no in-scope actionable findings. Result in DEV-2026-11-23-002."
+          "observed_at": "2026-11-26T03:48:58Z",
+          "evidence": "Original3AC and focused45/ratchet135/f548six checks passed; coveringweb2097 and browserbatch7ab69ffda72pass/0fail/1unrelatedF556skip. Rootclosed and normalcleanupcomplete83cb48705."
         }
       ],
       "unsliced": false,
@@ -11254,52 +11254,17 @@
         "entry",
         "shared-experience"
       ],
-      "note": "All three original repair ACs evidenced at c20879e04, merged cfe590ab9. Six exact narrow/desktop captures and comment5068560 published; native In Progress/Russell/3/F88 observed26Nov01:02:01Z. Covering WEB/browser batches still pending; no human acceptance claimed.",
-      "workers": [
-        {
-          "name": "Scooby Doo",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-26T00:52:46Z",
-          "expires_at": "2026-11-26T00:52:46Z",
-          "source": "Observed final child results and completed lead delivery record; no active worker inferred beyond this observation.",
-          "status": "completed"
-        },
-        {
-          "name": "Mushu",
-          "harness": "codex",
-          "role": "mechanic",
-          "observed_at": "2026-11-26T00:52:46Z",
-          "expires_at": "2026-11-26T00:52:46Z",
-          "source": "Observed final child results and completed lead delivery record; no active worker inferred beyond this observation.",
-          "status": "completed"
-        },
-        {
-          "name": "Foxy",
-          "harness": "codex",
-          "role": "runner",
-          "observed_at": "2026-11-26T00:52:46Z",
-          "expires_at": "2026-11-26T00:52:46Z",
-          "source": "Observed final child results and completed lead delivery record; no active worker inferred beyond this observation.",
-          "status": "completed"
-        },
-        {
-          "name": "Imhotep",
-          "harness": "codex",
-          "role": "reviewer",
-          "status": "completed",
-          "observed_at": "2026-11-26T00:52:46Z",
-          "expires_at": "2026-11-26T00:52:46Z",
-          "source": "Observed final child results and completed lead delivery record; no active worker inferred beyond this observation."
-        }
-      ],
+      "note": "All3originalAC evidenced atc20879e04; mergedcfe590ab9. Coveringwebbatch2097pass and registered14familybrowserbatch7ab69ffda72pass/0fail/1unrelatedF556skip now recorded11d55726a. NativeInReview/Russell/3/start26Nov verified03:39:56Z, branchcomment5068697; originalresultcomment5068560/siximages preserved. Archived and normalcleanup83cb48705 complete; no nativeDone inferred.",
+      "workers": [],
       "native_story_points": 3,
       "native_parent": "FUCQ-88",
       "native_links": [
         "FUCQ-375",
         "FUCQ-548"
       ],
-      "native_updated": "2026-11-25T19:02:01.345-0600"
+      "native_updated": "2026-11-25T19:02:01.345-0600",
+      "native_observed_at": "2026-11-26T03:39:56Z",
+      "native_start_date": "2026-11-26"
     },
     {
       "assignee": "",
@@ -13361,6 +13326,108 @@
       "native_observed_at": "2026-11-26T03:09:51Z",
       "note": "Native In Review observed2026-11-26T03:09:51Z; all5originalAC evidenced. Registeredf340/f550 passed12/12 at6e9f1f54d; integratedda5354e51. Shared14familybrowserbatch7ab69ffda completed72pass/0fail/1unrelatedF556skip and covers this merge. No human acceptance or active source worker inferred.",
       "engineering_observed_at": "2026-11-26T03:26:02Z"
+    },
+    {
+      "id": "FUCQ-521",
+      "title": "Allow deliberate lifecycle retry after a proven no-effect refusal",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Bug",
+      "observed_at": "2026-11-26T03:37:39Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-521",
+      "slices": [
+        {
+          "id": "deliberate-retry",
+          "status": "in-progress",
+          "title": "Authoritative no-effect retry and duplicate protection",
+          "observed_at": "2026-11-26T03:37:39Z"
+        },
+        {
+          "id": "causal-provider-proof",
+          "status": "in-progress",
+          "title": "Native PostgreSQL and signed HTTP causal boundary",
+          "observed_at": "2026-11-26T03:37:39Z"
+        },
+        {
+          "id": "connected-integration",
+          "status": "in-progress",
+          "title": "Registered screen success, pending safety and independent review",
+          "observed_at": "2026-11-26T03:37:39Z"
+        }
+      ],
+      "unsliced": false,
+      "native_observed_at": "2026-11-26T03:37:39Z",
+      "native_parent": "FUCQ-432",
+      "native_story_points": 3,
+      "native_start_date": "2026-11-26",
+      "native_links": [
+        "FUCQ-446"
+      ],
+      "branch": "dev/DEV-2026-11-22-vesper-006",
+      "note": "Original3AC govern. Product130focused and native4HTTP/wiring pass; source334fa9fec and proof revisionsbc439/cd86. Final connectedcd86 attempt: both scenarios bootstrap404 before lifecycleassertions; ownedprocesscleanup incomplete and being reconciled. No connected acceptance or merge claimed.",
+      "workers": [
+        {
+          "name": "Michigan J. Frog",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-26T03:48:58Z",
+          "expires_at": "2026-11-26T04:03:58Z",
+          "status": "Diagnosing connected bootstrap404 and owned cleanup",
+          "source": "Native lead progress message read by usget-velko"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-557",
+      "title": "Greg's Angular case queue has no Sort control and may show raw gate codes",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Bug",
+      "observed_at": "2026-11-26T03:38:58Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-557",
+      "slices": [
+        {
+          "id": "case-queue",
+          "status": "in-progress",
+          "title": "Sort cases and confirmed gate labels",
+          "observed_at": "2026-11-26T03:38:58Z"
+        },
+        {
+          "id": "help-retained-read",
+          "status": "in-progress",
+          "title": "Same-context failed refresh and card skeleton",
+          "observed_at": "2026-11-26T03:38:58Z"
+        },
+        {
+          "id": "connected-human-pair",
+          "status": "in-progress",
+          "title": "Registered connected proof, independent critique and original human pair",
+          "observed_at": "2026-11-26T03:38:58Z"
+        }
+      ],
+      "unsliced": false,
+      "native_observed_at": "2026-11-26T03:38:58Z",
+      "native_parent": "FUCQ-432",
+      "native_story_points": 8,
+      "native_start_date": "2026-11-26",
+      "native_links": [
+        "FUCQ-447"
+      ],
+      "branch": "dev/DEV-2026-11-22-vesper-030",
+      "note": "Original5AC govern; nativeadoption8points verified. Product198focused/135ratchet and independent retained-read source review pass at a1aa11d6c. Proof preparation8b5bb788a unrun; sharedcomposition changes wait F521 merge. Original AC5 human same-state1280 pair remains blank.",
+      "workers": [
+        {
+          "name": "Scooby Doo",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-26T03:48:58Z",
+          "expires_at": "2026-11-26T04:03:58Z",
+          "status": "Preparing proof; waiting for shared helper integration",
+          "source": "Native lead progress message read by usget-velko"
+        }
+      ]
     }
   ]
 }
