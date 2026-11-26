@@ -11270,7 +11270,7 @@
       "assignee": "",
       "branch": "dev/DEV-2026-11-23-001",
       "id": "FUCQ-565",
-      "observed_at": "2026-11-23T16:17:14Z",
+      "observed_at": "2026-11-26T09:27:32Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -11296,8 +11296,10 @@
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Merged registered browser and covering batch proof"
+          "status": "in-progress",
+          "title": "Merged registered browser and covering batch proof",
+          "observed_at": "2026-11-26T09:26:13Z",
+          "evidence": "Later actual registered f555 source 6518669087 passed 6/6, including Main 1100/800/300 at 1280/390 and literal JVM restart on unchanged repair product files. Current canonical Java/final integrated 18-family browser batch and human parity remain root-owned pending."
         }
       ],
       "status": "In Progress",
@@ -11314,6 +11316,24 @@
           "role": "story-lead",
           "source": "lead final321 checks/review passed; root original integrated acceptance pending",
           "status": "handoff-ready"
+        },
+        {
+          "name": "Pugh",
+          "harness": "codex",
+          "role": "story-lead: retained evidence reconciliation",
+          "status": "completed",
+          "observed_at": "2026-11-26T09:26:13Z",
+          "expires_at": "2026-11-26T09:26:13Z",
+          "source": "Read actual proof source and retained Main surfaces; product-source compatibility verified; no runtime work or product changes"
+        },
+        {
+          "name": "Hippety Hopper",
+          "harness": "codex",
+          "role": "read-only evidence scoper",
+          "status": "completed",
+          "observed_at": "2026-11-26T09:26:13Z",
+          "expires_at": "2026-11-26T09:26:13Z",
+          "source": "Native title verified; executed six-case result/restart/source scope reconciled, no tests/writes"
         }
       ]
     },
