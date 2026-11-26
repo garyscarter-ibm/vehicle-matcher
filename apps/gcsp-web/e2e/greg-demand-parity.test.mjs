@@ -150,12 +150,13 @@ test('FUCQ-558: Greg demand tiles and composition after the same actual release,
     const paula = await suite.newPage('employee-demand', 'demo-paula', 'preferences');
     const greg = await suite.newPage('greg-demand', 'demo-greg', 'greg');
     const root = greg.locator('gcsp-greg-demand');
-    await t.test('Actual pre-release empty stock and role refusal are distinct from the happy path', async () => {
+    await t.test('Actual pre-release unchecked stock and role refusal are distinct from the happy path', async () => {
       const before = good(await suite.call(greg, 'GET', '/greg/demand'), 'Greg initial demand API');
       evidence.beforeRelease = before; privacy(before);
       assert.deepEqual(before.stock.byModelLine, [], 'The actual owned run starts without released stock');
+      assert.equal(before.stock.source.status, 'not-checked', 'No release pull has run yet; an empty list does not prove an empty source');
       await root.getByRole('table', { name: 'Stock by model line', exact: true })
-        .getByText('No stock has been released yet', { exact: false }).waitFor();
+        .getByText('New stock could not be checked.', { exact: true }).waitFor();
       evidence.screenshots.beforeRelease = await suite.screenshot(greg, 'angular-demand-before-release-1280', { fullPage: true });
       const denied = await suite.call(paula, 'GET', '/greg/demand');
       assert.equal(denied.status, 403); assert.equal(denied.body.status, 'forbidden');
