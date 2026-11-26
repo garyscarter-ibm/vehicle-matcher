@@ -13546,6 +13546,61 @@
       "native_updated": "2026-11-25T18:44:07.379-0600"
     },
     {
+      "id": "FUCQ-544",
+      "title": "Hide active deadline on terminal refused offers",
+      "status": "In Progress",
+      "type": "Bug",
+      "branch": "dev/DEV-2026-11-22-vesper-020",
+      "observed_at": "2026-11-26T07:36:31Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-544",
+      "workers": [
+        {
+          "name": "Goopy Geer",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-26T06:59:22.429522+00:00",
+          "expires_at": "2026-11-26T07:36:31.163600+00:00",
+          "status": "complete",
+          "source": "claimed a9acfddc9; native 2026-11-26T06:57:49.258Z"
+        },
+        {
+          "name": "Egghead Jr",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-26T06:59:22.429522+00:00",
+          "expires_at": "2026-11-26T07:36:31.163600+00:00",
+          "status": "complete",
+          "source": "Title/thread01a216a7-7a92-7533-883b-387c07c00b55; two-module syntaxpass; lead corrected allocated state/API prefix before browserproof."
+        },
+        {
+          "name": "Hubie",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-26T07:07:35Z",
+          "expires_at": "2026-11-26T07:36:31.163600+00:00",
+          "status": "complete",
+          "source": "Requested/selected gpt-6-luna/high; focused units and registered f555 at unchanged executable/testcommit6e484e4e7."
+        }
+      ],
+      "slices": [
+        {
+          "id": "evidence",
+          "status": "complete",
+          "title": "Terminal-refusal-regression",
+          "observed_at": "2026-11-26T07:36:31Z",
+          "evidence": "Lead full diff and six rendered captures reviewed;165 direct tests and6 registered f555 tests passed. Exact identities and setup failures in docs/gcsp/evidence/fucq544/terminal-deadline-2026-11-26.md."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Final-composition-proof-and-reconciliation",
+          "observed_at": "2026-11-26T07:36:31Z",
+          "evidence": "Real refused receipt/current signed refresh/literal API restart at 1280/390 all show zero active timing; accepted/allocated/handoff-failed identity preserved, one ordering POST, old JVM absent/new ready, owned cleanup verified. Refreshed to 660770092 with unchanged F544 paths; root 165 rerun passes; shared batch remains dispatcher-owned."
+        }
+      ],
+      "unsliced": false
+    },
+    {
       "id": "FUCQ-320",
       "title": "Retrain the learned forecast so it covers hatchbacks",
       "type": "Story",
