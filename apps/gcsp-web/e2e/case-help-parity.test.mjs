@@ -212,7 +212,7 @@ test('FUCQ-557: actual queue sorting, plain unknown gate, retained Help refresh 
 
     await check('frozen live-path same-case-state pair at 1280', async () => {
       const replay = await suite.visitFrozenNode({ ...suite.receipt.offer, hold: released.hold, clock: released.clock,
-        finalAccount: released.account }, async ({ page, context, origin, runtime, control }) => {
+        finalAccount: released.account, caseHelp: true }, async ({ page, context, origin, runtime, control }) => {
         await page.goto(origin + '/gcsp-help.html', { waitUntil: 'domcontentloaded' });
         await unansweredCharging((method, suffix, body) => nodeCall(page, method, suffix, body));
         const alexNode = await frozenPage(context, origin, runtime, control, 'demo-alex', '/gcsp-help.html');

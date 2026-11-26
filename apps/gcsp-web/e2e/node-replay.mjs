@@ -450,6 +450,26 @@ export async function withNodeReplay({ browser, input, plan, cert, key, output, 
     initialDerivedCounts.allocationReceipts = allocationReceipts.length;
     assert.equal(allocationReceipts.length, 0, 'No real Node allocation receipt exists before the public release');
     receipt.initialDerivedCounts = initialDerivedCounts;
+    if (expected.caseHelp) {
+      // Match the normal identity HTTP switch's account preparation before the first risk tick.
+      const { seedManualDemoContext } = await load('server/gcsp/manual-context/fixtures.js');
+      const prepared = [];
+      for (const principalId of ['demo-alex', 'demo-greg']) {
+        const issued = good(await runtime.identity.switchPrincipal(control, principalId, `f557-prepare-${principalId}`),
+          'Frozen case participant identity');
+        assert.ok(issued.context.roles.includes('employee'));
+        const outcome = good(await seedManualDemoContext({ repository, identity: runtime.identity,
+          clock: runtime.clock, policy: runtime.policy, context: issued.context }), 'Frozen case account preparation');
+        prepared.push({ principalId, employeeId: issued.context.employeeId, fixtureVersion: outcome.fixtureVersion });
+      }
+      const eventId = 'f557-initial-renewal-clock';
+      const tick = good(await runtime.clock.tick(control, {
+        eventId, inputDigest: sha(JSON.stringify({ cue: eventId })), expectedClockVersion: initialClock.clockVersion,
+      }), 'Frozen initial renewal clock tick');
+      assert.equal(tick.state, 'completed');
+      receipt.caseHelpPreparation = { prepared, tick, asOf: initialClock.now,
+        source: 'Existing identity/account preparation and real initial clock tick; no case or source-row rewriting.' };
+    }
     const actions = expected.clock.actions;
     assert.ok(Array.isArray(actions) && actions[0]?.action === 'Next release', 'Actual Java clock transitions are required');
     let tick = good(await runtime.clock.advanceAndTick(control, { commandId: 'f548-node-release',
