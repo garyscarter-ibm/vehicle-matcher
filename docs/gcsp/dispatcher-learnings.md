@@ -4237,3 +4237,9 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 ### 2026-11-26 08:10 UTC · usget-velko · DL-20261126-VELKO-23 · Native CI/source provenance clarified
 
 - Native F542 comment5069102 initially called CI source75e1d539 the final integration head. Root caught the label mismatch in readback: actual final branch5801ccfaa/merge8bee4b3c7 have identical relevant Java/Node-parity/fixture/workflow objects, while CI executed75e. The same comment now states those roles exactly, read back at08:09:08.766Z; all other fields remain InProgress/Russell/3/start26Nov/parent433/origin473/Low. This corrects provenance wording, not a failed test or changed runtime; no duplicate run/comment was created.
+
+
+### 2026-11-26 08:23 UTC · usget-velko · DL-20261123-F555-23 · Completed child steering needs an active turn
+
+- During F538, native status showed Emmet completed a read-only generator analysis while the lead had sent implementation steering with send_message. That call queued context without starting implementation. Root identified the completed state; Pugh resumed the retained Emmet with followup_task and the complete implementation/resource brief. The earlier analysis is retained and no replacement or model change was made.
+- The lifecycle mistake recurs from the earlier F573 observation under this ID. Resumption is an applied mitigation; generator RED/GREEN and completed delivery remain pending. Existing adapter guidance already distinguishes steering a running child from waking an idle one; no new gate, acceptance scope or framework change is added.
