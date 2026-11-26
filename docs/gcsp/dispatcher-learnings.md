@@ -4045,3 +4045,16 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 
 - Root read committed browser proof bc439356b against original AC2. It sets writePending before the only recovered confirmation, proving a new pending202 write and uncertain-ack protection, while normal provider-recovered200 success is only in the separate signed HTTP test. It does not yet establish the original successful screen confirmation item.
 - Root directed the owning lead to add a separate actual recovered-provider200/requested screen path, retaining genuinepending/malformedACK coverage and original duplicate protection. Correction and execution remain pending; no acceptance claimed. This is original-criterion verification, no new gate or unrelated full suite. Framework proposal: map each original criterion to the actual terminal response/state observed by its screen test, within existing review.
+
+### 2026-11-26 03:55:06 UTC · usget-codex26 · DL-20261126-VELKO-11 · Linked-issue retries remain inconclusive
+
+- **New evidence:** after the first capture failed with `TextEncoder is not defined`, the exact `linkedIssues(FUCQ-590)` and `linkedIssues(FUCQ-591)` queries were each run twice. The saved retries from 03:08:54–03:08:55 UTC returned zero rows, one page per query.
+- **Impact/action:** this does not resolve the pass-4/5 response-layer discrepancy: direct issue reads still omit `issuelinks` in `content[0].text`, while `structuredContent` shows `[]`. FUCQ-590/591 link state remains unknown; no removed link is inferred and no origin was changed.
+- **Framework follow-up:** preserve the existing proposal to distinguish an omitted field from an explicit empty list and to retain the first raw response when serialization fails. No helper change or resolution is claimed.
+
+### 2026-11-26 03:55:06 UTC · usget-codex26 · DL-20261126-CODEX26-001 · Audit completion contract unavailable
+
+- **Issue/impact:** the project procedure requires `jira_sync.py audit --issues <file> --plan <saved-jql.json> --complete` to attest pagination and record the audit watermark. The checked-in parser accepts only `--issues`, `--origins` and `--check`; `cmd_audit` prints a report without saving a completion record. The completed search covered 284 issues and 102 referenced origin Stories; the supported audit reported 275 checked, clean, zero parent updates or mismatch findings, 37 `origin_unknown` and nine exempt. No completion watermark was recorded.
+- **Cause/uncertainty:** the documented audit workflow and helper interface do not match. No evidence establishes whether the helper implementation or the procedure is stale.
+- **Action/outcome:** ran the supported audit over all saved pages and origins, retained its report, and left Jira parenting unchanged. No helper or procedure was modified.
+- **Framework follow-up:** align the helper and documented procedure so the complete-page attestation and audit state are supported. No new gate or policy change is proposed.
