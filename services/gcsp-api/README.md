@@ -801,8 +801,8 @@ Documents read the run clock instead of answering unavailable. The startup tick 
 mail; `GCSP_SCENARIO_PROVIDER` stays `none` unless set.
 ## Production requests (FUCQ-478)
 
-Package `gcsp.api.production`. Greg submits his plan with `POST /api/gcsp/v1/greg/production/requests` (body `{commandId, planId, versions}`;
-the only request path) and tracks it with `GET /greg/production` and `GET /greg/production/supply-activity` (Greg or presenter, read-only
+Package `gcsp.api.production`. Greg submits his plan with `POST /api/gcsp/v1/greg/production/requests` (body `{commandId, planId, versions, changes?}`, where `changes` are the draft constraint edits the previewed plan was
+drawn under, stored canonically and reported by the order-plan `replan.changes` (FUCQ-546); the only request path) and tracks it with `GET /greg/production` and `GET /greg/production/supply-activity` (Greg or presenter, read-only
 for the presenter). The presenter has scenario controls only: `POST /presenter/production/responses` (`{requestId, action: confirm|delay|refuse,
 quantity?, delayUntil?, reason?}`, synthetic provider only, else 409 `production-scenario-unsupported`) and `POST /presenter/production/reconcile`
 (`{limit?}`). Employees get 403 everywhere.

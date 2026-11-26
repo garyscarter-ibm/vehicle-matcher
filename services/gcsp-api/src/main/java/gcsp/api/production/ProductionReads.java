@@ -303,7 +303,7 @@ final class ProductionReads {
             head.set("submittedPlanId", out.get("submittedPlanId"));
             head.set("submittedAt", out.get("submittedAt"));
             head.put("currentPlanId", currentPlanId);
-            head.putArray("changes");
+            head.set("changes", changesOf(latestSubmission(d)));
             ArrayNode mine = head.putArray("requests");
             d.requests().stream().filter(r -> r.submissionId().equals(latest)).forEach(r -> mine.add(requestJson(r, planOf, releasedOf)));
             head.set("responses", out.get("responses"));
@@ -344,6 +344,15 @@ final class ProductionReads {
 
     /** A manual request (Greg's single line) is not a plan, so replan history never starts from it. */
     static final String MANUAL_PREFIX = "manual:";
+
+    /** The latest plan submission's stored canonical changes ([] when it had none). */
+    private static JsonNode changesOf(Optional<SubmissionRow> latest) {
+        try {
+            return latest.isEmpty() ? F.arrayNode() : JSON.readTree(latest.get().constraintChanges());
+        } catch (java.io.IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
 
     private static Optional<SubmissionRow> latestSubmission(Data d) {
         return d.submissions().stream().filter(s -> !s.planId().startsWith(MANUAL_PREFIX)).max(Comparator.comparing(SubmissionRow::requestedAt).thenComparing(SubmissionRow::submissionId));
