@@ -377,6 +377,22 @@ Engineering:51focused/340ratchet/registered5of5; independent A30of40 and detecto
 
 | Original criterion | Reviewer | Reviewed at | Verdict | Source |
 | --- | --- | --- | --- | --- |
-| FUCQ-558 AC3: A reviewed1280 screenshot pair, Node and Angular, same scenario. | | | | |
+| FUCQ-558 AC3: A reviewed 1280 screenshot pair, Node and Angular, same scenario. | | | | |
 
 This extends the existing consolidated evidence artifact passively. No new question or review thread was created, and AC3 remains unchecked.
+
+## Comparison — FUCQ-560 original AC4 — 26 November
+
+The pair shows the same retained process-only experiment at a 1280px CSS viewport. Final executable source `562bf8f558d9b24e39557a7c05709bab3744055f`; frozen Node `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`; merge `1d7ec61f8d8ea55b95e43226fc2cbc3eba0dc0d9`. Native comment `5068934` and exactly two PNG attachments were read back at 06:05 UTC.
+
+| Angular comparison | Frozen Node comparison |
+| --- | --- |
+| [angular-comparison-process-only-1280.png, attachment 1647918](https://jira-prod-us-mc-62-3.prod.atl-paas.net/rest/api/3/attachment/content/1647918) | [node-comparison-process-only-1280.png, attachment 1647919](https://jira-prod-us-mc-62-3.prod.atl-paas.net/rest/api/3/attachment/content/1647919) |
+
+Engineering: 71 focused tests, 340 ratchet checks and registered connected proof 6/6. Full immutable result equality and digest were verified against the frozen Node reference. A scored 29/40; B's one premature narrow error capture was corrected and both reviewers personally confirmed the settled final error images. Detector zero findings is separate from that corrected evidence finding. Shared batches covering this merge remain pending; Safari, assistive-technology, zoom and full-size execution are unverified.
+
+| Original criterion | Reviewer | Reviewed at | Verdict | Source |
+| --- | --- | --- | --- | --- |
+| FUCQ-560 AC4: final same-experiment 1280 Node/Angular screenshot pair reviewed by a collaborator. | | | | |
+
+This extends the existing consolidated evidence artifact passively under `MSG-2026-11-25-sorrel-001`. No new question or review thread was created, and original AC4 remains unchecked.

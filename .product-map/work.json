@@ -13420,67 +13420,6 @@
       "jira_observed_at": "2026-11-26T05:01:41Z"
     },
     {
-      "id": "FUCQ-560",
-      "title": "Angular comparison view shows raw JSON and lost the range bars and experiment picker",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "Russell Gowers",
-      "type": "Bug",
-      "observed_at": "2026-11-26T05:16:20Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-560",
-      "native_observed_at": "2026-11-26T05:16:20Z",
-      "jira_observed_at": "2026-11-26T05:16:20Z",
-      "native_parent": "FUCQ-432",
-      "native_story_points": 8,
-      "native_start_date": "2026-11-26",
-      "native_links": [
-        "FUCQ-452"
-      ],
-      "branch": "dev/DEV-2026-11-22-vesper-032",
-      "workers": [],
-      "unsliced": false,
-      "slices": [
-        {
-          "id": "producer-and-reference",
-          "title": "Verify retained producer/reference contract and actual stored read identity/digest",
-          "status": "in-progress",
-          "observed_at": "2026-11-26T05:21:59Z"
-        },
-        {
-          "id": "range-and-labelled-results",
-          "title": "Port frozen range display and complete labelled presentation preserving existing picker/state",
-          "status": "not-started",
-          "observed_at": "2026-11-26T05:21:59Z"
-        },
-        {
-          "id": "focused-and-connected-proof",
-          "title": "Focused owning tests, scoped ratchet and actual1280/375/sameartifact registered proof",
-          "status": "not-started",
-          "observed_at": "2026-11-26T05:21:59Z"
-        },
-        {
-          "id": "independent-rendered-review",
-          "title": "Isolated A/B, critique and final evidence/cleanup",
-          "status": "not-started",
-          "observed_at": "2026-11-26T05:21:59Z"
-        },
-        {
-          "id": "covering-shared-batch",
-          "title": "Existing development gate: green shared batch covers merge (root-owned)",
-          "status": "not-started",
-          "evidence": "Full suites deferred to root sharedbatch; original4AC unchanged, no per-story fullsuite or newhuman gate.",
-          "observed_at": "2026-11-26T05:21:59Z"
-        },
-        {
-          "id": "human-pair",
-          "title": "OriginalAC4 actual collaborator ledger verdict",
-          "status": "not-started",
-          "observed_at": "2026-11-26T05:21:59Z"
-        }
-      ],
-      "note": "Claimed bounded comparison presentation parity. Existing four-experiment picker retained; process-only artifact byte equality verified, runtime identity/digest pending registered proof. Original human AC4 remains blank. Full shared batch is a development slice. No backend, storage, query, math or workload change."
-    },
-    {
       "id": "FUCQ-558",
       "title": "Greg's Angular demand view lost the metric tiles and the Node dashboard layout",
       "status": "In Progress",
@@ -13539,6 +13478,72 @@
       ],
       "workers": [],
       "note": "Merged696db20a2; original AC1/2 engineering51focused/340ratchet/registered5/5 at0a07ba17. Independent A30/40/Bdetector0, no in-scope correction. Native comment5068885 and exactly two1280PNG attachments1647902/1647904 verified05:56:47Z. Shared web2175/135 at696 covers merge; later browser/Node coverage remains pending. Original humanAC3 verdict blank. Dependency link removed; partial claim/branch/worktree retained. Earlier Node staging unknown; one subsequent HTTP201 upload attached known ID once, no unknown-object cleanup claimed."
+    },
+    {
+      "id": "FUCQ-560",
+      "title": "Angular comparison view shows raw JSON and lost the range bars and experiment picker",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Bug",
+      "observed_at": "2026-11-26T06:08:33Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-560",
+      "native_observed_at": "2026-11-26T05:16:20Z",
+      "jira_observed_at": "2026-11-26T05:16:20Z",
+      "native_parent": "FUCQ-432",
+      "native_story_points": 8,
+      "native_start_date": "2026-11-26",
+      "native_links": [
+        "FUCQ-452"
+      ],
+      "branch": "dev/DEV-2026-11-22-vesper-032",
+      "workers": [],
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "producer-and-reference",
+          "title": "Verify retained producer/reference contract and actual stored read identity/digest",
+          "status": "complete",
+          "observed_at": "2026-11-26T06:08:32.645285Z",
+          "evidence": "Complete retained artifact equality and digest verified in final registered composition."
+        },
+        {
+          "id": "range-and-labelled-results",
+          "title": "Port frozen range display and complete labelled presentation preserving existing picker/state",
+          "status": "complete",
+          "observed_at": "2026-11-26T06:08:32.645285Z",
+          "evidence": "Labelled complete result/request/provenance and source range bars; existing four-experiment picker retained."
+        },
+        {
+          "id": "focused-and-connected-proof",
+          "title": "Focused owning tests, scoped ratchet and actual1280/375/sameartifact registered proof",
+          "status": "complete",
+          "observed_at": "2026-11-26T06:08:32.645285Z",
+          "evidence": "Root independently reran 71 focused and 340 ratchet checks; final registered 6/6 at 562bf8f55. Earlier failed/capture attempts preserved."
+        },
+        {
+          "id": "independent-rendered-review",
+          "title": "Isolated A/B, critique and final evidence/cleanup",
+          "status": "complete",
+          "observed_at": "2026-11-26T06:08:32.645285Z",
+          "evidence": "A 29/40; B detector [] once and one real capture-timing finding corrected; both personally confirmed final settled error images."
+        },
+        {
+          "id": "covering-shared-batch",
+          "title": "Existing development gate: green shared batch covers merge (root-owned)",
+          "status": "in-progress",
+          "evidence": "Root-owned; web at 696db20a predates merge. Browser 4/5 matching merges after latest line, web 1/5; no new full suite run.",
+          "observed_at": "2026-11-26T06:08:32.645285Z"
+        },
+        {
+          "id": "human-pair",
+          "title": "OriginalAC4 actual collaborator ledger verdict",
+          "status": "not-started",
+          "observed_at": "2026-11-26T06:08:32.645285Z",
+          "evidence": "Original AC4 blank. Same-experiment 1280 Node/Angular pair attached and passive consolidated ledger appended; no new question."
+        }
+      ],
+      "note": "Partial merged 1d7ec61f8; final executable source 562bf8f55. AC1–3 evidenced: 71 focused, 340 ratchet, registered connected 6/6; full immutable result/digest equality and A/B rendered review. Native comment 5068934 and exact two PNGs 1647918/1647919 verified 26Nov 06:05 UTC. Original human AC4 blank; covering shared web/browser/Node remains pending. Source observation timestamps preserved; no backend/storage/query/math/workload change."
     }
   ]
 }
