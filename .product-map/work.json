@@ -13222,15 +13222,15 @@
     {
       "id": "FUCQ-553",
       "type": "Bug",
-      "title": "Restore Angular stock gallery and order choices source parity",
-      "status": "Unknown",
+      "title": "Angular stock gallery and order choices lost Node notices, card styling and the employee/driver facts",
+      "status": "In Progress",
       "branch": "dev/DEV-2026-11-22-vesper-034",
       "component_ids": [
         "manual-journey",
         "shared-experience"
       ],
-      "note": "Local F553 delivery plan only; no current native tracker observation was supplied. Original five acceptance criteria and 13 points retained; human pending/failed1280 pairs and shared batch remain required.",
-      "observed_at": "2026-11-26T00:18:31Z",
+      "note": "Native In Progress/Russell/13/F432 and original AC1–3 checked, AC4–5 open verified 26Nov00:44:45Z. Four exact pending/failed1280 PNG attachments1647762–65 and comment5068545 published. Frozen retry/current terminal-release parity, human AC5 verdict and covering shared browser batch remain open.",
+      "observed_at": "2026-11-26T00:44:45Z",
       "slices": [
         {
           "id": "notices-and-choices-facts",
@@ -13254,7 +13254,22 @@
           "evidence": "Final refreshed product/proof source 072593848 registered 7/7, Angular 14 specs/326 tests and ratchet 135/135 passed; held handover/GET-only status proven; no backend delta so native checks reused. OriginalAC4 uncertain-to-terminal claim-failed frozen retry/current release/refresh gap and original AC5 human 1280 verdicts remain F553 work; covering batch open."
         }
       ],
-      "unsliced": false
+      "unsliced": false,
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-553",
+      "native_story_points": 13,
+      "native_parent": "FUCQ-432",
+      "native_links": [
+        "FUCQ-442"
+      ],
+      "native_labels": [
+        "backlog",
+        "defect",
+        "gcsp",
+        "kind:ui"
+      ],
+      "native_updated": "2026-11-25T18:44:07.379-0600"
     }
   ]
 }
