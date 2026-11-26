@@ -107,6 +107,7 @@ async function release(suite, employee, presenter, record) {
   const target = input.stock.releaseAt;
   const beforeTick = new Date(Date.parse(target) - clock.controls.step.value * 1000).toISOString();
   assert.ok(Date.parse(clock.now) < Date.parse(beforeTick));
+  await showAdvanced(presenter);
   await presenter.getByText('Advanced clock controls', { exact: true }).click();
   await presenter.getByLabel('Advance by', { exact: true }).selectOption('to');
   await presenter.getByLabel('Named time or instant', { exact: true }).fill(beforeTick);

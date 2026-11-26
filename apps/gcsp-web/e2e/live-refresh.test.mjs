@@ -278,7 +278,22 @@ test('FUCQ-550: live Java/OIDC screen refresh and frozen status presentation', {
       assert.equal(replay.state, 'matched', 'A live frozen same-input runtime is required for the engineering pair');
       evidence.frozen = { state: replay.state, pair: replay.liveRefresh, humanAcceptance: 'pending' };
       await presenter.getByRole('link', { name: 'Presenter controls', exact: true }).click();
-      await showAdvanced(presenter);
+      await presenter.waitForURL((url) => url.origin === suite.origins.web && url.pathname === '/gcsp/presenter');
+      const consoleTime = presenter.locator('.gcsp-console-time');
+      await consoleTime.waitFor();
+      const mode = presenter.locator('.gcsp-console-mode'); let beforeMode;
+      await until(async () => {
+        beforeMode = await mode.getAttribute('aria-pressed');
+        return beforeMode === 'false' || beforeMode === 'true';
+      }, 'Presenter mode is serialized after returning to controls');
+      evidence.presenterReturn = { before: { pathname: new URL(presenter.url()).pathname,
+        mode: beforeMode, consoleTimeLoaded: await consoleTime.isVisible() } };
+      try { await showAdvanced(presenter); }
+      finally {
+        evidence.presenterReturn.after = { pathname: new URL(presenter.url()).pathname,
+          mode: await mode.evaluateAll((nodes) => nodes.length === 1 ? nodes[0].getAttribute('aria-pressed') : null),
+          consoleTimeLoaded: await consoleTime.isVisible() };
+      }
       await presenter.getByRole('button', { name: 'Next release', exact: true }).waitFor();
     });
 
