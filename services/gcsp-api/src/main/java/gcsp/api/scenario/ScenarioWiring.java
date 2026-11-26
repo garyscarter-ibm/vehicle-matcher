@@ -16,6 +16,7 @@ import gcsp.api.ordering.OrderingSelection;
 import gcsp.api.persistence.Persistence;
 import gcsp.api.policy.PolicyService;
 import gcsp.api.supply.SupplySelection;
+import gcsp.api.supply.GeneratedSupplyProvider;
 import io.agroal.api.AgroalDataSource;
 import io.quarkus.runtime.Startup;
 import io.quarkus.runtime.StartupEvent;
@@ -102,7 +103,8 @@ public class ScenarioWiring {
             AgroalDataSource source = dataSource.get();
             var clock = holder.clock();
             var brief = briefs.service().orElseThrow();
-            MainJourneyStart start = new MainJourneyStart(brief, policy, clock, file);
+            MainJourneyStart start = new MainJourneyStart(brief, policy, clock, file,
+                    supply.provider() instanceof GeneratedSupplyProvider generated ? generated : null);
             service = new ScenarioService(source, persistence.reset(), clock,
                     new DemoPreparation(source, persistence.runner(), clock, policy, InstantSource.system(), file,
                             capabilities(), start::load), file);
