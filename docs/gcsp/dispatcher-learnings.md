@@ -4245,17 +4245,17 @@ Observed outcome: the F593 scoped repair passed and was merged/pushed at f31e1b1
 - The lifecycle mistake recurs from the earlier F573 observation under this ID. Resumption is an applied mitigation; generator RED/GREEN and completed delivery remain pending. Existing adapter guidance already distinguishes steering a running child from waking an idle one; no new gate, acceptance scope or framework change is added.
 
 
-### 2026-11-26 09:06 UTC · usget-velko · DL-20261126-VELKO-23 · Native reconciliation and unsupported status provenance
+### 2026-11-26 09:02 UTC · usget-velko · DL-20261126-VELKO-23 · Native reconciliation and unsupported status provenance
 
 - The user queried stale Jira progress. The fresh 08:35:54Z 35-key read found 26 In Progress and nine In Review. Baymax verified and acknowledged 73 current-run operations, including ten preserved-label additions and 23 branch links; 121 historical/out-of-scope operations were untouched. Three proposed regressions of F549/F551/F552 to In Progress remain unacknowledged; native In Review is preserved. This is a bounded current-run reconciliation, not proof that every historical backlog record is current.
 - Dibble found no human quote or checkable phase supporting earlier “human-only In Review phase” wording. That claimed authority is unverified and must not be reused. Goopy reconciled F551’s latest Result against the six original criteria and retained hosted/signed evidence in b3c660866: development complete, with shared batch clearance and acceptance separate. Root read the exact four-line metadata diff; no tests or native transition were required. Proposed improvement: distinguish observed native state from instruction provenance; do not infer authority from an earlier agent’s report.
 
-### 2026-11-26 09:06 UTC · usget-velko · DL-20261117-GCC-009 · F522 repaired evidence recovered
+### 2026-11-26 09:02 UTC · usget-velko · DL-20261117-GCC-009 · F522 repaired evidence recovered
 
 - An intake-only reading suggested missing terminal-state proof. Goopy recovered repair f06505772, F446 merge ec98360db and F446’s retained Result: 107 Angular and 141 connected post-fix checks, terminal captures and literal JVM stop/start/reload. The current guard/specs retain the repair; no unmet original criterion was established. The local historical capture directory is absent, so no fresh image inspection is claimed.
 - Intake reconciliation 47dd4323a is pushed. The diagnosis changed from possible missing repair/proof to record reconciliation; do not implement or retest an already evidenced fix just because the intake omitted its later evidence. “Capture/triage only” described the initial report, not a standing human hold. Proposed improvement: follow the linked originating Story’s final Result before allocating duplicate repair work.
 
-### 2026-11-26 09:06 UTC · usget-velko · DL-20261126-VELKO-24 · Cancelled automatic CI has incomplete cleanup evidence
+### 2026-11-26 09:02 UTC · usget-velko · DL-20261126-VELKO-24 · Cancelled automatic CI has incomplete cleanup evidence
 
 - CI-only workflow merge 7b84c3482 triggered redundant canonical run45785584080. Root cancelled it after Maven had started. Actions reached terminal cancelled and its Stop containers step succeeded; the browser job was skipped. No green gate or batch line is claimed.
 - The retained supervisor artifact is preflight with Maven running and scratch active; there is no terminal supervisor receipt. Remote Maven/process-group/scratch absence therefore remains unverified. Local artifact-inspection scratch was removed and absence checked. Evidence: .claude/poller/velko-ci-route-cancel-20261126/summary.json and three bounded original artifacts. Proposed improvement: make handled cancellation retain the supervisor finalizer outcome; terminal job state/container stop alone does not establish every owned allocation’s cleanup. No workflow scope or test gate is added here.
