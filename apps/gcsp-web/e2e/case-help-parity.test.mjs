@@ -113,7 +113,7 @@ test('FUCQ-557: actual queue sorting, plain unknown gate, retained Help refresh 
   { timeout: 540000 }, async t => {
     const suite = await startComposition({ caseId: 'f557' });
     t.after(() => suite.close());
-    const evidence = suite.receipt.caseHelp = { groups: [], humanAcceptance: '',
+    const evidence = suite.receipt.caseHelp = { groups: [], keyboard: [], humanAcceptance: '',
       scenario: 'f557-charging-and-distinct-renewal-deadlines',
       source: 'Real Angular/Java/native PostgreSQL, signed test OIDC, real case/editor commands and retained generated stock.' };
     async function check(name, work) {
@@ -146,15 +146,19 @@ test('FUCQ-557: actual queue sorting, plain unknown gate, retained Help refresh 
         const sort = greg.getByRole('combobox', { name: 'Sort cases', exact: true });
         await sort.waitFor();
         assert.equal(await sort.evaluate(node => node.tagName), 'SELECT');
-        await sort.focus(); await sort.press('Home'); await sort.press('Enter');
+        await sort.focus(); await sort.press('ArrowUp'); await sort.press('Enter'); await sort.press('Escape');
+        evidence.keyboard.push({ width, intended: 'deadline', actual: await sort.inputValue() });
         await until(async () => await sort.inputValue() === 'deadline', 'Keyboard selects deadline');
         await assertQueue(greg, queue.cases, 'deadline');
         assert.equal(await sort.evaluate(node => document.activeElement === node), true);
-        await sort.press('End'); await sort.press('Enter');
+        await sort.press('ArrowDown'); await sort.press('Enter'); await sort.press('Escape');
+        evidence.keyboard.push({ width, intended: 'status', actual: await sort.inputValue() });
         await until(async () => await sort.inputValue() === 'status', 'Keyboard selects status');
         await assertQueue(greg, queue.cases, 'status');
         assert.equal(await sort.evaluate(node => document.activeElement === node), true);
-        await sort.press('Home'); await sort.press('Enter'); await assertQueue(greg, queue.cases, 'deadline');
+        await sort.press('ArrowUp'); await sort.press('Enter'); await sort.press('Escape');
+        evidence.keyboard.push({ width, intended: 'deadline-return', actual: await sort.inputValue() });
+        await assertQueue(greg, queue.cases, 'deadline');
         await greg.locator(`button[data-row-id="${paulaCase.caseId}"]`).click();
         const detail = greg.locator('.case-detail');
         await detail.getByText(new RegExp(chargingLabel)).first().waitFor();
