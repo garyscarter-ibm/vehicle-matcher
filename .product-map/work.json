@@ -13817,15 +13817,15 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-597",
       "branch": "dev/DEV-2026-11-26-velko-002",
       "native_parent": "FUCQ-75",
-      "note": "Native status InProgress/unassigned independently read by root10:18:45Z. AC1/2 scoped repair+tests complete; waiting named root originalf340 alone onLinuxCI, AC3unchecked. Separate18family batch and native acceptance remain.",
+      "note": "Native InProgress/unassigned observation10:18:45Z preserved. Three original criteria evidenced; actualLinuxf340 alone at910249c71 RED1fail/0pass/0skip13.29s, scratch guard accepted. New Chromium149byteIPCpath cause ownedF598. Existing browser/batch clearance remains partial/waiting; no F340/full18/human/native acceptance.",
       "workers": [
         {
           "name": "Pugh",
           "harness": "codex",
           "role": "story lead",
-          "status": "handoff-ready; waiting root Linux f340",
-          "observed_at": "2026-11-26T10:20:16Z",
-          "expires_at": "2026-11-26T10:20:16Z",
+          "status": "handoff-ready; partial/waiting browser clearance, F598 owns new cause",
+          "observed_at": "2026-11-26T11:13:25Z",
+          "expires_at": "2026-11-26T11:13:25Z",
           "source": "DEV-2026-11-26-velko-002 Result"
         },
         {
@@ -13838,7 +13838,7 @@
           "source": "F597 guard summary; Sol/medium requested/selected, no fallback"
         }
       ],
-      "observed_at": "2026-11-26T10:20:16Z",
+      "observed_at": "2026-11-26T11:13:25Z",
       "slices": [
         {
           "id": "scratch-guard",
@@ -13858,14 +13858,14 @@
           "id": "linux-ci",
           "status": "in-progress",
           "title": "Original f340 alone on Linux CI",
-          "observed_at": "2026-11-26T10:19:09Z",
-          "evidence": "Waiting for named root originalf340 alone on actualLinuxCI at final source freeze; no local browser/Java run or acceptance claim. Separate18family batch still required."
+          "observed_at": "2026-11-26T11:13:25Z",
+          "evidence": "AC3 prescribed actualLinuxf340 alone executed45801708705 attempt2 at910249c71:RED1fail/0pass/0skip13.29s, native guard passed, subset/source/reference/cleanup evidenced. F598 owns Chromium149byteSocketpath/SIGABRT before journey assertions; existing browser/batch clearance stays waiting. Attempt1 setup-incomplete0tests; no full18 proof."
         }
       ],
       "unsliced": false,
       "native_observed_at": "2026-11-26T10:18:45Z",
       "native_updated_at": "2026-11-26T10:08:59.317Z",
-      "engineering_observed_at": "2026-11-26T10:20:16Z"
+      "engineering_observed_at": "2026-11-26T11:13:25Z"
     }
   ]
 }
