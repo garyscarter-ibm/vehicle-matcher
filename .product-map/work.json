@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-26T09:50:32Z",
+  "observed_at": "2026-11-26T11:14:11.941490Z",
   "version": 1,
   "stories": [
     {
@@ -13196,29 +13196,29 @@
       "assignee": "Russell Gowers",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-559",
       "branch": "dev/DEV-2026-11-22-vesper-035",
-      "evidence": "Date source checkpoint1f4fa2342 refreshed7c5504c84/base5e3568a83; lead163/163 scoped Java and Dot independent review pass. Registered new date/frozenNode CI and original humanAC4/coveringbatches pending; native In Progress unchanged.",
-      "observed_at": "2026-11-26T11:01:14Z",
+      "evidence": "Post-F546 source 482f003e6, base e7cc7ccfb: lead 182/182 scoped Java tests across 28 classes; Dot integration review passed. Final date/frozen Node CI, original human AC4 and covering batches pending; In Progress unchanged.",
+      "observed_at": "2026-11-26T11:14:11.941490Z",
       "slices": [
         {
           "id": "planning-controls",
           "status": "in-progress",
           "title": "Planning controls (5 points; AC1–2)",
-          "observed_at": "2026-11-26T11:01:14Z",
-          "evidence": "Prior requestform/slider/emphasis evidence retained; new prequeue table date producer proven native/OIDC, final actual browser date and human parity pending."
+          "observed_at": "2026-11-26T11:14:11.941490Z",
+          "evidence": "Prior request form, slider and emphasis evidence retained; post-F546 producer/reader native tests pass. New rendered date/frozen Node and human parity pending."
         },
         {
           "id": "production-actions",
           "status": "in-progress",
           "title": "Production actions (5 points; AC3)",
-          "observed_at": "2026-11-26T11:01:14Z",
-          "evidence": "New confirmations persist original historical-policy date; lead owning package/direct readers/startup163/163 and independent review pass; final rendered date/Node comparison CI pending."
+          "observed_at": "2026-11-26T11:14:11.941490Z",
+          "evidence": "Historical confirmation-time date, refusal rollback, old NULL and later queue authority retained after F546; scoped production 82/82 and Dot review passed. Final actual date screens pending."
         },
         {
           "id": "integration",
           "status": "in-progress",
           "title": "Real composition, focused validation and human pair (3 points; AC4)",
-          "observed_at": "2026-11-26T11:01:14Z",
-          "evidence": "Scoped Java163/163 at refreshed7c5504c84, strict targeted proof and cleanup complete; new actual browser/screen review, original humanAC4 and coveringbatches pending. Prior A29/40/B0 applies earlier date state only."
+          "observed_at": "2026-11-26T11:14:11.941490Z",
+          "evidence": "Post-F546 explicit Java 182/182 at 482f003e6, including OrderPlanOperationsTest; cleanup complete. Final connected date proof, original human AC4 and covering batches pending. Prior A29/40/B0 applies earlier state."
         }
       ],
       "unsliced": false,
@@ -13228,8 +13228,8 @@
           "harness": "codex",
           "role": "story-lead",
           "status": "completed",
-          "observed_at": "2026-11-26T11:01:14Z",
-          "expires_at": "2026-11-26T11:01:14Z",
+          "observed_at": "2026-11-26T11:14:11.941490Z",
+          "expires_at": "2026-11-26T11:14:11.941490Z",
           "source": "Observed live collaboration tree and child progress on 26 Nov; Sol/high, no fallback"
         },
         {
@@ -13237,8 +13237,8 @@
           "harness": "codex",
           "role": "implementer",
           "status": "completed",
-          "observed_at": "2026-11-26T11:01:14Z",
-          "expires_at": "2026-11-26T11:01:14Z",
+          "observed_at": "2026-11-26T11:14:11.941490Z",
+          "expires_at": "2026-11-26T11:14:11.941490Z",
           "source": "Observed live collaboration tree and child progress on 26 Nov; Sol/medium, no fallback"
         },
         {
@@ -13246,9 +13246,9 @@
           "harness": "codex",
           "role": "independent state/API reviewer",
           "status": "completed",
-          "observed_at": "2026-11-26T11:01:14Z",
-          "expires_at": "2026-11-26T11:01:14Z",
-          "source": "Observed completed read-only review: gpt-6.1-sol/high requested/selected, no fallback; title verified; VERDICT passed"
+          "observed_at": "2026-11-26T11:14:11.941490Z",
+          "expires_at": "2026-11-26T11:14:11.941490Z",
+          "source": "Observed integration-only review at 482f003e6: gpt-6.1-sol/high requested/selected; no fallback; VERDICT passed, no defects"
         }
       ]
     },
