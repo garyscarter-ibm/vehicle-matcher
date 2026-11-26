@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-26T12:08:01Z",
+  "observed_at": "2026-11-26T12:28:33Z",
   "version": 1,
   "stories": [
     {
@@ -13947,14 +13947,14 @@
     {
       "id": "FUCQ-598",
       "title": "Linux browser composition creates an overlong Chromium singleton socket path",
-      "status": "In Progress",
-      "original_status": "In Progress",
+      "status": "In Review",
+      "original_status": "In Review",
       "type": "Bug",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-598",
       "branch": "dev/DEV-2026-11-26-001",
       "native_parent": "FUCQ-75",
       "note": "All original F598 criteria evidenced: independent70scoped checks and actual Ubuntu45814486813A1 selectedf3405/5 at4d2fca8b4, unchanged assertions, verified process/database/PG/browser-temp/inner+outer scratch cleanup. Full18browser union unrun; integration/native acceptance/batches separate.",
-      "observed_at": "2026-11-26T12:08:56Z",
+      "observed_at": "2026-11-26T12:28:33Z",
       "slices": [
         {
           "id": "browser-temp",
@@ -13979,7 +13979,8 @@
         }
       ],
       "unsliced": false,
-      "engineering_observed_at": "2026-11-26T12:08:56Z"
+      "engineering_observed_at": "2026-11-26T12:08:56Z",
+      "assignee": "Russell Gowers"
     }
   ]
 }
