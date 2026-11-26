@@ -13557,39 +13557,43 @@
           "name": "Sulley",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-26T06:22:05.290914+00:00",
-          "expires_at": "2026-11-26T10:22:05.291146+00:00",
-          "status": "running",
+          "observed_at": "2026-11-26T07:03:59.113233+00:00",
+          "expires_at": "2026-11-26T07:03:59.113233+00:00",
+          "status": "stopped; development complete, awaiting dispatcher review and batch",
           "source": "thread 01a21682-db90-7031-b64e-a29e1c927af6"
         },
         {
           "name": "Captain Flack",
           "harness": "codex",
-          "role": "implementer/dataset",
-          "observed_at": "2026-11-26T06:26:46Z",
-          "expires_at": "2026-11-26T06:42:42.457820+00:00",
-          "status": "stopped; dataset reviewed31/31",
+          "role": "implementer/activation",
+          "observed_at": "2026-11-26T07:03:59.113233+00:00",
+          "expires_at": "2026-11-26T07:03:59.113233+00:00",
+          "status": "stopped; development complete, awaiting dispatcher review and batch",
           "source": "/root/sulley/captain_flack"
         }
       ],
-      "observed_at": "2026-11-26T06:42:42Z",
+      "observed_at": "2026-11-26T07:05:20Z",
       "slices": [
         {
           "id": "dataset",
           "status": "complete",
           "title": "Reproducible-hatchback-dataset-and-artifact",
-          "observed_at": "2026-11-26T06:42:42Z",
+          "observed_at": "2026-11-26T07:03:59.113233+00:00",
           "evidence": "Lead reviewed script, baseline clock delta, regressions and immutable artifact metrics; independently31/31 model+forecast tests passed23.11s/RSS350093312B; actual dated320record CLI/replay; artifact e5205f65. docs/gcsp/models/fucq320-result.md; activation/integration still pending."
         },
         {
           "id": "activation",
-          "status": "not-started",
-          "title": "Dated-model-activation-and-history"
+          "status": "complete",
+          "title": "Dated-model-activation-and-history",
+          "observed_at": "2026-11-26T07:03:59.113233+00:00",
+          "evidence": "e731c1f83; actual reviewed historical adoption, dated successor reference publication and native PostgreSQL readback; old snapshot and pins retained. Independent Node activation 5/5 and actual OIDC HTTP hatchback available / unseen coupe whole-cohort fallback. docs/gcsp/models/fucq320-result.md."
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Real-composition-and-final-validation"
+          "status": "complete",
+          "title": "Real-composition-and-final-validation",
+          "observed_at": "2026-11-26T07:03:59.113233+00:00",
+          "evidence": "Lead reviewed final diff; independent 73/73 Java across four learning and ten required startup classes, zero skips/failures, 27.84 s; strict Node activation stamp 5/5; unchanged 31 Node tests reused. Actual fixed-database absence and target/TMP/dependency cleanup verified. Full suites deferred to batch; hosted deployment unverified."
         }
       ],
       "unsliced": false
