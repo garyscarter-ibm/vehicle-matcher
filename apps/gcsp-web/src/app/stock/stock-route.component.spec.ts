@@ -236,7 +236,9 @@ describe('gallery reservation command ownership', () => {
   it('resolves a matching terminal receipt and gives the same employee a fresh attempt with refreshed stock pins', async () => {
     await controller.load(); const receipt = held({ state: 'claim-pending', pendingOperation: { operationId: 'operation-1', operationType: 'claim', lastKnownState: 'pending' } });
     api.claim.mockResolvedValueOnce(ok(receipt)); api.readClaim.mockResolvedValueOnce(ok(terminal())); await controller.reserve(selected());
-    expect(controller.state().state).toBe('released'); expect(controller.state().blocked).toBe(false);
+    expect(controller.state().state).toBe('failed'); expect(controller.state().blocked).toBe(false);
+    expect(controller.state()).toMatchObject({ selection: null, retryTargetId: 'stock-1', refresh: 1 });
+    await controller.retry(); expect(api.claim).toHaveBeenCalledTimes(1);
     const first = api.claim.mock.calls[0][0]; const fresh = selected(); fresh.claimInput = { ...fresh.claimInput!, expectedStockVersion: 13 };
     api.readClaim.mockResolvedValueOnce(absent); await controller.reserve(fresh);
     expect(api.claim.mock.calls[1][0].commandId).not.toBe(first.commandId);
@@ -249,7 +251,8 @@ describe('gallery reservation command ownership', () => {
     api.claim.mockResolvedValueOnce(pending); api.readClaim.mockResolvedValueOnce(ok(pendingClaim)); await controller.reserve(selected());
     expect(controller.state().state).toBe('pending');
     api.readClaim.mockResolvedValueOnce(ok(terminal())); await controller.checkStatus();
-    expect(controller.state().state).toBe('released'); expect(controller.state().blocked).toBe(false);
+    expect(controller.state().state).toBe('failed'); expect(controller.state().blocked).toBe(false);
+    expect(controller.state()).toMatchObject({ selection: null, retryTargetId: 'stock-1', refresh: 1 });
     expect(api.claim).toHaveBeenCalledTimes(1);
   });
   it.each([{ code: 'car-not-eligible-or-available' }, { code: 'stock-unavailable' }, { code: 'stale-version', resource: 'stock' }])
